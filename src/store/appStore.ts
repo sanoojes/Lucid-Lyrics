@@ -9,6 +9,8 @@ type AppStateSetters = {
   setBgOptions: (options: Partial<BackgroundState['options']>) => void;
   setBgFilter: (filter: Partial<BackgroundState['options']['filter']>) => void;
 
+  setIsDevMode: (isDevMode: boolean) => void;
+
   exportConfig: () => string | null;
   importConfig: (config: AppState) => void;
   resetStore: () => void;
@@ -36,6 +38,7 @@ const appStore = createStore<AppState & AppStateSetters>()(
               },
             },
           }),
+        setIsDevMode: (isDevMode) => set(() => ({ isDevMode })),
 
         importConfig: (config) => set(() => merge({}, DEFAULT_APP_STATE, config)),
         exportConfig: () => {

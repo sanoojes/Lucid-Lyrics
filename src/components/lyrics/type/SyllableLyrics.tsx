@@ -1,12 +1,8 @@
-import {
-  getAnimationStyles,
-  getStatus,
-  seekTo,
-} from "@/components/lyrics/helper/common.ts";
-import Interlude from "@/components/lyrics/ui/Interlude.tsx";
-import { useProgress } from "@/context/ProgressContext.tsx";
-import type { LineStatus, SyllableData, WordProps } from "@/types/lyrics.ts";
-import { memo, useCallback, useEffect, useMemo, useRef } from "react";
+import { getAnimationStyles, getStatus, seekTo } from '@/components/lyrics/helper/common.ts';
+import Interlude from '@/components/lyrics/ui/Interlude.tsx';
+import { useProgress } from '@/context/ProgressContext.tsx';
+import type { LineStatus, SyllableData, WordProps } from '@/types/lyrics.ts';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 const Word: React.FC<WordProps> = ({
   StartTime,
@@ -29,14 +25,12 @@ const Word: React.FC<WordProps> = ({
   }, [isLong, EndTime, Text.length]);
 
   const status = useMemo(() => {
-    if (progress < StartTime * 1000) return "future";
-    if (progress >= StartTime * 1000 && progress <= effectiveEndTime * 1000)
-      return "active";
-    return "past";
+    if (progress < StartTime * 1000) return 'future';
+    if (progress >= StartTime * 1000 && progress <= effectiveEndTime * 1000) return 'active';
+    return 'past';
   }, [progress, StartTime, effectiveEndTime]);
 
-  const spaceClassName =
-    !IsPartOfWord && showTrailingSpace ? "add-space" : "no-space";
+  const spaceClassName = !IsPartOfWord && showTrailingSpace ? 'add-space' : 'no-space';
 
   return (
     <>
@@ -51,7 +45,7 @@ const Word: React.FC<WordProps> = ({
             skipMask: true,
           })}
         >
-          {Text.split("").map((letter, idx) => {
+          {Text.split('').map((letter, idx) => {
             const staggerDelay = idx * 80;
 
             const shrinkFactor = 0.9;
@@ -66,10 +60,9 @@ const Word: React.FC<WordProps> = ({
               ((idx + 1) / Text.length) * duration * 1000 * shrinkFactor +
               staggerDelay;
 
-            let wordStatus: LineStatus = "past";
-            if (progress < letterStartTime) wordStatus = "future";
-            if (progress >= letterStartTime && progress <= letterEndTime)
-              wordStatus = "active";
+            let wordStatus: LineStatus = 'past';
+            if (progress < letterStartTime) wordStatus = 'future';
+            if (progress >= letterStartTime && progress <= letterEndTime) wordStatus = 'active';
 
             const styles = getAnimationStyles({
               startTime: letterStartTime,
@@ -80,11 +73,7 @@ const Word: React.FC<WordProps> = ({
             });
 
             return (
-              <span
-                key={`${letterStartTime}-${letter}`}
-                className="letter"
-                style={styles}
-              >
+              <span key={`${letterStartTime}-${letter}`} className="letter" style={styles}>
                 {letter}
               </span>
             );
@@ -110,16 +99,12 @@ const Word: React.FC<WordProps> = ({
 };
 
 type LineWithWordProps = {
-  data: SyllableData["Content"][0];
+  data: SyllableData['Content'][0];
   isOppositeAligned: boolean;
   hasSyllables: boolean;
 };
 
-const LineWithWord: React.FC<LineWithWordProps> = ({
-  data,
-  hasSyllables,
-  isOppositeAligned,
-}) => {
+const LineWithWord: React.FC<LineWithWordProps> = ({ data, hasSyllables, isOppositeAligned }) => {
   const { progress } = useProgress();
 
   const leadRef = useRef<HTMLDivElement>(null);
@@ -141,13 +126,12 @@ const LineWithWord: React.FC<LineWithWordProps> = ({
   );
 
   useEffect(() => {
-    if (leadRef.current)
-      leadRef.current.scrollIntoView({ behavior: "instant", block: "center" });
+    if (leadRef.current) leadRef.current.scrollIntoView({ behavior: 'instant', block: 'center' });
   }, []);
 
   useEffect(() => {
-    if (leadStatus === "active" && leadRef.current) {
-      leadRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (leadStatus === 'active' && leadRef.current) {
+      leadRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [leadStatus]);
 
@@ -157,8 +141,8 @@ const LineWithWord: React.FC<LineWithWordProps> = ({
 
   useEffect(() => {
     backgroundRefs.current.forEach((ref, idx) => {
-      if (bgStatuses[idx] === "active" && ref) {
-        ref.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (bgStatuses[idx] === 'active' && ref) {
+        ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
   }, [bgStatuses]);
@@ -169,9 +153,9 @@ const LineWithWord: React.FC<LineWithWordProps> = ({
     <>
       {/* Lead line */}
       <div
-        className={`line${hasSyllables ? " syllable" : ""}${
-          isOppositeAligned ? " opposite" : ""
-        }${data.Background ? " has-bg" : ""} ${leadStatus}`}
+        className={`line${hasSyllables ? ' syllable' : ''}${
+          isOppositeAligned ? ' opposite' : ''
+        }${data.Background ? ' has-bg' : ''} ${leadStatus}`}
         ref={leadRef}
         onClick={onClick}
       >
@@ -183,9 +167,7 @@ const LineWithWord: React.FC<LineWithWordProps> = ({
             IsPartOfWord={syllable.IsPartOfWord ?? false}
             Text={syllable.Text}
             lineStatus={leadStatus}
-            showTrailingSpace={
-              !syllable.IsPartOfWord && leadIdx < lead.length - 1
-            }
+            showTrailingSpace={!syllable.IsPartOfWord && leadIdx < lead.length - 1}
           />
         ))}
       </div>
@@ -194,9 +176,7 @@ const LineWithWord: React.FC<LineWithWordProps> = ({
       {data.Background?.map((bgPart, bgIdx) => (
         <div
           key={`${bgPart.StartTime}-${bgPart.EndTime}`}
-          className={`line bg syllable${isOppositeAligned ? " opposite" : ""} ${
-            bgStatuses[bgIdx]
-          }`}
+          className={`line bg syllable${isOppositeAligned ? ' opposite' : ''} ${bgStatuses[bgIdx]}`}
           ref={(el) => {
             backgroundRefs.current[bgIdx] = el;
           }}
@@ -210,8 +190,7 @@ const LineWithWord: React.FC<LineWithWordProps> = ({
               Text={syllable.Text}
               lineStatus={bgStatuses[bgIdx]}
               showTrailingSpace={
-                !syllable.IsPartOfWord &&
-                syllableIdx < bgPart.Syllables.length - 1
+                !syllable.IsPartOfWord && syllableIdx < bgPart.Syllables.length - 1
               }
             />
           ))}
@@ -237,8 +216,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = memo(({ data }) => {
 
     if (idx < data.Content.length - 1) {
       const nextLine = data.Content[idx + 1];
-      const gap =
-        nextLine.Lead.StartTime * 1000 - contentData.Lead.EndTime * 1000;
+      const gap = nextLine.Lead.StartTime * 1000 - contentData.Lead.EndTime * 1000;
 
       console.log(gap);
 
@@ -260,8 +238,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = memo(({ data }) => {
       progress <= lines[idx - 1].Lead.EndTime * 1000;
 
     const isCurrentActive =
-      progress >= contentData.Lead.StartTime * 1000 &&
-      progress <= contentData.Lead.EndTime * 1000;
+      progress >= contentData.Lead.StartTime * 1000 && progress <= contentData.Lead.EndTime * 1000;
 
     const isNextActive =
       idx < lines.length - 1 &&
@@ -277,16 +254,12 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = memo(({ data }) => {
     return (
       <div
         key={`line-${contentData.Lead.StartTime}-${contentData.Lead.EndTime}-${idx}`}
-        className={`line-wrapper${hasOppositeAligned ? " has-opposite" : ""}${
-          addWillChange ? " will-change" : ""
+        className={`line-wrapper${hasOppositeAligned ? ' has-opposite' : ''}${
+          addWillChange ? ' will-change' : ''
         }`}
       >
         {idx === 0 && (data.StartTime ?? 0) * 1000 > 0 && (
-          <Interlude
-            progress={progress}
-            startTime={0}
-            endTime={(data.StartTime ?? 0) * 1000}
-          />
+          <Interlude progress={progress} startTime={0} endTime={(data.StartTime ?? 0) * 1000} />
         )}
         <LineWithWord
           data={contentData}

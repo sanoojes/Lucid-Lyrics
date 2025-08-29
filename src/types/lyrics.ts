@@ -1,5 +1,5 @@
 /* Component Props */
-export type LineStatus = "future" | "active" | "past";
+export type LineStatus = 'future' | 'active' | 'past';
 
 export type WordProps = Syllable & {
   lineStatus: LineStatus;
@@ -13,7 +13,7 @@ export type AnimationProps = {
   lineStatus: LineStatus;
   timeMultiplier?: number;
   status?: LineStatus;
-  gradientPos?: "right" | "bottom";
+  gradientPos?: 'right' | 'bottom';
   skipMask?: boolean;
   skipScale?: boolean;
 };
@@ -33,7 +33,7 @@ export type VocalPart = {
 };
 
 export type SyllableData = {
-  Type: "Syllable";
+  Type: 'Syllable';
   SongWriters: string[];
   StartTime: number;
   Content: {
@@ -47,7 +47,7 @@ export type SyllableData = {
 };
 
 export type LineData = {
-  Type: "Line";
+  Type: 'Line';
   SongWriters: string[];
   StartTime: number;
   Content: {
@@ -62,7 +62,7 @@ export type LineData = {
 };
 
 export type StaticData = {
-  Type: "Static";
+  Type: 'Static';
   SongWriters: string[];
   Lines: {
     Text: string;

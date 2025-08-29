@@ -20,6 +20,7 @@ const main = async () => {
       location.reload();
     },
     Config: () => appStore.getState(),
+    SetDevMode: (isDevMode = true) => appStore.getState().setIsDevMode(isDevMode),
     _appStore: appStore,
     _tempStore: tempStore,
   };

@@ -289,7 +289,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
   transform-origin: center;
   will-change: auto;
   transform: none;
@@ -318,7 +320,9 @@
     transform: translate3d(0px, var(--translate-y), 0px) scale(var(--scale));
 
     will-change: transform, opacity;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 }
 
@@ -414,7 +418,9 @@
       z-index: -1;
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
-      transition: backdrop-filter 0.3s linear, opacity 0.3s linear;
+      transition:
+        backdrop-filter 0.3s linear,
+        opacity 0.3s linear;
     }
 
     & > div {

@@ -1,5 +1,5 @@
-import { toFixed, toPercent, toPx } from "@utils/dom";
-import { AnimationProps, LineStatus } from "@/types/lyrics.ts";
+import type { AnimationProps, LineStatus } from '@/types/lyrics.ts';
+import { toFixed, toPercent, toPx } from '@utils/dom';
 
 export const ACTIVE_TEXT_OPACITY = 1;
 export const FADE_DURATION = 1000;
@@ -18,14 +18,10 @@ export function fadeToZero(progress: number, endTime: number) {
   return 100 * (1 - passedTime / FADE_DURATION);
 }
 
-export function getStatus(
-  start: number,
-  end: number,
-  progress: number
-): LineStatus {
-  if (progress < start * 1000) return "future";
-  if (progress >= start * 1000 && progress <= end * 1000) return "active";
-  return "past";
+export function getStatus(start: number, end: number, progress: number): LineStatus {
+  if (progress < start * 1000) return 'future';
+  if (progress >= start * 1000 && progress <= end * 1000) return 'active';
+  return 'past';
 }
 export function getAnimationStyles({
   startTime,
@@ -33,7 +29,7 @@ export function getAnimationStyles({
   progress,
   status,
   lineStatus,
-  gradientPos = "right",
+  gradientPos = 'right',
   skipMask = false,
   skipScale = false,
 }: AnimationProps) {
@@ -50,18 +46,18 @@ export function getAnimationStyles({
   fillPercentage = Math.max(0, Math.min(100, fillPercentage));
 
   const baseTextOpacity =
-    lineStatus === "active" && (status === "past" || status === "active")
+    lineStatus === 'active' && (status === 'past' || status === 'active')
       ? ACTIVE_TEXT_OPACITY
       : 0.3;
 
   let maskStartOpacity = baseTextOpacity;
   let maskEndOpacity = baseTextOpacity;
 
-  if (lineStatus === "active" && status === "past") {
+  if (lineStatus === 'active' && status === 'past') {
     maskStartOpacity = ACTIVE_TEXT_OPACITY;
     maskEndOpacity = ACTIVE_TEXT_OPACITY;
   }
-  if (status === "active") {
+  if (status === 'active') {
     maskStartOpacity = ACTIVE_TEXT_OPACITY;
     maskEndOpacity = 0.4;
   } else if (progress >= startTime && progress <= endTime) {
@@ -72,9 +68,7 @@ export function getAnimationStyles({
     maskEndOpacity = 0.4;
   }
 
-  const scale = skipScale
-    ? ""
-    : `scale(${toPercent(100 + fillPercentage / 20)}) `;
+  const scale = skipScale ? '' : `scale(${toPercent(100 + fillPercentage / 20)}) `;
 
   if (skipMask) {
     return {

@@ -6,6 +6,7 @@ declare global {
     __lucid_lyrics: {
       Reset: () => void;
       Config: () => ReturnType<typeof appStore.getState>;
+      SetDevMode: (isDevMode: boolean) => void;
       _appStore: typeof appStore;
       _tempStore: typeof tempStore;
     };

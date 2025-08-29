@@ -1,10 +1,10 @@
-import LineLyrics from "@/components/lyrics/type/LineLyrics.tsx";
-import StaticLyrics from "@/components/lyrics/type/StaticLyrics.tsx";
-import SyllableLyrics from "@/components/lyrics/type/SyllableLyrics.tsx";
-import Scrollable, { type ScrollableRef } from "@/components/ui/Scrollable.tsx";
-import type { BestAvailableLyrics } from "@/types/lyrics.ts";
-import { createContext, memo, useContext, useRef } from "react";
-import { ProgressProvider } from "@/context/ProgressContext.tsx";
+import LineLyrics from '@/components/lyrics/type/LineLyrics.tsx';
+import StaticLyrics from '@/components/lyrics/type/StaticLyrics.tsx';
+import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
+import Scrollable, { type ScrollableRef } from '@/components/ui/Scrollable.tsx';
+import { ProgressProvider } from '@/context/ProgressContext.tsx';
+import type { BestAvailableLyrics } from '@/types/lyrics.ts';
+import { createContext, memo, useContext, useRef } from 'react';
 
 type ScrollContainerContextType = React.RefObject<ScrollableRef | null> | null;
 
@@ -20,15 +20,15 @@ const Lyrics: React.FC<{ data: BestAvailableLyrics }> = memo(({ data }) => {
 
   let lyricRenderer = null;
   switch (data.Type) {
-    case "Syllable": {
+    case 'Syllable': {
       lyricRenderer = <SyllableLyrics data={data} />;
       break;
     }
-    case "Line": {
+    case 'Line': {
       lyricRenderer = <LineLyrics data={data} />;
       break;
     }
-    case "Static": {
+    case 'Static': {
       lyricRenderer = <StaticLyrics data={data} />;
       break;
     }
@@ -46,9 +46,7 @@ const Lyrics: React.FC<{ data: BestAvailableLyrics }> = memo(({ data }) => {
             {lyricRenderer}
             {data?.SongWriters ? (
               <div className="line-wrapper credits-wrapper">
-                <span className="credits">
-                  Credits: {data.SongWriters?.join?.(", ")}
-                </span>
+                <span className="credits">Credits: {data.SongWriters?.join?.(', ')}</span>
               </div>
             ) : null}
             <div className="bottom-spacing" />

@@ -1,11 +1,11 @@
-import { Loader } from "@/components/ui/index.ts";
-import { ReactQueryProvider } from "@/lib/reactQuery.tsx";
-import tempStore from "@/store/tempStore.ts";
-import { getLyricsData } from "@/utils/fetch/getLyricsData.ts";
-import { useQuery } from "@tanstack/react-query";
-import { memo, useEffect, useState } from "react";
-import { useStore } from "zustand";
-import Lyrics from "./Lyrics.tsx";
+import { Loader } from '@/components/ui/index.ts';
+import { ReactQueryProvider } from '@/lib/reactQuery.tsx';
+import tempStore from '@/store/tempStore.ts';
+import { getLyricsData } from '@/utils/fetch/getLyricsData.ts';
+import { useQuery } from '@tanstack/react-query';
+import { memo, useEffect, useState } from 'react';
+import { useStore } from 'zustand';
+import Lyrics from './Lyrics.tsx';
 
 type StatusTextProps = { children: React.ReactNode };
 const StatusText: React.FC<StatusTextProps> = ({ children }) => {
@@ -26,17 +26,17 @@ const LyricsContainer: React.MemoExoticComponent<React.FC> = memo(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
   const { data, status } = useQuery({
-    queryKey: ["lyrics", id],
+    queryKey: ['lyrics', id],
     queryFn: () => getLyricsData(id),
     enabled: !!id && isOnline,
     staleTime: 5 * 60 * 1000,
@@ -45,18 +45,14 @@ const LyricsContainer: React.MemoExoticComponent<React.FC> = memo(() => {
   });
 
   useEffect(() => {
-    if (status === "success") {
-      console.log("Lyrics fetched:", data);
+    if (status === 'success') {
+      console.log('Lyrics fetched:', data);
     }
   }, [status, data]);
 
   let content: React.ReactNode = null;
   if (!isOnline) {
-    content = (
-      <div className="lyrics-offline">
-        📡 You are offline. Please reconnect.
-      </div>
-    );
+    content = <div className="lyrics-offline">📡 You are offline. Please reconnect.</div>;
   } else if (!id) {
     content = (
       <StatusText>
@@ -65,17 +61,17 @@ const LyricsContainer: React.MemoExoticComponent<React.FC> = memo(() => {
     );
   } else {
     switch (status) {
-      case "pending":
+      case 'pending':
         content = <Loader />;
         break;
-      case "error":
+      case 'error':
         content = (
           <StatusText>
             <h2 className="lyrics-error">No Lyrics Found ⚠️</h2>
           </StatusText>
         );
         break;
-      case "success":
+      case 'success':
         content = <Lyrics data={data} />;
         break;
     }

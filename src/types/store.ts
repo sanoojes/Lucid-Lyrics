@@ -61,4 +61,5 @@ export type BackgroundState = {
 
 export type AppState = {
   bg: BackgroundState;
+  isDevMode: boolean;
 };
