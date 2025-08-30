@@ -1,13 +1,13 @@
-import type { AppState, BackgroundState } from '@/types/store.ts';
-import { DEFAULT_APP_STATE } from '@constants';
-import { merge } from 'lodash';
-import { combine, persist, subscribeWithSelector } from 'zustand/middleware';
-import { createStore } from 'zustand/vanilla';
+import type { AppState, BackgroundState } from "@/types/store.ts";
+import { DEFAULT_APP_STATE } from "@constants";
+import { merge } from "lodash";
+import { combine, persist, subscribeWithSelector } from "zustand/middleware";
+import { createStore } from "zustand/vanilla";
 
 type AppStateSetters = {
   setBg: (bg: Partial<BackgroundState>) => void;
-  setBgOptions: (options: Partial<BackgroundState['options']>) => void;
-  setBgFilter: (filter: Partial<BackgroundState['options']['filter']>) => void;
+  setBgOptions: (options: Partial<BackgroundState["options"]>) => void;
+  setBgFilter: (filter: Partial<BackgroundState["options"]["filter"]>) => void;
 
   setIsDevMode: (isDevMode: boolean) => void;
 
@@ -38,9 +38,13 @@ const appStore = createStore<AppState & AppStateSetters>()(
               },
             },
           }),
-        setIsDevMode: (isDevMode) => set(() => ({ isDevMode })),
+        setIsDevMode: (isDevMode) => {
+          set(() => ({ isDevMode }));
+          location.reload();
+        },
 
-        importConfig: (config) => set(() => merge({}, DEFAULT_APP_STATE, config)),
+        importConfig: (config) =>
+          set(() => merge({}, DEFAULT_APP_STATE, config)),
         exportConfig: () => {
           try {
             const config = JSON.stringify(get(), null, 2);
@@ -52,15 +56,16 @@ const appStore = createStore<AppState & AppStateSetters>()(
         resetStore: () => {
           try {
             set(DEFAULT_APP_STATE);
-            localStorage.removeItem('lucid-lyrics:settings');
+            localStorage.removeItem("lucid-lyrics:settings");
           } catch {}
         },
       }))
     ),
     {
-      name: 'lucid-lyrics:settings',
+      name: "lucid-lyrics:settings",
       version: 1,
-      migrate: (persistedState) => merge(DEFAULT_APP_STATE, persistedState ?? {}),
+      migrate: (persistedState) =>
+        merge(DEFAULT_APP_STATE, persistedState ?? {}),
     }
   )
 );

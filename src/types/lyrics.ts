@@ -11,11 +11,14 @@ export type AnimationProps = {
   endTime: number;
   progress: number;
   lineStatus: LineStatus;
+  textShadowBlur?: number;
+  maxScale?: number;
+  maxTranslateY?: number;
   timeMultiplier?: number;
   status?: LineStatus;
   gradientPos?: 'right' | 'bottom';
   skipMask?: boolean;
-  skipScale?: boolean;
+  setAnimating?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /* Data */

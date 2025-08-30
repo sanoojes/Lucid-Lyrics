@@ -9,6 +9,8 @@
     "jsr:@udibo/esbuild-plugin-postcss@~0.2.1": "0.2.1",
     "npm:@biomejs/biome@*": "2.2.0",
     "npm:@fluentui/react-icons@^2.0.307": "2.0.307_react@19.1.1",
+    "npm:@tanstack/query-async-storage-persister@^5.85.5": "5.85.5",
+    "npm:@tanstack/react-query-persist-client@^5.85.5": "5.85.5_@tanstack+react-query@5.85.5__react@19.1.1_react@19.1.1",
     "npm:@tanstack/react-query@^5.85.5": "5.85.5_react@19.1.1",
     "npm:@types/react-dom@^19.1.7": "19.1.7_@types+react@19.1.10",
     "npm:@types/react@^19.1.9": "19.1.10",
@@ -16,8 +18,10 @@
     "npm:esbuild@0.24": "0.24.2",
     "npm:esbuild@~0.25.8": "0.25.9",
     "npm:framer-motion@^12.23.12": "12.23.12_react@19.1.1_react-dom@19.1.1__react@19.1.1",
+    "npm:idb-keyval@^6.2.2": "6.2.2",
     "npm:less@^4.2.0": "4.4.1",
     "npm:lodash@^4.17.21": "4.17.21",
+    "npm:lz-string@^1.5.0": "1.5.0",
     "npm:postcss-modules@6": "6.0.1_postcss@8.5.6",
     "npm:postcss@8": "8.5.6",
     "npm:postcss@^8.5.6": "8.5.6",
@@ -512,8 +516,28 @@
     "@pkgjs/parseargs@0.11.0": {
       "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="
     },
+    "@tanstack/query-async-storage-persister@5.85.5": {
+      "integrity": "sha512-E1N+eMPWfV0PwTNa8tRqyOgIzFJSGvrC5hVIxNehLL/jucPvLi0QUlIG/KC4Vg6jVarONSLhONCM4dkSugEUFw==",
+      "dependencies": [
+        "@tanstack/query-persist-client-core"
+      ]
+    },
     "@tanstack/query-core@5.85.5": {
       "integrity": "sha512-KO0WTob4JEApv69iYp1eGvfMSUkgw//IpMnq+//cORBzXf0smyRwPLrUvEe5qtAEGjwZTXrjxg+oJNP/C00t6w=="
+    },
+    "@tanstack/query-persist-client-core@5.85.5": {
+      "integrity": "sha512-2JQiyiTVaaUu8pwPqOp6tjNa64ZN+0T9eZ3lfksV4le1VuG99fTcAYmZFIydvzwWlSM7GEF/1kpl5bwW2Y1qfQ==",
+      "dependencies": [
+        "@tanstack/query-core"
+      ]
+    },
+    "@tanstack/react-query-persist-client@5.85.5_@tanstack+react-query@5.85.5__react@19.1.1_react@19.1.1": {
+      "integrity": "sha512-KzISZPtJtWZAwH/Ln1FclaiHVwdeV04WX7wUYLe1vw7zyfcPljHeyXlmVf8nxhFm8ujMBdGQVzP2iNn6ehzjQA==",
+      "dependencies": [
+        "@tanstack/query-persist-client-core",
+        "@tanstack/react-query",
+        "react"
+      ]
     },
     "@tanstack/react-query@5.85.5_react@19.1.1": {
       "integrity": "sha512-/X4EFNcnPiSs8wM2v+b6DqS5mmGeuJQvxBglmDxl6ZQb5V26ouD2SJYAcC3VjbNwqhY2zjxVD15rDA5nGbMn3A==",
@@ -786,6 +810,9 @@
         "postcss"
       ]
     },
+    "idb-keyval@6.2.2": {
+      "integrity": "sha512-yjD9nARJ/jb1g+CvD0tlhUHOrJ9Sy0P8T9MF3YaLlHnSRpwPfpTX0XIvpmw3gAJUmEu3FiICLBDPXVwyEvrleg=="
+    },
     "image-size@0.5.5": {
       "integrity": "sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==",
       "bin": true
@@ -852,6 +879,10 @@
     },
     "lru-cache@10.4.3": {
       "integrity": "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="
+    },
+    "lz-string@1.5.0": {
+      "integrity": "sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==",
+      "bin": true
     },
     "make-dir@2.1.0": {
       "integrity": "sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==",
@@ -1186,13 +1217,17 @@
       "jsr:@std/path@^1.1.0",
       "jsr:@udibo/esbuild-plugin-postcss@~0.2.1",
       "npm:@fluentui/react-icons@^2.0.307",
+      "npm:@tanstack/query-async-storage-persister@^5.85.5",
+      "npm:@tanstack/react-query-persist-client@^5.85.5",
       "npm:@tanstack/react-query@^5.85.5",
       "npm:@types/react-dom@^19.1.7",
       "npm:@types/react@^19.1.9",
       "npm:autoprefixer@^10.4.21",
       "npm:esbuild@~0.25.8",
       "npm:framer-motion@^12.23.12",
+      "npm:idb-keyval@^6.2.2",
       "npm:lodash@^4.17.21",
+      "npm:lz-string@^1.5.0",
       "npm:postcss@^8.5.6",
       "npm:react-color-palette@^7.3.1",
       "npm:react-dom@^19.1.1",

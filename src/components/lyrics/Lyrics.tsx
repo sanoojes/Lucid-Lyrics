@@ -16,7 +16,6 @@ export const useScrollContainer = () => {
 
 const Lyrics: React.FC<{ data: BestAvailableLyrics }> = memo(({ data }) => {
   const scrollContainerRef = useRef<ScrollableRef | null>(null);
-  console.log(data);
 
   let lyricRenderer = null;
   switch (data.Type) {

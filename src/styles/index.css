@@ -3,7 +3,7 @@
 .lyrics-container {
   --text-color: 255, 255, 255;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   height: 100%;
   width: 100%;
   color: rgb(var(--text-color));
@@ -17,197 +17,204 @@
     padding: 0 15.5cqw 0 18cqw;
   }
 
-  .lyrics-wrapper {
-    container-type: size;
-    container-name: lyrics-wrapper;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-    padding: 0 15.5cqw 0 18cqw;
+  .top-spacing {
+    min-height: 25cqh;
+  }
 
-    .line-wrapper {
-      --lyrics-word-gap: calc(var(--lyrics-font-size) * 0.25);
-      --lyrics-font-weight: 600;
+  .bottom-spacing {
+    min-height: 45cqh;
+  }
+}
 
-      --lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
-      --lyrics-line-height: 1.18;
+.lyrics-wrapper {
+  --default-transition: scale 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+    mask-image 0.2s cubic-bezier(0.37, 0, 0.63, 1),
+    text-shadow 0.2s cubic-bezier(0.37, 0, 0.63, 1);
 
-      --lyrics-bg-font-size: calc(var(--lyrics-font-size) * 0.6);
-      --lyrics-bg-line-height: 1.18;
+  container-type: size;
+  container-name: lyrics-wrapper;
+  height: 100%;
+  padding: 0 15.5cqw 0 18cqw;
 
-      --lyrics-credits-font-size: calc(var(--lyrics-font-size) * 0.47);
-      --lyrics-credits-line-height: 1.18;
-      --lyrics-credits-font-weight: 600;
+  .line-wrapper {
+    --lyrics-word-gap: calc(var(--lyrics-font-size) * 0.25);
+    --lyrics-font-weight: 600;
 
-      --lyrics-word-space-width: calc(var(--lyrics-font-size) * 0.35);
+    --lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
+    --lyrics-line-height: 1.18;
 
-      margin: 8px 0;
-      padding: 0 8px;
+    --lyrics-bg-font-size: calc(var(--lyrics-font-size) * 0.6);
+    --lyrics-bg-line-height: 1.18;
 
-      &.credits-wrapper {
-        font-size: var(--lyrics-credits-font-size);
-        font-weight: var(--lyrics-credits-font-weight);
-        line-height: var(--lyrics-credits-line-height);
-        opacity: 0.4;
-      }
+    --lyrics-credits-font-size: calc(var(--lyrics-font-size) * 0.47);
+    --lyrics-credits-line-height: 1.18;
+    --lyrics-credits-font-weight: 600;
 
-      &.static {
-        .line {
-          display: inline-block;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-          white-space: normal;
+    --lyrics-word-space-width: calc(var(--lyrics-font-size) * 0.35);
 
-          font-weight: var(--lyrics-font-weight, 500);
-          opacity: 1;
-          position: relative;
+    margin: 8px 0;
+    padding: 0 8px;
 
-          background-color: rgba(var(--text-color), 1);
-          color: transparent;
+    &.credits-wrapper {
+      font-size: var(--lyrics-credits-font-size);
+      font-weight: var(--lyrics-credits-font-weight);
+      line-height: var(--lyrics-credits-line-height);
+      opacity: 0.4;
+    }
 
-          -webkit-background-clip: text;
-          background-clip: text;
-
-          text-shadow: 0 0 0 transparent;
-          transform: translate3d(0, 0, 0) scale(1);
-
-          mask-repeat: no-repeat;
-          mask-size: 100% 100%;
-          mask-image: none;
-
-          scale: 1;
-          transition: scale 0.2s cubic-bezier(0.37, 0, 0.63, 1);
-
-          &.active {
-            scale: 1.05;
-          }
-
-          /* background-color: rgb(var(--text-color)); */
-
-          will-change: auto;
-        }
-      }
-
+    &.static {
       .line {
-        font-size: var(--lyrics-font-size);
-        font-weight: var(--lyrics-font-weight);
-        line-height: var(--lyrics-line-height);
+        display: inline-block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+
+        font-weight: var(--lyrics-font-weight, 500);
+        opacity: 1;
+        position: relative;
+
+        background-color: rgba(var(--text-color), 1);
         color: transparent;
 
-        padding-right: 3cqw;
-        will-change: auto;
+        -webkit-background-clip: text;
+        background-clip: text;
 
-        /* filter: blur(var(--blur-amount)); */
+        text-shadow: 0 0 0 transparent;
+        transform: translate3d(0, 0, 0) scale(1);
 
-        &.bg {
-          font-size: var(--lyrics-bg-font-size);
-          line-height: var(--lyrics-bg-line-height);
+        mask-repeat: no-repeat;
+        mask-size: 100% 100%;
+        mask-image: none;
+
+        scale: 1;
+        transition-duration: 0.2s;
+        transition-property: mask-image, text-shadow, mask-image, opacity;
+        transition-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+
+        &.active {
+          scale: 1.05;
         }
 
-        &.syllable {
-          display: flex;
-          /* column-gap: var(--lyrics-word-gap); */
-          flex-wrap: wrap;
-          justify-content: flex-start;
-        }
+        /* background-color: rgb(var(--text-color)); */
+      }
+    }
 
-        .word {
+    .line {
+      font-size: var(--lyrics-font-size);
+      font-weight: var(--lyrics-font-weight);
+      line-height: var(--lyrics-line-height);
+      color: transparent;
+
+      padding-right: 3cqw;
+
+      /* filter: blur(var(--blur-amount)); */
+
+      &.bg {
+        font-size: var(--lyrics-bg-font-size);
+        line-height: var(--lyrics-bg-line-height);
+      }
+
+      &.syllable {
+        display: flex;
+        /* column-gap: var(--lyrics-word-gap); */
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+
+      .word {
+        display: inline-block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+
+        font-weight: var(--lyrics-font-weight, 500);
+        opacity: 1;
+        position: relative;
+
+        background-color: transparent;
+        color: transparent;
+
+        -webkit-background-clip: text;
+        background-clip: text;
+
+        text-shadow: 0 0 0 transparent;
+        transform: translate3d(0, 0, 0) scale(1);
+
+        mask-repeat: no-repeat;
+        mask-size: 100% 100%;
+        mask-image: none;
+
+        &.add-space {
           display: inline-block;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-          white-space: normal;
+          margin-right: 0.25em;
+        }
 
-          font-weight: var(--lyrics-font-weight, 500);
-          opacity: 1;
-          position: relative;
+        &.no-space,
+        &:last-child {
+          margin-right: 0;
+        }
 
+        &.full {
+          background-color: rgba(var(--text-color), 1);
+        }
+
+        &.motion {
+          scale: scale(var(--scale, 1));
+          transform: translate3d(0, var(--translateY, 0px), 0);
+          text-shadow: 0 0 6px transparent;
+
+          transition-duration: 0.2s;
+          transition-property: mask-image, text-shadow, mask-image, opacity;
+          transition-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+        }
+
+        &.letters {
           background-color: transparent;
-          color: transparent;
-
-          -webkit-background-clip: text;
-          background-clip: text;
-
-          transition: none;
-
-          text-shadow: 0 0 0 transparent;
-          transform: translate3d(0, 0, 0) scale(1);
-
-          mask-repeat: no-repeat;
-          mask-size: 100% 100%;
           mask-image: none;
+          display: inline-block;
 
-          will-change: auto;
-
-          &.add-space {
+          .letter {
+            text-shadow: 0 0 6px transparent;
             display: inline-block;
-            margin-right: 0.25em;
-          }
-
-          &.no-space,
-          &:last-child {
-            margin-right: 0;
-          }
-
-          &.full {
+            -webkit-background-clip: text;
+            background-clip: text;
             background-color: rgba(var(--text-color), 1);
+            scale: scale(var(--scale, 1));
+            transform: translate3d(0, var(--translateY, 0px), 0);
+
+            transition-duration: 0.2s;
+            transition-property: mask-image, text-shadow, mask-image, opacity;
+            transition-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
           }
-
-          &.letters {
-            background-color: transparent;
-            mask-image: none;
-            display: inline-block;
-
-            .letter {
-              display: inline-block;
-              -webkit-background-clip: text;
-              background-clip: text;
-              background-color: rgba(var(--text-color), 1);
-              transform: scale(1) translate3d(0, 0, 0);
-            }
-          }
-        }
-      }
-
-      &.has-opposite {
-        .line {
-          padding-right: 25cqw;
-          transform-origin: left center;
-
-          &.opposite {
-            transform-origin: right center;
-            padding-right: unset;
-            padding-left: 25cqw;
-            justify-content: flex-end;
-          }
-        }
-      }
-
-      .will-change {
-        * {
-          will-change: text-shadow, transform, opacity, mask-image;
         }
       }
     }
 
-    .top-spacing {
-      min-height: 25cqh;
-    }
+    &.has-opposite {
+      .line {
+        padding-right: 25cqw;
+        transform-origin: left center;
 
-    .bottom-spacing {
-      min-height: 45cqh;
+        &.opposite {
+          transform-origin: right center;
+          padding-right: unset;
+          padding-left: 25cqw;
+          justify-content: flex-end;
+        }
+      }
     }
   }
 }
 
 .lucid-lyrics-bg {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   inset: 0;
   height: 100%;
   width: 100%;
   background-position: center center;
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .page-lucid-lyrics {
@@ -289,11 +296,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
   transform-origin: center;
-  will-change: auto;
   transform: none;
   height: 64px;
 
@@ -317,12 +321,8 @@
     border-radius: 50%;
     background-color: rgb(255, 255, 255);
 
-    transform: translate3d(0px, var(--translate-y), 0px) scale(var(--scale));
-
-    will-change: transform, opacity;
-    transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
+    transform: translate3d(0px, var(--translate-y), 0px) scale(var(--scale, 1));
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 }
 
@@ -418,9 +418,7 @@
       z-index: -1;
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
-      transition:
-        backdrop-filter 0.3s linear,
-        opacity 0.3s linear;
+      transition: backdrop-filter 0.3s linear, opacity 0.3s linear;
     }
 
     & > div {

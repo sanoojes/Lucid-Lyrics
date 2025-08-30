@@ -1,53 +1,73 @@
-import appStore from '@/store/appStore.ts';
-import type { BestAvailableLyrics } from '@/types/lyrics.ts';
-import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
+import appStore from "@/store/appStore.ts";
+import type { BestAvailableLyrics } from "@/types/lyrics.ts";
+import { getSpotifyTokenHeader } from "@/utils/fetch/getSpotifyToken.ts";
 
 const isDev = appStore.getState().isDevMode;
 
+// List of APIs
+const API_CONSUMERS = isDev
+  ? ["http://localhost:8787"]
+  : [
+      "https://api.lucidlyrics.dploy-769795339266794283.dp.spikerko.org",
+      "https://lucid-lyrics.cloudns.pro/",
+    ];
+
+let availableApi: string | null = null;
+
 export const getLyricsData = async (id: string | null) => {
-  if (!id) throw new Error('Missing track ID');
+  if (!id) throw new Error("Missing track ID");
 
   const tokenHeader = await getSpotifyTokenHeader();
   if (!tokenHeader) {
-    throw new Error('Missing or invalid Spotify token');
+    throw new Error("Missing or invalid Spotify token");
   }
 
-  let res: Response;
-  try {
-    res = await fetch(
-      `${
-        isDev
-          ? 'http://localhost:8787'
-          : 'https://api.lucidlyrics.dploy-769795339266794283.dp.spikerko.org'
-      }/lyrics/${id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Spotify-Token': tokenHeader,
-        },
-      }
-    );
-  } catch {
-    throw new Error('Cannot connect to lyrics server');
-  }
+  const endpointsToTry = availableApi
+    ? [availableApi, ...API_CONSUMERS.filter((url) => url !== availableApi)]
+    : API_CONSUMERS;
 
-  if (!res.ok) {
-    if (res.status === 404) {
-      throw new Error('Lyrics not found');
-    }
+  let lastError: Error | null = null;
 
-    let errMsg: string;
+  for (const baseUrl of endpointsToTry) {
     try {
-      const errJson = await res.json();
-      errMsg = errJson.error || res.statusText;
+      const res = await fetch(`${baseUrl}/lyrics/${id}`, {
+        method: "GET",
+        headers: {
+          "Spotify-Token": tokenHeader,
+        },
+        priority: "high",
+      });
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          lastError = new Error("Lyrics not found");
+          continue;
+        }
+
+        let errMsg: string;
+        try {
+          const errJson = await res.json();
+          errMsg = errJson.error || res.statusText;
+        } catch {
+          errMsg = res.statusText;
+        }
+        lastError = new Error(`Request failed: ${res.status} ${errMsg}`);
+        continue;
+      }
+
+      const data = await res.json();
+      if (!data?.lyrics) {
+        lastError = new Error("Lyrics not found");
+        continue;
+      }
+
+      availableApi = baseUrl;
+      console.log("Lyrics data:", data);
+      return data.lyrics as BestAvailableLyrics;
     } catch {
-      errMsg = res.statusText;
+      lastError = new Error("Cannot connect to lyrics server");
     }
-    throw new Error(`Request failed: ${res.status} ${errMsg}`);
   }
 
-  const data = await res.json();
-  console.log('Lyrics data:', data);
-  if (!data?.lyrics) throw new Error('Lyrics not found');
-  return data.lyrics as BestAvailableLyrics;
+  throw lastError || new Error("Lyrics not found from all sources");
 };

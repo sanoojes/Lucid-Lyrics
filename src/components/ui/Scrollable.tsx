@@ -5,20 +5,23 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-} from 'react';
+} from "react";
 
-type ScrollableProps = Omit<HTMLProps<HTMLDivElement>, 'ref' | 'id'>;
+type ScrollableProps = Omit<HTMLProps<HTMLDivElement>, "ref" | "id"> & {
+  userScrollTimeout?: number;
+};
 
 export type ScrollableRef = {
-  scrollTo: (top: number, behavior?: 'smooth' | 'instant' | 'auto') => void;
-  getClientHeight: () => number | undefined;
-  getOffsetTop: () => number | undefined;
+  scrollTo: (top: number, behavior?: "smooth" | "instant" | "auto") => void;
+  getClientHeight: () => number;
+  getOffsetTop: () => number;
   addScrollListener: (cb: () => void) => void;
   removeScrollListener: (cb: () => void) => void;
+  isAutoScrollAllowed: () => boolean;
 };
 
 const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
-  ({ children, className, ...props }, ref) => {
+  ({ children, className, userScrollTimeout = 2000, ...props }, ref) => {
     const contentRef = useRef<HTMLDivElement | null>(null);
     const scrollTrackRef = useRef<HTMLDivElement>(null);
     const scrollThumbRef = useRef<HTMLDivElement>(null);
@@ -27,27 +30,35 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
     const [thumbHeight, setThumbHeight] = useState(20);
     const [isDragging, setIsDragging] = useState(false);
     const [scrollStartPosition, setScrollStartPosition] = useState<number>(0);
-    const [initialContentScrollTop, setInitialContentScrollTop] = useState<number>(0);
+    const [initialContentScrollTop, setInitialContentScrollTop] =
+      useState<number>(0);
 
+    const [isUserScrolling, setIsUserScrolling] = useState(false);
+    const scrollTimeoutRef = useRef<number | null>(null);
+
+    // public API
     useImperativeHandle(
       ref,
       () => ({
-        scrollTo: (top, behavior = 'smooth') => {
-          contentRef.current?.scrollTo({
-            top,
-            behavior,
-          });
+        scrollTo: (top, behavior = "smooth") => {
+          if (!isUserScrolling && contentRef.current) {
+            contentRef.current.scrollTo({
+              top,
+              behavior,
+            });
+          }
         },
-        getClientHeight: () => contentRef.current?.clientHeight,
-        getOffsetTop: () => contentRef.current?.offsetTop,
+        getClientHeight: () => contentRef.current?.clientHeight ?? 0,
+        getOffsetTop: () => contentRef.current?.offsetTop ?? 0,
         addScrollListener: (cb) => {
-          contentRef.current?.addEventListener('scroll', cb);
+          contentRef.current?.addEventListener("scroll", cb);
         },
         removeScrollListener: (cb) => {
-          contentRef.current?.removeEventListener('scroll', cb);
+          contentRef.current?.removeEventListener("scroll", cb);
         },
+        isAutoScrollAllowed: () => !isUserScrolling,
       }),
-      []
+      [isUserScrolling]
     );
 
     useEffect(() => {
@@ -57,29 +68,48 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
           handleResize();
         });
         observer.current.observe(content);
-        content.addEventListener('scroll', handleThumbPosition);
+        content.addEventListener("scroll", handleThumbPosition);
+        content.addEventListener("scroll", handleUserScroll, { passive: true });
         return () => {
           observer.current?.unobserve(content);
-          content.removeEventListener('scroll', handleThumbPosition);
+          content.removeEventListener("scroll", handleThumbPosition);
+          content.removeEventListener("scroll", handleUserScroll);
         };
       }
-    }, []);
+    }, [userScrollTimeout]);
+
+    function handleUserScroll() {
+      setIsUserScrolling(true);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsUserScrolling(false);
+      }, userScrollTimeout);
+    }
 
     function handleResize() {
       if (scrollTrackRef.current && contentRef.current) {
         const { clientHeight: trackSize } = scrollTrackRef.current;
-        const { clientHeight: contentVisible, scrollHeight: contentTotalHeight } =
-          contentRef.current;
-        setThumbHeight(Math.max((contentVisible / contentTotalHeight) * trackSize, 20));
+        const {
+          clientHeight: contentVisible,
+          scrollHeight: contentTotalHeight,
+        } = contentRef.current;
+        setThumbHeight(
+          Math.max((contentVisible / contentTotalHeight) * trackSize, 20)
+        );
       }
     }
 
     function handleThumbPosition() {
-      if (!contentRef.current || !scrollTrackRef.current || !scrollThumbRef.current) {
+      if (
+        !contentRef.current ||
+        !scrollTrackRef.current ||
+        !scrollThumbRef.current
+      ) {
         return;
       }
 
-      const { scrollTop: contentTop, scrollHeight: contentHeight } = contentRef.current;
+      const { scrollTop: contentTop, scrollHeight: contentHeight } =
+        contentRef.current;
       const { clientHeight: trackHeight } = scrollTrackRef.current;
 
       const newTop = Math.min(
@@ -97,7 +127,8 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
       e.preventDefault();
       e.stopPropagation();
       setScrollStartPosition(e.clientY);
-      if (contentRef.current) setInitialContentScrollTop(contentRef.current.scrollTop);
+      if (contentRef.current)
+        setInitialContentScrollTop(contentRef.current.scrollTop);
       setIsDragging(true);
     }
 
@@ -114,10 +145,14 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
         e.preventDefault();
         e.stopPropagation();
         if (isDragging) {
-          const { scrollHeight: contentScrollHeight, clientHeight: contentClientHeight } =
-            contentRef.current;
+          const {
+            scrollHeight: contentScrollHeight,
+            clientHeight: contentClientHeight,
+          } = contentRef.current;
 
-          const deltaY = (e.clientY - scrollStartPosition) * (contentClientHeight / thumbHeight);
+          const deltaY =
+            (e.clientY - scrollStartPosition) *
+            (contentClientHeight / thumbHeight);
 
           const newScrollTop = Math.min(
             initialContentScrollTop + deltaY,
@@ -130,11 +165,11 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
     }
 
     useEffect(() => {
-      document.addEventListener('mousemove', handleThumbMousemove);
-      document.addEventListener('mouseup', handleThumbMouseup);
+      document.addEventListener("mousemove", handleThumbMousemove);
+      document.addEventListener("mouseup", handleThumbMouseup);
       return () => {
-        document.removeEventListener('mousemove', handleThumbMousemove);
-        document.removeEventListener('mouseup', handleThumbMouseup);
+        document.removeEventListener("mousemove", handleThumbMousemove);
+        document.removeEventListener("mouseup", handleThumbMouseup);
       };
     }, [handleThumbMousemove, handleThumbMouseup]);
 
@@ -149,27 +184,32 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
         const rect = target.getBoundingClientRect();
         const trackTop = rect.top;
         const thumbOffset = -(thumbHeight / 2);
-        const clickRatio = (clientY - trackTop + thumbOffset) / track.clientHeight;
+        const clickRatio =
+          (clientY - trackTop + thumbOffset) / track.clientHeight;
         const scrollAmount = Math.floor(clickRatio * content.scrollHeight);
         content.scrollTo({
           top: scrollAmount,
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       }
     }
 
     function handleContentMouseEnter() {
-      if (scrollTrackRef.current) scrollTrackRef.current.style.opacity = '1';
+      if (scrollTrackRef.current) scrollTrackRef.current.style.opacity = "1";
     }
     function handleContentMouseLeave() {
-      if (scrollTrackRef.current) scrollTrackRef.current.style.opacity = '0';
+      if (scrollTrackRef.current) scrollTrackRef.current.style.opacity = "0";
     }
 
     return (
-      <div className="scrollable-container">
+      <div
+        className={`scrollable-container ${
+          isUserScrolling ? "is-scrolling" : ""
+        }`}
+      >
         <div
           {...props}
-          className={`content ${className ? className : ''}`}
+          className={`content ${className ? className : ""}`}
           id="custom-scrollbars-content"
           ref={contentRef}
           onMouseEnter={handleContentMouseEnter}
@@ -187,7 +227,7 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
               className="track"
               ref={scrollTrackRef}
               onClick={handleTrackClick}
-              style={{ opacity: 0, cursor: isDragging ? 'grabbing' : '' }}
+              style={{ opacity: 0, cursor: isDragging ? "grabbing" : "" }}
             >
               <span
                 className="thumb"
@@ -195,7 +235,7 @@ const Scrollable = forwardRef<ScrollableRef, ScrollableProps>(
                 onMouseDown={handleThumbMousedown}
                 style={{
                   height: `${thumbHeight}px`,
-                  cursor: isDragging ? 'grabbing' : 'grab',
+                  cursor: isDragging ? "grabbing" : "grab",
                 }}
               />
             </div>

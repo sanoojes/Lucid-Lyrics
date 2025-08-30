@@ -17,12 +17,16 @@
     // new relative imports should be added in tsconfig.json
     "@/": "./src/",
     "@constants": "./src/constants/index.ts",
+    "@tanstack/query-async-storage-persister": "npm:@tanstack/query-async-storage-persister@^5.85.5",
     "@tanstack/react-query": "npm:@tanstack/react-query@^5.85.5",
+    "@tanstack/react-query-persist-client": "npm:@tanstack/react-query-persist-client@^5.85.5",
     "@udibo/esbuild-plugin-postcss": "jsr:@udibo/esbuild-plugin-postcss@^0.2.1",
     "@utils/dom": "./src/utils/dom/index.ts",
     "@utils/notification": "./src/utils/notification/index.ts",
     "@shaders": "./src/shaders/index.ts",
     "framer-motion": "npm:framer-motion@^12.23.12",
+    "idb-keyval": "npm:idb-keyval@^6.2.2",
+    "lz-string": "npm:lz-string@^1.5.0",
     "postcss": "npm:postcss@^8.5.6",
 
     // react things.
