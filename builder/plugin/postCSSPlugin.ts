@@ -57,17 +57,15 @@ export function postCSSPlugin(
             let contents: string;
 
             if (options.inject !== false) {
-              contents = `
-                if (typeof document !== "undefined") {
-                  const styleId = "lucid-lyrics-css";
-                  if (!document.getElementById(styleId)) {
-                    const style = document.createElement("style");
-                    style.id = styleId;
-                    style.textContent = \`${escapedCSS}\`;
-                    document.head.appendChild(style);
-                  }
-                }
-              `;
+              contents = `if (typeof document !== "undefined") {
+  const styleId = "lucid-lyrics-${sourceBaseName}";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = \`${escapedCSS}\`;
+    document.head.appendChild(style);
+  }
+}`;
             } else {
               contents = `export default \`${escapedCSS}\`;`;
             }
