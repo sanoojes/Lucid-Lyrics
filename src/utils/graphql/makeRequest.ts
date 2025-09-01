@@ -1,3 +1,5 @@
+import { logger } from '@/lib/logger.ts';
+
 type GraphQLQuery = {
   name: string;
   sha256Hash: string;
@@ -23,14 +25,16 @@ export const makeRequest = async <T>(
 
       if (isRetryable) {
         const delay = retryDelayMs * 2 ** attempt;
-        console.warn(
-          `Retrying ${query.name} (attempt ${attempt + 1}/${retries}) after ${delay}ms due to error: ${error.message}`
+        logger.warn(
+          `Retrying ${query.name} (attempt ${
+            attempt + 1
+          }/${retries}) after ${delay}ms due to error: ${error.message}`
         );
         await new Promise((resolve) => setTimeout(resolve, delay));
         continue;
       }
 
-      console.error(`Error in ${query.name}:`, error);
+      logger.error(`Error in ${query.name}:`, error);
       throw error;
     }
   }

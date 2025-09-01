@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger.ts';
 import { waitForElement } from '@utils/dom';
 
 type ButtonProps = {
@@ -16,13 +17,11 @@ type ButtonAPI = {
   deregister: () => void;
 };
 
-export function createButton(props: ButtonProps): Promise<ButtonAPI | null> {
+export async function createButton(props: ButtonProps): Promise<ButtonAPI | null> {
   return waitForElement('.main-nowPlayingBar-right > div')
     .then((rightContainer) => {
       if (!rightContainer) {
-        console.error(
-          "Spicetify: Could not find the button container '.main-nowPlayingBar-right > div'."
-        );
+        logger.error('Could not find the player container.');
         return null;
       }
 

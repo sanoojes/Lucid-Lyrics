@@ -1,3 +1,5 @@
+import { logger } from '@/lib/logger.ts';
+
 export type OnElementOptions = {
   timeout?: number;
 };
@@ -18,7 +20,7 @@ export function onElement(
     }
 
     if (performance.now() - startTime > timeout) {
-      console.warn(`Timeout waiting for element: ${selector}`);
+      logger.debug(`Timeout waiting for element: ${selector}`);
       return;
     }
 

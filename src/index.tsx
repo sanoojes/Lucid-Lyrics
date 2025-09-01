@@ -2,6 +2,7 @@ import '@/styles/index.css';
 import '@/styles/settings.css';
 
 import Page from '@/components/Page.tsx';
+import { setupAnalytics } from '@/setupAnalytics.ts';
 import { updateStates } from '@/state/updateStates.ts';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
@@ -50,6 +51,8 @@ const main = async () => {
   playerButton?.register();
 
   addLyricsToNPV();
+
+  setupAnalytics();
 };
 
 main();

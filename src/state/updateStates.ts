@@ -8,4 +8,9 @@ export function updateStates() {
   onElement('.Root__main-view', (main) =>
     watchSize(main, (main) => tempStore.getState().setViewSize({ main }))
   );
+
+  const handleOnline = () => tempStore.getState().setIsOnline(true);
+  const handleOffline = () => tempStore.getState().setIsOnline(false);
+  window.addEventListener('online', handleOnline);
+  window.addEventListener('offline', handleOffline);
 }

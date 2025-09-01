@@ -1,5 +1,12 @@
+.GenericModal.lyrics-modal {
+  background-color: transparent;
+}
 .GenericModal__overlay.lyrics-modal {
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.dropdown-overlay {
+  z-index: 9999 !important;
 }
 
 .lyrics-modal {

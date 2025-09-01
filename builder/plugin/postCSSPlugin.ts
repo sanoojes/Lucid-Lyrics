@@ -59,7 +59,7 @@ export function postCSSPlugin(
             if (options.inject !== false) {
               contents = `
                 if (typeof document !== "undefined") {
-                  const styleId = "postcss-${sourceBaseName}";
+                  const styleId = "lucid-lyrics-css";
                   if (!document.getElementById(styleId)) {
                     const style = document.createElement("style");
                     style.id = styleId;

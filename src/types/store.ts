@@ -33,6 +33,7 @@ export type TempState = {
     main: { width: number; height: number };
   };
   spotifyToken: SpotifyToken;
+  isOnline: boolean;
 };
 
 /* ---------- App Store Types ---------- */
@@ -62,4 +63,6 @@ export type BackgroundState = {
 export type AppState = {
   bg: BackgroundState;
   isDevMode: boolean;
+  isNpvCardOpen: boolean;
+  isAnalyticsActive: boolean;
 };

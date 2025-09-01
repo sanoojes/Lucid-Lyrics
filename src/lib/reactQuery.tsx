@@ -1,4 +1,6 @@
+// deno-lint-ignore-file require-await
 import { createIdbStorage, getDb } from '@/lib/idbStorage.ts';
+import { logger } from '@/lib/logger.ts';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -18,7 +20,7 @@ const queryClient = new QueryClient({
   try {
     getDb();
   } catch (e) {
-    console.warn('[Lucid-Lyrics-Cache] IndexedDB not available, falling back to localStorage.', e);
+    logger.warn('[Lucid-Lyrics-Cache] IndexedDB not available, falling back to localStorage.', e);
 
     isLocalStorage = true;
   }
@@ -27,7 +29,9 @@ const queryClient = new QueryClient({
     getItem: async (key) => {
       const item = window.localStorage.getItem(key);
       if (!item) return null;
-      return JSON.parse(decompress(item));
+      const parsedItem = JSON.parse(decompress(item));
+      logger.debug('Query Cache hit (LS)');
+      return parsedItem;
     },
     setItem: async (key, value) => {
       window.localStorage.setItem(key, compress(JSON.stringify(value)));

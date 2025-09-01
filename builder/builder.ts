@@ -8,6 +8,7 @@ import { startWSServer } from '@builder/wsServer.ts';
 import { parseArgs } from '@std/cli';
 import { join } from '@std/path';
 import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
 import { type BuildOptions, build, context } from 'esbuild';
 import { postCSSPlugin } from './plugin/postCSSPlugin.ts';
 
@@ -72,7 +73,12 @@ const main = async () => {
     plugins: [
       loggerPlugin(EXTENSION_NAME),
       postCSSPlugin({
-        plugins: [autoprefixer()],
+        plugins: [
+          autoprefixer(),
+          cssnano({
+            preset: 'default',
+          }),
+        ],
       }),
       wrapWithLoader(EXTENSION_NAME),
       externalGlobalPlugin({

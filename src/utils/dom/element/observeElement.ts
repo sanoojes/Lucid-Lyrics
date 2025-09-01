@@ -1,3 +1,5 @@
+import { logger } from '@/lib/logger.ts';
+
 export type ObserveElementOptions = {
   root?: ParentNode;
   once?: boolean;
@@ -43,7 +45,7 @@ export function observeElement(
     setTimeout(() => {
       observer.disconnect();
       if (!current) {
-        console.warn(`Timeout waiting for element: ${selector}`);
+        logger.warn(`Timeout waiting for element: ${selector}`);
       }
     }, timeout);
   }

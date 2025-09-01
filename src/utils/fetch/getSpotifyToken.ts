@@ -1,6 +1,8 @@
+import { createLogger } from '@/lib/logger.ts';
 import tempStore from '@/store/tempStore.ts';
 import type { SpotifyToken } from '@/types/store.ts';
 
+const logger = createLogger('[SpotifyToken] ');
 const EXPIRATION_BUFFER_MS = 5 * 60 * 1000;
 
 export async function getSpotifyToken(): Promise<SpotifyToken | null> {
@@ -17,7 +19,7 @@ export async function getSpotifyToken(): Promise<SpotifyToken | null> {
     const response = (await Spicetify?.CosmosAsync?.get('sp://oauth/v2/token')) as SpotifyToken;
 
     if (!response?.accessToken || !response?.expiresAtTime) {
-      console.error('[SpotifyToken] Invalid response format:', response);
+      logger.error('Invalid response:', response);
       return null;
     }
 
@@ -25,7 +27,7 @@ export async function getSpotifyToken(): Promise<SpotifyToken | null> {
 
     return response;
   } catch (error) {
-    console.error('[SpotifyToken] Error fetching token:', error);
+    logger.error('Error getting token:', error);
     return null;
   }
 }

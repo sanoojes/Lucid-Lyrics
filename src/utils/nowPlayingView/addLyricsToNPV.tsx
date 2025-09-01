@@ -1,5 +1,6 @@
 import Background from '@/components/background/Background.tsx';
 import LyricsCard from '@/components/lyrics/LyricsCard.tsx';
+import { logger } from '@/lib/logger.ts';
 import tempStore from '@/store/tempStore.ts';
 import { createRenderer, observeElement } from '@utils/dom';
 
@@ -58,6 +59,6 @@ export function addLyricsToNPV() {
       { root }
     );
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }

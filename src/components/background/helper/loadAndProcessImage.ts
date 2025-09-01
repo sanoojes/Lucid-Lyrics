@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger.ts';
 import type { CSSFilter } from '@/types/styles.ts';
 import { serializeFilters } from '@utils/dom';
 import * as THREE from 'three';
@@ -5,7 +6,7 @@ import * as THREE from 'three';
 async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<THREE.Texture | null> {
   try {
     if (!url) {
-      console.warn('No image URL provided');
+      logger.debug('No image URL provided');
       return null;
     }
 
@@ -22,7 +23,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<THRE
     const circleCanvas = new OffscreenCanvas(originalSize, originalSize);
     const ctx = circleCanvas.getContext('2d');
     if (!ctx) {
-      console.error('Failed to get 2D context for circleCanvas');
+      logger.error('Failed to get 2D context for circleCanvas');
       return null;
     }
 
@@ -45,7 +46,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<THRE
     const blurredCanvas = new OffscreenCanvas(expandedSize, expandedSize);
     const blurredCtx = blurredCanvas.getContext('2d');
     if (!blurredCtx) {
-      console.error('Failed to get 2D context for blurredCanvas');
+      logger.error('Failed to get 2D context for blurredCanvas');
       return null;
     }
 
@@ -56,7 +57,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<THRE
     texture.needsUpdate = true;
     return texture;
   } catch (err) {
-    console.error('Failed to load/process image:', err);
+    logger.error('Failed to load/process image:', err);
     return null;
   }
 }

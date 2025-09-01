@@ -17,4 +17,6 @@ export const DEFAULT_APP_STATE: AppState = {
       autoStopAnimation: false,
     },
   },
+  isDevMode: false,
+  isAnalyticsActive: true,
 } as const;

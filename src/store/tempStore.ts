@@ -9,6 +9,7 @@ export type TempSetter = {
   setPlayer: (slot: PlayerSlot, player: Partial<PlayerData>) => void;
   setPageImg: (pageImg: Partial<TempState['pageImg']>) => void;
   setViewSize: (viewSize: Partial<TempState['viewSize']>) => void;
+  setIsOnline: (isOnline: boolean) => void;
 };
 
 const DEFAULT_PLAYER_STATE: PlayerData = {
@@ -32,6 +33,7 @@ const DEFAULT_TEMP_STATE: TempState = {
   viewSize: {
     main: { width: 0, height: 0 },
   },
+  isOnline: navigator.onLine,
 } as const;
 
 const mergeDeep = <T extends object>(base: T, update: Partial<T>): T => ({
@@ -54,6 +56,8 @@ const tempStore = createStore<TempState & TempSetter>()(
         }),
 
       setPageImg: (pageImg) => set({ pageImg: mergeDeep(get().pageImg, pageImg) }),
+
+      setIsOnline: (isOnline) => set({ isOnline }),
 
       setSpotifyToken: (spotifyToken) =>
         set({ spotifyToken: mergeDeep(get().spotifyToken, spotifyToken) }),

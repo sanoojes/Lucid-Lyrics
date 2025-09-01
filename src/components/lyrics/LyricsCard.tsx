@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/index.ts';
+import appStore from '@/store/appStore.ts';
 import { ChevronDown16Filled } from '@fluentui/react-icons';
+import { useStore } from 'zustand';
 
 const LyricsCard = () => {
+  const isOpen = useStore(appStore, (s) => s.isNpvCardOpen);
+
   return (
     <div className="main-nowPlayingView-section">
       <div className="main-nowPlayingView-sectionHeader">
@@ -12,7 +16,7 @@ const LyricsCard = () => {
           <div className="main-nowPlayingView-sectionHeaderText">Lyrics</div>
         </h2>
         <div>
-          <Button onClick={() => {}} variant="icon">
+          <Button onClick={() => appStore.getState().setIsNpvCardOpen(!isOpen)} variant="icon">
             <ChevronDown16Filled />
           </Button>
         </div>

@@ -1,7 +1,8 @@
+import { logger } from '@/lib/logger.ts';
 import type { AsyncStorage, PersistedClient } from '@tanstack/react-query-persist-client';
 
-const DB_NAME = 'db-name';
-const STORE_NAME = 'store';
+const DB_NAME = 'lyrics-db';
+const STORE_NAME = 'data-store';
 const VERSION = 1;
 
 let dbPromise: Promise<IDBDatabase> | null = null;
@@ -23,7 +24,7 @@ export function getDb(): Promise<IDBDatabase> {
     req.onsuccess = () => {
       const conn = req.result;
       conn.onversionchange = () => {
-        console.trace('[IDB] version change - closing connection');
+        logger.trace('[IDB] version change - closing connection');
         conn.close();
         dbPromise = null;
       };
@@ -31,7 +32,7 @@ export function getDb(): Promise<IDBDatabase> {
     };
 
     req.onblocked = () => {
-      console.warn('[IDB] open blocked: another connection is holding the DB');
+      logger.debug('[IDB] open blocked: another connection is holding the DB');
     };
 
     req.onerror = () => {
@@ -49,7 +50,10 @@ export const createIdbStorage = (): AsyncStorage<PersistedClient> => ({
     const db = await getDb();
     return new Promise<PersistedClient | undefined>((res, rej) => {
       const r = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).get(key);
-      r.onsuccess = () => res(r.result as PersistedClient);
+      r.onsuccess = () => {
+        logger.debug('Query Cache hit (IDB)');
+        res(r.result as PersistedClient);
+      };
       r.onerror = () => rej(r.error ?? new Error('getItem failed'));
     });
   },
@@ -68,7 +72,7 @@ export const createIdbStorage = (): AsyncStorage<PersistedClient> => ({
         });
       })
       .catch((err) => {
-        console.trace('[IDB] skipping setItem:', err);
+        logger.trace('[IDB] skipping setItem:', err);
       });
   },
 
@@ -83,7 +87,7 @@ export const createIdbStorage = (): AsyncStorage<PersistedClient> => ({
         });
       })
       .catch((err) => {
-        console.trace('[IDB] skipping removeItem:', err);
+        logger.trace('[IDB] skipping removeItem:', err);
       });
   },
 });

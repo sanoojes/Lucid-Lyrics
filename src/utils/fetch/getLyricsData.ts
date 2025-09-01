@@ -1,25 +1,24 @@
-import appStore from "@/store/appStore.ts";
-import type { BestAvailableLyrics } from "@/types/lyrics.ts";
-import { getSpotifyTokenHeader } from "@/utils/fetch/getSpotifyToken.ts";
-
-const isDev = appStore.getState().isDevMode;
+import { logger } from '@/lib/logger.ts';
+import appStore from '@/store/appStore.ts';
+import type { BestAvailableLyrics } from '@/types/lyrics.ts';
+import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
 
 // List of APIs
-const API_CONSUMERS = isDev
-  ? ["http://localhost:8787"]
+const API_CONSUMERS = appStore.getState().isDevMode
+  ? ['http://localhost:8787']
   : [
-      "https://api.lucidlyrics.dploy-769795339266794283.dp.spikerko.org",
-      "https://lucid-lyrics.cloudns.pro/",
+      'https://api.lucidlyrics.dploy-769795339266794283.dp.spikerko.org',
+      'https://lucid-lyrics.cloudns.pro',
     ];
 
 let availableApi: string | null = null;
 
 export const getLyricsData = async (id: string | null) => {
-  if (!id) throw new Error("Missing track ID");
+  if (!id) throw new Error('Missing track ID');
 
   const tokenHeader = await getSpotifyTokenHeader();
   if (!tokenHeader) {
-    throw new Error("Missing or invalid Spotify token");
+    throw new Error('Missing or invalid Spotify token');
   }
 
   const endpointsToTry = availableApi
@@ -30,17 +29,18 @@ export const getLyricsData = async (id: string | null) => {
 
   for (const baseUrl of endpointsToTry) {
     try {
-      const res = await fetch(`${baseUrl}/lyrics/${id}`, {
-        method: "GET",
+      const res = await fetch(`${baseUrl}/api/lyrics/${id}`, {
+        method: 'GET',
         headers: {
-          "Spotify-Token": tokenHeader,
+          'Spotify-Token': tokenHeader,
         },
-        priority: "high",
+        credentials: 'omit',
+        priority: 'high',
       });
 
       if (!res.ok) {
         if (res.status === 404) {
-          lastError = new Error("Lyrics not found");
+          lastError = new Error('Lyrics not found');
           continue;
         }
 
@@ -57,17 +57,17 @@ export const getLyricsData = async (id: string | null) => {
 
       const data = await res.json();
       if (!data?.lyrics) {
-        lastError = new Error("Lyrics not found");
+        lastError = new Error('Lyrics not found');
         continue;
       }
 
       availableApi = baseUrl;
-      console.log("Lyrics data:", data);
+      logger.debug('Lyrics data:', data);
       return data.lyrics as BestAvailableLyrics;
     } catch {
-      lastError = new Error("Cannot connect to lyrics server");
+      lastError = new Error('Cannot connect to lyrics server');
     }
   }
 
-  throw lastError || new Error("Lyrics not found from all sources");
+  throw lastError || new Error('Lyrics not found from all sources');
 };
