@@ -1,8 +1,7 @@
-import { Button } from '@/components/ui/index.ts';
-import { Dismiss16Filled } from '@fluentui/react-icons';
-import React, { type FC } from 'react';
+import { Button } from '@/components/ui';
+import { X } from 'lucide-react';
 
-const HeaderButtons: FC<{
+const HeaderButtons: React.FC<{
   closeModal: () => void;
   hasSocialButton?: boolean;
 }> = ({ closeModal, hasSocialButton = true }) => {
@@ -47,7 +46,7 @@ const HeaderButtons: FC<{
         </>
       ) : null}
       <Button variant="icon" onClick={closeModal} aria-label="Close Modal">
-        <Dismiss16Filled />
+        <X />
       </Button>
     </>
   );

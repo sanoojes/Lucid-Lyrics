@@ -1,13 +1,13 @@
 import { createLogger } from '@/lib/logger.ts';
 import appStore from '@/store/appStore.ts';
 import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
-import { ANALYTIC_SERVER_URL } from '@constants';
 import { type Socket, io } from 'socket.io-client';
 
 const logger = createLogger('[Analytics]');
+const ANALYTIC_SERVER_URL = 'https://analytics.lucid.sanooj.is-a.dev';
 
 type AnalyticType = 'theme' | 'lyrics_extension' | 'glassify_theme';
-const TYPE: AnalyticType = 'glassify_theme';
+const TYPE: AnalyticType = 'lyrics_extension';
 
 let socket: Socket | null = null;
 

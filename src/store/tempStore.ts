@@ -13,10 +13,11 @@ export type TempSetter = {
 };
 
 const DEFAULT_PLAYER_STATE: PlayerData = {
-  lyricsData: null,
   imageUrl: null,
   data: null,
   id: null,
+  colors: null,
+  lyricData: null,
 } as const;
 
 const DEFAULT_TEMP_STATE: TempState = {
@@ -36,33 +37,27 @@ const DEFAULT_TEMP_STATE: TempState = {
   isOnline: navigator.onLine,
 } as const;
 
-const mergeDeep = <T extends object>(base: T, update: Partial<T>): T => ({
-  ...base,
-  ...update,
-});
-
 const tempStore = createStore<TempState & TempSetter>()(
   subscribeWithSelector(
     combine(DEFAULT_TEMP_STATE, (set, get) => ({
       setIsLyricsOnPage: (isLyricsOnPage) => set({ isLyricsOnPage }),
       setIsSidebarOpen: (isSidebarOpen) => set({ isSidebarOpen }),
-
       setPlayer: (slot, player) =>
         set({
           player: {
             ...get().player,
-            [slot]: mergeDeep(get().player[slot], player),
+            [slot]: { ...get().player[slot], ...player },
           },
         }),
 
-      setPageImg: (pageImg) => set({ pageImg: mergeDeep(get().pageImg, pageImg) }),
+      setPageImg: (pageImg) => set({ pageImg: { ...get().pageImg, ...pageImg } }),
 
       setIsOnline: (isOnline) => set({ isOnline }),
 
       setSpotifyToken: (spotifyToken) =>
-        set({ spotifyToken: mergeDeep(get().spotifyToken, spotifyToken) }),
+        set({ spotifyToken: { ...get().spotifyToken, ...spotifyToken } }),
 
-      setViewSize: (viewSize) => set({ viewSize: mergeDeep(get().viewSize, viewSize) }),
+      setViewSize: (viewSize) => set({ viewSize: { ...get().viewSize, ...viewSize } }),
     }))
   )
 );

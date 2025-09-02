@@ -4,6 +4,7 @@ import { merge } from 'lodash';
 import { combine, persist, subscribeWithSelector } from 'zustand/middleware';
 import { createStore } from 'zustand/vanilla';
 
+const APPSTORE_NAME = 'lucid-lyrics:settings';
 type AppStateSetters = {
   setBg: (bg: Partial<BackgroundState>) => void;
   setBgOptions: (options: Partial<BackgroundState['options']>) => void;
@@ -14,6 +15,8 @@ type AppStateSetters = {
   setIsAnalyticsActive: (isAnalyticsActive: boolean) => void;
 
   setIsNpvCardOpen: (isNpvCardOpen: boolean) => void;
+
+  toggleRomanization: () => void;
 
   exportConfig: () => string | null;
   importConfig: (config: AppState) => void;
@@ -46,6 +49,7 @@ const appStore = createStore<AppState & AppStateSetters>()(
           set({ isDevMode });
           location.reload();
         },
+        toggleRomanization: () => set({ forceRomanized: !get().forceRomanized }),
         setIsAnalyticsActive: (isAnalyticsActive) => set({ isAnalyticsActive }),
         setIsNpvCardOpen: (isNpvCardOpen) => set({ isNpvCardOpen }),
 
@@ -61,13 +65,13 @@ const appStore = createStore<AppState & AppStateSetters>()(
         resetStore: () => {
           try {
             set(DEFAULT_APP_STATE);
-            localStorage.removeItem('lucid-lyrics:settings');
+            localStorage.removeItem(APPSTORE_NAME);
           } catch {}
         },
       }))
     ),
     {
-      name: 'lucid-lyrics:settings',
+      name: APPSTORE_NAME,
       version: 1,
       migrate: (persistedState) => merge(DEFAULT_APP_STATE, persistedState ?? {}),
     }

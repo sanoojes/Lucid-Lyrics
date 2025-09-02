@@ -1,5 +1,6 @@
 import tempStore from '@/store/tempStore.ts';
 import type { PlayerSlot } from '@/types/store.ts';
+import { getColorsFromImage } from '@/utils/color.ts';
 import { waitForGlobal } from '@utils/dom';
 
 async function addPlayerData(playerData?: typeof Spicetify.Player.data) {
@@ -8,11 +9,20 @@ async function addPlayerData(playerData?: typeof Spicetify.Player.data) {
   setTempPlayerData('nowPlaying', data?.item);
 }
 
-function setTempPlayerData(slot: PlayerSlot, item?: Spicetify.PlayerTrack) {
+async function setTempPlayerData(slot: PlayerSlot, item?: Spicetify.PlayerTrack) {
   const url = item?.images?.at(-1)?.url ?? null;
 
   if (slot === 'nowPlaying') {
     document.body.style.setProperty('--np-img-url', url ? `url("${url}")` : '');
+  }
+
+  if (!url) return;
+
+  try {
+    const colors = await getColorsFromImage(url);
+    tempStore.getState().setPlayer(slot, { colors });
+  } catch {
+    console.log('Failed to set colors for current playing.');
   }
 
   tempStore.getState().setPlayer(slot, {

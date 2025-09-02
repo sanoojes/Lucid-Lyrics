@@ -17,7 +17,7 @@
     "enabled": true,
     "rules": {
       "complexity": {
-        "noImportantStyles": "error"
+        "noImportantStyles": "off"
       },
       "style": {
         "useImportType": "on",
@@ -59,9 +59,9 @@
     "includes": [
       "**",
       "!**/dist/**/*",
-      "!**/extension/utils/dom/waitForElement.ts",
       "!**/types/spicetify.d.ts",
-      "!**/trials/**/*"
+      "!**/src/lib/Kuroshiro.js",
+      "!**/src/lib/kuroshiro-analyzer-kuromoji.ts"
     ],
     "ignoreUnknown": true
   }

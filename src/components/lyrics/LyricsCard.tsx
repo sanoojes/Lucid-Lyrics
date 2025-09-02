@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/index.ts';
+import { Button } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
-import { ChevronDown16Filled } from '@fluentui/react-icons';
+import { ChevronDown } from 'lucide-react';
 import { useStore } from 'zustand';
 
 const LyricsCard = () => {
@@ -17,7 +17,7 @@ const LyricsCard = () => {
         </h2>
         <div>
           <Button onClick={() => appStore.getState().setIsNpvCardOpen(!isOpen)} variant="icon">
-            <ChevronDown16Filled />
+            <ChevronDown />
           </Button>
         </div>
       </div>

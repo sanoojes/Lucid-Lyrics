@@ -1,7 +1,7 @@
 import Modal from '@/components/Modal.tsx';
-import { Button, Tippy } from '@/components/ui/index.ts';
+import { Button, Tippy } from '@/components/ui';
 import type { ColorPickerProps } from '@/types/uiSchema.ts';
-import { ArrowResetRegular } from '@fluentui/react-icons';
+import { RotateCcw } from 'lucide-react';
 import { type CSSProperties, type FC, useState } from 'react';
 import { ColorPicker as CP, useColor } from 'react-color-palette';
 
@@ -46,7 +46,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
   const resetButton = initialColor ? (
     <Tippy hasIcon={false} label="Reset Color">
       <Button variant="icon" onClick={resetToDefaultColor}>
-        <ArrowResetRegular />
+        <RotateCcw />
       </Button>
     </Tippy>
   ) : null;

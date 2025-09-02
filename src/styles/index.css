@@ -1,24 +1,89 @@
-@import "settings.css";
+@import url("https://cdn.jsdelivr.net/gh/sanoojes/Lucid-Lyrics@main/fonts/styles.css");
+
+:root {
+  --lucid-lyrics-text-color: 255, 255, 255;
+}
+
+.lucid-config-container {
+  --card-color: rgba(var(--lucid-lyrics-text-color), 0.05);
+  --card-hover-color: rgba(var(--lucid-lyrics-text-color), 0.1);
+  --card-muted-color: rgba(var(--lucid-lyrics-text-color), 0.02);
+
+  position: absolute;
+  z-index: 9;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: fit-content;
+  padding: 2cqw;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), transparent);
+
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .lucid-lyrics-btn.icon {
+    padding: 12px;
+    border-radius: 32px;
+  }
+
+  .hide {
+    display: none;
+  }
+}
 
 .lyrics-container {
-  --text-color: 255, 255, 255;
   position: relative;
   z-index: 2;
   height: 100%;
   width: 100%;
-  color: rgb(var(--text-color));
+  color: rgb(var(--lucid-lyrics-text-color));
+  display: flex;
 
   container-type: size;
   container-name: lyrics;
 
+  .lyrics-loading {
+    height: 80%;
+    -webkit-mask-position: left top;
+    mask-position: left top;
+    -webkit-mask-repeat: repeat-y;
+    mask-repeat: repeat-y;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    position: absolute;
+    top: 25cqh;
+    width: 100cqw;
+    z-index: 99;
+
+    background: linear-gradient(
+      -45deg,
+      rgb(238 238 238 / 25%) 40%,
+      rgb(250 250 250 / 45%) 50%,
+      rgb(238 238 238 / 25%) 60%
+    );
+    background-size: 500%;
+    background-position-x: 100%;
+    border-radius: 0.5cqw;
+    backdrop-filter: blur(10px);
+
+    animation: BackgroundShimmer 1s infinite linear;
+  }
+
   .status-wrapper {
     height: 100%;
-    padding: 0 15.5cqw 0 18cqw;
-    container-type: size;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .title {
       opacity: 0.7;
-      font-size: clamp(1.85rem, 7cqw, 3.5rem);
+      font-weight: 500;
+      font-size: 5cqw;
     }
     .desc {
       opacity: 0.5;
@@ -42,7 +107,7 @@
   }
 
   .bottom-spacing {
-    min-height: 45cqh;
+    min-height: 35cqh;
   }
 }
 
@@ -62,10 +127,11 @@
     --lyrics-line-height: 1.18;
 
     --lyrics-word-gap: calc(var(--lyrics-font-size) * 0.25);
-    --lyrics-font-weight: 600;
+    --lyrics-font-weight: 700;
 
     --lyrics-bg-font-size: calc(var(--lyrics-font-size) * 0.6);
     --lyrics-bg-line-height: 1.18;
+    --lyrics-bg-font-weight: 500;
 
     --lyrics-credits-font-size: calc(var(--lyrics-font-size) * 0.47);
     --lyrics-credits-line-height: 1.18;
@@ -73,8 +139,16 @@
 
     --lyrics-word-space-width: calc(var(--lyrics-font-size) * 0.35);
 
-    margin: 12px 0;
-    padding: 0 12px;
+    font-family: LucidLyrics !important;
+
+    margin: 1cqh 0;
+    padding: 0 1cqh;
+
+    display: flow-root;
+    unicode-bidi: isolate;
+
+    direction: ltr;
+    text-align: left;
 
     filter: blur(var(--blur, 0));
 
@@ -112,7 +186,7 @@
         opacity: 1;
         position: relative;
 
-        background-color: rgba(var(--text-color), 1);
+        background-color: rgba(var(--lucid-lyrics-text-color), 1);
         color: transparent;
 
         -webkit-background-clip: text;
@@ -120,6 +194,7 @@
 
         text-shadow: 0 0 0 transparent;
         transform: translate3d(0, 0, 0) scale(1);
+        transform-origin: left center;
 
         mask-repeat: no-repeat;
         mask-size: 100% 100%;
@@ -135,7 +210,7 @@
           scale: 1.05;
         }
 
-        /* background-color: rgb(var(--text-color)); */
+        /* background-color: rgb(var(--lucid-lyrics-text-color)); */
       }
     }
 
@@ -144,12 +219,14 @@
       font-weight: var(--lyrics-font-weight);
       line-height: var(--lyrics-line-height);
       color: transparent;
+      font-family: LucidLyrics !important;
 
       padding-right: 3cqw;
 
       &.bg {
         font-size: var(--lyrics-bg-font-size);
         line-height: var(--lyrics-bg-line-height);
+        font-weight: var(--lyrics-bg-font-weight, 500);
         margin-top: 1cqw;
       }
 
@@ -215,7 +292,7 @@
     }
 
     &.full {
-      background-color: rgba(var(--text-color), 1);
+      background-color: rgba(var(--lucid-lyrics-text-color), 1);
     }
 
     &.motion {
@@ -238,7 +315,7 @@
         display: inline-block;
         -webkit-background-clip: text;
         background-clip: text;
-        background-color: rgba(var(--text-color), 1);
+        background-color: rgba(var(--lucid-lyrics-text-color), 1);
 
         transform: scale(var(--scale, 1)) translate3d(0, var(--translateY, 0px), 0);
 
@@ -268,92 +345,6 @@
   }
 }
 
-.scrollable-container {
-  --scrollbar-width: 8px;
-
-  display: grid;
-  height: 100%;
-  grid-template: auto / 1fr calc(var(--scrollbar-width) + 12px);
-  overflow: hidden;
-  position: relative;
-  background-color: transparent;
-
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0,
-    transparent 16px,
-    #000 64px,
-    #000 calc(100% - 64px),
-    transparent calc(100% - 16px),
-    transparent
-  );
-
-  .content {
-    /* Essential */
-    -ms-overflow-style: none;
-    overflow: auto;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  .scrollbar {
-    display: flex;
-    flex-direction: column;
-    place-items: start;
-
-    .track-and-thumb {
-      display: block;
-      height: 100%;
-      position: relative;
-      width: var(--scrollbar-width);
-
-      .track {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: var(--scrollbar-width);
-        border-radius: 12px;
-        background: transparent;
-        cursor: pointer;
-
-        opacity: 0;
-        transition: opacity 0.25s ease;
-
-        &.visible {
-          opacity: 1;
-        }
-
-        .thumb {
-          position: absolute;
-          height: var(--height, 0);
-          width: var(--scrollbar-width);
-          border-radius: 12px;
-          background-color: rgba(255, 255, 255, 0.3);
-          mix-blend-mode: overlay;
-          z-index: 1;
-
-          transform: translate3d(0, var(--thumb-y, 0), 0);
-          will-change: transform;
-          transition: background-color 0.2s ease;
-
-          cursor: grab;
-
-          &.dragging {
-            cursor: grabbing;
-          }
-
-          &:hover {
-            background-color: rgba(255, 255, 255, 0.5);
-          }
-        }
-      }
-    }
-  }
-}
-
 .interlude-wrapper {
   position: relative;
   height: 64px;
@@ -364,7 +355,7 @@
 }
 
 .interlude {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 8px;
   transition:
@@ -401,51 +392,6 @@
     transition:
       transform 0.2s ease,
       opacity 0.2s ease;
-  }
-}
-
-.lyrics--center-box {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
-.lyrics--loader {
-  --loader-size: 4rem;
-  width: var(--loader-size);
-  height: var(--loader-size);
-  display: inline-block;
-  position: relative;
-
-  &:after,
-  &:before {
-    content: "";
-    box-sizing: border-box;
-    width: var(--loader-size);
-    height: var(--loader-size);
-    border-radius: 50%;
-    border: 3px solid #fff;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: scale(0);
-    animation: animloader 2s linear infinite;
-  }
-  &::after {
-    animation-delay: 1s;
-  }
-}
-
-@keyframes animloader {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
   }
 }
 
@@ -533,5 +479,11 @@
   }
   .main-nowPlayingView-section {
     order: 2;
+  }
+}
+
+@keyframes BackgroundShimmer {
+  to {
+    background-position-x: 0%;
   }
 }

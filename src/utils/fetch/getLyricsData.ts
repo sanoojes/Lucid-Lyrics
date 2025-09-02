@@ -2,13 +2,15 @@ import { logger } from '@/lib/logger.ts';
 import appStore from '@/store/appStore.ts';
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
 import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
+import { processLyrics } from '../lyrics.ts';
 
 // List of APIs
 const API_CONSUMERS = appStore.getState().isDevMode
   ? ['http://localhost:8787']
   : [
-      'https://api.lucidlyrics.dploy-769795339266794283.dp.spikerko.org',
+      'https://lyrics.lucid.sanooj.is-a.dev',
       'https://lucid-lyrics.cloudns.pro',
+      'https://api.lucidlyrics.dploy-769795339266794283.dp.spikerko.org',
     ];
 
 let availableApi: string | null = null;
@@ -63,7 +65,7 @@ export const getLyricsData = async (id: string | null) => {
 
       availableApi = baseUrl;
       logger.debug('Lyrics data:', data);
-      return data.lyrics as BestAvailableLyrics;
+      return (await processLyrics(data.lyrics)) as BestAvailableLyrics;
     } catch {
       lastError = new Error('Cannot connect to lyrics server');
     }

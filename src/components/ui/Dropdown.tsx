@@ -1,26 +1,14 @@
 /** biome-ignore-all lint/a11y: no a11y for now  */
 
-import { ChevronDown16Filled } from '@fluentui/react-icons';
-import React, {
-  type ButtonHTMLAttributes,
-  type Dispatch,
-  type HTMLAttributes,
-  type ReactNode,
-  type RefObject,
-  type SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChevronDown } from 'lucide-react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Context
 type DropdownContextType = {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  buttonRef: RefObject<HTMLButtonElement | null>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
 };
 
 const DropdownContext = createContext<DropdownContextType>({
@@ -31,7 +19,7 @@ const DropdownContext = createContext<DropdownContextType>({
 
 // Dropdown Root
 type DropdownProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 function Dropdown({ children }: DropdownProps) {
@@ -50,8 +38,8 @@ function Dropdown({ children }: DropdownProps) {
 
 // Dropdown Button
 type DropdownButtonProps = {
-  children: ReactNode;
-  icon?: ReactNode;
+  children: React.ReactNode;
+  icon?: React.ReactNode;
 };
 
 function DropdownButton({ children }: DropdownButtonProps) {
@@ -62,13 +50,13 @@ function DropdownButton({ children }: DropdownButtonProps) {
   return (
     <button ref={buttonRef} onClick={toggleOpen} className="dropdown-button" type="button">
       {children}
-      <ChevronDown16Filled className={`dropdown-icon ${open ? 'rotate' : ''}`} />
+      <ChevronDown className={`dropdown-icon ${open ? 'rotate' : ''}`} />
     </button>
   );
 }
 
 type DropdownContentProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 function DropdownContent({ children }: DropdownContentProps) {
@@ -155,8 +143,8 @@ function DropdownContent({ children }: DropdownContentProps) {
 }
 
 // Dropdown List
-type DropdownListProps = HTMLAttributes<HTMLUListElement> & {
-  children: ReactNode;
+type DropdownListProps = React.HTMLAttributes<HTMLUListElement> & {
+  children: React.ReactNode;
 };
 
 function DropdownList({ children, ...props }: DropdownListProps) {
@@ -170,8 +158,8 @@ function DropdownList({ children, ...props }: DropdownListProps) {
 }
 
 // Dropdown Item
-type DropdownItemProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: ReactNode;
+type DropdownItemProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  children: React.ReactNode;
 };
 
 function DropdownItem({ children, ...props }: DropdownItemProps) {

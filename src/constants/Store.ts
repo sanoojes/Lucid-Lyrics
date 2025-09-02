@@ -18,5 +18,7 @@ export const DEFAULT_APP_STATE: AppState = {
     },
   },
   isDevMode: false,
+  isNpvCardOpen: false,
+  forceRomanized: false,
   isAnalyticsActive: true,
 } as const;

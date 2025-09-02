@@ -15,9 +15,10 @@
       "@utils/dom": ["src/utils/dom/index.ts"],
       "@utils/notification": ["src/utils/notification/index.ts"],
       "@shaders": ["src/shaders/index.ts"],
-      "@constants": ["src/constants/index.ts"]
+      "@constants": ["src/constants/index.ts"],
+      "@kuroshiro-analyzer-kuromoji": ["src/lib/kuroshiro-analyzer-kuromoji.ts"]
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/lib/Kuroshiro.js", "src/lib/kuroshiro-analyzer-kuromoji.ts"]
 }

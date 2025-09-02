@@ -1,11 +1,11 @@
-import { Button, Tippy } from '@/components/ui/index.ts';
+import { Button, Tippy } from '@/components/ui';
 import type { InputProps } from '@/types/uiSchema.ts';
 import debounce from '@/utils/debounce.ts';
-import { Add16Filled, Subtract16Filled } from '@fluentui/react-icons';
 import { showNotification } from '@utils/notification';
-import React, { type ChangeEvent, type FC, useCallback, useMemo, useState } from 'react';
+import { Minus, Plus } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 
-const Input: FC<InputProps> = (props) => {
+const Input: React.FC<InputProps> = (props) => {
   const { inputType, placeholder, className, icon } = props;
 
   const [isValid, setIsValid] = useState(true);
@@ -77,7 +77,7 @@ const Input: FC<InputProps> = (props) => {
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateValue(e.target.value);
   };
 
@@ -109,7 +109,7 @@ const Input: FC<InputProps> = (props) => {
       {inputType === 'number' && (
         <Tippy label="Decrement" hasIcon={false}>
           <Button variant="icon" onClick={decrement} aria-label="Decrement">
-            <Subtract16Filled />
+            <Minus />
           </Button>
         </Tippy>
       )}
@@ -125,7 +125,7 @@ const Input: FC<InputProps> = (props) => {
       {inputType === 'number' && (
         <Tippy label="Increment" hasIcon={false}>
           <Button variant="icon" onClick={increment} aria-label="Increment">
-            <Add16Filled />
+            <Plus />
           </Button>
         </Tippy>
       )}

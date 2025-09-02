@@ -1,4 +1,4 @@
-import { type CSSProperties, type FC, useEffect, useRef } from 'react';
+import { type CSSProperties, type FC, useEffect, useMemo, useRef } from 'react';
 
 interface InterludeProps {
   progress: number;
@@ -14,15 +14,18 @@ const Interlude: FC<InterludeProps> = ({ progress, startTime, endTime }) => {
   const amplitude = 12;
   const interludeRef = useRef<HTMLDivElement>(null);
 
-  const isActive = progress >= startTime && progress < endTime;
+  const isActive = useMemo(
+    () => progress >= startTime && progress < endTime,
+    [progress, endTime, startTime]
+  );
 
   useEffect(() => {
-    if (isActive && interludeRef.current) {
-      interludeRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
+    if (!isActive) return;
+
+    interludeRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
   }, [isActive]);
 
   const nearStart = progress < startTime + showDelay;

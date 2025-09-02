@@ -6,7 +6,7 @@ import {
   TextArea,
   Tippy,
   Toggle,
-} from '@/components/ui/index.ts';
+} from '@/components/ui';
 import type { Component } from '@/types/settingSchema.ts';
 import React, { type FC } from 'react';
 

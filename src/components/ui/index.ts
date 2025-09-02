@@ -6,7 +6,6 @@ import HeaderButtons from '@/components/ui/HeaderButtons.tsx';
 import Input from '@/components/ui/Input.tsx';
 import Loader from '@/components/ui/Loader.tsx';
 import Notification from '@/components/ui/Notification.tsx';
-import Scrollable from '@/components/ui/Scrollable.tsx';
 import TextArea from '@/components/ui/TextArea.tsx';
 import Tippy from '@/components/ui/Tippy.tsx';
 import Toggle from '@/components/ui/Toggle.tsx';
@@ -23,5 +22,4 @@ export {
   HeaderButtons,
   Notification,
   DropdownAction,
-  Scrollable,
 };

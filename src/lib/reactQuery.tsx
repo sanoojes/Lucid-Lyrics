@@ -11,7 +11,7 @@ import {
 import { compress, decompress } from 'lz-string';
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: Infinity } },
+  defaultOptions: { queries: { staleTime: Infinity, gcTime: Infinity } },
 });
 
 (() => {
@@ -43,7 +43,7 @@ const queryClient = new QueryClient({
 
   const persister = createAsyncStoragePersister({
     storage: isLocalStorage ? localStorageAsyncStorage : (createIdbStorage() as any),
-    key: 'lucid-lyrics-data-store',
+    key: 'lucid:lyrics-data',
   });
 
   persistQueryClient({

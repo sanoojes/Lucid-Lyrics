@@ -1,4 +1,4 @@
-import { Notification } from '@/components/ui/index.ts';
+import { Notification } from '@/components/ui';
 import { type FC, type ReactNode, useEffect, useRef, useState } from 'react';
 
 export type NotificationData = {

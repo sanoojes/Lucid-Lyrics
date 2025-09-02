@@ -1,13 +1,12 @@
-import { QuestionCircle20Regular } from '@fluentui/react-icons';
-import React, { type FC, type ReactNode } from 'react';
+import { CircleQuestionMark } from 'lucide-react';
 
 type TippyProps = {
-  label: ReactNode;
-  children?: ReactNode;
+  label: React.ReactNode;
+  children?: React.ReactNode;
   hasIcon?: boolean;
 };
 
-const Tippy: FC<TippyProps> = ({ label, children, hasIcon = true }) => {
+const Tippy: React.FC<TippyProps> = ({ label, children, hasIcon = true }) => {
   if (!label || !Spicetify?.ReactComponent?.TooltipWrapper) return null;
 
   return (
@@ -20,8 +19,8 @@ const Tippy: FC<TippyProps> = ({ label, children, hasIcon = true }) => {
       <div>
         {children}
         {hasIcon ? (
-          <div className="tooltipIconWrapper">
-            <QuestionCircle20Regular />
+          <div className="tooltip-icon-wrapper">
+            <CircleQuestionMark size="16" />
           </div>
         ) : null}
       </div>

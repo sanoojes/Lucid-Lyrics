@@ -1,6 +1,6 @@
 import getSettingsSections from '@/components/settings/helper/getSettingsSections.ts';
 import Section from '@/components/settings/ui/Section.tsx';
-import { Loader } from '@/components/ui/index.ts';
+import { Loader } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
 import { useEffect, useState } from 'react';

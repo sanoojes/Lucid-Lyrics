@@ -1,14 +1,16 @@
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
 import type { CSSFilter } from '@/types/styles.ts';
+import type { ColorPalette } from '@/utils/color.ts';
 
 type Nullable<T> = T | null;
 
 /* ---------- Temp Store Types ---------- */
 export type PlayerData = {
-  lyricsData: Nullable<BestAvailableLyrics>;
   imageUrl: Nullable<string>;
   data: Nullable<Partial<Spicetify.PlayerTrack>>;
   id: Nullable<string>;
+  colors: Nullable<ColorPalette>;
+  lyricData: Nullable<BestAvailableLyrics>;
 };
 
 export type SpotifyToken = {
@@ -63,6 +65,7 @@ export type BackgroundState = {
 export type AppState = {
   bg: BackgroundState;
   isDevMode: boolean;
+  forceRomanized: boolean;
   isNpvCardOpen: boolean;
   isAnalyticsActive: boolean;
 };

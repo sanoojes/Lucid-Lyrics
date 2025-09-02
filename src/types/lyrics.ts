@@ -1,7 +1,7 @@
 /* Component Props */
 export type LineStatus = 'future' | 'active' | 'past';
 
-export type WordProps = Syllable & {
+export type WordProps = Omit<Syllable, 'RomanizedText'> & {
   lineStatus: LineStatus;
   showTrailingSpace: boolean;
 };
@@ -23,6 +23,7 @@ export type AnimationProps = {
 /* Data */
 export type Syllable = {
   Text: string;
+  RomanizedText: string;
   IsPartOfWord: boolean;
   StartTime: number;
   EndTime: number;
@@ -56,6 +57,7 @@ export type LineData = {
     Type: string;
     OppositeAligned: boolean;
     Text: string;
+    RomanizedText: string;
     StartTime: number;
     EndTime: number;
   }[];
@@ -68,8 +70,11 @@ export type StaticData = {
   SongWriters: string[];
   Lines: {
     Text: string;
+    RomanizedText: string;
   }[];
   id: string;
 };
 
-export type BestAvailableLyrics = SyllableData | LineData | StaticData;
+export type BestAvailableLyrics = (SyllableData | LineData | StaticData) & {
+  hasRomanizedText: boolean;
+};

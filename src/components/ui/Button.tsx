@@ -1,7 +1,6 @@
 import type { ButtonProps } from '@/types/uiSchema.ts';
-import React, { type FC } from 'react';
 
-const Button: FC<ButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   buttonText,
   children,
   onClick,
@@ -9,7 +8,7 @@ const Button: FC<ButtonProps> = ({
   variant = 'default',
 }) => {
   return (
-    <button type="button" onClick={onClick} className={`setting-button ${variant} ${className}`}>
+    <button type="button" onClick={onClick} className={`lucid-lyrics-btn ${variant} ${className}`}>
       {buttonText}
       {children}
     </button>

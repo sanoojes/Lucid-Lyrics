@@ -44,7 +44,7 @@ const main = async () => {
   playerButton = await createButton({
     icon: Icons.Mic16,
     label: 'Lucid Lyrics',
-    className: 'setting-button',
+    className: 'lucid-lyrics-btn',
     active: lyricsPage.isActive,
     onClick: lyricsPage.togglePage,
   });

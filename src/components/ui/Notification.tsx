@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/index.ts';
-import { Dismiss16Filled } from '@fluentui/react-icons';
+import { Button } from '@/components/ui';
+import { X } from 'lucide-react';
 import { type FC, type ReactNode, useEffect, useState } from 'react';
 
 type NotificationProps = {
@@ -37,7 +37,7 @@ const Notification: FC<NotificationProps> = ({
     <div className={`notification${isError ? ' error' : ''}${!visible ? ' fade-out' : ''}`}>
       <span>{message}</span>
       <Button className="notification-close" variant="icon" onClick={handleManualClose}>
-        <Dismiss16Filled />
+        <X />
       </Button>
     </div>
   );

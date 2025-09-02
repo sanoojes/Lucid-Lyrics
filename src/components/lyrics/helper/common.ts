@@ -94,8 +94,8 @@ export function getAnimationStyles({
 
   const maskImage =
     !isFading || !isAnimating
-      ? `linear-gradient(to ${gradientPos}, rgba(var(--text-color), ${maskStartOpacity}) ${fillPercentage}%, rgba(var(--text-color), ${maskEndOpacity}) 100%)`
-      : `linear-gradient(to ${gradientPos}, rgb(var(--text-color)) 0%, rgb(var(--text-color)) 100%)`;
+      ? `linear-gradient(to ${gradientPos}, rgba(var(--lucid-lyrics-text-color), ${maskStartOpacity}) ${fillPercentage}%, rgba(var(--lucid-lyrics-text-color), ${maskEndOpacity}) 100%)`
+      : `linear-gradient(to ${gradientPos}, rgb(var(--lucid-lyrics-text-color)) 0%, rgb(var(--lucid-lyrics-text-color)) 100%)`;
 
   return {
     // "--is-anim": isAnimating ? 1 : 0,
