@@ -12,13 +12,18 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["src/*"],
+      "@cx": ["src/lib/cx.ts"],
       "@utils/dom": ["src/utils/dom/index.ts"],
       "@utils/notification": ["src/utils/notification/index.ts"],
       "@shaders": ["src/shaders/index.ts"],
-      "@constants": ["src/constants/index.ts"],
-      "@kuroshiro-analyzer-kuromoji": ["src/lib/kuroshiro-analyzer-kuromoji.ts"]
+      "@constants": ["src/constants/index.ts"]
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/lib/Kuroshiro.js", "src/lib/kuroshiro-analyzer-kuromoji.ts"]
+  "exclude": [
+    "node_modules",
+    "src/lib/pinyin.mjs",
+    "src/lib/kuromoji.js",
+    "src/lib/kuroshiro-analyzer-kuromoji.ts"
+  ]
 }

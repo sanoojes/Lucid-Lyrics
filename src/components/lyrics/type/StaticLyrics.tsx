@@ -6,12 +6,16 @@ type StaticLyricsProps = { data: StaticData };
 const StaticLyrics: React.FC<StaticLyricsProps> = ({ data }) => {
   const forceRomanized = useStore(appStore, (s) => s.forceRomanized);
 
-  return data.Lines.map((line, idx) => (
-    <div key={`${line.Text}-${idx}`} className={`line-wrapper static`}>
-      {/* Lyric lines */}
-      <div className={`line`}>{forceRomanized ? line.RomanizedText : line.Text}</div>
+  return (
+    <div className="lyrics-wrapper">
+      {data.Lines.map((line, idx) => (
+        <div key={`${line.Text}-${idx}`} className={`line-wrapper static`}>
+          {/* Lyric lines */}
+          <div className={`line`}>{(forceRomanized ? line.RomanizedText : null) ?? line.Text}</div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
 export default StaticLyrics;

@@ -60,7 +60,8 @@
       "**",
       "!**/dist/**/*",
       "!**/types/spicetify.d.ts",
-      "!**/src/lib/Kuroshiro.js",
+      "!**/src/lib/kuromoji.js",
+      "!**/src/lib/pinyin.mjs",
       "!**/src/lib/kuroshiro-analyzer-kuromoji.ts"
     ],
     "ignoreUnknown": true

@@ -298,6 +298,7 @@ declare namespace Spicetify {
     hifiStatus: number;
   };
   namespace Player {
+    const origin: any;
     /**
      * Register a listener `type` on Spicetify.Player.
      *

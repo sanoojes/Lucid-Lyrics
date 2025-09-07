@@ -1,100 +1,83 @@
+import Aromanize from '@/lib/Aromanize.ts';
+import * as KuromojiAnalyzer from '@/lib/kuroshiro-analyzer-kuromoji.ts';
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
-import * as KuromojiAnalyzer from '@kuroshiro-analyzer-kuromoji';
 import { franc } from 'franc-all';
 import Kuroshiro from 'kuroshiro';
 
 const KUROSHIRO_OPTS = { to: 'romaji', mode: 'spaced' };
 
+const JAPANESE_REGEX = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
+const KOREAN_REGEX = /[\uAC00-\uD7AF\u1100-\u11FF]/;
+
 export async function processLyrics(lyric: BestAvailableLyrics): Promise<BestAvailableLyrics> {
   try {
-    const text = combineLyricsToText(lyric);
-    const lang = franc(text);
-
     lyric.hasRomanizedText = false;
 
-    if (lang === 'jpn') {
-      const kuroshiro = new Kuroshiro();
-      await kuroshiro.init(KuromojiAnalyzer);
+    let kuroshiro: Kuroshiro | null = null;
 
-      const enrichedLyrics = lyric;
+    await addRomanizationToLyrics(lyric, async (txt) => {
+      let lang = franc(txt);
 
-      await addRomajiToLyrics(enrichedLyrics, kuroshiro);
-      enrichedLyrics.hasRomanizedText = true;
+      if (JAPANESE_REGEX.test(txt)) {
+        lang = 'jpn';
+      } else if (KOREAN_REGEX.test(txt)) {
+        lang = 'kor';
+      }
 
-      return enrichedLyrics;
-    } else {
-      return lyric;
-    }
+      if (lang === 'jpn') {
+        if (!kuroshiro) {
+          kuroshiro = new Kuroshiro();
+          await kuroshiro.init(KuromojiAnalyzer);
+        }
+        return kuroshiro.convert(txt, KUROSHIRO_OPTS);
+      }
+
+      if (lang === 'kor') {
+        return Aromanize(txt, 'RevisedRomanizationTransliteration');
+      }
+
+      return txt;
+    });
+
+    lyric.hasRomanizedText = true;
+    return lyric;
   } catch (e) {
     console.trace(e);
     return lyric;
   }
 }
 
-async function addRomajiToLyrics(lyric: BestAvailableLyrics, kuroshiro: Kuroshiro) {
+async function addRomanizationToLyrics(
+  lyric: BestAvailableLyrics,
+  converter: (txt: string) => Promise<string> | string
+) {
   switch (lyric.Type) {
     case 'Line':
       for (const content of lyric.Content) {
-        content.RomanizedText = await kuroshiro.convert(content.Text, KUROSHIRO_OPTS);
+        content.RomanizedText = await converter(content.Text);
       }
       break;
 
     case 'Static':
       for (const line of lyric.Lines) {
-        line.RomanizedText = await kuroshiro.convert(line.Text, KUROSHIRO_OPTS);
+        line.RomanizedText = await converter(line.Text);
       }
       break;
 
     case 'Syllable':
       for (const content of lyric.Content) {
         for (const syllable of content.Lead.Syllables) {
-          syllable.RomanizedText = await kuroshiro.convert(syllable.Text, KUROSHIRO_OPTS);
+          syllable.RomanizedText = await converter(syllable.Text);
         }
 
         if (content.Background) {
           for (const bg of content.Background) {
             for (const syllable of bg.Syllables) {
-              syllable.RomanizedText = await kuroshiro.convert(syllable.Text, KUROSHIRO_OPTS);
+              syllable.RomanizedText = await converter(syllable.Text);
             }
           }
         }
       }
       break;
   }
-}
-
-export function combineLyricsToText(lyric: BestAvailableLyrics): string {
-  const result: string[] = [];
-
-  switch (lyric.Type) {
-    case 'Line':
-      for (const content of lyric.Content) {
-        result.push(content.Text);
-      }
-      break;
-
-    case 'Static':
-      for (const line of lyric.Lines) {
-        result.push(line.Text);
-      }
-      break;
-
-    case 'Syllable':
-      for (const content of lyric.Content) {
-        for (const syllable of content.Lead.Syllables) {
-          result.push(syllable.Text);
-        }
-
-        if (content.Background) {
-          for (const bg of content.Background) {
-            for (const syllable of bg.Syllables) {
-              result.push(syllable.Text);
-            }
-          }
-        }
-      }
-      break;
-  }
-
-  return result.join(' ');
 }

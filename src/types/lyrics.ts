@@ -1,25 +1,3 @@
-/* Component Props */
-export type LineStatus = 'future' | 'active' | 'past';
-
-export type WordProps = Omit<Syllable, 'RomanizedText'> & {
-  lineStatus: LineStatus;
-  showTrailingSpace: boolean;
-};
-export type AnimationProps = {
-  startTime: number;
-  endTime: number;
-  progress: number;
-  lineStatus: LineStatus;
-  status?: LineStatus;
-  gradientPos?: 'right' | 'bottom';
-  maxScale?: number;
-  maxTranslateY?: number;
-  skipMask?: boolean;
-  staggerDelay?: number;
-  index?: number;
-  setAnimating?: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
 /* Data */
 export type Syllable = {
   Text: string;

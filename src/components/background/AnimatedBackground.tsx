@@ -12,6 +12,8 @@ import {
   WebGLRenderer,
 } from 'three';
 import { useStore } from 'zustand';
+import appStore from '../../store/appStore.ts';
+import { serializeFilters } from '@utils/dom';
 
 interface AnimatedBackgroundProps {
   timeScale?: number;
@@ -25,6 +27,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ timeScale = 50 
   const isFocusedRef = useRef(true);
   const startTimeRef = useRef(performance.now());
   const colors = useStore(tempStore, (s) => s.player.nowPlaying.colors);
+  const filters = useStore(appStore, (s) => s.bg.options.filter);
 
   useEffect(() => {
     if (!parentRef.current) return;

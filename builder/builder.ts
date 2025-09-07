@@ -66,7 +66,7 @@ const main = async () => {
     outfile: JS_OUT_FILE_PATH,
     treeShaking: true,
     minify,
-    format: 'iife',
+    format: 'esm',
     legalComments: 'external',
     external: ['react', 'react-dom'],
     jsx: 'transform',

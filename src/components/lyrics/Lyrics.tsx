@@ -1,15 +1,18 @@
+import '@/styles/lyrics.css';
+
 import LineLyrics from '@/components/lyrics/type/LineLyrics.tsx';
-import StaticLyrics from '@/components/lyrics/type/StaticLyrics.tsx';
 import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
 import LyricsLoader from '@/components/lyrics/ui/LyricsLoader.tsx';
-import type { BestAvailableLyrics } from '@/types/lyrics.ts';
-import { memo, useEffect, useState } from 'react';
+import appStore from '@/store/appStore.ts';
+import tempStore from '@/store/tempStore.ts';
+import { getLyricsData } from '@/utils/fetch/getLyricsData.ts';
+import { useQuery } from '@tanstack/react-query';
+import { memo, useEffect } from 'react';
+import { useStore } from 'zustand';
 
-type FetchStatus = 'success' | 'pending' | 'error';
+type StatusProps = { title: string };
 
-type StatusTextProps = { title: string };
-
-const StatusText: React.FC<StatusTextProps> = ({ title }) => {
+const Status: React.FC<StatusProps> = ({ title }) => {
   return (
     <div className="status-wrapper">
       <h2 className="title">{title}</h2>
@@ -17,32 +20,42 @@ const StatusText: React.FC<StatusTextProps> = ({ title }) => {
   );
 };
 
-const Lyrics: React.FC<{
-  data?: BestAvailableLyrics;
-  status: FetchStatus;
-  error: Error | null;
-  isOnline: boolean;
-}> = memo(({ data, status, isOnline }) => {
+const Lyrics: React.FC = memo(() => {
+  const id = useStore(tempStore, (s) => s.player.nowPlaying.id);
+  const isOnline = useStore(tempStore, (s) => s.isOnline);
+  const isDevMode = useStore(appStore, (s) => s.isDevMode);
+
+  const { data, status } = useQuery({
+    queryKey: ['lyrics', id],
+    queryFn: () => getLyricsData(id),
+    enabled: !!id && isOnline,
+    retry: 1,
+  });
+
+  useEffect(() => {
+    let lyricData = null;
+    if (status === 'success') lyricData = data;
+    tempStore.getState().setPlayer('nowPlaying', { lyricData });
+  }, [data, status]);
+
   return (
-    <div className="lyrics-wrapper">
+    <div className="lyrics-container">
+      {isDevMode ? <div className="dev-mode-banner">DEBUG</div> : null}
       {status === 'pending' ? (
         <LyricsLoader />
-      ) : status === 'success' ? (
-        <>
-          <div className="top-spacing" />
-          {data?.Type === 'Syllable' ? (
-            <SyllableLyrics data={data} />
-          ) : data?.Type === 'Line' ? (
-            <LineLyrics data={data} />
-          ) : data?.Type === 'Static' ? (
-            <StaticLyrics data={data} />
-          ) : null}
-          <div className="bottom-spacing" />
-        </>
+      ) : status === 'success' && data?.Type ? (
+        data?.Type === 'Syllable' ? (
+          <SyllableLyrics data={data} />
+        ) : data?.Type === 'Line' ? (
+          <LineLyrics data={data} />
+        ) : (
+          // <StaticLyrics data={data} />
+          'Uff'
+        )
       ) : !isOnline ? (
-        <StatusText title="You are offline. Please reconnect." />
+        <Status title="You are offline. Please reconnect." />
       ) : status === 'error' ? (
-        <StatusText title="This song doesn't have any Lyrics!" />
+        <Status title="This song doesn't have any Lyrics!" />
       ) : null}
     </div>
   );

@@ -19,7 +19,7 @@ export default function createPage({ pathname, children, onChange }: CreatePageP
       children,
       parent,
       rootId: `root-${pathname.replace(/[^a-z0-9_-]/gi, '_')}`,
-      prepend: true,
+      prepend: false,
     });
 
     mount = renderer.mount;
@@ -40,7 +40,7 @@ export default function createPage({ pathname, children, onChange }: CreatePageP
   const handlePageChange = (currentLocation: HistoryLocation | undefined) => {
     if (!History || !currentLocation) return;
 
-    const lastEntry = History.entries.at(-2);
+    const lastEntry = History.entries[History.entries.length - 2];
     lastPageLocation = lastEntry?.pathname ?? '/';
 
     isActive = currentLocation.pathname === urlPathname;

@@ -36,6 +36,7 @@ export type TempState = {
   };
   spotifyToken: SpotifyToken;
   isOnline: boolean;
+  isScrolling: boolean;
 };
 
 /* ---------- App Store Types ---------- */

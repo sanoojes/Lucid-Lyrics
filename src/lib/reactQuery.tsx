@@ -11,7 +11,7 @@ import {
 import { compress, decompress } from 'lz-string';
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: Infinity, gcTime: Infinity } },
+  defaultOptions: { queries: { staleTime: 0, gcTime: 0 } },
 });
 
 (() => {

@@ -65,7 +65,7 @@ export const getLyricsData = async (id: string | null) => {
 
       availableApi = baseUrl;
       logger.debug('Lyrics data:', data);
-      return (await processLyrics(data.lyrics)) as BestAvailableLyrics;
+      return data.lyrics as BestAvailableLyrics;
     } catch {
       lastError = new Error('Cannot connect to lyrics server');
     }

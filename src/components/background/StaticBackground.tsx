@@ -5,7 +5,7 @@ import { useStore } from 'zustand';
 
 const StaticBackground = () => {
   const { imageMode, customUrl, filter } = useStore(appStore, (state) => state.bg.options);
-  const npUrl = useStore(tempStore, (state) => state.player?.nowPlaying);
+  const npUrl = useStore(tempStore, (state) => state.player?.nowPlaying.imageUrl);
   const pageImgUrl = useStore(tempStore, (state) => state.pageImg);
   const imageSrc =
     (imageMode === 'custom'

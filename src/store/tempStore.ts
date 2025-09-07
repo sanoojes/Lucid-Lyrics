@@ -10,6 +10,7 @@ export type TempSetter = {
   setPageImg: (pageImg: Partial<TempState['pageImg']>) => void;
   setViewSize: (viewSize: Partial<TempState['viewSize']>) => void;
   setIsOnline: (isOnline: boolean) => void;
+  setIsScrolling: (isScrolling: boolean) => void;
 };
 
 const DEFAULT_PLAYER_STATE: PlayerData = {
@@ -35,6 +36,7 @@ const DEFAULT_TEMP_STATE: TempState = {
     main: { width: 0, height: 0 },
   },
   isOnline: navigator.onLine,
+  isScrolling: false,
 } as const;
 
 const tempStore = createStore<TempState & TempSetter>()(
@@ -53,6 +55,7 @@ const tempStore = createStore<TempState & TempSetter>()(
       setPageImg: (pageImg) => set({ pageImg: { ...get().pageImg, ...pageImg } }),
 
       setIsOnline: (isOnline) => set({ isOnline }),
+      setIsScrolling: (isScrolling) => set({ isScrolling }),
 
       setSpotifyToken: (spotifyToken) =>
         set({ spotifyToken: { ...get().spotifyToken, ...spotifyToken } }),

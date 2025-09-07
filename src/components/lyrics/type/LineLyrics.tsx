@@ -1,95 +1,151 @@
-import { getAnimationStyles, getStatus, seekTo } from '@/components/lyrics/helper/common.ts';
+import useTrackPosition from '@/hooks/useTrackPosition.ts';
+import type { LineData } from '@/types/lyrics.ts';
+import seekTo from '@/utils/player/seekTo.ts';
+import cx from '@cx';
+import { useEffect, useRef, useMemo } from 'react';
 import Interlude from '@/components/lyrics/ui/Interlude.tsx';
-import { useProgress } from '@/context/ProgressContext.tsx';
-import appStore from '@/store/appStore.ts';
-import type { LineData, LineStatus } from '@/types/lyrics.ts';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useStore } from 'zustand';
 
-type LineLyricsProps = { data: LineData };
+const INTERLUDE_MIN_GAP_MS = 2000;
 
-const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
-  const { progress } = useProgress();
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
-  const interludeRef = useRef<HTMLDivElement | null>(null);
-  const forceRomanized = useStore(appStore, (s) => s.forceRomanized);
+const SPLIT_THRESHOLD_MS = 750;
+const MAX_TRANSLATE_UP_WORD = 2;
+const MAX_TRANSLATE_UP_LETTER = 3;
+const MAX_TEXT_SHADOW_BLUR = 4;
+const SCALE_COEFFICENT = 4000;
 
-  const lines = useMemo(
-    () =>
-      data.Content.map((line) => ({
-        ...line,
-        status: getStatus(line.StartTime, line.EndTime, progress),
-      })),
-    [data.Content, progress]
-  );
+const LineLyrics: React.FC<{ data: LineData }> = ({ data }) => {
+  const progressRef = useTrackPosition();
+  const lineRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    const activeIdx = lines.findIndex((l) => l.status === 'active');
-    if (activeIdx >= 0) {
-      refs.current[activeIdx]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
+    let lastActiveIndex: number | null = null;
+
+    const scroll = () => {
+      const progress = progressRef.current;
+
+      for (let i = 0; i < lineRefs.current.length; i++) {
+        const ref = lineRefs.current[i];
+        if (!ref) continue;
+
+        const endTime = Number(ref.dataset.endTime);
+        if (progress <= endTime) {
+          if (lastActiveIndex !== i) {
+            ref.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            lastActiveIndex = i;
+          }
+          break;
+        }
+      }
+
+      requestAnimationFrame(scroll);
+    };
+
+    requestAnimationFrame(scroll);
+  }, [progressRef]);
+
+  useEffect(() => {
+    const animate = () => {
+      const progress = progressRef.current;
+
+      lineRefs.current.forEach((el) => {
+        const start = Number(el.dataset.start);
+        const end = Number(el.dataset.end);
+        const duration = end - start;
+
+        let pct = 0;
+        let isPast = false;
+
+        if (progress < start) pct = 0;
+        else if (progress <= end) pct = ((progress - start) / duration) * 100;
+        else {
+          pct = 100;
+          isPast = true;
+        }
+
+        el.style.setProperty('--translate-y', `${-(pct / 100) * MAX_TRANSLATE_UP_WORD}px`);
+        el.style.setProperty('--text-shadow-blur', `${(pct / 100) * MAX_TEXT_SHADOW_BLUR}px`);
+        el.style.setProperty('--scale', `${1 + pct / SCALE_COEFFICENT}`);
+        el.style.setProperty('--bg-size-x', `${pct * 2}%`);
+
+        if (isPast) el.classList.add('past');
+        else el.classList.remove('past');
       });
+
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  }, [progressRef]);
+
+  const contentWithInterludes = useMemo(() => {
+    const result: (
+      | (typeof data.Content)[number]
+      | { interlude: true; start: number; end: number }
+    )[] = [];
+
+    const firstContent = data.Content[0];
+    if (firstContent) {
+      const firstStart = firstContent.StartTime * 1000;
+      if (firstStart > INTERLUDE_MIN_GAP_MS) {
+        result.push({ interlude: true, start: 0, end: firstStart });
+      }
     }
 
-    const firstLineStart = data.Content[0]?.StartTime ?? 0;
-    if (firstLineStart > 0 && progress < firstLineStart * 1000) {
-      interludeRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, [lines, progress, data.Content]);
+    data.Content.forEach((content, idx) => {
+      result.push(content);
 
-  const handleClick = useCallback((t: number) => seekTo(t * 1000), []);
+      const lastEnd = content.EndTime * 1000;
 
-  const hasOppositeAligned = useMemo(
-    () => data.Content.map((content) => content.OppositeAligned),
-    [data.Content]
-  );
+      const nextContent = data.Content[idx + 1];
+      if (nextContent) {
+        const nextStart = nextContent.StartTime * 1000;
+        if (nextStart - lastEnd > INTERLUDE_MIN_GAP_MS) {
+          result.push({ interlude: true, start: lastEnd, end: nextStart });
+        }
+      }
+    });
+
+    return result;
+  }, [data.Content]);
 
   return (
-    <>
-      {lines.map(({ StartTime = 0, EndTime, OppositeAligned, status, ...line }, idx) => {
-        let lineStatus: LineStatus = 'past';
-        if (progress < StartTime * 1000) lineStatus = 'future';
-        if (progress >= StartTime * 1000 && progress <= EndTime * 1000) lineStatus = 'active';
+    <div className="lyrics-wrapper">
+      <div className="top-spacing" />
+      {contentWithInterludes.map((content, idx) => {
+        if ('interlude' in content) {
+          return (
+            <Interlude
+              key={`interlude-${idx}`}
+              progressRef={progressRef}
+              startTime={content.start}
+              endTime={content.end}
+              isOppositeAligned={false}
+            />
+          );
+        }
 
-        const styles = getAnimationStyles({
-          startTime: StartTime * 1000,
-          endTime: EndTime * 1000,
-          progress,
-          lineStatus,
-          gradientPos: 'bottom',
-        });
+        const lastEnd = content.EndTime * 1000;
 
         return (
           <div
-            key={`${StartTime}-${EndTime}-${line.Text}`}
-            className={`line-wrapper static${hasOppositeAligned ? ' has-opposite' : ''}`}
+            key={`line-${content.StartTime}`}
+            className={cx('line-wrapper', { 'opp-align': content.OppositeAligned })}
+            data-end-time={lastEnd}
+            ref={(el) => (lineRefs.current[idx] = el)}
+            onClick={() => seekTo(content.StartTime)}
           >
-            {/* Interlude */}
-            {idx === 0 && StartTime > 0 && (
-              <div ref={interludeRef}>
-                <Interlude progress={progress} startTime={0} endTime={StartTime * 1000} />
-              </div>
-            )}
-
-            {/* Lyric line */}
-            <div
-              ref={(el) => {
-                refs.current[idx] = el;
-              }}
-              className={`line motion${OppositeAligned ? ' opposite' : ''} ${status}`}
-              onClick={() => handleClick(StartTime)}
-              style={styles}
-            >
-              {forceRomanized ? line.RomanizedText : line.Text}
-            </div>
+            <div className={cx('line', 'lead')}>{content.Text}</div>
           </div>
         );
       })}
-    </>
+
+      {data?.SongWriters?.length > 0 && (
+        <div className="credits-wrapper">
+          <span className="credits">Credits: {data.SongWriters.join(', ')}</span>
+        </div>
+      )}
+      <div className="bottom-spacing" />
+    </div>
   );
 };
 
