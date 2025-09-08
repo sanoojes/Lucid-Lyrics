@@ -20,6 +20,7 @@
     "@react-spring/web": "npm:@react-spring/web@^10.0.2",
     "@shaders": "./src/shaders/index.ts",
     "@cx": "./src/lib/cx.ts",
+    "@types/pinyin": "npm:@types/pinyin@^2.10.2",
 
     "@utils/dom": "./src/utils/dom/index.ts",
     "@utils/notification": "./src/utils/notification/index.ts",
@@ -31,6 +32,7 @@
     "franc-all": "npm:franc-all@^7.2.0",
     "kuroshiro": "npm:kuroshiro@^1.2.0",
     "langs": "npm:langs@^2.0.0",
+    "pinyin": "npm:pinyin@^4.0.0",
 
     // React things
     "react": "npm:react@^19.1.1",

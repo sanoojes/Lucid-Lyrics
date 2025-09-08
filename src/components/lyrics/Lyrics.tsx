@@ -2,6 +2,7 @@ import '@/styles/lyrics.css';
 
 import LineLyrics from '@/components/lyrics/type/LineLyrics.tsx';
 import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
+import StaticLyrics from '@/components/lyrics/type/StaticLyrics.tsx';
 import LyricsLoader from '@/components/lyrics/ui/LyricsLoader.tsx';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
@@ -39,7 +40,7 @@ const Lyrics: React.FC = memo(() => {
   }, [data, status]);
 
   return (
-    <div className="lyrics-container">
+    <div className="lyrics-container use-encore-fonts">
       {isDevMode ? <div className="dev-mode-banner">DEBUG</div> : null}
       {status === 'pending' ? (
         <LyricsLoader />
@@ -49,8 +50,7 @@ const Lyrics: React.FC = memo(() => {
         ) : data?.Type === 'Line' ? (
           <LineLyrics data={data} />
         ) : (
-          // <StaticLyrics data={data} />
-          'Uff'
+          <StaticLyrics data={data} />
         )
       ) : !isOnline ? (
         <Status title="You are offline. Please reconnect." />

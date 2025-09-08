@@ -63,10 +63,21 @@ export type BackgroundState = {
   };
 };
 
+export type LyricsState = {
+  splitThresholdMs: number;
+  maxTranslateUpWord: number;
+  maxTranslateUpLetter: number;
+  scaleCoefficientWord: number;
+  scaleCoefficientLetter: number;
+  scrollTimeout: number;
+  scrollOffset: number;
+  forceRomanized: boolean;
+};
+
 export type AppState = {
   bg: BackgroundState;
+  lyrics: LyricsState;
   isDevMode: boolean;
-  forceRomanized: boolean;
   isNpvCardOpen: boolean;
   isAnalyticsActive: boolean;
 };

@@ -9,9 +9,13 @@ import {
   persistQueryClient,
 } from '@tanstack/react-query-persist-client';
 import { compress, decompress } from 'lz-string';
+import appStore from '../store/appStore.ts';
 
+const isDevMode = appStore.getState().isDevMode;
+
+const time = isDevMode ? 0 : Infinity;
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 0, gcTime: 0 } },
+  defaultOptions: { queries: { staleTime: time, gcTime: time } },
 });
 
 (() => {
@@ -27,17 +31,17 @@ const queryClient = new QueryClient({
 
   const localStorageAsyncStorage: AsyncStorage<PersistedClient> = {
     getItem: async (key) => {
-      const item = window.localStorage.getItem(key);
+      const item = localStorage.getItem(key);
       if (!item) return null;
       const parsedItem = JSON.parse(decompress(item));
       logger.debug('Query Cache hit (LS)');
       return parsedItem;
     },
     setItem: async (key, value) => {
-      window.localStorage.setItem(key, compress(JSON.stringify(value)));
+      localStorage.setItem(key, compress(JSON.stringify(value)));
     },
     removeItem: async (key) => {
-      window.localStorage.removeItem(key);
+      localStorage.removeItem(key);
     },
   };
 

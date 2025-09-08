@@ -1,13 +1,16 @@
 import Aromanize from '@/lib/Aromanize.ts';
 import * as KuromojiAnalyzer from '@/lib/kuroshiro-analyzer-kuromoji.ts';
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
-import { franc } from 'franc-all';
+import { eld } from 'eld';
 import Kuroshiro from 'kuroshiro';
+import { pinyin } from 'pinyin';
 
 const KUROSHIRO_OPTS = { to: 'romaji', mode: 'spaced' };
 
-const JAPANESE_REGEX = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
-const KOREAN_REGEX = /[\uAC00-\uD7AF\u1100-\u11FF]/;
+const JAPANESE_REGEX = /([ぁ-んァ-ン])/;
+const CHINESE_REGEX = /([\u4E00-\u9FFF])/;
+const KOREAN_REGEX =
+  /[\uac00-\ud7af]|[\u1100-\u11ff]|[\u3130-\u318f]|[\ua960-\ua97f]|[\ud7b0-\ud7ff]/;
 
 export async function processLyrics(lyric: BestAvailableLyrics): Promise<BestAvailableLyrics> {
   try {
@@ -16,12 +19,15 @@ export async function processLyrics(lyric: BestAvailableLyrics): Promise<BestAva
     let kuroshiro: Kuroshiro | null = null;
 
     await addRomanizationToLyrics(lyric, async (txt) => {
-      let lang = franc(txt);
+      let lang = await eld.detect(txt);
+      console.log(lang);
 
       if (JAPANESE_REGEX.test(txt)) {
         lang = 'jpn';
       } else if (KOREAN_REGEX.test(txt)) {
         lang = 'kor';
+      } else if (CHINESE_REGEX.test(txt)) {
+        lang = 'cmn';
       }
 
       if (lang === 'jpn') {
@@ -30,10 +36,12 @@ export async function processLyrics(lyric: BestAvailableLyrics): Promise<BestAva
           await kuroshiro.init(KuromojiAnalyzer);
         }
         return kuroshiro.convert(txt, KUROSHIRO_OPTS);
-      }
-
-      if (lang === 'kor') {
+      } else if (lang === 'kor') {
         return Aromanize(txt, 'RevisedRomanizationTransliteration');
+      } else if (lang === 'cmn') {
+        console.log(pinyin);
+        const result = pinyin(txt, { style: 'normal' });
+        return result.flat().join(' ');
       }
 
       return txt;

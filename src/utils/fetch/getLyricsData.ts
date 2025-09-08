@@ -2,7 +2,7 @@ import { logger } from '@/lib/logger.ts';
 import appStore from '@/store/appStore.ts';
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
 import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
-import { processLyrics } from '../lyrics.ts';
+import { processLyrics } from '@/utils/lyrics.ts';
 
 // List of APIs
 const API_CONSUMERS = appStore.getState().isDevMode
@@ -65,7 +65,7 @@ export const getLyricsData = async (id: string | null) => {
 
       availableApi = baseUrl;
       logger.debug('Lyrics data:', data);
-      return data.lyrics as BestAvailableLyrics;
+      return (await processLyrics(data.lyrics)) ?? (data.lyrics as BestAvailableLyrics);
     } catch {
       lastError = new Error('Cannot connect to lyrics server');
     }

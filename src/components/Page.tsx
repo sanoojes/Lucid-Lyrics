@@ -33,7 +33,7 @@ const Page = () => {
     <StrictMode>
       <main style={mainViewSize}>
         <LyricsRenderer />
-        {/* <PageButtons /> */}
+        <PageButtons />
         <Background />
       </main>
     </StrictMode>

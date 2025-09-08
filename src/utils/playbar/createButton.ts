@@ -17,8 +17,8 @@ type ButtonAPI = {
   deregister: () => void;
 };
 
-export async function createButton(props: ButtonProps): Promise<ButtonAPI | null> {
-  return waitForElement('.main-nowPlayingBar-right > div')
+export async function createButton(props: ButtonProps, prepend = true): Promise<ButtonAPI | null> {
+  return waitForElement('.main-nowPlayingBar-right .main-nowPlayingBar-extraControls')
     .then((rightContainer) => {
       if (!rightContainer) {
         logger.error('Could not find the player container.');
@@ -28,7 +28,9 @@ export async function createButton(props: ButtonProps): Promise<ButtonAPI | null
       const { label, onClick = () => {} } = props;
 
       const element = document.createElement('button');
-      element.className = `main-genericButton-button ${props.className ?? ''}`;
+      element.className = 'main-genericButton-button';
+      if (props.className) element.classList.add(props.className);
+      if (!prepend) element.style.order = '9999';
 
       Spicetify?.Tippy?.(element, {
         content: label,
@@ -66,7 +68,7 @@ export async function createButton(props: ButtonProps): Promise<ButtonAPI | null
           applyProps(currentProps);
         },
         register: () => {
-          rightContainer.prepend(element);
+          rightContainer[prepend ? 'prepend' : 'append'](element);
         },
         deregister: () => {
           element.remove();

@@ -17,8 +17,17 @@ export const DEFAULT_APP_STATE: AppState = {
       autoStopAnimation: false,
     },
   },
+  lyrics: {
+    splitThresholdMs: 1000,
+    maxTranslateUpWord: 2,
+    maxTranslateUpLetter: 2,
+    scaleCoefficientWord: 4,
+    scaleCoefficientLetter: 2,
+    scrollTimeout: 2000,
+    scrollOffset: 16,
+    forceRomanized: false,
+  },
   isDevMode: false,
   isNpvCardOpen: false,
-  forceRomanized: false,
   isAnalyticsActive: true,
 } as const;

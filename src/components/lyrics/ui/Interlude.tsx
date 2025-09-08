@@ -76,7 +76,9 @@ const Interlude: React.FC<InterludeProps> = memo(
 
       requestAnimationFrame(animate);
 
-      return () => clearTimeout(hideTimeout);
+      return () => {
+        if (hideTimeout) clearTimeout(hideTimeout);
+      };
     }, [progressRef, startTime, endTime, isOpposite]);
 
     return (
