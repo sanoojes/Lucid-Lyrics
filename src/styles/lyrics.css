@@ -183,7 +183,7 @@
   .credits-line {
     font-size: calc(var(--lyrics-font-size) * var(--lyrics-credits-scale));
     font-weight: var(--lyrics-credits-font-weight);
-    opacity: 0.4;
+    opacity: 0.7;
   }
 
   .animating-syllable {

@@ -15,10 +15,11 @@ const StaticLyrics: React.FC<StaticLyricsProps> = ({ data }) => {
           <div className={`line`}>{(forceRomanized ? line.RomanizedText : null) ?? line.Text}</div>
         </div>
       ))}
-      <div className="line-wrapper left-align credits-line">
-        <div className="credits">Credits: {data.SongWriters.join(', ')}</div>
-      </div>
-
+      {data?.SongWriters?.length > 0 ? (
+        <div className="line-wrapper left-align credits-line">
+          <div className="credits">Credits: {data.SongWriters.join(', ')}</div>
+        </div>
+      ) : null}
       <div className="bottom-spacing" />
     </div>
   );

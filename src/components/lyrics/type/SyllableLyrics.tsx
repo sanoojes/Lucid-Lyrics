@@ -15,6 +15,8 @@ type VocalPartProps = {
 
 type SyllableLyricsProps = { data: SyllableData };
 
+const SCROLL_TIMEOUT_MS = 1000;
+
 const VocalPart: React.FC<VocalPartProps> = ({ part, isLead = true, registerSyllable }) => {
   const l = useStore(appStore, (s) => s.lyrics);
   return (
@@ -91,8 +93,6 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
 
   const lyricsWrapperRef = useRef<HTMLDivElement>(null);
 
-  const isScrollingRef = useRef(false);
-
   const lineRefs = useRef<HTMLDivElement[]>([]);
   const activeLineIdxRef = useRef<number>(0);
 
@@ -103,30 +103,64 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
     }
   }, []);
 
+  const isScrolling = useRef(false);
+  const isActiveLineVisible = useRef(true);
+
+  const checkActiveLineVisibility = () => {
+    const wrapper = lyricsWrapperRef.current;
+    const activeLine = lineRefs.current[activeLineIdxRef.current];
+    if (!wrapper || !activeLine) return;
+
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const lineRect = activeLine.getBoundingClientRect();
+
+    const isVisible = lineRect.top >= wrapperRect.top && lineRect.bottom <= wrapperRect.bottom;
+
+    isActiveLineVisible.current = isVisible;
+  };
+
   useEffect(() => {
-    if (!lyricsWrapperRef.current) return;
-    let timeoutRef: number | null = null;
+    checkActiveLineVisibility();
 
-    const handleScroll = () => {
-      isScrollingRef.current = true;
+    const interval = setInterval(checkActiveLineVisibility, 1000);
 
-      if (timeoutRef) clearTimeout(timeoutRef);
-      timeoutRef = setTimeout(() => {
-        isScrollingRef.current = false;
-      }, l.scrollTimeout);
+    return () => clearInterval(interval);
+  }, [activeLineIdxRef.current]);
+
+  useEffect(() => {
+    const element = lyricsWrapperRef.current;
+    if (!element) return;
+
+    let checkTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const setNotScrolling = () => {
+      isScrolling.current = false;
     };
 
-    lyricsWrapperRef.current.addEventListener('scroll', handleScroll);
+    const handleWheel = () => {
+      isScrolling.current = true;
+
+      if (checkTimeoutId !== null) {
+        clearTimeout(checkTimeoutId);
+      }
+
+      checkTimeoutId = setTimeout(setNotScrolling, SCROLL_TIMEOUT_MS);
+    };
+
+    element.addEventListener('wheel', handleWheel);
 
     return () => {
-      if (timeoutRef) clearTimeout(timeoutRef);
-      lyricsWrapperRef.current?.removeEventListener('scroll', handleScroll);
+      if (checkTimeoutId !== null) {
+        clearTimeout(checkTimeoutId);
+      }
+      element.removeEventListener('wheel', handleWheel);
     };
   }, [lyricsWrapperRef]);
 
   const scrollToCurrentLine = useCallback(
     (behavior: ScrollBehavior = 'auto', overrideIdx?: number) => {
-      if (isScrollingRef.current && !overrideIdx) return;
+      if (isScrolling.current) return;
+      if (behavior !== 'auto' && !isActiveLineVisible.current) return;
 
       const ref = lineRefs.current[overrideIdx ?? activeLineIdxRef.current];
       const wrapper = lyricsWrapperRef.current;
@@ -197,10 +231,10 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
         const ref = lineRefs.current[i];
         if (!ref) continue;
 
-        // if (!isAutoScrollingRef.current) {
-        //   ref.style.setProperty('--line-shadow-blur', '0px');
-        //   continue;
-        // }
+        if (isScrolling.current || !isActiveLineVisible.current) {
+          ref.style.setProperty('--line-shadow-blur', '0px');
+          continue;
+        }
 
         const distance = Math.abs(i - currentActiveLine);
         const distanceBlur = distance * 1.25;
@@ -269,14 +303,20 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
   const contentWithInterludes = useMemo(() => {
     const result: (
       | (typeof data.Content)[number]
-      | { interlude: true; start: number; end: number }
+      | { interlude: true; start: number; end: number; OppositeAligned: boolean }
     )[] = [];
 
     const firstContent = data.Content[0];
     if (firstContent) {
       const firstStart = firstContent.Lead?.Syllables[0]?.StartTime * 1000;
+      const interludeAlignment = firstContent.OppositeAligned ?? false;
       if (firstStart && firstStart > INTERLUDE_MIN_GAP_MS) {
-        result.push({ interlude: true, start: 0, end: firstStart });
+        result.push({
+          interlude: true,
+          start: 0,
+          end: firstStart,
+          OppositeAligned: interludeAlignment,
+        });
       }
     }
 
@@ -293,7 +333,12 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       if (nextContent) {
         const nextStart = nextContent.Lead?.Syllables[0]?.StartTime * 1000;
         if (nextStart && lastEnd && nextStart - lastEnd > INTERLUDE_MIN_GAP_MS) {
-          result.push({ interlude: true, start: lastEnd, end: nextStart });
+          result.push({
+            interlude: true,
+            start: lastEnd,
+            end: nextStart,
+            OppositeAligned: nextContent.OppositeAligned ?? false,
+          });
         }
       }
     });
@@ -312,47 +357,48 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
     >
       <div className="top-spacing" />
       {contentWithInterludes.map((content, idx) => {
-        if ('interlude' in content) {
-          return (
-            <Interlude
-              key={`interlude-${content.end}-${content.start}-${idx}`}
-              progressRef={progressRef}
-              startTime={content.start}
-              endTime={content.end}
-              isOppositeAligned={false}
-            />
-          );
-        }
-
+        const isOppAligned = content.OppositeAligned;
         const lastEnd =
-          (content.Background && content.Background.length > 0
-            ? Math.max(...content.Background.map((value) => value.EndTime || 0))
-            : content.Lead.EndTime) * 1000;
+          'interlude' in content
+            ? content.end
+            : (content.Background && content.Background.length > 0
+                ? Math.max(...content.Background.map((value) => value.EndTime || 0))
+                : content.Lead.EndTime) * 1000;
 
         return (
           <div
-            key={`content-${content.Lead.StartTime ?? idx}-${content.Lead.EndTime}`}
+            key={`content-${'interlude' in content ? `interlude-${idx}` : (content.Lead.StartTime ?? idx)}`}
             className={cx('line-wrapper', {
-              'left-align': !content.OppositeAligned,
-              'right-align': content.OppositeAligned,
+              'left-align': !isOppAligned,
+              'right-align': isOppAligned,
             })}
             data-end-time={lastEnd}
-            // @ts-ignore
-            // biome-ignore lint/suspicious/noAssignInExpressions: cus its purrfect
             ref={(el) => (lineRefs.current[idx] = el)}
           >
-            <VocalPart part={content.Lead} isLead registerSyllable={registerSyllable} />
-            {content.Background?.map((bg, i) => (
-              <VocalPart
-                key={`bg-${bg.Syllables[0]?.StartTime ?? i}`}
-                part={bg}
-                isLead={false}
-                registerSyllable={registerSyllable}
+            {'interlude' in content ? (
+              <Interlude
+                progressRef={progressRef}
+                startTime={content.start}
+                endTime={content.end}
+                isOppositeAligned={isOppAligned}
               />
-            ))}
+            ) : (
+              <>
+                <VocalPart part={content.Lead} isLead registerSyllable={registerSyllable} />
+                {content.Background?.map((bg, i) => (
+                  <VocalPart
+                    key={`bg-${bg.Syllables[0]?.StartTime ?? i}`}
+                    part={bg}
+                    isLead={false}
+                    registerSyllable={registerSyllable}
+                  />
+                ))}
+              </>
+            )}
           </div>
         );
       })}
+
       {data?.SongWriters?.length > 0 && (
         <div
           className="line-wrapper left-align credits-line"

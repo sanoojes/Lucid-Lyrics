@@ -23,7 +23,6 @@ export const DEFAULT_APP_STATE: AppState = {
     maxTranslateUpLetter: 2,
     scaleCoefficientWord: 4,
     scaleCoefficientLetter: 2,
-    scrollTimeout: 2000,
     scrollOffset: 16,
     forceRomanized: false,
   },

@@ -9,13 +9,13 @@ import { useStore } from 'zustand';
 type LineLyricsProps = { data: LineData };
 
 const INTERLUDE_MIN_GAP_MS = 2000;
+const SCROLL_TIMEOUT_MS = 1000;
 
 const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
   const l = useStore(appStore, (s) => s.lyrics);
 
   const progressRef = useTrackPosition();
   const lyricsWrapperRef = useRef<HTMLDivElement>(null);
-  const isScrollingRef = useRef(false);
   const lineRefs = useRef<HTMLDivElement[]>([]);
   const activeLineIdxRef = useRef<number>(0);
 
@@ -26,29 +26,63 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!lyricsWrapperRef.current) return;
-    let timeoutRef: number | null = null;
+  const isScrolling = useRef(false);
+  const isActiveLineVisible = useRef(true);
 
-    const handleScroll = () => {
-      isScrollingRef.current = true;
-      if (timeoutRef) clearTimeout(timeoutRef);
-      timeoutRef = setTimeout(() => {
-        isScrollingRef.current = false;
-      }, l.scrollTimeout);
+  const checkActiveLineVisibility = () => {
+    const wrapper = lyricsWrapperRef.current;
+    const activeLine = lineRefs.current[activeLineIdxRef.current];
+    if (!wrapper || !activeLine) return;
+
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const lineRect = activeLine.getBoundingClientRect();
+
+    const isVisible = lineRect.top >= wrapperRect.top && lineRect.bottom <= wrapperRect.bottom;
+
+    isActiveLineVisible.current = isVisible;
+  };
+
+  useEffect(() => {
+    checkActiveLineVisibility();
+
+    const interval = setInterval(checkActiveLineVisibility, 1000);
+
+    return () => clearInterval(interval);
+  }, [activeLineIdxRef.current]);
+
+  useEffect(() => {
+    const element = lyricsWrapperRef.current;
+    if (!element) return;
+
+    let checkTimeoutId: number | null = null;
+
+    const setNotScrolling = () => {
+      isScrolling.current = false;
     };
 
-    lyricsWrapperRef.current.addEventListener('scroll', handleScroll);
+    const handleWheel = () => {
+      isScrolling.current = true;
+
+      if (checkTimeoutId) {
+        clearTimeout(checkTimeoutId);
+      }
+
+      checkTimeoutId = setTimeout(setNotScrolling, SCROLL_TIMEOUT_MS);
+    };
+
+    element.addEventListener('wheel', handleWheel);
 
     return () => {
-      if (timeoutRef) clearTimeout(timeoutRef);
-      lyricsWrapperRef.current?.removeEventListener('scroll', handleScroll);
+      if (checkTimeoutId) clearTimeout(checkTimeoutId);
+      element.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, [lyricsWrapperRef, SCROLL_TIMEOUT_MS]);
 
   const scrollToCurrentLine = useCallback(
     (behavior: ScrollBehavior = 'auto', overrideIdx?: number) => {
-      if (isScrollingRef.current && !overrideIdx) return;
+      if (isScrolling.current) return;
+
+      if (behavior !== 'auto' && !isActiveLineVisible.current) return;
 
       const ref = lineRefs.current[overrideIdx ?? activeLineIdxRef.current];
       const wrapper = lyricsWrapperRef.current;
@@ -119,10 +153,10 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
         const ref = lineRefs.current[i];
         if (!ref) continue;
 
-        // if (!isAutoScrollingRef.current) {
-        //   ref.style.setProperty('--line-shadow-blur', '0px');
-        //   continue;
-        // }
+        if (isScrolling.current || !isActiveLineVisible.current) {
+          ref.style.setProperty('--line-shadow-blur', '0px');
+          continue;
+        }
 
         const distance = Math.abs(i - currentActiveLine);
         const distanceBlur = distance * 1.25;

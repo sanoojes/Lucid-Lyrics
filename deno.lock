@@ -10,7 +10,6 @@
     "npm:@tanstack/query-async-storage-persister@^5.85.5": "5.87.1",
     "npm:@tanstack/react-query-persist-client@^5.85.5": "5.87.1_@tanstack+react-query@5.87.1__react@19.1.1_react@19.1.1",
     "npm:@tanstack/react-query@^5.85.5": "5.87.1_react@19.1.1",
-    "npm:@types/pinyin@^2.10.2": "2.10.2",
     "npm:@types/react-dom@^19.1.7": "19.1.9_@types+react@19.1.12",
     "npm:@types/react@^19.1.9": "19.1.12",
     "npm:@types/three@0.179": "0.179.0",
@@ -18,7 +17,7 @@
     "npm:cssnano@^7.1.1": "7.1.1_postcss@8.5.6",
     "npm:cyrillic-romanization@^1.1.8": "1.1.8",
     "npm:esbuild@~0.25.8": "0.25.9",
-    "npm:franc-all@^7.2.0": "7.2.0",
+    "npm:franc-min@^6.2.0": "6.2.0",
     "npm:idb-keyval@^6.2.2": "6.2.2",
     "npm:kuroshiro@^1.2.0": "1.2.0",
     "npm:langs@2": "2.0.0",
@@ -27,7 +26,6 @@
     "npm:lz-string@^1.5.0": "1.5.0",
     "npm:node-vibrant@^4.0.3": "4.0.3",
     "npm:overlayscrollbars-react@~0.5.6": "0.5.6_overlayscrollbars@2.12.0_react@19.1.1",
-    "npm:pinyin@4": "4.0.0",
     "npm:postcss@^8.5.6": "8.5.6",
     "npm:react-color-palette@^7.3.1": "7.3.1_react@19.1.1",
     "npm:react-dom@^19.1.1": "19.1.1_react@19.1.1",
@@ -417,9 +415,6 @@
         "undici-types"
       ]
     },
-    "@types/pinyin@2.10.2": {
-      "integrity": "sha512-jLzlRkaLRLg+lgYPjOuP3HX2cozUkhXls5GTXopsKuKJ9lDGlIAb88OoIztH6TbNUsoJnl/7e/kjaumA5IKKJg=="
-    },
     "@types/react-dom@19.1.9_@types+react@19.1.12": {
       "integrity": "sha512-qXRuZaOsAdXKFyOhRBg6Lqqc0yay13vN7KrIg4L7N4aaHN68ma9OK3NE1BoDFgFOTfM7zg+3/8+2n8rLUH3OKQ==",
       "dependencies": [
@@ -598,12 +593,6 @@
     },
     "colord@2.9.3": {
       "integrity": "sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw=="
-    },
-    "commander@1.1.1": {
-      "integrity": "sha512-71Rod2AhcH3JhkBikVpNd0pA+fWsmAaVoti6OR38T76chA7vE3pSerS0Jor4wDw+tOueD2zLVvFOw5H0Rcj7rA==",
-      "dependencies": [
-        "keypress"
-      ]
     },
     "commander@11.1.0": {
       "integrity": "sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ=="
@@ -816,8 +805,8 @@
     "fraction.js@4.3.7": {
       "integrity": "sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew=="
     },
-    "franc-all@7.2.0": {
-      "integrity": "sha512-ZR6ciLQTDBaOvBdkOd8+vqDzaLtmIXRa9GCzcAlaBpqNAKg9QrtClPmqiKac5/xZXfCZGMo1d8dIu1T0BLhHEg==",
+    "franc-min@6.2.0": {
+      "integrity": "sha512-1uDIEUSlUZgvJa2AKYR/dmJC66v/PvGQ9mWfI9nOr/kPpMFyvswK0gPXOwpYJYiYD008PpHLkGfG58SPjQJFxw==",
       "dependencies": [
         "trigram-utils"
       ]
@@ -850,9 +839,6 @@
     },
     "jpeg-js@0.4.4": {
       "integrity": "sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg=="
-    },
-    "keypress@0.1.0": {
-      "integrity": "sha512-x0yf9PL/nx9Nw9oLL8ZVErFAk85/lslwEP7Vz7s5SI1ODXZIgit3C5qyWjw4DxOuO/3Hb4866SQh28a1V1d+WA=="
     },
     "kuroshiro@1.2.0": {
       "integrity": "sha512-yBGCK9oDOY3LGZ/KXaN9m7ADcAuSczOR2FoMRYwHLUlis3/o/uxdMVROAjENFO0NQJgALhIdWxI/vIBVrMCk9w==",
@@ -954,13 +940,6 @@
     },
     "picocolors@1.1.1": {
       "integrity": "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="
-    },
-    "pinyin@4.0.0": {
-      "integrity": "sha512-vHpV5K+vpp6XUUpZNGRDuHoN+1xcmieM3EWlH4QjSX2kkpG/gVOwpqwV9EOJ9x9c9UERFKeLml5XVSukE/PLgQ==",
-      "dependencies": [
-        "commander@1.1.1"
-      ],
-      "bin": true
     },
     "pixelmatch@4.0.2": {
       "integrity": "sha512-J8B6xqiO37sU/gkcMglv6h5Jbd9xNER7aHzpfRdNmV4IbQBzBpe4l9XmbG+xPF/znacgu2jfEw+wHffaq/YkXA==",
@@ -1286,7 +1265,7 @@
     "svgo@4.0.0": {
       "integrity": "sha512-VvrHQ+9uniE+Mvx3+C9IEe/lWasXCU0nXMY2kZeLrHNICuRiC8uMPyM14UEaMOFA5mhyQqEkB02VoQ16n3DLaw==",
       "dependencies": [
-        "commander@11.1.0",
+        "commander",
         "css-select",
         "css-tree@3.1.0",
         "css-what",
@@ -1385,7 +1364,6 @@
       "npm:@tanstack/query-async-storage-persister@^5.85.5",
       "npm:@tanstack/react-query-persist-client@^5.85.5",
       "npm:@tanstack/react-query@^5.85.5",
-      "npm:@types/pinyin@^2.10.2",
       "npm:@types/react-dom@^19.1.7",
       "npm:@types/react@^19.1.9",
       "npm:@types/three@0.179",
@@ -1393,7 +1371,7 @@
       "npm:cssnano@^7.1.1",
       "npm:cyrillic-romanization@^1.1.8",
       "npm:esbuild@~0.25.8",
-      "npm:franc-all@^7.2.0",
+      "npm:franc-min@^6.2.0",
       "npm:idb-keyval@^6.2.2",
       "npm:kuroshiro@^1.2.0",
       "npm:langs@2",
@@ -1402,7 +1380,6 @@
       "npm:lz-string@^1.5.0",
       "npm:node-vibrant@^4.0.3",
       "npm:overlayscrollbars-react@~0.5.6",
-      "npm:pinyin@4",
       "npm:postcss@^8.5.6",
       "npm:react-color-palette@^7.3.1",
       "npm:react-dom@^19.1.1",

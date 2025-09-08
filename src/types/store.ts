@@ -69,7 +69,6 @@ export type LyricsState = {
   maxTranslateUpLetter: number;
   scaleCoefficientWord: number;
   scaleCoefficientLetter: number;
-  scrollTimeout: number;
   scrollOffset: number;
   forceRomanized: boolean;
 };

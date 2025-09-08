@@ -2,7 +2,7 @@ import { logger } from '@/lib/logger.ts';
 import appStore from '@/store/appStore.ts';
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
 import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
-import { processLyrics } from '@/utils/lyrics.ts';
+import { processLyrics } from '@/utils/lyrics/processLyrics.ts';
 
 // List of APIs
 const API_CONSUMERS = appStore.getState().isDevMode

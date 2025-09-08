@@ -21,7 +21,7 @@ export function wrapWithLoader(app_name: string): Plugin {
           const path = outfile;
           const code = await Deno.readTextFile(path);
 
-          const wrappedCode = `(function(){if(window.__${app_name}_is_loaded)return;window.__${app_name}_is_loaded=1;(function ${app_name}Main(){if(!Spicetify.React||!Spicetify.ReactDOM||!Spicetify.Platform||!Spicetify.Player){setTimeout(${app_name}Main,100);return;}${code}})();})();`;
+          const wrappedCode = `(async function(){if(window.__${app_name}_is_loaded)return;window.__${app_name}_is_loaded=1;(function ${app_name}Main(){if(!Spicetify.React||!Spicetify.ReactDOM||!Spicetify.Platform||!Spicetify.Player){setTimeout(${app_name}Main,100);return;}${code}})();})();`;
 
           await Deno.writeTextFile(path, wrappedCode);
         } catch (e) {
