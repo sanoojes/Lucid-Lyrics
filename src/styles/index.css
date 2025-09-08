@@ -17,13 +17,13 @@
     display: none;
   }
 }
-
 .interlude-wrapper {
   position: relative;
   height: 64px;
-  transition: height 0.2s linear;
+
   &.hide {
     height: 0px;
+    pointer-events: none;
   }
 }
 

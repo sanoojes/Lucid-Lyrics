@@ -1,3 +1,5 @@
+import '@/styles/simplebar.css';
+
 import useTrackPosition from '@/hooks/useTrackPosition.ts';
 import type { SyllableData, VocalPart as VocalPartType } from '@/types/lyrics.ts';
 import seekTo from '@/utils/player/seekTo.ts';
@@ -6,6 +8,8 @@ import { useEffect, useRef, useMemo, useCallback } from 'react';
 import Interlude from '@/components/lyrics/ui/Interlude.tsx';
 import appStore from '@/store/appStore.ts';
 import { useStore } from 'zustand';
+import SimpleBar from 'simplebar-react';
+import { SIMPLEBAR_CLASSNAMES } from '@constants';
 
 type VocalPartProps = {
   part: VocalPartType;
@@ -91,6 +95,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
 
   const l = useStore(appStore, (s) => s.lyrics);
 
+  const simpleBarRef = useRef<any>(null);
   const lyricsWrapperRef = useRef<HTMLDivElement>(null);
 
   const lineRefs = useRef<HTMLDivElement[]>([]);
@@ -135,10 +140,12 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
 
     const setNotScrolling = () => {
       isScrolling.current = false;
+      simpleBarRef.current?.el?.classList.add('hide-scrollbar');
     };
 
     const handleWheel = () => {
       isScrolling.current = true;
+      simpleBarRef.current?.el?.classList.remove('hide-scrollbar');
 
       if (checkTimeoutId !== null) {
         clearTimeout(checkTimeoutId);
@@ -199,7 +206,9 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
 
     const remove = Spicetify?.Player?.origin?._events?.addListener('update', scrollInstantly);
 
+    const unsub = appStore.subscribe((s) => s.lyrics.forceRomanized, scrollSmoothly);
     return () => {
+      unsub?.();
       cancelAnimationFrame(id);
       resizeObserver.disconnect();
       if (remove) remove?.();
@@ -351,9 +360,11 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
   }, [data.Content]);
 
   return (
-    <div
-      className={cx('lyrics-wrapper', { 'has-opp-aligned': hasOppAligned })}
-      ref={lyricsWrapperRef}
+    <SimpleBar
+      ref={simpleBarRef}
+      className={cx('lyrics-wrapper hide-scrollbar', { 'has-opp-aligned': hasOppAligned })}
+      classNames={SIMPLEBAR_CLASSNAMES}
+      scrollableNodeProps={{ ref: lyricsWrapperRef }}
     >
       <div className="top-spacing" />
       {contentWithInterludes.map((content, idx) => {
@@ -411,7 +422,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
         </div>
       )}
       <div className="bottom-spacing" />
-    </div>
+    </SimpleBar>
   );
 };
 

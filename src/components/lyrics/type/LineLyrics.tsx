@@ -5,6 +5,9 @@ import seekTo from '@/utils/player/seekTo.ts';
 import appStore from '@/store/appStore.ts';
 import Interlude from '@/components/lyrics/ui/Interlude.tsx';
 import { useStore } from 'zustand';
+import SimpleBar from 'simplebar-react';
+import { SIMPLEBAR_CLASSNAMES } from '@constants';
+import cx from '@cx';
 
 type LineLyricsProps = { data: LineData };
 
@@ -15,7 +18,10 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
   const l = useStore(appStore, (s) => s.lyrics);
 
   const progressRef = useTrackPosition();
+
+  const simpleBarRef = useRef<any>(null);
   const lyricsWrapperRef = useRef<HTMLDivElement>(null);
+
   const lineRefs = useRef<HTMLDivElement[]>([]);
   const activeLineIdxRef = useRef<number>(0);
 
@@ -54,16 +60,18 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
     const element = lyricsWrapperRef.current;
     if (!element) return;
 
-    let checkTimeoutId: number | null = null;
+    let checkTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const setNotScrolling = () => {
       isScrolling.current = false;
+      simpleBarRef.current?.el?.classList.add('hide-scrollbar');
     };
 
     const handleWheel = () => {
       isScrolling.current = true;
+      simpleBarRef.current?.el?.classList.remove('hide-scrollbar');
 
-      if (checkTimeoutId) {
+      if (checkTimeoutId !== null) {
         clearTimeout(checkTimeoutId);
       }
 
@@ -73,10 +81,12 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
     element.addEventListener('wheel', handleWheel);
 
     return () => {
-      if (checkTimeoutId) clearTimeout(checkTimeoutId);
+      if (checkTimeoutId !== null) {
+        clearTimeout(checkTimeoutId);
+      }
       element.removeEventListener('wheel', handleWheel);
     };
-  }, [lyricsWrapperRef, SCROLL_TIMEOUT_MS]);
+  }, [lyricsWrapperRef]);
 
   const scrollToCurrentLine = useCallback(
     (behavior: ScrollBehavior = 'auto', overrideIdx?: number) => {
@@ -121,7 +131,9 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
 
     const remove = Spicetify?.Player?.origin?._events?.addListener('update', scrollInstantly);
 
+    const unsub = appStore.subscribe((s) => s.lyrics.forceRomanized, scrollSmoothly);
     return () => {
+      unsub?.();
       cancelAnimationFrame(id);
       resizeObserver.disconnect();
       if (remove) remove?.();
@@ -245,8 +257,17 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
     return result;
   }, [data.Content]);
 
+  const hasOppAligned = useMemo(() => {
+    return data.Content.some((content) => content.OppositeAligned);
+  }, [data.Content]);
+
   return (
-    <div className="lyrics-wrapper" ref={lyricsWrapperRef}>
+    <SimpleBar
+      ref={simpleBarRef}
+      className={cx('lyrics-wrapper hide-scrollbar', { 'has-opp-aligned': hasOppAligned })}
+      classNames={SIMPLEBAR_CLASSNAMES}
+      scrollableNodeProps={{ ref: lyricsWrapperRef }}
+    >
       <div className="top-spacing" />
       {contentWithInterludes.map((content, idx) => {
         if ('interlude' in content) {
@@ -296,7 +317,7 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
         </div>
       )}
       <div className="bottom-spacing" />
-    </div>
+    </SimpleBar>
   );
 };
 

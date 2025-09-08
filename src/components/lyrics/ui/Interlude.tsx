@@ -83,11 +83,7 @@ const Interlude: React.FC<InterludeProps> = memo(
 
     return (
       <div ref={wrapperRef} className="line-wrapper interlude-wrapper hide">
-        <div
-          ref={interludeRef}
-          className={`line interlude hide${isOpposite}`}
-          style={{ height: 64 }}
-        >
+        <div ref={interludeRef} className={`line interlude hide${isOpposite}`}>
           {dots.map((word, idx) => (
             <span key={word} className="word-dot" ref={(el) => (dotRefs.current[idx] = el!)} />
           ))}

@@ -32,7 +32,6 @@
     "kuroshiro": "npm:kuroshiro@^1.2.0",
     "langs": "npm:langs@^2.0.0",
     // "pinyin": "npm:pinyin@^4.0.0", // imported dynamically as its >8mb minified
-    // "@types/pinyin": "npm:@types/pinyin@^2.10.2",
 
     // React things
     "react": "npm:react@^19.1.1",
@@ -41,7 +40,7 @@
     "@types/react-dom": "npm:@types/react-dom@^19.1.7",
 
     "react-color-palette": "npm:react-color-palette@^7.3.1",
-    "overlayscrollbars-react": "npm:overlayscrollbars-react@^0.5.6",
+    "simplebar-react": "npm:simplebar-react@^3.3.2",
 
     // State Management
     "zod": "npm:zod@^4.0.17",

@@ -1,13 +1,15 @@
 import appStore from '@/store/appStore.ts';
 import type { StaticData } from '@/types/lyrics.ts';
 import { useStore } from 'zustand';
+import SimpleBar from 'simplebar-react';
+import { SIMPLEBAR_CLASSNAMES } from '@constants';
 
 type StaticLyricsProps = { data: StaticData };
 const StaticLyrics: React.FC<StaticLyricsProps> = ({ data }) => {
   const forceRomanized = useStore(appStore, (s) => s.lyrics.forceRomanized);
 
   return (
-    <div className="lyrics-wrapper">
+    <SimpleBar classNames={SIMPLEBAR_CLASSNAMES} className="lyrics-wrapper">
       <div className="top-spacing" />
       {data.Lines.map((line, idx) => (
         <div key={`${line.Text}-${idx}`} className={`line-wrapper static`}>
@@ -21,7 +23,7 @@ const StaticLyrics: React.FC<StaticLyricsProps> = ({ data }) => {
         </div>
       ) : null}
       <div className="bottom-spacing" />
-    </div>
+    </SimpleBar>
   );
 };
 
