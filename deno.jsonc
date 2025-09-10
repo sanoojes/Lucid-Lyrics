@@ -19,6 +19,7 @@
     "@constants": "./src/constants/index.ts",
     "@react-spring/web": "npm:@react-spring/web@^10.0.2",
     "@cx": "./src/lib/cx.ts",
+    "@logger": "./src/lib/logger.ts",
 
     "@utils/dom": "./src/utils/dom/index.ts",
     "@utils/notification": "./src/utils/notification/index.ts",

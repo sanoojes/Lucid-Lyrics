@@ -8,15 +8,14 @@ import {
   Toggle,
 } from '@/components/ui';
 import type { Component } from '@/types/settingSchema.ts';
-import React, { type FC } from 'react';
 
-const Row: FC<{ data: Component }> = ({ data }) => {
+const Row: React.FC<{ data: Component }> = ({ data }) => {
   const isVisible = data.visible ? data.visible() : true;
 
   return (
     <div className="setting-row" style={{ display: isVisible ? '' : 'none' }}>
       <div className="col first">
-        <p className="encore-text encore-text-body-small encore-internal-color-text-base">
+        <p className="encore-text encore-text-body-base encore-internal-color-text-base">
           {data.label}
         </p>
         {data.tippy ? <Tippy label={data.tippy} hasIcon /> : null}

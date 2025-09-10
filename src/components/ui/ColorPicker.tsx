@@ -82,7 +82,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
             style={{ '--current-color': currentColor.hex } as CSSProperties}
           >
             <p
-              className="encore-text encore-text-body-small-bold"
+              className="encore-text encore-text-body-base-bold"
               style={{ color: getContrastColor(currentColor.hex) }}
             >
               Preview

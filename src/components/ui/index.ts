@@ -1,5 +1,6 @@
 import Button from '@/components/ui/Button.tsx';
 import ColorPicker from '@/components/ui/ColorPicker.tsx';
+import Credits from '@/components/ui/Credits.tsx';
 import Dropdown from '@/components/ui/Dropdown.tsx';
 import DropdownAction from '@/components/ui/DropdownAction.tsx';
 import HeaderButtons from '@/components/ui/HeaderButtons.tsx';
@@ -26,6 +27,7 @@ export {
   Toggle,
   Loader,
   Slider,
+  Credits,
   Marquee,
   Dropdown,
   TextArea,

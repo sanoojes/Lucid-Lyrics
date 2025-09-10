@@ -4,7 +4,7 @@ import { Button, RomanizationButton } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import cx from '@cx';
-import { Airplay, ChevronDown, Fullscreen } from 'lucide-react';
+import { ChevronDown, Maximize2, SquareArrowOutUpLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 
@@ -42,7 +42,7 @@ const LyricsCard = () => {
                 variant="icon"
                 tippyContent="Enter Fullscreen"
               >
-                <Fullscreen />
+                <Maximize2 />
               </Button>
               <Button
                 onClick={() => {
@@ -51,17 +51,17 @@ const LyricsCard = () => {
                 variant="icon"
                 tippyContent="Open Page"
               >
-                <Airplay />
+                <SquareArrowOutUpLeft />
               </Button>
               <RomanizationButton />
             </>
           ) : null}
           <Button
             onClick={() => appStore.getState().toggleNpvCardOpen()}
-            tippyContent="Open Lyrics"
+            tippyContent={isOpen ? 'Close Lyrics' : 'Open Lyrics'}
             variant="icon"
           >
-            <ChevronDown />
+            <ChevronDown className={cx({ rotate: isOpen })} />
           </Button>
         </div>
       </div>

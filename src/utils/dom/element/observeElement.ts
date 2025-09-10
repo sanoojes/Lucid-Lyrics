@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger.ts';
+import { logger } from '@logger';
 
 export type ObserveElementOptions = {
   root?: ParentNode;

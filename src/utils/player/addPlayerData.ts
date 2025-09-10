@@ -1,6 +1,7 @@
 import tempStore from '@/store/tempStore.ts';
 import type { PlayerSlot } from '@/types/store.ts';
 import { getColorsFromImage } from '@/utils/color.ts';
+import { logger } from '@logger';
 import { waitForGlobal } from '@utils/dom';
 
 async function addPlayerData(playerData?: typeof Spicetify.Player.data) {
@@ -22,7 +23,7 @@ async function setTempPlayerData(slot: PlayerSlot, item?: Spicetify.PlayerTrack)
     const colors = await getColorsFromImage(url);
     tempStore.getState().setPlayer(slot, { colors });
   } catch {
-    console.log('Failed to set colors for current playing.');
+    logger.info('Failed to set colors for current playing.');
   }
 
   tempStore.getState().setPlayer(slot, {

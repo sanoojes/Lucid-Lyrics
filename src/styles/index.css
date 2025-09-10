@@ -22,13 +22,20 @@
 .lucide {
   fill: rgba(var(--lucid-lyrics-text-rgb-color), 0);
   stroke: rgba(var(--lucid-lyrics-text-rgb-color), 1);
-  transition: fill 0.3s ease-in-out;
+  transform: none;
+  transition:
+    fill 0.3s ease-in-out,
+    transform 0.3s ease;
 
   &.filled {
     fill: rgba(var(--lucid-lyrics-text-rgb-color), 1);
   }
   &.active {
     filter: drop-shadow(0 0 var(--fill-active-shadow, 4px) white);
+  }
+
+  &.rotate {
+    transform: rotate(180deg);
   }
 }
 
@@ -107,6 +114,16 @@
 
   .lucid-lyrics-bg {
     z-index: -1;
+  }
+
+  .section-btn-wrapper {
+    --btn-color: transparent;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    .icon {
+      background-color: transparent !important;
+    }
   }
 
   .os-scrollbar {

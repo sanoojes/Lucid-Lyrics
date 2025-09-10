@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger.ts';
+import { logger } from '@logger';
 import type { AsyncStorage, PersistedClient } from '@tanstack/react-query-persist-client';
 
 const DB_NAME = 'lucid-lyrics-db';

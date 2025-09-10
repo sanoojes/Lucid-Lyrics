@@ -1,5 +1,5 @@
-import { createLogger } from '@/lib/logger.ts';
 import appStore from '@/store/appStore.ts';
+import { createLogger } from '@logger';
 // import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
 import { type Socket, io } from 'socket.io-client';
 

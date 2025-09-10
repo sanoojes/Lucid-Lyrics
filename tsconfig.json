@@ -13,9 +13,10 @@
     "paths": {
       "@/*": ["src/*"],
       "@cx": ["src/lib/cx.ts"],
+      "@logger": ["src/lib/logger.ts"],
       "@utils/dom": ["src/utils/dom/index.ts"],
-      "@utils/notification": ["src/utils/notification/index.ts"],
-      "@constants": ["src/constants/index.ts"]
+      "@constants": ["src/constants/index.ts"],
+      "@utils/notification": ["src/utils/notification/index.ts"]
     }
   },
   "include": ["src/**/*"],

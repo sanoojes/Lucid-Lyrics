@@ -21,7 +21,12 @@ export const getInterfaceSettings = (state: ReturnType<typeof appStore.getState>
             id: 'disable-tippy',
             type: 'Toggle',
             label: 'Disable Tooltip',
-            tippy: 'Disable Tooltip shown (recommended if tooltip is causing performance issues)',
+            tippy: (
+              <div>
+                Disable Tooltip shown <br />
+                Recommended (tooltip might cause performance issues)
+              </div>
+            ),
             isChecked: state.disableTippy,
             onChange: (disableTippy) => state.setDisableTippy(disableTippy),
           },

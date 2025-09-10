@@ -1,6 +1,6 @@
-import { createLogger } from '@/lib/logger.ts';
 import tempStore from '@/store/tempStore.ts';
 import type { SpotifyToken } from '@/types/store.ts';
+import { createLogger } from '@logger';
 
 const logger = createLogger('[SpotifyToken] ');
 const EXPIRATION_BUFFER_MS = 5 * 60 * 1000;

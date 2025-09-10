@@ -1,0 +1,21 @@
+.setting-row.credits-row {
+  display: flex;
+  flex-direction: column;
+  min-height: fit-content;
+  font-size: 16px;
+  font-family: var(--lucid-lyrics-font-family);
+  font-weight: 600;
+
+  &.providers {
+    gap: 0.5rem;
+  }
+
+  & a {
+    color: #1db954;
+  }
+
+  & a:hover {
+    color: #73ee9e;
+    text-decoration: underline;
+  }
+}

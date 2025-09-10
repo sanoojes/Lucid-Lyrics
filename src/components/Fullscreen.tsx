@@ -7,7 +7,7 @@ import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import type { LyricsState, TempState } from '@/types/store.ts';
 import cx from '@cx';
-import { FullscreenIcon, ImageUpscale, MoveHorizontal, X } from 'lucide-react';
+import { ImageUpscale, Maximize2, MoveHorizontal, X } from 'lucide-react';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 
@@ -31,7 +31,7 @@ const WidgetButtons: React.FC<{
         show={fullscreenMode !== 'fullscreen'}
         tippyContent="Enter Fullscreen"
       >
-        <FullscreenIcon />
+        <Maximize2 />
       </Button>
 
       <Button

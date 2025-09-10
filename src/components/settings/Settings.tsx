@@ -1,6 +1,6 @@
 import getSettingsSections from '@/components/settings/helper/getSettingsSections.ts';
 import Section from '@/components/settings/ui/Section.tsx';
-import { Loader } from '@/components/ui';
+import { Credits } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
 import { useEffect, useState } from 'react';
@@ -8,14 +8,12 @@ import { useEffect, useState } from 'react';
 // TODO: fix too many re-renders
 const Settings = () => {
   const [sections, setSections] = useState<SectionProps[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.body.classList.add('settings-open');
 
     const initialSections = getSettingsSections();
     setSections(initialSections);
-    setLoading(false);
 
     const unsubscribe = appStore.subscribe((state) => {
       const updatedSections = getSettingsSections(state);
@@ -29,7 +27,10 @@ const Settings = () => {
 
   return (
     <div className="lucid-lyrics-settings">
-      {loading ? <Loader /> : sections.map((section) => <Section key={section.id} {...section} />)}
+      {sections.map((section) => (
+        <Section key={section.id} {...section} />
+      ))}
+      <Credits />
     </div>
   );
 };

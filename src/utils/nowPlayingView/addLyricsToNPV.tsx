@@ -1,7 +1,7 @@
 import Background from '@/components/background/Background.tsx';
 import LyricsCard from '@/components/lyrics/LyricsCard.tsx';
-import { logger } from '@/lib/logger.ts';
 import tempStore from '@/store/tempStore.ts';
+import { logger } from '@logger';
 import { createRenderer, observeElement } from '@utils/dom';
 
 export function addLyricsToNPV() {
@@ -34,7 +34,7 @@ export function addLyricsToNPV() {
       cardSelector,
       (parent, onRemove) => {
         const { mount, unmount } = createRenderer({
-          children: <LyricsCard pageToggle />,
+          children: <LyricsCard />,
           parent,
           rootId: 'lyrics-card-root',
         });
