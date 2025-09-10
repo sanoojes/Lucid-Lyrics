@@ -3,7 +3,6 @@ import type appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
 import resetExtension from '@/utils/resetExtension.ts';
 import { showNotification } from '@utils/notification';
-import React from 'react';
 
 export const getAdvancedSettings = (state: ReturnType<typeof appStore.getState>): SectionProps =>
   ({

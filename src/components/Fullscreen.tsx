@@ -73,7 +73,7 @@ const WidgetButtons: React.FC<{
 };
 
 const Fullscreen: React.FC = () => {
-  const { fullScreenMetadataPosition } = useStore(appStore, (s) => s.lyrics);
+  const { fullScreenMetadataPosition, isSpotifyFont } = useStore(appStore, (s) => s.lyrics);
   const fullscreenMode = useStore(tempStore, (s) => s.fullscreenMode);
 
   useEffect(() => {
@@ -98,7 +98,10 @@ const Fullscreen: React.FC = () => {
 
   return (
     <div
-      className={`lyrics-fullscreen-root show-now-playing-widget widget-on-${fullScreenMetadataPosition} ${fullscreenMode}`}
+      className={cx(
+        `lyrics-fullscreen-root show-now-playing-widget widget-on-${fullScreenMetadataPosition} ${fullscreenMode}`,
+        { 'use-encore-font': isSpotifyFont }
+      )}
       autoFocus
     >
       <div className="lyrics-root">

@@ -5,9 +5,9 @@
 
   --btn-rgb-color: 20, 20, 20;
 
-  --lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
+  --lucid-lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
   --lyrics-line-height: 1.18;
-  --lyrics-font-weight: 700;
+  --lucid-lyrics-font-weight: 700;
 
   --lyrics-bg-scale: 0.75;
   --lyrics-bg-font-weight: 600;
@@ -15,11 +15,11 @@
   --lyrics-credits-font-weight: 600;
   --lyrics-credits-scale: 0.47;
 
-  --lyrics-font-family: LucidLyrics, "SF Pro", var(--encore-variable-font-stack);
+  --lucid-lyrics-font-family: LucidLyrics, "SF Pro", var(--encore-variable-font-stack);
 }
 
-.use-encore-fonts {
-  --lyrics-font-family: var(--encore-variable-font-stack);
+.use-encore-font {
+  --lucid-lyrics-font-family: var(--encore-variable-font-stack);
 }
 .lucid-config-container {
   --btn-color: rgba(var(--btn-rgb-color), 0.25);
@@ -160,9 +160,9 @@
   }
 
   .line {
-    font-family: var(--lyrics-font-family) !important;
-    font-size: var(--lyrics-font-size);
-    font-weight: var(--lyrics-font-weight);
+    font-family: var(--lucid-lyrics-font-family) !important;
+    font-size: var(--lucid-lyrics-font-size);
+    font-weight: var(--lucid-lyrics-font-weight);
     line-height: var(--lyrics-line-height);
     flex-wrap: wrap;
 
@@ -197,14 +197,14 @@
   }
 
   .line.background {
-    font-size: calc(var(--lyrics-font-size) * var(--lyrics-bg-scale));
+    font-size: calc(var(--lucid-lyrics-font-size) * var(--lyrics-bg-scale));
     font-weight: var(--lyrics-bg-font-weight);
     opacity: 0.8;
     margin-top: 1cqi;
   }
 
   .credits-line {
-    font-size: calc(var(--lyrics-font-size) * var(--lyrics-credits-scale));
+    font-size: calc(var(--lucid-lyrics-font-size) * var(--lyrics-credits-scale));
     font-weight: var(--lyrics-credits-font-weight);
     opacity: 0.7;
   }

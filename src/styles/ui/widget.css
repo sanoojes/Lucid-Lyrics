@@ -36,7 +36,8 @@
       --font-size: calc(clamp(0.5rem, 3cqw, 2.4rem) * 2);
       color: #fff;
       font-size: var(--font-size);
-      font-weight: 900;
+      font-family: var(--lucid-lyrics-font-family);
+      font-weight: 600;
       line-height: 1.18;
       margin: 0 auto;
       opacity: 0.95;
@@ -48,6 +49,7 @@
     .artists {
       --max-width: 68cqw;
       --font-size: calc(clamp(0.5rem, 3cqw, 2.4rem) * 1.5);
+      font-weight: 500;
       opacity: 0.7;
       margin-top: 8px;
     }
@@ -137,7 +139,7 @@
           font-size: 12px;
           line-height: 12px;
           color: #fff;
-          font-family: var(--lyrics-font-family);
+          font-family: var(--lucid-lyrics-font-family);
           font-weight: 600;
           width: 40px;
           text-align: center;

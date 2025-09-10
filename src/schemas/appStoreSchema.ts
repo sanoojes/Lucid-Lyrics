@@ -26,6 +26,7 @@ export const BackgroundStateSchema = z.object({
 });
 
 export const LyricsStateSchema = z.object({
+  isSpotifyFont: z.boolean(),
   splitThresholdMs: z.number(),
   maxTranslateUpWord: z.number(),
   maxTranslateUpLetter: z.number(),

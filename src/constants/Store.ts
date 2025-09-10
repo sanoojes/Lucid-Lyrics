@@ -18,6 +18,7 @@ export const DEFAULT_APP_STATE: AppState = {
     },
   },
   lyrics: {
+    isSpotifyFont: false,
     splitThresholdMs: 1000,
     maxTranslateUpWord: 2,
     maxTranslateUpLetter: 2,

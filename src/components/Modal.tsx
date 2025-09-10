@@ -1,8 +1,11 @@
 /** biome-ignore-all lint/a11y: nahh need for a11y now */
 
 import { HeaderButtons } from '@/components/ui';
+import cx from '@cx';
 import { type FC, type ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useStore } from 'zustand';
+import appStore from '../store/appStore.ts';
 
 type ModalProps = {
   isOpen: boolean;
@@ -23,6 +26,8 @@ const Modal: FC<ModalProps> = ({
   onClose,
   className,
 }) => {
+  const isSpotifyFont = useStore(appStore, (s) => s.lyrics.isSpotifyFont);
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -38,7 +43,7 @@ const Modal: FC<ModalProps> = ({
   return ReactDOM.createPortal(
     <div className="GenericModal__overlay lyrics-modal" style={{ zIndex: 20 }} onClick={onClose}>
       <div
-        className={`GenericModal lyrics-modal ${className ?? ''} `}
+        className={cx('GenericModal lyrics-modal', className, { 'use-encore-font': isSpotifyFont })}
         role="dialog"
         aria-label={title}
         aria-modal="true"

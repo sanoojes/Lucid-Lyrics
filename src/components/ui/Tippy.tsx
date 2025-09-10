@@ -2,7 +2,9 @@ import { CircleQuestionMark } from 'lucide-react';
 import { memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import '@/styles/ui/tippy.css';
+import appStore from '@/store/appStore.ts';
 import { getOrCreateElement } from '@utils/dom';
+import { useStore } from 'zustand';
 
 type TippyProps = {
   label?: React.ReactNode;
@@ -17,8 +19,10 @@ const Tippy: React.FC<TippyProps> = ({ label = null, children, hasIcon = false, 
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const disableTippy = useStore(appStore, (s) => s.disableTippy);
 
   const showTooltip = () => {
+    if (disableTippy) return;
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       setCoords({
@@ -30,10 +34,13 @@ const Tippy: React.FC<TippyProps> = ({ label = null, children, hasIcon = false, 
   };
 
   const hideTooltip = () => {
+    if (disableTippy) return;
     setVisible(false);
   };
 
   useEffect(() => {
+    if (disableTippy) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -44,20 +51,21 @@ const Tippy: React.FC<TippyProps> = ({ label = null, children, hasIcon = false, 
       container.removeEventListener('mouseenter', showTooltip);
       container.removeEventListener('mouseleave', hideTooltip);
     };
-  }, []);
+  }, [disableTippy]);
 
   return (
     <>
       <div ref={containerRef} style={{ display: show ? 'inline' : 'none' }} data-tippy-container>
         {children}
-        {hasIcon && (
+        {hasIcon && !disableTippy && (
           <div className="tooltip-icon-wrapper">
             <CircleQuestionMark size={16} />
           </div>
         )}
       </div>
 
-      {visible &&
+      {!disableTippy &&
+        visible &&
         label &&
         createPortal(
           <div

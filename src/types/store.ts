@@ -80,6 +80,7 @@ export type BackgroundState = {
 };
 
 export type LyricsState = {
+  isSpotifyFont: boolean;
   splitThresholdMs: number;
   maxTranslateUpWord: number;
   maxTranslateUpLetter: number;

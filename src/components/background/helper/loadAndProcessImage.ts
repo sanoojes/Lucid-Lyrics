@@ -49,7 +49,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<Text
       return null;
     }
 
-    blurredCtx.filter = serializeFilters(filter, { skipOpacity: true, skipBrightness: true });
+    blurredCtx.filter = serializeFilters(filter, { skipOpacity: true });
     blurredCtx.drawImage(circleCanvas, padding / 2, padding / 2);
 
     const texture = new CanvasTexture(blurredCanvas);

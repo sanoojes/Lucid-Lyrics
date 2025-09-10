@@ -1,27 +1,19 @@
 import loadAndProcessImage from '@/components/background/helper/loadAndProcessImage.ts';
 import { FragmentShader, GetShaderUniforms, VertexShader } from '@/shaders/index.ts';
 import appStore from '@/store/appStore.ts';
-import { serializeFilters } from '@utils/dom';
-import { useCallback, useEffect, useRef } from 'react';
-import {
-  Mesh,
-  OrthographicCamera,
-  PlaneGeometry,
-  Scene,
-  ShaderMaterial,
-  WebGLRenderer,
-} from 'three';
+import tempStore from '@/store/tempStore.ts';
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 import { useStore } from 'zustand';
-import tempStore from '../../store/tempStore.ts';
 
-const AnimatedBackgroundCanvas = () => {
+const MIN_OPACITY_FADE = 0.6;
+
+const AnimatedBackgroundCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const rendererRef = useRef<WebGLRenderer | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const uniformsRef = useRef<ReturnType<typeof GetShaderUniforms> | null>(null);
   const isFocusedRef = useRef(true);
-  const sceneRef = useRef(new Scene());
-
-  const { filter, autoStopAnimation, imageMode, customUrl } = useStore(
+  const { filter, autoStopAnimation, customUrl, imageMode } = useStore(
     appStore,
     (state) => state.bg.options
   );
@@ -36,12 +28,11 @@ const AnimatedBackgroundCanvas = () => {
         : npUrl) ?? npUrl;
 
   useEffect(() => {
-    const scene = sceneRef.current;
-    const canvas = canvasRef.current;
-    if (!canvas || !scene) return;
+    if (!canvasRef.current) return;
 
-    const renderer = new WebGLRenderer({
-      canvas,
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasRef.current,
       antialias: true,
       alpha: true,
     });
@@ -49,21 +40,48 @@ const AnimatedBackgroundCanvas = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     rendererRef.current = renderer;
 
-    const camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    const geometry = new PlaneGeometry(2, 2);
+    const geometry = new THREE.PlaneGeometry(2, 2);
     const uniforms = GetShaderUniforms();
     uniformsRef.current = uniforms;
 
-    const material = new ShaderMaterial({
+    const UpdateDimensions = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setSize(width, height);
+
+      const scaledWidth = width * window.devicePixelRatio;
+      const scaledHeight = height * window.devicePixelRatio;
+      const largestAxis = scaledWidth > scaledHeight ? 'X' : 'Y';
+      const largestAxisSize = Math.max(scaledWidth, scaledHeight);
+
+      uniforms.BackgroundCircleOrigin.value.set(scaledWidth / 2, scaledHeight / 2);
+      uniforms.BackgroundCircleRadius.value = largestAxisSize * 1.5;
+
+      uniforms.CenterCircleOrigin.value.set(scaledWidth / 2, scaledHeight / 2);
+      uniforms.CenterCircleRadius.value = largestAxisSize * (largestAxis === 'X' ? 1 : 0.75);
+
+      uniforms.LeftCircleOrigin.value.set(0, scaledHeight);
+      uniforms.LeftCircleRadius.value = largestAxisSize * 0.75;
+
+      uniforms.RightCircleOrigin.value.set(scaledWidth, 0);
+      uniforms.RightCircleRadius.value = largestAxisSize * (largestAxis === 'X' ? 0.65 : 0.5);
+
+      renderer.render(scene, camera); // render once when resizing else the background will be black
+    };
+
+    UpdateDimensions();
+
+    const material = new THREE.ShaderMaterial({
       vertexShader: VertexShader,
       fragmentShader: FragmentShader,
       uniforms,
       transparent: true,
     });
 
-    const mesh = new Mesh(geometry, material);
+    const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
     let frameId: number | null = null;
@@ -79,56 +97,17 @@ const AnimatedBackgroundCanvas = () => {
 
       frameId = requestAnimationFrame(animate);
     };
-    animate();
+    animate(); // start animation loop
+
+    window.addEventListener('resize', UpdateDimensions);
 
     return () => {
       if (frameId) cancelAnimationFrame(frameId);
       renderer.dispose();
       geometry.dispose();
       material.dispose();
+      window.removeEventListener('resize', UpdateDimensions);
     };
-  }, []);
-
-  const updateDimensions = useCallback(() => {
-    if (!canvasRef.current || !rendererRef.current || !uniformsRef.current || !sceneRef.current)
-      return;
-
-    const renderer = rendererRef.current;
-    const uniforms = uniformsRef.current;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    renderer.setSize(width, height);
-
-    const scaledWidth = width * window.devicePixelRatio;
-    const scaledHeight = height * window.devicePixelRatio;
-    const largestAxis = scaledWidth > scaledHeight ? 'X' : 'Y';
-    const largestAxisSize = Math.max(scaledWidth, scaledHeight);
-
-    uniforms.BackgroundCircleOrigin.value.set(scaledWidth / 2, scaledHeight / 2);
-    uniforms.BackgroundCircleRadius.value = largestAxisSize * 1.5;
-
-    uniforms.CenterCircleOrigin.value.set(scaledWidth / 2, scaledHeight / 2);
-    uniforms.CenterCircleRadius.value = largestAxisSize * (largestAxis === 'X' ? 1 : 0.75);
-
-    uniforms.LeftCircleOrigin.value.set(0, scaledHeight);
-    uniforms.LeftCircleRadius.value = largestAxisSize * 0.75;
-
-    uniforms.RightCircleOrigin.value.set(scaledWidth, 0);
-    uniforms.RightCircleRadius.value = largestAxisSize * (largestAxis === 'X' ? 0.65 : 0.5);
-
-    renderer.render(sceneRef.current, new OrthographicCamera(-1, 1, 1, -1, 0.1, 10));
-  }, []);
-
-  useEffect(() => {
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => {
-      window.removeEventListener('resize', updateDimensions);
-    };
-  }, [updateDimensions]);
-
-  useEffect(() => {
-    updateDimensions();
   }, []);
 
   useEffect(() => {
@@ -155,6 +134,12 @@ const AnimatedBackgroundCanvas = () => {
     if (!imageSrc || !uniformsRef.current) return;
 
     const uniforms = uniformsRef.current;
+    const prevTexture = uniforms.BlurredCoverArt.value;
+
+    uniforms.PreviousBlurredCoverArt.value = prevTexture;
+
+    uniforms.TextureFade.value = MIN_OPACITY_FADE;
+
     let cancelled = false;
 
     setTimeout(() => {
@@ -162,6 +147,28 @@ const AnimatedBackgroundCanvas = () => {
         if (!newTexture || cancelled || !uniformsRef.current) return;
 
         uniforms.BlurredCoverArt.value = newTexture;
+
+        const start = performance.now();
+        const duration = 800;
+
+        const fade = () => {
+          if (!uniformsRef.current) return;
+
+          const elapsed = performance.now() - start;
+          const t = Math.min(elapsed / duration, 1);
+
+          uniformsRef.current.TextureFade.value = MIN_OPACITY_FADE + 0.4 * t;
+
+          if (t < 1) {
+            requestAnimationFrame(fade);
+          } else {
+            if (prevTexture && prevTexture !== uniformsRef.current.BlurredCoverArt.value) {
+              prevTexture.dispose();
+            }
+          }
+        };
+
+        fade();
       });
     }, 300);
 
@@ -181,7 +188,6 @@ const AnimatedBackgroundCanvas = () => {
         top: 0,
         left: 0,
         opacity: `${filter.opacity ?? 100}%`,
-        filter: serializeFilters(filter, { skipBlur: true, skipContrast: true }),
       }}
     />
   );

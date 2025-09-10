@@ -4,8 +4,10 @@ import LineLyrics from '@/components/lyrics/type/LineLyrics.tsx';
 import StaticLyrics from '@/components/lyrics/type/StaticLyrics.tsx';
 import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
 import { LyricsLoader } from '@/components/ui';
+import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import { getLyricsData } from '@/utils/fetch/getLyricsData.ts';
+import cx from '@cx';
 import { useQuery } from '@tanstack/react-query';
 import { memo, useEffect } from 'react';
 import { useStore } from 'zustand';
@@ -23,6 +25,7 @@ const Status: React.FC<StatusProps> = ({ title }) => {
 const Lyrics: React.FC = memo(() => {
   const id = useStore(tempStore, (s) => s.player.nowPlaying.id);
   const isOnline = useStore(tempStore, (s) => s.isOnline);
+  const isSpotifyFont = useStore(appStore, (s) => s.lyrics.isSpotifyFont);
 
   const { data, status } = useQuery({
     queryKey: ['lyrics', id],
@@ -38,7 +41,7 @@ const Lyrics: React.FC = memo(() => {
   }, [data, status]);
 
   return (
-    <div className="lyrics-container use-encore-fonts">
+    <div className={cx('lyrics-container', { 'use-encore-font': isSpotifyFont })}>
       {status === 'pending' ? (
         <LyricsLoader />
       ) : status === 'success' && data?.Type ? (

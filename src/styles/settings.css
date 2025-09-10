@@ -18,6 +18,8 @@
   --btn-color: rgba(var(--spice-rgb-text), 0.05);
   --btn-hover-color: rgba(var(--spice-rgb-text), 0.1);
 
+  font-family: var(--lucid-lyrics-font-family) !important;
+
   .tooltip-icon-wrapper {
     display: flex;
     justify-content: center;
@@ -320,6 +322,10 @@
   .color-picker-content-wrapper {
     padding: 16px;
   }
+
+  .encore-text {
+    font-family: var(--lucid-lyrics-font-family) !important;
+  }
 }
 
 input.rcp-field-input,
@@ -330,6 +336,7 @@ input.rcp-field-input,
   justify-content: center;
   align-items: center;
   border: 1px solid var(--border-color);
+  font-family: var(--lucid-lyrics-font-family) !important;
   border-radius: 12px;
   padding: 8px 12px;
   min-height: 36px;

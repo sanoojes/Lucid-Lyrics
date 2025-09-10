@@ -15,6 +15,7 @@ type AppStateSetters = {
   setIsAnalyticsActive: (isAnalyticsActive: boolean) => void;
   toggleNpvCardOpen: () => void;
   toggleRomanization: () => void;
+  setDisableTippy: (disableTippy: boolean) => void;
 
   setLyrics: <K extends keyof LyricsState>(key: K, value: LyricsState[K]) => void;
 
@@ -49,6 +50,7 @@ const appStore = createStore<AppState & AppStateSetters>()(
           set({ isDevMode });
           location.reload();
         },
+        setDisableTippy: (disableTippy) => set({ disableTippy }),
         toggleRomanization: () =>
           set({ lyrics: { ...get().lyrics, forceRomanized: !get().lyrics.forceRomanized } }),
         setIsAnalyticsActive: (isAnalyticsActive) => set({ isAnalyticsActive }),

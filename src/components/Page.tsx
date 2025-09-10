@@ -69,7 +69,7 @@ const Page = () => {
   const fullscreenMode = useStore(tempStore, (s) => s.fullscreenMode);
 
   const isDevMode = useStore(appStore, (s) => s.isDevMode);
-  const { showMetadata, metadataPosition } = useStore(appStore, (s) => s.lyrics);
+  const { showMetadata, metadataPosition, isSpotifyFont } = useStore(appStore, (s) => s.lyrics);
 
   const [isHovering, setIsHovering] = useState(false);
 
@@ -77,6 +77,7 @@ const Page = () => {
   return (
     <main
       className={cx(`lyrics-page-root`, {
+        'use-encore-font': isSpotifyFont,
         'show-now-playing-widget': showMetadata,
         [`widget-on-${metadataPosition}`]: showMetadata,
       })}
