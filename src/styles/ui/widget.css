@@ -37,7 +37,7 @@
       color: #fff;
       font-size: var(--font-size);
       font-family: var(--lucid-lyrics-font-family);
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1.18;
       margin: 0 auto;
       opacity: 0.95;
@@ -48,7 +48,7 @@
 
     .artists {
       --max-width: 68cqw;
-      --font-size: calc(clamp(0.5rem, 3cqw, 2.4rem) * 1.5);
+      --font-size: calc(clamp(0.5rem, 3cqw, 2.4rem) * 1.2);
       font-weight: 500;
       opacity: 0.7;
       margin-top: 8px;
@@ -215,8 +215,8 @@
     }
   }
 }
-
-.marquee-container {
+.l-marquee-container {
+  color: var(--lucid-lyrics-text-color) !important;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
@@ -224,14 +224,17 @@
   margin-inline-start: -8px;
 }
 
-.marquee-wrapper {
+.l-marquee-wrapper {
   display: inline-block;
   white-space: nowrap;
   animation: marquee var(--marquee-duration, 12s) linear infinite alternate;
   padding: 0 8px;
+  * {
+    color: var(--lucid-lyrics-text-color) !important;
+  }
 }
 
-.marquee-container:hover .marquee-wrapper {
+.l-marquee-container:hover .l-marquee-wrapper {
   animation-play-state: paused;
 }
 

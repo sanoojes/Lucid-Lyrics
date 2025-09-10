@@ -27,7 +27,7 @@
   --border-color: rgba(100, 100, 100, 0.1);
 
   position: absolute;
-  z-index: 9;
+  z-index: 4;
   bottom: 0;
   left: 0;
   width: 100%;

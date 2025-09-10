@@ -1,6 +1,6 @@
 import appStore from '@/store/appStore.ts';
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
-import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
+// import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
 import { processLyrics } from '@/utils/lyrics/processLyrics.ts';
 import { logger } from '@logger';
 
@@ -18,10 +18,10 @@ let availableApi: string | null = null;
 export const getLyricsData = async (id: string | null) => {
   if (!id) throw new Error('Missing track ID');
 
-  const tokenHeader = await getSpotifyTokenHeader();
-  if (!tokenHeader) {
-    throw new Error('Missing or invalid Spotify token');
-  }
+  // const tokenHeader = await getSpotifyTokenHeader();
+  // if (!tokenHeader) {
+  //   throw new Error('Missing or invalid Spotify token');
+  // }
 
   const endpointsToTry = availableApi
     ? [availableApi, ...API_CONSUMERS.filter((url) => url !== availableApi)]
@@ -33,9 +33,9 @@ export const getLyricsData = async (id: string | null) => {
     try {
       const res = await fetch(`${baseUrl}/api/lyrics/${id}`, {
         method: 'GET',
-        headers: {
-          'Spotify-Token': tokenHeader,
-        },
+        // headers: {
+        //   'Spotify-Token': tokenHeader,
+        // },
         credentials: 'omit',
         priority: 'high',
       });

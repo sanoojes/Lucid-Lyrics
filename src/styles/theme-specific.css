@@ -1,0 +1,15 @@
+.glassify-theme-present {
+  .lyrics-page-root {
+    box-shadow: var(--shadow-glass-large) !important;
+  }
+  .main-nowPlayingView-sectionHeader.card-header,
+  .lucid-config-container .lucid-lyrics-btn.icon {
+    box-shadow: var(--shadow-glass) !important;
+    border: none !important;
+  }
+}
+.lucid-theme-present {
+  .player-floating .lucid-config-container {
+    margin-bottom: calc(var(--player-height) - var(--panel-gap));
+  }
+}

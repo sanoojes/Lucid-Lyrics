@@ -1,5 +1,6 @@
 import '@/styles/index.css';
 import '@/styles/settings.css';
+import '@/styles/theme-specific.css';
 
 import Page from '@/components/Page.tsx';
 import { setupAnalytics } from '@/setupAnalytics.ts';
@@ -11,7 +12,7 @@ import { createButton } from '@/utils/playbar/createButton.ts';
 import createPage from '@/utils/routes/createPage.ts';
 import addSettings from '@/utils/settings/addSettings.tsx';
 import { Icons } from '@constants';
-import { createRenderer } from '@utils/dom';
+import { createRenderer, getOrCreateElement, waitForElement } from '@utils/dom';
 import { initNotificationSystem } from '@utils/notification';
 import Fullscreen from './components/Fullscreen.tsx';
 
@@ -68,6 +69,16 @@ const main = async () => {
   addLyricsToNPV();
 
   setupAnalytics();
+
+  addThemeSpecificStyles();
 };
 
 main();
+
+async function addThemeSpecificStyles() {
+  const timeout = 20000;
+  const isGlassifyTheme = await waitForElement('.glassify-bg', { timeout });
+  const isLucidTheme = await waitForElement('.lucid-bg', { timeout });
+  if (isGlassifyTheme) document.documentElement.classList.add('glassify-theme-present');
+  if (isLucidTheme) document.documentElement.classList.add('lucid-theme-present');
+}

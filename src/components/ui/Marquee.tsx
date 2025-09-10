@@ -8,8 +8,8 @@ type MarqueeProps = {
 
 const Marquee: React.FC<MarqueeProps> = ({ children, className = '' }) => {
   return (
-    <div className={cx('marquee-container', className)}>
-      <div className="marquee-wrapper">{children}</div>
+    <div className={cx('l-marquee-container', className)}>
+      <div className="l-marquee-wrapper">{children}</div>
     </div>
   );
 };
