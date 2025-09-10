@@ -98,8 +98,8 @@
 
       .control-buttons {
         --btn-color: rgba(0, 0, 0, 0.05);
-        --btn-hover-color: rgba(var(--lyrics-text-rgb-color), 0.1);
-        --border-color: rgba(var(--lyrics-text-rgb-color), 0.1);
+        --btn-hover-color: rgba(var(--lucid-lyrics-text-rgb-color), 0.1);
+        --border-color: rgba(var(--lucid-lyrics-text-rgb-color), 0.1);
         margin-top: min(16px, 4cqh);
         .lucid-lyrics-btn {
           padding: 12px;

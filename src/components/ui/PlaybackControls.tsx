@@ -59,7 +59,7 @@ const PlaybackControls = () => {
       <Button
         variant="icon"
         onClick={toggleRepeat}
-        tippyContent={repeat === 2 ? 'Repeat Off' : repeat === 1 ? 'Repeat On' : 'Repeat Once'}
+        tippyContent={repeat === 2 ? 'Repeat Once' : repeat === 1 ? 'Repeat On' : 'Repeat Off'}
       >
         {repeat === 2 ? <RepeatOne active /> : <Repeat active={repeat !== 0} />}
       </Button>

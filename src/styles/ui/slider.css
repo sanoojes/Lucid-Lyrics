@@ -1,7 +1,7 @@
 .slider-bar {
-  --slider-bg-clr: rgba(var(--lyrics-text-rgb-color), 0.2);
-  --slider-fill-clr: rgba(var(--lyrics-text-rgb-color), 0.8);
-  --slider-handle-bg-clr: rgba(var(--lyrics-text-rgb-color), 1);
+  --slider-bg-clr: rgba(var(--lucid-lyrics-text-rgb-color), 0.2);
+  --slider-fill-clr: rgba(var(--lucid-lyrics-text-rgb-color), 0.8);
+  --slider-handle-bg-clr: rgba(var(--lucid-lyrics-text-rgb-color), 1);
 
   --slider-height: 8px;
   --slider-handle-size: 12px;

@@ -1,19 +1,19 @@
 :root {
-  --lyrics-text-rgb-color: 255, 255, 255;
-  --lyrics-text-color: rgb(var(--lyrics-text-rgb-color));
-  --lyrics-text-past-color: rgb(var(--lyrics-text-rgb-color), 0.5);
+  --lucid-lyrics-text-rgb-color: 255, 255, 255;
+  --lucid-lyrics-text-color: rgb(var(--lucid-lyrics-text-rgb-color));
+  --lucid-lyrics-text-past-color: rgb(var(--lucid-lyrics-text-rgb-color), 0.5);
 
   --btn-rgb-color: 20, 20, 20;
 
   --lucid-lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
-  --lyrics-line-height: 1.18;
+  --lucid-lyrics-line-height: 1.18;
   --lucid-lyrics-font-weight: 700;
 
-  --lyrics-bg-scale: 0.75;
-  --lyrics-bg-font-weight: 600;
+  --lucid-lyrics-bg-scale: 0.75;
+  --lucid-lyrics-bg-font-weight: 600;
 
-  --lyrics-credits-font-weight: 600;
-  --lyrics-credits-scale: 0.47;
+  --lucid-lyrics-credits-font-weight: 600;
+  --lucid-lyrics-credits-scale: 0.47;
 
   --lucid-lyrics-font-family: LucidLyrics, "SF Pro", var(--encore-variable-font-stack);
 }
@@ -89,7 +89,7 @@
 }
 
 .lyrics-container {
-  --lyrics-horizontal-padding: 0 15.5cqw 0 18cqw;
+  --lucid-lyrics-horizontal-padding: 0 15.5cqw 0 18cqw;
 
   height: 100%;
   width: 100%;
@@ -107,7 +107,7 @@
 }
 
 .status-wrapper {
-  padding: var(--lyrics-horizontal-padding);
+  padding: var(--lucid-lyrics-horizontal-padding);
   height: 100%;
   width: 100%;
   display: flex;
@@ -140,7 +140,7 @@
 }
 
 .lyrics-wrapper {
-  padding: var(--lyrics-horizontal-padding);
+  padding: var(--lucid-lyrics-horizontal-padding);
   height: 100%;
   width: 100%;
   overflow: auto;
@@ -163,7 +163,7 @@
     font-family: var(--lucid-lyrics-font-family) !important;
     font-size: var(--lucid-lyrics-font-size);
     font-weight: var(--lucid-lyrics-font-weight);
-    line-height: var(--lyrics-line-height);
+    line-height: var(--lucid-lyrics-line-height);
     flex-wrap: wrap;
 
     text-align: left;
@@ -197,15 +197,15 @@
   }
 
   .line.background {
-    font-size: calc(var(--lucid-lyrics-font-size) * var(--lyrics-bg-scale));
-    font-weight: var(--lyrics-bg-font-weight);
+    font-size: calc(var(--lucid-lyrics-font-size) * var(--lucid-lyrics-bg-scale));
+    font-weight: var(--lucid-lyrics-bg-font-weight);
     opacity: 0.8;
     margin-top: 1cqi;
   }
 
   .credits-line {
-    font-size: calc(var(--lucid-lyrics-font-size) * var(--lyrics-credits-scale));
-    font-weight: var(--lyrics-credits-font-weight);
+    font-size: calc(var(--lucid-lyrics-font-size) * var(--lucid-lyrics-credits-scale));
+    font-weight: var(--lucid-lyrics-credits-font-weight);
     opacity: 0.7;
   }
 
@@ -223,8 +223,8 @@
 
     background: linear-gradient(
       to right,
-      var(--lyrics-text-color) 55%,
-      rgba(var(--lyrics-text-rgb-color), 0.25) 100%
+      var(--lucid-lyrics-text-color) 55%,
+      rgba(var(--lucid-lyrics-text-rgb-color), 0.25) 100%
     );
 
     transform-origin: center center;
@@ -232,7 +232,7 @@
 
     background-size: var(--bg-size-x) 100%;
 
-    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--lyrics-text-rgb-color), 0.5);
+    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--lucid-lyrics-text-rgb-color), 0.5);
 
     opacity: 1;
 
@@ -276,13 +276,13 @@
 
     background: linear-gradient(
       to bottom,
-      var(--lyrics-text-color) 55%,
-      rgba(var(--lyrics-text-rgb-color), 0.25) 100%
+      var(--lucid-lyrics-text-color) 55%,
+      rgba(var(--lucid-lyrics-text-rgb-color), 0.25) 100%
     );
 
     background-size: 100% var(--bg-size-y);
 
-    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--lyrics-text-rgb-color), 0.5);
+    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--lucid-lyrics-text-rgb-color), 0.5);
 
     transition: none;
 

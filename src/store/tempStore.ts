@@ -10,7 +10,7 @@ export type TempSetter = {
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   setSpotifyToken: (spotifyToken: Partial<SpotifyToken>) => void;
   setPlayer: (slot: PlayerSlot, player: Partial<PlayerData>) => void;
-  setPageImg: (pageImg: Partial<TempState['pageImg']>) => void;
+  // setPageImg: (pageImg: Partial<TempState['pageImg']>) => void;
   setViewSize: (viewSize: Partial<TempState['viewSize']>) => void;
   setIsOnline: (isOnline: boolean) => void;
   setFullscreenMode: (fullscreenMode: TempState['fullscreenMode']) => void;
@@ -38,7 +38,7 @@ const DEFAULT_TEMP_STATE: TempState = {
     // previous: DEFAULT_PLAYER_STATE,
     // prefetched: DEFAULT_PLAYER_STATE,
   },
-  pageImg: {},
+  // pageImg: {},
   spotifyToken: {},
   viewSize: {
     main: { width: 0, height: 0 },
@@ -63,7 +63,7 @@ const tempStore = createStore<TempState & TempSetter>()(
           },
         }),
 
-      setPageImg: (pageImg) => set({ pageImg: { ...get().pageImg, ...pageImg } }),
+      // setPageImg: (pageImg) => set({ pageImg: { ...get().pageImg, ...pageImg } }),
 
       setIsOnline: (isOnline) => set({ isOnline }),
       setIsScrolling: (isScrolling) => set({ isScrolling }),

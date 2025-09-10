@@ -19,13 +19,7 @@ const AnimatedBackgroundCanvas: React.FC = () => {
   );
 
   const npUrl = useStore(tempStore, (state) => state.player?.nowPlaying.imageUrl);
-  const pageImgUrl = useStore(tempStore, (state) => state.pageImg);
-  const imageSrc =
-    (imageMode === 'custom'
-      ? customUrl
-      : imageMode === 'page'
-        ? (pageImgUrl.desktop ?? pageImgUrl.cover)
-        : npUrl) ?? npUrl;
+  const imageSrc = (imageMode === 'custom' ? customUrl : npUrl) ?? npUrl;
 
   useEffect(() => {
     if (!canvasRef.current) return;

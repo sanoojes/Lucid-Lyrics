@@ -39,10 +39,10 @@ export type TempState = {
   isLyricsOnPage: boolean;
   isSidebarOpen: boolean;
   player: PlayerState;
-  pageImg: {
-    cover?: string;
-    desktop?: string;
-  };
+  // pageImg: {
+  //   cover?: string;
+  //   desktop?: string;
+  // };
   viewSize: {
     main: { width: number; height: number };
   };
@@ -62,7 +62,7 @@ type Stringify<T extends string> = T | (string & {}); // just to trick the compi
 type Color = string;
 
 type BackgroundMode = Stringify<'solid' | 'static' | 'animated'>;
-type BackgroundImageMode = Stringify<'custom' | 'player' | 'page'>;
+type BackgroundImageMode = Stringify<'custom' | 'player'>;
 export type BackgroundState = {
   mode: BackgroundMode;
   options: {

@@ -20,12 +20,12 @@
 }
 
 .lucide {
-  fill: rgba(var(--lyrics-text-rgb-color), 0);
-  stroke: rgba(var(--lyrics-text-rgb-color), 1);
+  fill: rgba(var(--lucid-lyrics-text-rgb-color), 0);
+  stroke: rgba(var(--lucid-lyrics-text-rgb-color), 1);
   transition: fill 0.3s ease-in-out;
 
   &.filled {
-    fill: rgba(var(--lyrics-text-rgb-color), 1);
+    fill: rgba(var(--lucid-lyrics-text-rgb-color), 1);
   }
   &.active {
     filter: drop-shadow(0 0 var(--fill-active-shadow, 4px) white);
@@ -62,7 +62,7 @@
 
   &.show-now-playing-widget {
     .lyrics-container {
-      --lyrics-horizontal-padding: 0 6cqw;
+      --lucid-lyrics-horizontal-padding: 0 6cqw;
 
       width: 60%;
       left: 40%;
@@ -78,7 +78,7 @@
 
     &.widget-on-right {
       .lyrics-container {
-        --lyrics-horizontal-padding: 0 6cqw;
+        --lucid-lyrics-horizontal-padding: 0 6cqw;
 
         width: 60%;
         left: 0;

@@ -75,7 +75,6 @@ export const getBackgroundSettings = (
             value: imageMode,
             options: [
               ['Now Playing Track', 'player'],
-              ['Page Cover Art', 'page'],
               ['Custom Image URL', 'custom'],
             ],
             onChange: (imageMode) => state.setBgOptions({ imageMode }),

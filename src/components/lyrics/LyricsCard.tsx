@@ -1,10 +1,10 @@
 import '@/styles/npv.css';
 import LyricsRenderer from '@/components/lyrics/LyricsRenderer.tsx';
-import { Button } from '@/components/ui';
+import { Button, RomanizationButton } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import cx from '@cx';
-import { ChevronDown } from 'lucide-react';
+import { Airplay, ChevronDown, Fullscreen } from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 
@@ -33,6 +33,29 @@ const LyricsCard = () => {
           <div className="main-nowPlayingView-sectionHeaderText">Lyrics</div>
         </h2>
         <div className="section-btn-wrapper">
+          {isOpen ? (
+            <>
+              <Button
+                onClick={() => {
+                  tempStore.getState().setFullscreenMode('fullscreen');
+                }}
+                variant="icon"
+                tippyContent="Enter Fullscreen"
+              >
+                <Fullscreen />
+              </Button>
+              <Button
+                onClick={() => {
+                  tempStore.getState().mainPageInstance?.togglePage();
+                }}
+                variant="icon"
+                tippyContent="Open Page"
+              >
+                <Airplay />
+              </Button>
+              <RomanizationButton />
+            </>
+          ) : null}
           <Button
             onClick={() => appStore.getState().toggleNpvCardOpen()}
             tippyContent="Open Lyrics"

@@ -43,7 +43,7 @@
   .word-dot {
     --translate-y: 0px;
     --scale: 0;
-    --dot-size: calc(var(--lyrics-font-size) / 2);
+    --dot-size: calc(var(--lucid-lyrics-font-size) / 2);
     display: inline-block;
     width: var(--dot-size);
     height: var(--dot-size);

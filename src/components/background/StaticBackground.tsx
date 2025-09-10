@@ -6,13 +6,7 @@ import { useStore } from 'zustand';
 const StaticBackground = () => {
   const { imageMode, customUrl, filter } = useStore(appStore, (state) => state.bg.options);
   const npUrl = useStore(tempStore, (state) => state.player?.nowPlaying.imageUrl);
-  const pageImgUrl = useStore(tempStore, (state) => state.pageImg);
-  const imageSrc =
-    (imageMode === 'custom'
-      ? customUrl
-      : imageMode === 'page'
-        ? (pageImgUrl.desktop ?? pageImgUrl.cover)
-        : npUrl) ?? npUrl;
+  const imageSrc = (imageMode === 'custom' ? customUrl : npUrl) ?? npUrl;
 
   return (
     <div
