@@ -107,11 +107,9 @@ const Input: React.FC<InputProps> = (props) => {
       }`}
     >
       {inputType === 'number' && (
-        <Tippy label="Decrement" hasIcon={false}>
-          <Button variant="icon" onClick={decrement} aria-label="Decrement">
-            <Minus />
-          </Button>
-        </Tippy>
+        <Button variant="icon" onClick={decrement} aria-label="Decrement" tippyContent="Decrement">
+          <Minus />
+        </Button>
       )}
       {icon}
       <input
@@ -123,11 +121,9 @@ const Input: React.FC<InputProps> = (props) => {
         {...(inputType === 'number' ? { inputMode: 'decimal' } : {})}
       />
       {inputType === 'number' && (
-        <Tippy label="Increment" hasIcon={false}>
-          <Button variant="icon" onClick={increment} aria-label="Increment">
-            <Plus />
-          </Button>
-        </Tippy>
+        <Button variant="icon" onClick={increment} aria-label="Increment" tippyContent="Increment">
+          <Plus />
+        </Button>
       )}
     </div>
   );

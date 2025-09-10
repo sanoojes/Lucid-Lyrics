@@ -1,0 +1,65 @@
+.slider-bar {
+  --slider-bg-clr: rgba(var(--lyrics-text-rgb-color), 0.2);
+  --slider-fill-clr: rgba(var(--lyrics-text-rgb-color), 0.8);
+  --slider-handle-bg-clr: rgba(var(--lyrics-text-rgb-color), 1);
+
+  --slider-height: 8px;
+  --slider-handle-size: 12px;
+  --slider-border-radius: 12px;
+
+  --progress: 0%;
+
+  position: relative;
+  width: 100%;
+  height: var(--slider-height);
+  background: var(--slider-bg-clr);
+  border-radius: var(--slider-border-radius);
+  cursor: pointer;
+  transition: --progress 1s linear;
+}
+
+.slider-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--progress);
+  background: var(--slider-fill-clr);
+  border-radius: var(--slider-border-radius);
+  transition: width 0.2s ease;
+  will-change: width;
+}
+
+.slider-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--progress);
+  transform: translate(-50%, -50%);
+  width: var(--slider-handle-size);
+  height: var(--slider-handle-size);
+  border-radius: 50%;
+  background: var(--slider-handle-bg-clr);
+  border: none;
+  cursor: grab;
+  z-index: 2;
+  opacity: 0;
+  transition:
+    left 0.2s ease,
+    opacity 225ms ease-in-out;
+  will-change: left;
+}
+
+.slider-bar.dragging .slider-handle,
+.slider-bar:hover .slider-handle {
+  opacity: 1;
+}
+
+.slider-bar.dragging {
+  cursor: grabbing;
+}
+
+@property --progress {
+  inherits: true;
+  initial-value: 0%;
+  syntax: "<percentage>";
+}

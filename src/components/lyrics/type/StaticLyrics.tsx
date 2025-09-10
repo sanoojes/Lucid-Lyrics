@@ -1,8 +1,8 @@
 import appStore from '@/store/appStore.ts';
 import type { StaticData } from '@/types/lyrics.ts';
-import { useStore } from 'zustand';
-import SimpleBar from 'simplebar-react';
 import { SIMPLEBAR_CLASSNAMES } from '@constants';
+import SimpleBar from 'simplebar-react';
+import { useStore } from 'zustand';
 
 type StaticLyricsProps = { data: StaticData };
 const StaticLyrics: React.FC<StaticLyricsProps> = ({ data }) => {

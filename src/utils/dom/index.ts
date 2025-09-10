@@ -3,7 +3,7 @@ export * from '@/utils/dom/element/getOrCreateElement.ts';
 export * from '@/utils/dom/element/observeElement.ts';
 export * from '@/utils/dom/element/onElement.ts';
 export * from '@/utils/dom/element/waitForElement.ts';
+export * from '@/utils/dom/loadModuleFromUrl.ts';
 export * from '@/utils/dom/serializeFilters.ts';
 export * from '@/utils/dom/waitForGlobal.ts';
 export * from '@/utils/dom/watchSize.ts';
-export * from '@/utils/dom/loadModuleFromUrl.ts';

@@ -25,7 +25,6 @@
   width: auto !important;
   height: auto !important;
   z-index: 0;
-  mask-image: linear-gradient(to bottom, #00000000 0%, #000 20%, #000 80%, #00000000 100%);
 }
 
 .ls-offset {
@@ -155,15 +154,20 @@
 
 .hide-scrollbar:hover .ls-scrollbar::before,
 .hide-scrollbar .simplebar-hover .ls-scrollbar::before {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .simplebar-dragging.hide-scrollbar .ls-scrollbar::before,
 .ls-scrollbar.simplebar-visible:before {
-  opacity: 0.5;
+  opacity: 0.3;
   transition-delay: 0s;
   transition-duration: 0s;
 }
-
+.ls-track.simplebar-visible,
+.ls-track.simplebar-hover {
+  .ls-scrollbar::before {
+    opacity: 0.5 !important;
+  }
+}
 .ls-track.simplebar-vertical {
   top: 0;
   width: 12px;

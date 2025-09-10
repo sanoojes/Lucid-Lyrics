@@ -1,12 +1,24 @@
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
 import type { CSSFilter } from '@/types/styles.ts';
 import type { ColorPalette } from '@/utils/color.ts';
+import type { PlayerButtonAPI } from '@/utils/playbar/createButton.ts';
+import type { CreatePageInstanceFns } from '@/utils/routes/createPage.ts';
+import type { CreateRendererAPI } from '@utils/dom';
 
 type Nullable<T> = T | null;
 
 /* ---------- Temp Store Types ---------- */
+// export type ArtistMetadata = {
+//   name: string;
+//   uri: string | null;
+// };
+// export type PlayerMetadata = {
+//   name: string;
+//   artists: ArtistMetadata[];
+// };
 export type PlayerData = {
   imageUrl: Nullable<string>;
+  // metadata: Partial<PlayerMetadata>;
   data: Nullable<Partial<Spicetify.PlayerTrack>>;
   id: Nullable<string>;
   colors: Nullable<ColorPalette>;
@@ -37,6 +49,10 @@ export type TempState = {
   spotifyToken: SpotifyToken;
   isOnline: boolean;
   isScrolling: boolean;
+  fullscreenMode: 'compact' | 'fullscreen' | 'hidden';
+  mainPageInstance: CreatePageInstanceFns | null;
+  playerButtonInstance: PlayerButtonAPI | null;
+  fullscreenRendererInstance: CreateRendererAPI | null;
 };
 
 /* ---------- App Store Types ---------- */
@@ -71,6 +87,9 @@ export type LyricsState = {
   scaleCoefficientLetter: number;
   scrollOffset: number;
   forceRomanized: boolean;
+  showMetadata: boolean;
+  metadataPosition: 'left' | 'right';
+  fullScreenMetadataPosition: 'left' | 'right';
 };
 
 export type AppState = {

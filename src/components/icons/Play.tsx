@@ -1,0 +1,21 @@
+import cx from '@cx';
+
+const Play: React.FC<{ active?: boolean }> = ({ active = false }) => {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 28"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      className={cx('lucide filled', { active: active })}
+    >
+      <path
+        d="M10.345 23.287c.415 0 .763-.15 1.22-.407l12.742-7.404c.838-.481 1.178-.855 1.178-1.46 0-.599-.34-.972-1.178-1.462L11.565 5.158c-.457-.265-.805-.407-1.22-.407-.789 0-1.345.606-1.345 1.57V21.71c0 .971.556 1.577 1.345 1.577z"
+        fill-rule="nonzero"
+      />
+    </svg>
+  );
+};
+
+export default Play;

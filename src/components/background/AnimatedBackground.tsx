@@ -1,5 +1,6 @@
 import tempStore from '@/store/tempStore.ts';
 import { FragmentShader, GetShaderUniforms, VertexShader } from '@shaders';
+import { serializeFilters } from '@utils/dom';
 import { useEffect, useRef } from 'react';
 import {
   Color,
@@ -13,7 +14,6 @@ import {
 } from 'three';
 import { useStore } from 'zustand';
 import appStore from '../../store/appStore.ts';
-import { serializeFilters } from '@utils/dom';
 
 interface AnimatedBackgroundProps {
   timeScale?: number;

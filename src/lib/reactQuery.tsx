@@ -1,6 +1,7 @@
 // deno-lint-ignore-file require-await
 import { createIdbStorage, getDb } from '@/lib/idbStorage.ts';
 import { logger } from '@/lib/logger.ts';
+import appStore from '@/store/appStore.ts';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -9,7 +10,6 @@ import {
   persistQueryClient,
 } from '@tanstack/react-query-persist-client';
 import { compress, decompress } from 'lz-string';
-import appStore from '../store/appStore.ts';
 
 const isDevMode = appStore.getState().isDevMode;
 

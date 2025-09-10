@@ -19,7 +19,7 @@ const Row: FC<{ data: Component }> = ({ data }) => {
         <p className="encore-text encore-text-body-small encore-internal-color-text-base">
           {data.label}
         </p>
-        {data.tippy ? <Tippy label={data.tippy} /> : null}
+        {data.tippy ? <Tippy label={data.tippy} hasIcon /> : null}
       </div>
       <div className="col second">
         {data.type === 'Dropdown' ? (

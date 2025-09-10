@@ -139,7 +139,7 @@ const main = async () => {
       await Deno.copyFile(LIVERELOAD_JS_PATH, liveReloadDest);
       Logger.debug(`Copied: ${LIVERELOAD_JS_PATH} → ${liveReloadDest}`);
     }
-
+    await runSpicetifyCommand(['enable-devtools']);
     await runSpicetifyCommand(['apply']);
   }
 };

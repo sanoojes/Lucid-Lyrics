@@ -39,8 +39,10 @@ export type ButtonProps = {
   className?: string;
   variant?: 'default' | 'primary' | 'danger' | 'icon';
   onClick: () => void;
-  buttonText?: string | ReactNode;
-  children?: string | ReactNode;
+  buttonText?: ReactNode;
+  children?: ReactNode;
+  tippyContent?: ReactNode;
+  show?: boolean;
 };
 
 export type ColorPickerProps = {

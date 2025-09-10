@@ -1,6 +1,12 @@
 import { createRenderer, waitForElement } from '@utils/dom';
 import type { ReactNode } from 'react';
 
+export type CreatePageInstanceFns = {
+  goToPage: () => void | undefined;
+  goBack: () => void | undefined;
+  togglePage: () => boolean;
+  readonly isActive: boolean;
+};
 const History: PlatformHistory | undefined = Spicetify?.Platform?.History;
 
 export default function createPage({ pathname, children, onChange }: CreatePageProps) {

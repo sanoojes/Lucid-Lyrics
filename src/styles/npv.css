@@ -1,0 +1,48 @@
+.lyrics-npv {
+  padding: 0;
+  position: relative;
+
+  .card-header {
+    position: relative;
+    inset: 0;
+    padding: 16px;
+    height: 64px;
+    width: 100%;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    border-radius: inherit;
+    border: 1px solid transparent;
+    z-index: 4;
+
+    transition-property: width, margin, backdrop-filter, position, border, opacity, transform;
+    transition-duration: 225ms;
+    transition-timing-function: ease-out;
+  }
+
+  &.card-open {
+    .card-header {
+      position: absolute;
+      opacity: 0;
+      margin: 8px;
+      width: calc(100% - 16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      transform: translate3d(0, -100%, 0);
+    }
+    .card-header.show,
+    .card-header:hover {
+      opacity: 1;
+      /* transform: translateY(0); */
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .status-wrapper,
+  .lyrics-wrapper {
+    padding: 16px 32px;
+  }
+  .top-spacing,
+  .bottom-spacing {
+    height: 12cqh;
+  }
+}

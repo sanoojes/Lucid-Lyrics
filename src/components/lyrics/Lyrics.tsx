@@ -1,10 +1,9 @@
 import '@/styles/lyrics.css';
 
 import LineLyrics from '@/components/lyrics/type/LineLyrics.tsx';
-import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
 import StaticLyrics from '@/components/lyrics/type/StaticLyrics.tsx';
-import LyricsLoader from '@/components/lyrics/ui/LyricsLoader.tsx';
-import appStore from '@/store/appStore.ts';
+import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
+import { LyricsLoader } from '@/components/ui';
 import tempStore from '@/store/tempStore.ts';
 import { getLyricsData } from '@/utils/fetch/getLyricsData.ts';
 import { useQuery } from '@tanstack/react-query';
@@ -24,7 +23,6 @@ const Status: React.FC<StatusProps> = ({ title }) => {
 const Lyrics: React.FC = memo(() => {
   const id = useStore(tempStore, (s) => s.player.nowPlaying.id);
   const isOnline = useStore(tempStore, (s) => s.isOnline);
-  const isDevMode = useStore(appStore, (s) => s.isDevMode);
 
   const { data, status } = useQuery({
     queryKey: ['lyrics', id],
@@ -41,7 +39,6 @@ const Lyrics: React.FC = memo(() => {
 
   return (
     <div className="lyrics-container use-encore-fonts">
-      {isDevMode ? <div className="dev-mode-banner">DEBUG</div> : null}
       {status === 'pending' ? (
         <LyricsLoader />
       ) : status === 'success' && data?.Type ? (

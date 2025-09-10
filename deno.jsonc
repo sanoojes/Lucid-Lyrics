@@ -25,6 +25,7 @@
     "@utils/notification": "./src/utils/notification/index.ts",
 
     "@/components/ui": "./src/components/ui/index.ts",
+    "@/components/icons": "./src/components/icons/index.ts",
     "cyrillic-romanization": "npm:cyrillic-romanization@^1.1.8",
 
     // For Romanization

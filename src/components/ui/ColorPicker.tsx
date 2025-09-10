@@ -1,5 +1,5 @@
 import Modal from '@/components/Modal.tsx';
-import { Button, Tippy } from '@/components/ui';
+import { Button } from '@/components/ui';
 import type { ColorPickerProps } from '@/types/uiSchema.ts';
 import { RotateCcw } from 'lucide-react';
 import { type CSSProperties, type FC, useState } from 'react';
@@ -44,11 +44,9 @@ const ColorPicker: FC<ColorPickerProps> = ({
   };
 
   const resetButton = initialColor ? (
-    <Tippy hasIcon={false} label="Reset Color">
-      <Button variant="icon" onClick={resetToDefaultColor}>
-        <RotateCcw />
-      </Button>
-    </Tippy>
+    <Button variant="icon" onClick={resetToDefaultColor} tippyContent="Reset Color">
+      <RotateCcw />
+    </Button>
   ) : null;
 
   return (

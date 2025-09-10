@@ -1,5 +1,5 @@
-import Kuroshiro from 'kuroshiro';
 import * as KuromojiAnalyzer from '@/lib/kuroshiro-analyzer-kuromoji.ts';
+import Kuroshiro from 'kuroshiro';
 
 let kuroshiro: Kuroshiro | null = null;
 const KUROSHIRO_OPTS = { to: 'romaji', mode: 'spaced' };

@@ -479,6 +479,10 @@ declare namespace Spicetify {
      */
     function toggleHeart(): void;
     /**
+    * Set Heart (Favourite) track state.
+    */
+    function setHeart(isLiked: boolean): void;
+    /**
      * Toggle Mute/No mute.
      */
     function toggleMute(): void;

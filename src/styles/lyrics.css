@@ -1,9 +1,9 @@
 :root {
-  --text-rgb-color: 255, 255, 255;
-  --text-color: rgb(var(--text-rgb-color));
-  --text-past-color: rgb(var(--text-rgb-color), 0.5);
+  --lyrics-text-rgb-color: 255, 255, 255;
+  --lyrics-text-color: rgb(var(--lyrics-text-rgb-color));
+  --lyrics-text-past-color: rgb(var(--lyrics-text-rgb-color), 0.5);
 
-  --lyrics-horizontal-padding: 0 15.5cqw 0 18cqw;
+  --btn-rgb-color: 20, 20, 20;
 
   --lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
   --lyrics-line-height: 1.18;
@@ -22,9 +22,9 @@
   --lyrics-font-family: var(--encore-variable-font-stack);
 }
 .lucid-config-container {
-  --card-color: rgba(var(--text-rgb-color), 0.05);
-  --card-hover-color: rgba(var(--text-rgb-color), 0.1);
-  --card-muted-color: rgba(var(--text-rgb-color), 0.02);
+  --btn-color: rgba(var(--btn-rgb-color), 0.25);
+  --btn-hover-color: rgba(var(--btn-rgb-color), 0.5);
+  --border-color: rgba(100, 100, 100, 0.1);
 
   position: absolute;
   z-index: 9;
@@ -35,9 +35,19 @@
   padding: 2cqw;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), transparent);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 
+  &.show-a-bit {
+    opacity: 0.4;
+  }
+
+  &.show,
   &:hover {
     opacity: 1;
   }
@@ -78,6 +88,24 @@
   animation: BackgroundShimmer 1s infinite linear;
 }
 
+.lyrics-container {
+  --lyrics-horizontal-padding: 0 15.5cqw 0 18cqw;
+
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  transition:
+    width 0.3s ease,
+    right 0.3s ease,
+    left 0.3s ease;
+}
+
 .status-wrapper {
   padding: var(--lyrics-horizontal-padding);
   height: 100%;
@@ -99,23 +127,16 @@
 
 .dev-mode-banner {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 4px;
+  right: 4px;
   background-color: #f8e287;
   color: #534600;
+  font-size: 12px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 16px;
-}
-
-.lyrics-container {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  z-index: 2;
-
-  container-type: size;
-  container-name: main-container;
+  z-index: 99;
+  pointer-events: none;
 }
 
 .lyrics-wrapper {
@@ -128,6 +149,8 @@
   container-name: lyrics;
 
   direction: ltr;
+
+  mask-image: linear-gradient(to bottom, #00000000 0%, #000 20%, #000 80%, #00000000 100%);
 
   .bottom-spacing {
     height: 55cqh;
@@ -200,8 +223,8 @@
 
     background: linear-gradient(
       to right,
-      var(--text-color) 55%,
-      rgba(var(--text-rgb-color), 0.25) 100%
+      var(--lyrics-text-color) 55%,
+      rgba(var(--lyrics-text-rgb-color), 0.25) 100%
     );
 
     transform-origin: center center;
@@ -209,15 +232,15 @@
 
     background-size: var(--bg-size-x) 100%;
 
-    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--text-rgb-color), 0.5);
-
-    transition: none;
+    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--lyrics-text-rgb-color), 0.5);
 
     opacity: 1;
 
     background-repeat: no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
+
+    transition: --line-shadow-blur 0.2s ease;
 
     will-change: background-size, transform, text-shadow;
 
@@ -228,7 +251,14 @@
 
   .space {
     display: inline-block;
-    min-width: 1.5cqi;
+    min-width: 0.25em;
+  }
+
+  .background {
+    .space {
+      display: inline-block;
+      min-width: 0.18em;
+    }
   }
 
   .line-wrapper.past {
@@ -246,13 +276,13 @@
 
     background: linear-gradient(
       to bottom,
-      var(--text-color) 55%,
-      rgba(var(--text-rgb-color), 0.25) 100%
+      var(--lyrics-text-color) 55%,
+      rgba(var(--lyrics-text-rgb-color), 0.25) 100%
     );
 
     background-size: 100% var(--bg-size-y);
 
-    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--text-rgb-color), 0.5);
+    text-shadow: 0px 0px var(--line-shadow-blur, 0) rgba(var(--lyrics-text-rgb-color), 0.5);
 
     transition: none;
 

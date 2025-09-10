@@ -1,13 +1,14 @@
-import { useEffect, useRef, useCallback, useMemo } from 'react';
-import type { LineData } from '@/types/lyrics.ts';
+import { Interlude } from '@/components/ui';
 import useTrackPosition from '@/hooks/useTrackPosition.ts';
-import seekTo from '@/utils/player/seekTo.ts';
 import appStore from '@/store/appStore.ts';
-import Interlude from '@/components/lyrics/ui/Interlude.tsx';
-import { useStore } from 'zustand';
-import SimpleBar from 'simplebar-react';
+import type { LineData } from '@/types/lyrics.ts';
+import seekTo from '@/utils/player/seekTo.ts';
 import { SIMPLEBAR_CLASSNAMES } from '@constants';
 import cx from '@cx';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import SimpleBar from 'simplebar-react';
+import { useStore } from 'zustand';
+import tempStore from '../../../store/tempStore.ts';
 
 type LineLyricsProps = { data: LineData };
 
@@ -78,7 +79,7 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
       checkTimeoutId = setTimeout(setNotScrolling, SCROLL_TIMEOUT_MS);
     };
 
-    element.addEventListener('wheel', handleWheel);
+    element.addEventListener('wheel', handleWheel, { passive: true });
 
     return () => {
       if (checkTimeoutId !== null) {
@@ -89,7 +90,7 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
   }, [lyricsWrapperRef]);
 
   const scrollToCurrentLine = useCallback(
-    (behavior: ScrollBehavior = 'auto', overrideIdx?: number) => {
+    (behavior: ScrollBehavior = 'smooth', overrideIdx?: number) => {
       if (isScrolling.current) return;
 
       if (behavior !== 'auto' && !isActiveLineVisible.current) return;
@@ -129,14 +130,19 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
     const resizeObserver = new ResizeObserver(scrollInstantly);
     if (lyricsWrapperRef.current) resizeObserver.observe(lyricsWrapperRef.current);
 
-    const remove = Spicetify?.Player?.origin?._events?.addListener('update', scrollInstantly);
+    const removeListener = Spicetify?.Player?.origin?._events?.addListener(
+      'update',
+      scrollInstantly
+    );
 
-    const unsub = appStore.subscribe((s) => s.lyrics.forceRomanized, scrollSmoothly);
+    const unsubApp = appStore.subscribe((s) => s.lyrics.forceRomanized, scrollSmoothly);
+    const unsubTemp = tempStore.subscribe((s) => s.fullscreenMode, scrollInstantly);
     return () => {
-      unsub?.();
+      unsubApp();
+      unsubTemp();
       cancelAnimationFrame(id);
       resizeObserver.disconnect();
-      if (remove) remove?.();
+      if (removeListener) removeListener();
       else Spicetify?.Player?.origin?._events?.removeListener('update', scrollSmoothly);
     };
   }, [progressRef]);
@@ -278,6 +284,7 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
               startTime={content.start}
               endTime={content.end}
               isOppositeAligned={false}
+              onClose={scrollToCurrentLine}
             />
           );
         }
@@ -294,7 +301,7 @@ const LineLyrics: React.FC<LineLyricsProps> = ({ data }) => {
             <span
               ref={registerLine}
               key={`${content.Text}-${idx}`}
-              onClick={() => seekTo(content.StartTime)}
+              onClick={() => seekTo(content.StartTime * 1000)}
               className="line animating-line"
               data-start={content.StartTime * 1000}
               data-end={content.EndTime * 1000}

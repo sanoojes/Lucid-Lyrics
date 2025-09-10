@@ -4,20 +4,23 @@ import { waitForElement } from '@utils/dom';
 type ButtonProps = {
   label: string;
   icon: string;
-  onClick?: (buttonApi: ButtonAPI) => void;
+  onClick?: (buttonApi: PlayerButtonAPI) => void;
   disabled?: boolean;
   active?: boolean;
   className?: string;
 };
 
-type ButtonAPI = {
+export type PlayerButtonAPI = {
   element: HTMLButtonElement;
   update: (newProps: Partial<ButtonProps>) => void;
   register: () => void;
   deregister: () => void;
 };
 
-export async function createButton(props: ButtonProps, prepend = true): Promise<ButtonAPI | null> {
+export async function createButton(
+  props: ButtonProps,
+  prepend = true
+): Promise<PlayerButtonAPI | null> {
   return waitForElement('.main-nowPlayingBar-right .main-nowPlayingBar-extraControls')
     .then((rightContainer) => {
       if (!rightContainer) {
@@ -61,7 +64,7 @@ export async function createButton(props: ButtonProps, prepend = true): Promise<
         element.classList.toggle('main-genericButton-buttonActiveDot', isActive);
       };
 
-      const api: ButtonAPI = {
+      const api: PlayerButtonAPI = {
         element,
         update: (newProps) => {
           Object.assign(currentProps, newProps);

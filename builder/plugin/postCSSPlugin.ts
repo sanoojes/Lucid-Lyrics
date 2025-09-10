@@ -8,6 +8,18 @@ interface PostCSSPluginOptions {
   inject?: boolean;
 }
 
+async function generateUniqueId(input: string) {
+  const data = new TextEncoder().encode(
+    input + Date.now() + crypto.getRandomValues(new Uint8Array(8)).join('')
+  );
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(hash)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+  return `lucid-lyrics-${base64.slice(0, 8)}`;
+}
+
 export function postCSSPlugin(
   options: PostCSSPluginOptions = { plugins: [], inject: true }
 ): Plugin {
@@ -40,7 +52,6 @@ export function postCSSPlugin(
           const sourceFullPath = args.path;
           const sourceExt = extname(sourceFullPath);
           const sourceBaseName = basename(sourceFullPath, sourceExt);
-
           try {
             const css = await Deno.readTextFile(sourceFullPath);
             const result = await postcss(options.plugins || []).process(css, {
@@ -57,19 +68,18 @@ export function postCSSPlugin(
             let contents: string;
 
             if (options.inject !== false) {
+              const styleId = await generateUniqueId(sourceFullPath);
               contents = `if (typeof document !== "undefined") {
-  const styleId = "lucid-lyrics-${sourceBaseName}";
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = \`${escapedCSS}\`;
-    document.head.appendChild(style);
-  }
-}`;
+const styleId = "${styleId}";
+if (!document.getElementById(styleId)) {
+  const style = document.createElement("style");
+  style.id = styleId;
+  style.textContent = \`${escapedCSS}\`;
+  document.head.appendChild(style);
+}}`;
             } else {
               contents = `export default \`${escapedCSS}\`;`;
             }
-
             return {
               contents,
               loader: 'js',

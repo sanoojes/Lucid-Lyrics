@@ -1,15 +1,16 @@
 import '@/styles/simplebar.css';
 
+import { Interlude } from '@/components/ui';
 import useTrackPosition from '@/hooks/useTrackPosition.ts';
+import appStore from '@/store/appStore.ts';
 import type { SyllableData, VocalPart as VocalPartType } from '@/types/lyrics.ts';
 import seekTo from '@/utils/player/seekTo.ts';
-import cx from '@cx';
-import { useEffect, useRef, useMemo, useCallback } from 'react';
-import Interlude from '@/components/lyrics/ui/Interlude.tsx';
-import appStore from '@/store/appStore.ts';
-import { useStore } from 'zustand';
-import SimpleBar from 'simplebar-react';
 import { SIMPLEBAR_CLASSNAMES } from '@constants';
+import cx from '@cx';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import SimpleBar from 'simplebar-react';
+import { useStore } from 'zustand';
+import tempStore from '../../../store/tempStore.ts';
 
 type VocalPartProps = {
   part: VocalPartType;
@@ -35,7 +36,7 @@ const VocalPart: React.FC<VocalPartProps> = ({ part, isLead = true, registerSyll
           return (
             <span
               key={key}
-              onClick={() => seekTo(s.StartTime)}
+              onClick={() => seekTo(s.StartTime * 1000)}
               className="syllable-wrapper animating-syllable"
               data-start={start}
               data-max-x={l.maxTranslateUpWord}
@@ -68,7 +69,7 @@ const VocalPart: React.FC<VocalPartProps> = ({ part, isLead = true, registerSyll
               return (
                 <span
                   key={letterKey}
-                  onClick={() => seekTo(s.StartTime)}
+                  onClick={() => seekTo(s.StartTime * 1000)}
                   className="animating-syllable"
                   data-start={start + fractionStart * (end - start)}
                   data-max-x={l.maxTranslateUpLetter}
@@ -154,7 +155,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       checkTimeoutId = setTimeout(setNotScrolling, SCROLL_TIMEOUT_MS);
     };
 
-    element.addEventListener('wheel', handleWheel);
+    element.addEventListener('wheel', handleWheel, { passive: true });
 
     return () => {
       if (checkTimeoutId !== null) {
@@ -165,7 +166,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
   }, [lyricsWrapperRef]);
 
   const scrollToCurrentLine = useCallback(
-    (behavior: ScrollBehavior = 'auto', overrideIdx?: number) => {
+    (behavior: ScrollBehavior = 'smooth', overrideIdx?: number) => {
       if (isScrolling.current) return;
       if (behavior !== 'auto' && !isActiveLineVisible.current) return;
 
@@ -181,7 +182,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       const targetScroll = offset - wrapperRect.height / 2 + lineRect.height / 2;
 
       wrapper.scrollTo({
-        top: targetScroll + l.scrollOffset,
+        top: targetScroll + l.scrollOffset + window.innerHeight / 20,
         behavior,
       });
     },
@@ -204,14 +205,20 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
     const resizeObserver = new ResizeObserver(scrollInstantly);
     if (lyricsWrapperRef.current) resizeObserver.observe(lyricsWrapperRef.current);
 
-    const remove = Spicetify?.Player?.origin?._events?.addListener('update', scrollInstantly);
+    const removeListener = Spicetify?.Player?.origin?._events?.addListener(
+      'update',
+      scrollInstantly
+    );
 
-    const unsub = appStore.subscribe((s) => s.lyrics.forceRomanized, scrollSmoothly);
+    const unsubApp = appStore.subscribe((s) => s.lyrics.forceRomanized, scrollSmoothly);
+    const unsubTemp = tempStore.subscribe((s) => s.fullscreenMode, scrollInstantly);
+
     return () => {
-      unsub?.();
+      unsubApp();
+      unsubTemp();
       cancelAnimationFrame(id);
       resizeObserver.disconnect();
-      if (remove) remove?.();
+      if (removeListener) removeListener();
       else Spicetify?.Player?.origin?._events?.removeListener('update', scrollSmoothly);
     };
   }, [progressRef]);
@@ -286,7 +293,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
           if (!skipBg) el.style.setProperty('--bg-size-x', `${pct}%`);
           el.classList.remove('past');
         } else {
-          el.style.transition = 'transform .5s ease-in-out, opacity .3s cubic-bezier(.61,1,.88,1)';
+          el.style.transition = 'transform 1s ease-out, opacity .3s cubic-bezier(.61,1,.88,1)';
           el.style.removeProperty('--translate-y');
           el.style.removeProperty('--scale');
           if (!skipBg) el.style.removeProperty('--bg-size-x');
@@ -392,6 +399,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
                 startTime={content.start}
                 endTime={content.end}
                 isOppositeAligned={isOppAligned}
+                onClose={scrollToCurrentLine}
               />
             ) : (
               <>
@@ -414,7 +422,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
         <div
           className="line-wrapper left-align credits-line"
           data-end-time={Number.MAX_SAFE_INTEGER}
-          ref={(el) => lineRefs.current.push(el)}
+          ref={(el) => el && lineRefs.current.push(el)}
         >
           <div className="credits">
             <p>Credits: {data.SongWriters.join(', ')}</p>

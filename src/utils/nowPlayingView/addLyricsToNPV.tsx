@@ -34,7 +34,7 @@ export function addLyricsToNPV() {
       cardSelector,
       (parent, onRemove) => {
         const { mount, unmount } = createRenderer({
-          children: <LyricsCard />,
+          children: <LyricsCard pageToggle />,
           parent,
           rootId: 'lyrics-card-root',
         });

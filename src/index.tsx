@@ -11,7 +11,9 @@ import { createButton } from '@/utils/playbar/createButton.ts';
 import createPage from '@/utils/routes/createPage.ts';
 import addSettings from '@/utils/settings/addSettings.tsx';
 import { Icons } from '@constants';
+import { createRenderer } from '@utils/dom';
 import { initNotificationSystem } from '@utils/notification';
+import Fullscreen from './components/Fullscreen.tsx';
 
 const main = async () => {
   // Expose Lucid Methods
@@ -30,25 +32,38 @@ const main = async () => {
   updateStates();
   addSettings();
 
-  let playerButton: Awaited<ReturnType<typeof createButton>> = null;
+  // setup page
+  tempStore.getState().setMainPageInstance(
+    createPage({
+      pathname: 'lucid-lyrics',
+      children: <Page />,
+      onChange: (active) => {
+        tempStore.getState().playerButtonInstance?.update({ active });
+        tempStore.getState().setIsLyricsOnPage(active);
+      },
+    })
+  );
 
-  const lyricsPage = createPage({
-    pathname: 'lucid-lyrics',
-    children: <Page />,
-    onChange: (active) => {
-      playerButton?.update({ active });
-      tempStore.getState().setIsLyricsOnPage(active);
-    },
-  });
-
-  playerButton = await createButton({
+  // setup player button
+  const playerButton = await createButton({
     icon: Icons.Mic16,
     label: 'Lucid Lyrics',
     className: 'lucid-lyrics-btn',
-    active: lyricsPage.isActive,
-    onClick: lyricsPage.togglePage,
+    active: tempStore.getState().mainPageInstance?.isActive,
+    onClick: tempStore.getState().mainPageInstance?.togglePage,
   });
   playerButton?.register();
+  tempStore.getState().setPlayerButtonInstance(playerButton);
+
+  // setup fullscreen renderer
+  tempStore.getState().setFullscreenRendererInstance(
+    createRenderer({
+      children: <Fullscreen />,
+      parent: document.body,
+      rootId: 'lucid-fullscreen-root',
+    })
+  );
+  tempStore.getState().fullscreenRendererInstance?.mount();
 
   addLyricsToNPV();
 

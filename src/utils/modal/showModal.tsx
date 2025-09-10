@@ -1,27 +1,28 @@
 import Modal from '@/components/Modal.tsx';
-import { getOrCreateElement } from '@utils/dom';
-import React, { type ReactNode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { type CreateRendererAPI, createRenderer } from '@utils/dom';
 
 type ModalProps = {
   title: string;
-  content: ReactNode;
+  content: React.ReactNode;
 };
 
 export function showModal({ title, content }: ModalProps) {
-  const rootElem = getOrCreateElement('div', 'modal-root', document.body);
-  const root = createRoot(rootElem);
-
-  const handleClose = () => {
-    root.unmount();
-    if (rootElem.parentNode) {
-      rootElem.parentNode.removeChild(rootElem);
-    }
-  };
-
-  root.render(
-    <Modal title={title} onClose={handleClose} className="lyrics-settings" isOpen>
-      {content}
-    </Modal>
-  );
+  let renderer: CreateRendererAPI | null = null;
+  renderer = createRenderer({
+    children: (
+      <Modal
+        title={title}
+        onClose={() => {
+          renderer?.unmount();
+        }}
+        className="lyrics-settings"
+        isOpen
+      >
+        {content}
+      </Modal>
+    ),
+    parent: document.body,
+    rootId: 'modal-root',
+  });
+  renderer.mount();
 }

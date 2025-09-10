@@ -3,11 +3,8 @@ import { DEFAULT_APP_STATE } from '@constants';
 import { merge } from 'lodash';
 import { combine, persist, subscribeWithSelector } from 'zustand/middleware';
 import { createStore } from 'zustand/vanilla';
-import Lyrics from '../components/lyrics/Lyrics.tsx';
 
 const APPSTORE_NAME = 'lucid-lyrics:settings';
-
-type LyricsConfigKey = keyof LyricsState;
 
 type AppStateSetters = {
   setBg: (bg: Partial<BackgroundState>) => void;
@@ -16,10 +13,10 @@ type AppStateSetters = {
 
   setIsDevMode: (isDevMode: boolean) => void;
   setIsAnalyticsActive: (isAnalyticsActive: boolean) => void;
-  setIsNpvCardOpen: (isNpvCardOpen: boolean) => void;
+  toggleNpvCardOpen: () => void;
   toggleRomanization: () => void;
 
-  setLyrics: <K extends LyricsConfigKey>(key: K, value: LyricsState[K]) => void;
+  setLyrics: <K extends keyof LyricsState>(key: K, value: LyricsState[K]) => void;
 
   exportConfig: () => string | null;
   importConfig: (config: AppState) => void;
@@ -55,7 +52,7 @@ const appStore = createStore<AppState & AppStateSetters>()(
         toggleRomanization: () =>
           set({ lyrics: { ...get().lyrics, forceRomanized: !get().lyrics.forceRomanized } }),
         setIsAnalyticsActive: (isAnalyticsActive) => set({ isAnalyticsActive }),
-        setIsNpvCardOpen: (isNpvCardOpen) => set({ isNpvCardOpen }),
+        toggleNpvCardOpen: () => set({ isNpvCardOpen: !get().isNpvCardOpen }),
 
         setLyrics: (key, value) =>
           set({

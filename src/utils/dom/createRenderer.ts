@@ -6,9 +6,24 @@ type RenderOptions = {
   parent: Element;
   rootId: string;
   prepend?: boolean;
+  onMount?: (rootContainer: Element | null) => void;
+  onUnMount?: () => void;
 };
 
-export function createRenderer({ children, parent, rootId, prepend = false }: RenderOptions) {
+export type CreateRendererAPI = {
+  mount: () => void;
+  update: (newChildren: ReactNode) => void;
+  unmount: () => void;
+};
+
+export function createRenderer({
+  children,
+  parent,
+  rootId,
+  prepend = false,
+  onMount,
+  onUnMount,
+}: RenderOptions): CreateRendererAPI {
   let root: Root | null = null;
   let container: Element | null = null;
 
@@ -28,6 +43,7 @@ export function createRenderer({ children, parent, rootId, prepend = false }: Re
     }
 
     root.render(children);
+    onMount?.(container);
   }
 
   function update(newChildren: ReactNode) {
@@ -44,6 +60,7 @@ export function createRenderer({ children, parent, rootId, prepend = false }: Re
     }
     root = null;
     container = null;
+    onUnMount?.();
   }
 
   return { mount, update, unmount };

@@ -1,3 +1,4 @@
+import '@/styles/ui/interlude.css';
 import { memo, useEffect, useRef } from 'react';
 
 interface InterludeProps {
@@ -5,6 +6,7 @@ interface InterludeProps {
   startTime: number;
   endTime: number;
   isOppositeAligned?: boolean;
+  onClose?: () => void; // Added onClose prop
 }
 
 const dots = ['one', 'two', 'three'] as const;
@@ -13,7 +15,7 @@ const showDelay = 0.3;
 const amplitude = 12;
 
 const Interlude: React.FC<InterludeProps> = memo(
-  ({ progressRef, startTime, endTime, isOppositeAligned = false }) => {
+  ({ progressRef, startTime, endTime, isOppositeAligned = false, onClose }) => {
     const interludeRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +26,6 @@ const Interlude: React.FC<InterludeProps> = memo(
 
     useEffect(() => {
       let hideTimeout: number | null = null;
-
       const animate = () => {
         const progress = progressRef.current ?? 0;
         const nearStart = progress < startTime + showDelay;
@@ -64,6 +65,7 @@ const Interlude: React.FC<InterludeProps> = memo(
           if (isHiding) {
             hideTimeout = setTimeout(() => {
               wrapperEl.classList.add('hide');
+              onClose?.();
             }, 200);
           } else {
             if (hideTimeout) clearTimeout(hideTimeout);
@@ -79,7 +81,7 @@ const Interlude: React.FC<InterludeProps> = memo(
       return () => {
         if (hideTimeout) clearTimeout(hideTimeout);
       };
-    }, [progressRef, startTime, endTime, isOpposite]);
+    }, [progressRef, startTime, endTime, isOpposite, onClose]);
 
     return (
       <div ref={wrapperRef} className="line-wrapper interlude-wrapper hide">

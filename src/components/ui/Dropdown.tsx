@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/a11y: no a11y for now  */
 
 import { ChevronDown } from 'lucide-react';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Context
@@ -22,7 +22,7 @@ type DropdownProps = {
   children: React.ReactNode;
 };
 
-function Dropdown({ children }: DropdownProps) {
+const Dropdown: React.FC<{ children: React.ReactNode }> = ({ children }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -34,7 +34,7 @@ function Dropdown({ children }: DropdownProps) {
       </div>
     </DropdownContext.Provider>
   );
-}
+};
 
 // Dropdown Button
 type DropdownButtonProps = {
