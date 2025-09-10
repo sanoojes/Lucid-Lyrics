@@ -2,34 +2,9 @@ import tempStore from '@/store/tempStore.ts';
 import cx from '@cx';
 import { useStore } from 'zustand';
 import '@/styles/ui/widget.css';
-import { Button, Marquee, PlaybackControls, TimelineControls } from '@/components/ui';
-import { Heart } from 'lucide-react';
+import { HeartButton, Marquee, PlaybackControls, TimelineControls } from '@/components/ui';
+import { ImageOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-const PlayerAPI = Spicetify?.Player;
-
-const HeartButton: React.FC = () => {
-  const [liked, setLiked] = useState(false);
-
-  const handleClick = () => {
-    PlayerAPI.toggleHeart();
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const current = PlayerAPI?.getHeart() ?? false;
-      setLiked(current);
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <Button onClick={handleClick} className="heart-btn">
-      <Heart size="100%" strokeWidth={0.5} className={`${liked ? 'filled active' : ''}`} />
-    </Button>
-  );
-};
 
 const Controls: React.FC<{ customButtons: React.ReactNode }> = ({ customButtons }) => {
   return (
@@ -91,7 +66,11 @@ const NowPlayingWidget: React.FC<{ className?: string; customButtons?: React.Rea
                 backgroundImage: isImageLoaded && !isImageError ? `url(${imageUrl})` : '',
               }}
             />
-            {isImageError && <div className="error-placeholder">Image failed to load</div>}
+            {isImageError && (
+              <div className="img-error-wrapper">
+                <ImageOff />
+              </div>
+            )}
           </div>
         </a>
       </div>

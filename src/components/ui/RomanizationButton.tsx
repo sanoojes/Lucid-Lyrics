@@ -1,9 +1,9 @@
+import { LetterA } from '@/components/icons';
 import { Button } from '@/components/ui';
-import { useStore } from 'zustand';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
-import { LetterA } from '@/components/icons';
 import { Languages } from 'lucide-react';
+import { useStore } from 'zustand';
 
 const RomanizationButton = () => {
   const hasRomanizedText = useStore(

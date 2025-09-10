@@ -2,13 +2,13 @@ import type { AppState } from '@/types/store.ts';
 
 export const DEFAULT_APP_STATE: AppState = {
   bg: {
-    mode: 'static',
+    mode: 'animated',
     options: {
       filter: {
-        blur: 64,
-        saturation: 200,
-        contrast: 125,
-        brightness: 60,
+        blur: 48,
+        saturation: 150,
+        contrast: 110,
+        brightness: 70,
         opacity: 100,
       },
       color: '#060606',
@@ -29,6 +29,7 @@ export const DEFAULT_APP_STATE: AppState = {
     metadataPosition: 'left',
     fullScreenMetadataPosition: 'left',
   },
+  disableTippy: false,
   isDevMode: false,
   isNpvCardOpen: false,
   isAnalyticsActive: true,

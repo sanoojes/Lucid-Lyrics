@@ -103,6 +103,9 @@ export const getBackgroundSettings = (
             type: 'Input',
             label: 'Blur',
             inputType: 'number',
+            tippy:
+              mode === 'animated' &&
+              'Set Blur (Blur in range 30px - 50px recommended to avoid artifacts)',
             value: bgFilter.blur,
             validation: (value) => CSSFilterSchema.shape.blur.safeParse(value),
             onChange: (blur) => state.setBgFilter({ blur }),

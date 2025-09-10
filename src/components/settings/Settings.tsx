@@ -5,6 +5,7 @@ import appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
 import { useEffect, useState } from 'react';
 
+// TODO: fix too many re-renders
 const Settings = () => {
   const [sections, setSections] = useState<SectionProps[]>([]);
   const [loading, setLoading] = useState(true);

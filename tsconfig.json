@@ -15,7 +15,6 @@
       "@cx": ["src/lib/cx.ts"],
       "@utils/dom": ["src/utils/dom/index.ts"],
       "@utils/notification": ["src/utils/notification/index.ts"],
-      "@shaders": ["src/shaders/index.ts"],
       "@constants": ["src/constants/index.ts"]
     }
   },

@@ -1,78 +1,59 @@
-import tempStore from '@/store/tempStore.ts';
-import { FragmentShader, GetShaderUniforms, VertexShader } from '@shaders';
+import loadAndProcessImage from '@/components/background/helper/loadAndProcessImage.ts';
+import { FragmentShader, GetShaderUniforms, VertexShader } from '@/shaders/index.ts';
+import appStore from '@/store/appStore.ts';
 import { serializeFilters } from '@utils/dom';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import {
-  Color,
   Mesh,
   OrthographicCamera,
   PlaneGeometry,
   Scene,
   ShaderMaterial,
-  Vector3,
   WebGLRenderer,
 } from 'three';
 import { useStore } from 'zustand';
-import appStore from '../../store/appStore.ts';
+import tempStore from '../../store/tempStore.ts';
 
-interface AnimatedBackgroundProps {
-  timeScale?: number;
-}
-
-const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ timeScale = 50 }) => {
-  const parentRef = useRef<HTMLDivElement | null>(null);
+const AnimatedBackgroundCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const uniformsRef = useRef<ReturnType<typeof GetShaderUniforms> | null>(null);
   const isFocusedRef = useRef(true);
-  const startTimeRef = useRef(performance.now());
-  const colors = useStore(tempStore, (s) => s.player.nowPlaying.colors);
-  const filters = useStore(appStore, (s) => s.bg.options.filter);
+  const sceneRef = useRef(new Scene());
+
+  const { filter, autoStopAnimation, imageMode, customUrl } = useStore(
+    appStore,
+    (state) => state.bg.options
+  );
+
+  const npUrl = useStore(tempStore, (state) => state.player?.nowPlaying.imageUrl);
+  const pageImgUrl = useStore(tempStore, (state) => state.pageImg);
+  const imageSrc =
+    (imageMode === 'custom'
+      ? customUrl
+      : imageMode === 'page'
+        ? (pageImgUrl.desktop ?? pageImgUrl.cover)
+        : npUrl) ?? npUrl;
 
   useEffect(() => {
-    if (!parentRef.current) return;
+    const scene = sceneRef.current;
+    const canvas = canvasRef.current;
+    if (!canvas || !scene) return;
 
-    const scene = new Scene();
     const renderer = new WebGLRenderer({
-      canvas: canvasRef.current ?? undefined,
+      canvas,
       antialias: true,
       alpha: true,
     });
-
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     rendererRef.current = renderer;
 
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
     const geometry = new PlaneGeometry(2, 2);
-
-    const palette: string[] = colors
-      ? [
-          colors.Muted,
-          colors.DarkVibrant,
-          colors.Vibrant,
-          colors.DarkMuted,
-          colors.LightVibrant,
-          colors.LightMuted,
-          colors.DarkVibrant,
-          colors.Muted,
-        ]
-      : Array(8).fill('#000000');
-
-    const uniforms = GetShaderUniforms(
-      palette.map((c) => new Vector3(...new Color(c).toArray())) as [
-        Vector3,
-        Vector3,
-        Vector3,
-        Vector3,
-        Vector3,
-        Vector3,
-        Vector3,
-        Vector3,
-      ]
-    );
-
+    const uniforms = GetShaderUniforms();
     uniformsRef.current = uniforms;
 
     const material = new ShaderMaterial({
@@ -80,35 +61,16 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ timeScale = 50 
       fragmentShader: FragmentShader,
       uniforms,
       transparent: true,
-      premultipliedAlpha: true,
     });
 
     const mesh = new Mesh(geometry, material);
     scene.add(mesh);
 
-    const UpdateDimensions = () => {
-      if (!canvasRef.current || !parentRef.current) return;
-      const width = Math.max(1, parentRef.current.clientWidth);
-      const height = Math.max(1, parentRef.current.clientHeight);
-
-      renderer.setSize(width, height);
-      if (uniformsRef.current) {
-        uniformsRef.current.iResolution.value.set(width, height);
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    UpdateDimensions();
-
     let frameId: number | null = null;
     let hasRenderedOnce = false;
-
     const animate = () => {
-      const elapsed = (performance.now() - startTimeRef.current) / 1000;
-      if (uniformsRef.current) {
-        uniformsRef.current.iTime.value = elapsed * (timeScale / 100); // scaled time
-      }
+      const time = performance.now() / 3500;
+      uniforms.Time.value = time;
 
       if (isFocusedRef.current || !hasRenderedOnce) {
         renderer.render(scene, camera);
@@ -119,35 +81,110 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ timeScale = 50 
     };
     animate();
 
-    const resizeObserver = new ResizeObserver(() => {
-      UpdateDimensions();
-    });
-    resizeObserver.observe(parentRef.current);
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+    };
+  }, []);
 
-    isFocusedRef.current = document.visibilityState === 'visible';
-    if (isFocusedRef.current) {
-      renderer.render(scene, camera);
+  const updateDimensions = useCallback(() => {
+    if (!canvasRef.current || !rendererRef.current || !uniformsRef.current || !sceneRef.current)
+      return;
+
+    const renderer = rendererRef.current;
+    const uniforms = uniformsRef.current;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height);
+
+    const scaledWidth = width * window.devicePixelRatio;
+    const scaledHeight = height * window.devicePixelRatio;
+    const largestAxis = scaledWidth > scaledHeight ? 'X' : 'Y';
+    const largestAxisSize = Math.max(scaledWidth, scaledHeight);
+
+    uniforms.BackgroundCircleOrigin.value.set(scaledWidth / 2, scaledHeight / 2);
+    uniforms.BackgroundCircleRadius.value = largestAxisSize * 1.5;
+
+    uniforms.CenterCircleOrigin.value.set(scaledWidth / 2, scaledHeight / 2);
+    uniforms.CenterCircleRadius.value = largestAxisSize * (largestAxis === 'X' ? 1 : 0.75);
+
+    uniforms.LeftCircleOrigin.value.set(0, scaledHeight);
+    uniforms.LeftCircleRadius.value = largestAxisSize * 0.75;
+
+    uniforms.RightCircleOrigin.value.set(scaledWidth, 0);
+    uniforms.RightCircleRadius.value = largestAxisSize * (largestAxis === 'X' ? 0.65 : 0.5);
+
+    renderer.render(sceneRef.current, new OrthographicCamera(-1, 1, 1, -1, 0.1, 10));
+  }, []);
+
+  useEffect(() => {
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, [updateDimensions]);
+
+  useEffect(() => {
+    updateDimensions();
+  }, []);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      isFocusedRef.current = true;
+    };
+
+    const handleBlur = () => {
+      isFocusedRef.current = false;
+    };
+
+    if (autoStopAnimation) {
+      window.addEventListener('focus', handleFocus);
+      window.addEventListener('blur', handleBlur);
     }
 
     return () => {
-      if (frameId) cancelAnimationFrame(frameId);
-      resizeObserver.disconnect();
-
-      try {
-        geometry.dispose();
-        material.dispose();
-        renderer.dispose();
-      } catch (e) {
-        console.warn('Error disposing renderer resources:', e);
-      }
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('blur', handleBlur);
     };
-  }, [colors, timeScale]);
+  }, [autoStopAnimation]);
+
+  useEffect(() => {
+    if (!imageSrc || !uniformsRef.current) return;
+
+    const uniforms = uniformsRef.current;
+    let cancelled = false;
+
+    setTimeout(() => {
+      loadAndProcessImage(imageSrc, filter).then((newTexture) => {
+        if (!newTexture || cancelled || !uniformsRef.current) return;
+
+        uniforms.BlurredCoverArt.value = newTexture;
+      });
+    }, 300);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [imageSrc, filter]);
 
   return (
-    <div className="lucid-lyrics-bg animated" ref={parentRef}>
-      <canvas ref={canvasRef} className="animated-bg-canvas" />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="animated-bg-canvas"
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        opacity: `${filter.opacity ?? 100}%`,
+        filter: serializeFilters(filter, { skipBlur: true, skipContrast: true }),
+      }}
+    />
   );
 };
 
-export default AnimatedBackground;
+export default AnimatedBackgroundCanvas;

@@ -160,6 +160,20 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    position: relative;
+  }
+  .img-error-wrapper {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 40cqi;
+
+    .lucide {
+      width: 100%;
+      height: 100%;
+    }
   }
   .cover-img-wrapper {
     &:before {

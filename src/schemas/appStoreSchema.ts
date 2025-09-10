@@ -25,6 +25,24 @@ export const BackgroundStateSchema = z.object({
   }),
 });
 
+export const LyricsStateSchema = z.object({
+  splitThresholdMs: z.number(),
+  maxTranslateUpWord: z.number(),
+  maxTranslateUpLetter: z.number(),
+  scaleCoefficientWord: z.number(),
+  scaleCoefficientLetter: z.number(),
+  scrollOffset: z.number(),
+  forceRomanized: z.boolean(),
+  showMetadata: z.boolean(),
+  metadataPosition: z.enum(['left', 'right']),
+  fullScreenMetadataPosition: z.enum(['left', 'right']),
+});
+
 export const AppStateSchema = z.object({
   bg: BackgroundStateSchema,
+  lyrics: LyricsStateSchema,
+  disableTippy: z.boolean(),
+  isDevMode: z.boolean(),
+  isNpvCardOpen: z.boolean(),
+  isAnalyticsActive: z.boolean(),
 });

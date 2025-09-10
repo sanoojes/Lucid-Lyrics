@@ -18,7 +18,6 @@
     "@/": "./src/",
     "@constants": "./src/constants/index.ts",
     "@react-spring/web": "npm:@react-spring/web@^10.0.2",
-    "@shaders": "./src/shaders/index.ts",
     "@cx": "./src/lib/cx.ts",
 
     "@utils/dom": "./src/utils/dom/index.ts",

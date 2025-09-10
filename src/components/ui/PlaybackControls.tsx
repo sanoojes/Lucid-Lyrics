@@ -35,19 +35,32 @@ const PlaybackControls = () => {
 
   return (
     <div className="playback-controls">
-      <Button variant="icon" onClick={() => PlayerAPI.setShuffle?.(!shuffle)}>
+      <Button
+        variant="icon"
+        onClick={() => PlayerAPI.setShuffle?.(!shuffle)}
+        tippyContent="Toggle Shuffle"
+      >
         <Shuffle active={shuffle} />
       </Button>
-      <Button variant="icon" onClick={() => PlayerAPI.back?.()}>
+      <Button variant="icon" onClick={() => PlayerAPI.back?.()} tippyContent="Previous">
         <Previous />
       </Button>
-      <Button variant="icon" onClick={() => togglePlaying()} className="play-pause-btn">
+      <Button
+        variant="icon"
+        onClick={() => togglePlaying()}
+        className="play-pause-btn"
+        tippyContent={isPlaying ? 'Pause' : 'Play'}
+      >
         {isPlaying ? <Pause /> : <Play />}
       </Button>
-      <Button variant="icon" onClick={() => PlayerAPI.next?.()}>
+      <Button variant="icon" onClick={() => PlayerAPI.next?.()} tippyContent="Next">
         <Next />
       </Button>
-      <Button variant="icon" onClick={toggleRepeat}>
+      <Button
+        variant="icon"
+        onClick={toggleRepeat}
+        tippyContent={repeat === 2 ? 'Repeat Off' : repeat === 1 ? 'Repeat On' : 'Repeat Once'}
+      >
         {repeat === 2 ? <RepeatOne active /> : <Repeat active={repeat !== 0} />}
       </Button>
     </div>

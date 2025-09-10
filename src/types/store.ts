@@ -95,6 +95,7 @@ export type LyricsState = {
 export type AppState = {
   bg: BackgroundState;
   lyrics: LyricsState;
+  disableTippy: boolean;
   isDevMode: boolean;
   isNpvCardOpen: boolean;
   isAnalyticsActive: boolean;

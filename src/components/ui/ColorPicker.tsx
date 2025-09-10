@@ -52,7 +52,9 @@ const ColorPicker: FC<ColorPickerProps> = ({
   return (
     <>
       <div className="btn-wrapper">
-        <Button onClick={() => setIsOpen(true)}>Open Color Picker</Button>
+        <Button onClick={() => setIsOpen(true)} tippyContent="Open">
+          Open Color Picker
+        </Button>
         {resetButton}
       </div>
 

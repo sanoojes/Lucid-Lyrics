@@ -1,7 +1,7 @@
 // deno-lint-ignore-file require-await
 import { createIdbStorage, getDb } from '@/lib/idbStorage.ts';
 import { logger } from '@/lib/logger.ts';
-import appStore from '@/store/appStore.ts';
+// import appStore from '@/store/appStore.ts';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -11,9 +11,9 @@ import {
 } from '@tanstack/react-query-persist-client';
 import { compress, decompress } from 'lz-string';
 
-const isDevMode = appStore.getState().isDevMode;
-
-const time = isDevMode ? 0 : Infinity;
+// const isDevMode = appStore.getState().isDevMode;
+// const time = isDevMode ? 0 : Infinity;
+const time = Infinity;
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: time, gcTime: time } },
 });
@@ -53,7 +53,7 @@ const queryClient = new QueryClient({
   persistQueryClient({
     queryClient,
     persister,
-    maxAge: 1000 * 60 * 60 * 24 * (isLocalStorage ? 1 : 14), // 1 or 14 days
+    maxAge: 1000 * 60 * 60 * 24 * (isLocalStorage ? 7 : 14), // 7 or 14 days
   });
 })();
 

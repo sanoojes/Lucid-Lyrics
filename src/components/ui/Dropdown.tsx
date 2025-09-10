@@ -1,7 +1,8 @@
 /** biome-ignore-all lint/a11y: no a11y for now  */
 
+import { Tippy } from '@/components/ui';
 import { ChevronDown } from 'lucide-react';
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Context
@@ -22,7 +23,7 @@ type DropdownProps = {
   children: React.ReactNode;
 };
 
-const Dropdown: React.FC<{ children: React.ReactNode }> = ({ children }: DropdownProps) => {
+const Dropdown = ({ children }: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -48,10 +49,12 @@ function DropdownButton({ children }: DropdownButtonProps) {
   const toggleOpen = () => setOpen(!open);
 
   return (
-    <button ref={buttonRef} onClick={toggleOpen} className="dropdown-button" type="button">
-      {children}
-      <ChevronDown className={`dropdown-icon ${open ? 'rotate' : ''}`} />
-    </button>
+    <Tippy label={open ? 'Close' : 'Open'}>
+      <button ref={buttonRef} onClick={toggleOpen} className="dropdown-button" type="button">
+        {children}
+        <ChevronDown className={`dropdown-icon ${open ? 'rotate' : ''}`} />
+      </button>
+    </Tippy>
   );
 }
 

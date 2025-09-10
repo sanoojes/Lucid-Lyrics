@@ -3,13 +3,13 @@ import '@/styles/fullscreen.css';
 import Background from '@/components/background/Background.tsx';
 import LyricsRenderer from '@/components/lyrics/LyricsRenderer.tsx';
 import { Button, NowPlayingWidget, RomanizationButton } from '@/components/ui';
+import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
+import type { LyricsState, TempState } from '@/types/store.ts';
+import cx from '@cx';
 import { FullscreenIcon, ImageUpscale, MoveHorizontal, X } from 'lucide-react';
 import { useEffect } from 'react';
-import cx from '@cx';
 import { useStore } from 'zustand';
-import appStore from '@/store/appStore.ts';
-import type { LyricsState, TempState } from '@/types/store.ts';
 
 const exitFullScreen = () => {
   document.exitFullscreen().catch((err) => {

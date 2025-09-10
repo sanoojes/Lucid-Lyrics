@@ -33,7 +33,11 @@ const LyricsCard = () => {
           <div className="main-nowPlayingView-sectionHeaderText">Lyrics</div>
         </h2>
         <div className="section-btn-wrapper">
-          <Button onClick={() => appStore.getState().toggleNpvCardOpen()} variant="icon">
+          <Button
+            onClick={() => appStore.getState().toggleNpvCardOpen()}
+            tippyContent="Open Lyrics"
+            variant="icon"
+          >
             <ChevronDown />
           </Button>
         </div>
