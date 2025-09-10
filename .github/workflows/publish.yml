@@ -99,17 +99,17 @@ jobs:
           cp -r dist/* versions/latest/
 
           # Add README as index.md
-          echo "# 📦 Release $VERSION" > ./$VERSION/index.md
-          echo "# 📦 Latest Release" > ./latest/index.md
+          echo "# 📦 Release $VERSION" > versions/$VERSION/index.md
+          echo "# 📦 Latest Release" > versions/latest/index.md
 
-          # Root README
+          # Root README with relative links
           echo "# 📦 Release Artifacts" > README.md
           echo "## 🔗 Latest" >> README.md
-          echo "- [latest/](./latest)" >> README.md
+          echo "- [latest](./versions/latest)" >> README.md
           echo "## 📚 Versions" >> README.md
           for dir in $(ls -d versions/v* 2>/dev/null | sort -V); do
             ver=$(basename "$dir")
-            echo "- [$ver](./$ver)" >> README.md
+            echo "- [$ver](./versions/$ver)" >> README.md
           done
 
           cp README.md versions/README.md
