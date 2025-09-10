@@ -1,6 +1,6 @@
 import { createLogger } from '@/lib/logger.ts';
 import appStore from '@/store/appStore.ts';
-import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
+// import { getSpotifyTokenHeader } from '@/utils/fetch/getSpotifyToken.ts';
 import { type Socket, io } from 'socket.io-client';
 
 const logger = createLogger('[Analytics]');
@@ -11,49 +11,49 @@ const TYPE: AnalyticType = 'lyrics_extension';
 
 let socket: Socket | null = null;
 
-function setToken(key: string, value: string, expiresAt: number) {
-  localStorage.setItem(key, JSON.stringify({ value, expiresAt }));
-}
+// function setToken(key: string, value: string, expiresAt: number) {
+//   localStorage.setItem(key, JSON.stringify({ value, expiresAt }));
+// }
 
-function getToken(key: string) {
-  const stored = localStorage.getItem(key);
-  if (!stored) return null;
+// function getToken(key: string) {
+//   const stored = localStorage.getItem(key);
+//   if (!stored) return null;
 
-  try {
-    const { value, expiresAt } = JSON.parse(stored);
-    if (Date.now() > expiresAt) {
-      localStorage.removeItem(key);
-      return null;
-    }
-    return value;
-  } catch {
-    localStorage.removeItem(key);
-    return null;
-  }
-}
+//   try {
+//     const { value, expiresAt } = JSON.parse(stored);
+//     if (Date.now() > expiresAt) {
+//       localStorage.removeItem(key);
+//       return null;
+//     }
+//     return value;
+//   } catch {
+//     localStorage.removeItem(key);
+//     return null;
+//   }
+// }
 
-async function getAuth(): Promise<string> {
-  let token = getToken('lyrics_auth');
-  if (token) return token;
+// async function getAuth(): Promise<string> {
+//   let token = getToken('lyrics_auth');
+//   if (token) return token;
 
-  const Authorization = await getSpotifyTokenHeader();
-  if (!Authorization) throw new Error('Failed to get Spotify Auth token');
+//   const Authorization = await getSpotifyTokenHeader();
+//   if (!Authorization) throw new Error('Failed to get Spotify Auth token');
 
-  const res = await fetch(`${ANALYTIC_SERVER_URL}/token`, {
-    headers: new Headers({ Authorization }),
-  });
+//   const res = await fetch(`${ANALYTIC_SERVER_URL}/token`, {
+//     headers: new Headers({ Authorization }),
+//   });
 
-  if (!res.ok) throw new Error('Failed to get JWT token from server');
+//   if (!res.ok) throw new Error('Failed to get JWT token from server');
 
-  const data = await res.json();
-  token = data.token;
-  const expiresAt = data.expiresAt;
+//   const data = await res.json();
+//   token = data.token;
+//   const expiresAt = data.expiresAt;
 
-  if (!token || !expiresAt) throw new Error('Failed to parse JWT token');
+//   if (!token || !expiresAt) throw new Error('Failed to parse JWT token');
 
-  setToken('lyrics_auth', token, expiresAt);
-  return token;
-}
+//   setToken('lyrics_auth', token, expiresAt);
+//   return token;
+// }
 
 export async function setupAnalytics(
   isAnalyticsActive: boolean = appStore.getState().isAnalyticsActive
@@ -84,10 +84,10 @@ export async function setupAnalytics(
       return;
     }
 
-    const JWT_TOKEN = await getAuth();
+    // const JWT_TOKEN = await getAuth();
 
     socket = io(`${ANALYTIC_SERVER_URL}/ws/users`, {
-      auth: { token: JWT_TOKEN, type: TYPE },
+      auth: { type: TYPE },
       closeOnBeforeunload: true,
     });
 
