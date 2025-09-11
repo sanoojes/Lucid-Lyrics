@@ -1,11 +1,11 @@
 /** biome-ignore-all lint/a11y: nahh need for a11y now */
 
 import { HeaderButtons } from '@/components/ui';
+import appStore from '@/store/appStore.ts';
 import cx from '@cx';
 import { type FC, type ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useStore } from 'zustand';
-import appStore from '../store/appStore.ts';
 
 type ModalProps = {
   isOpen: boolean;

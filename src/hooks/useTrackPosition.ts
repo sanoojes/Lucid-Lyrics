@@ -1,7 +1,7 @@
+import appStore from '@/store/appStore.ts';
 import getProgress from '@/utils/player/getProgress.ts';
 import { useEffect, useRef } from 'react';
 import { useStore } from 'zustand';
-import appStore from '@/store/appStore.ts';
 
 export default function useTrackProgress() {
   const progress = useRef(-1);

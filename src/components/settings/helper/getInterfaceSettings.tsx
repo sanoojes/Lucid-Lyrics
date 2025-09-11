@@ -1,6 +1,6 @@
+import { LyricsStateSchema } from '@/schemas/appStoreSchema.ts';
 import type appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
-import { LyricsStateSchema } from '@/schemas/appStoreSchema.ts';
 
 export const getInterfaceSettings = (state: ReturnType<typeof appStore.getState>): SectionProps =>
   ({

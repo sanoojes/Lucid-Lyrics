@@ -1,9 +1,8 @@
+import { BackgroundStateSchema } from '@/schemas/appStoreSchema.ts';
 import CSSFilterSchema from '@/schemas/cssFilterSchema.ts';
 import type appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
 import { DEFAULT_APP_STATE } from '@constants';
-import z from 'zod';
-import { BackgroundStateSchema } from '../../../schemas/appStoreSchema.ts';
 
 export const getBackgroundSettings = (
   state: ReturnType<typeof appStore.getState>

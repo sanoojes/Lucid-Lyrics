@@ -1,6 +1,6 @@
 import CSSFilterSchema from '@/schemas/cssFilterSchema.ts';
+import { boundedNumber } from '@/utils/schema.ts';
 import z from 'zod';
-import { boundedNumber } from '../utils/schema.ts';
 
 export const ColorStateSchema = z.object({
   mode: z.enum(['default', 'dynamic', 'custom']),

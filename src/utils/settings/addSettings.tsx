@@ -1,7 +1,7 @@
 import Settings from '@/components/settings/Settings.tsx';
 import { showModal } from '@/utils/modal/showModal.tsx';
-import { waitForGlobal } from '@utils/dom';
 import { Icons } from '@constants';
+import { waitForGlobal } from '@utils/dom';
 
 let settingsEntry: Spicetify.Menu.Item | Spicetify.Topbar.Button | null = null;
 

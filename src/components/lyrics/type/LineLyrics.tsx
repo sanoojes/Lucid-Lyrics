@@ -1,6 +1,7 @@
 import { Interlude } from '@/components/ui';
 import useTrackPosition from '@/hooks/useTrackPosition.ts';
 import appStore from '@/store/appStore.ts';
+import tempStore from '@/store/tempStore.ts';
 import type { LineData } from '@/types/lyrics.ts';
 import seekTo from '@/utils/player/seekTo.ts';
 import { SIMPLEBAR_CLASSNAMES } from '@constants';
@@ -8,7 +9,6 @@ import cx from '@cx';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useStore } from 'zustand';
-import tempStore from '../../../store/tempStore.ts';
 
 type LineLyricsProps = { data: LineData };
 
