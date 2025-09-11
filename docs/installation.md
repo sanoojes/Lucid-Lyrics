@@ -39,17 +39,23 @@ Clone or download the Lucid Lyrics repository:
 git clone https://github.com/sanoojes/lucid-lyrics.git
 ```
 
-#### 2. Move the Extension
+#### 2. Build the Extension
+You can build the extension using `build` task. Extension will be saved to `/dist` folder
+```bash
+deno run build
+```
+
+#### 3. Move the Extension
 
 Copy the extension folder into Spicetify’s extensions directory:
 
 ```bash
-cp -r lucid-lyrics ~/.config/spicetify/Extensions/
+cp -r dist/lucid-lyrics.js ~/.config/spicetify/Extensions/
 ```
 
-*(Use `spicetify config-dir` to quickly find your Spicetify configuration folder if needed.)*
+*(Use `spicetify config-dir` to quickly find your Spicetify configuration folder.)*
 
-#### 3. Enable the Extension
+#### 4. Enable the Extension
 You can enable the extension using these methods.
 
 ##### **Using the Command Line**
@@ -60,7 +66,7 @@ Run the following to activate the extension:
 spicetify config extensions lucid-lyrics.js
 ```
 
-##### ➤ **Manually Editing the Configuration**
+##### **Manually Editing the Configuration**
 
 Open the configuration file located at:
 
