@@ -2,10 +2,10 @@ import { defineConfig } from 'vitepress';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base: '/Lucid-Lyrics/',
   title: 'Lucid Lyrics',
   description: 'A Small Documentation for Lucid Lyrics',
   themeConfig: {
-    base: '/Lucid-Lyrics/',
     // https://vitepress.dev/reference/default-theme-config
     head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
     nav: [
