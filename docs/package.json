@@ -12,7 +12,7 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
-  "devDependencies": {
+  "dependencies": {
     "vitepress": "^2.0.0-alpha.12"
   }
 }
