@@ -8,9 +8,9 @@
     "dev": "deno run -A @builder/builder.ts --watch --copyToSpice",
     "build": "deno run -A @builder/builder.ts --minify",
     "check": "deno run -A npm:@biomejs/biome check --write",
-    "docs:dev": "cd ../docs && npm run docs:dev",
-    "docs:build": "cd ../docs && npm run docs:build",
-    "docs:preview": "cd ../docs && npm run docs:preview"
+    "docs:dev": "cd ./docs && npm run docs:dev",
+    "docs:build": "cd ./docs && npm run docs:build",
+    "docs:preview": "cd ./docs && npm run docs:preview"
   },
   "dependencies": {
     "@react-spring/web": "^10.0.2",
