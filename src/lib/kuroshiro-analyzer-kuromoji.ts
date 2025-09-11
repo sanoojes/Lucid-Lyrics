@@ -1,4 +1,4 @@
-import ImportedKuromoji from "./kuromoji/index.js"
+import ImportedKuromoji from "./kuromoji/index.cjs"
 const Kuromoji = (ImportedKuromoji as unknown as any)
 
 let Analyzer: any

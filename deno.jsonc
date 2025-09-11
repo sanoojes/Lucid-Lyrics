@@ -1,11 +1,4 @@
 {
-  "version": "1.0.0",
-  "tasks": {
-    "dev": "deno run -A @builder/builder.ts --watch --copyToSpice",
-    "build": "deno run -A @builder/builder.ts --minify",
-    "check": "deno run -A npm:@biomejs/biome check --write",
-    "clean-build": "deno task clean && deno task build"
-  },
   "imports": {
     // relative imports.
     "@builder/": "./builder/", // for builder
@@ -23,54 +16,9 @@
 
     "@/components/ui": "./src/components/ui/index.ts",
     "@/components/icons": "./src/components/icons/index.ts",
-    "cyrillic-romanization": "npm:cyrillic-romanization@^1.1.8",
-
-    // For Romanization
-    "franc-min": "npm:franc-min@^6.2.0",
-    "kuroshiro": "npm:kuroshiro@^1.2.0",
-    "langs": "npm:langs@^2.0.0",
-    // "pinyin": "npm:pinyin@^4.0.0", // imported dynamically as its >8mb minified
-
-    // React things
-    "react": "npm:react@^19.1.1",
-    "react-dom": "npm:react-dom@^19.1.1",
-    "@types/react": "npm:@types/react@^19.1.9",
-    "@types/react-dom": "npm:@types/react-dom@^19.1.7",
-
-    "react-color-palette": "npm:react-color-palette@^7.3.1",
-    "simplebar-react": "npm:simplebar-react@^3.3.2",
-
-    // State Management
-    "zod": "npm:zod@^4.0.17",
-    "lodash": "npm:lodash@^4.17.21",
-    "zustand": "npm:zustand@^5.0.8",
 
     "@std/cli": "jsr:@std/cli@^1.0.18",
-    "@std/path": "jsr:@std/path@^1.1.0",
-
-    // For Lyrics Query and caching
-    "@tanstack/react-query": "npm:@tanstack/react-query@^5.85.5",
-    "@tanstack/react-query-persist-client": "npm:@tanstack/react-query-persist-client@^5.85.5",
-    "@tanstack/query-async-storage-persister": "npm:@tanstack/query-async-storage-persister@^5.85.5",
-    "idb-keyval": "npm:idb-keyval@^6.2.2",
-    "lz-string": "npm:lz-string@^1.5.0",
-    "node-vibrant": "npm:node-vibrant@^4.0.3",
-
-    // Three.js
-    "three": "npm:three@^0.180.0",
-    "@types/three": "npm:@types/three@^0.179.0",
-
-    // Icons
-    "lucide-react": "npm:lucide-react@^0.542.0",
-
-    // For Analytics
-    "socket.io-client": "npm:socket.io-client@^4.8.1",
-
-    /* Builder things */
-    "esbuild": "npm:esbuild@^0.25.8",
-    "cssnano": "npm:cssnano@^7.1.1",
-    "postcss": "npm:postcss@^8.5.6",
-    "autoprefixer": "npm:autoprefixer@^10.4.21"
+    "@std/path": "jsr:@std/path@^1.1.0"
   },
 
   "compilerOptions": {
