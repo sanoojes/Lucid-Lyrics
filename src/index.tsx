@@ -47,7 +47,7 @@ const main = async () => {
 
   // setup player button
   const playerButton = await createButton({
-    icon: Icons.Mic16,
+    icon: Icons.Brand16,
     label: 'Lucid Lyrics',
     className: 'lucid-lyrics-btn',
     active: tempStore.getState().mainPageInstance?.isActive,
@@ -78,7 +78,7 @@ main();
 async function addThemeSpecificStyles() {
   const timeout = 20000;
   const isGlassifyTheme = await waitForElement('.glassify-bg', { timeout });
-  const isLucidTheme = await waitForElement('.lucid-bg', { timeout });
+  const isLucidTheme = await waitForElement('.lucid-bg,#lucid-bg', { timeout });
   if (isGlassifyTheme) document.documentElement.classList.add('glassify-theme-present');
   if (isLucidTheme) document.documentElement.classList.add('lucid-theme-present');
 }

@@ -18,11 +18,6 @@ let availableApi: string | null = null;
 export const getLyricsData = async (id: string | null) => {
   if (!id) throw new Error('Missing track ID');
 
-  // const tokenHeader = await getSpotifyTokenHeader();
-  // if (!tokenHeader) {
-  //   throw new Error('Missing or invalid Spotify token');
-  // }
-
   const endpointsToTry = availableApi
     ? [availableApi, ...API_CONSUMERS.filter((url) => url !== availableApi)]
     : API_CONSUMERS;
@@ -33,17 +28,13 @@ export const getLyricsData = async (id: string | null) => {
     try {
       const res = await fetch(`${baseUrl}/api/lyrics/${id}`, {
         method: 'GET',
-        // headers: {
-        //   'Spotify-Token': tokenHeader,
-        // },
         credentials: 'omit',
         priority: 'high',
       });
 
       if (!res.ok) {
         if (res.status === 404) {
-          lastError = new Error('Lyrics not found');
-          continue;
+          throw new Error('Lyrics not found');
         }
 
         let errMsg: string;
@@ -67,8 +58,12 @@ export const getLyricsData = async (id: string | null) => {
       logger.debug('Lyrics data:', data);
       return (await processLyrics(data.lyrics)) ?? (data.lyrics as BestAvailableLyrics);
     } catch (e) {
-      logger.error(e);
-      lastError = new Error('Cannot connect to lyrics server');
+      if ((e as Error).message !== 'Lyrics not found') {
+        logger.error(e);
+        lastError = new Error('Cannot connect to lyrics server');
+      } else {
+        throw e;
+      }
     }
   }
 

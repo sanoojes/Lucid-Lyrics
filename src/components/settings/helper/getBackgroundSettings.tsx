@@ -3,6 +3,7 @@ import type appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
 import { DEFAULT_APP_STATE } from '@constants';
 import z from 'zod';
+import { BackgroundStateSchema } from '../../../schemas/appStoreSchema.ts';
 
 export const getBackgroundSettings = (
   state: ReturnType<typeof appStore.getState>
@@ -87,7 +88,8 @@ export const getBackgroundSettings = (
             value: options.customUrl ?? undefined,
             placeholder: 'Paste your image URL here...',
             visible: () => imageMode === 'custom',
-            validation: (value) => z.url({ error: 'Invalid URL' }).safeParse(value),
+            validation: (value) =>
+              BackgroundStateSchema.shape.options.shape.customUrl.safeParse(value),
             onChange: (customUrl) => state.setBgOptions({ customUrl }),
           },
         ],

@@ -1,5 +1,6 @@
 import type appStore from '@/store/appStore.ts';
 import type { SectionProps } from '@/types/settingSchema.ts';
+import { LyricsStateSchema } from '@/schemas/appStoreSchema.ts';
 
 export const getInterfaceSettings = (state: ReturnType<typeof appStore.getState>): SectionProps =>
   ({
@@ -9,6 +10,17 @@ export const getInterfaceSettings = (state: ReturnType<typeof appStore.getState>
       {
         id: 'interface',
         components: [
+          {
+            id: 'time-offset',
+            type: 'Input',
+            label: 'Time offset',
+            inputType: 'number',
+            tippy: 'Time Offset in ms',
+            value: state.lyrics.timeOffset,
+            placeholder: 'Offset in ms...',
+            validation: (value) => LyricsStateSchema.shape.timeOffset.safeParse(value),
+            onChange: (timeOffset) => state.setLyrics('timeOffset', timeOffset),
+          },
           {
             id: 'is-encore-font',
             type: 'Toggle',

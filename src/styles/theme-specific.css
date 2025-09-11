@@ -12,4 +12,7 @@
   .player-floating .lucid-config-container {
     margin-bottom: calc(var(--player-height) - var(--panel-gap));
   }
+  .dropdown-overlay {
+    z-index: 99992 !important;
+  }
 }

@@ -89,6 +89,7 @@ export type LyricsState = {
   scrollOffset: number;
   forceRomanized: boolean;
   showMetadata: boolean;
+  timeOffset: number;
   metadataPosition: 'left' | 'right';
   fullScreenMetadataPosition: 'left' | 'right';
 };

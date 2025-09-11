@@ -27,6 +27,7 @@ export const DEFAULT_APP_STATE: AppState = {
     scrollOffset: 16,
     forceRomanized: false,
     showMetadata: true,
+    timeOffset: -50,
     metadataPosition: 'left',
     fullScreenMetadataPosition: 'left',
   },
