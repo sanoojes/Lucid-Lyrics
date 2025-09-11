@@ -552,8 +552,8 @@
     "boolbase@1.0.0": {
       "integrity": "sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww=="
     },
-    "browserslist@4.25.3": {
-      "integrity": "sha512-cDGv1kkDI4/0e5yON9yM5G/0A5u8sf5TnmdX5C9qHzI9PPu++sQ9zjm1k9NiOrf3riY4OkK0zSGqfvJyJsgCBQ==",
+    "browserslist@4.25.4": {
+      "integrity": "sha512-4jYpcjabC606xJ3kw2QwGEZKX0Aw7sgQdZCvIK9dhVSPh76BKo+C+btT1RRofH7B+8iNpEbgGNVWiLki5q93yg==",
       "dependencies": [
         "caniuse-lite",
         "electron-to-chromium",
@@ -585,8 +585,8 @@
         "lodash.uniq"
       ]
     },
-    "caniuse-lite@1.0.30001735": {
-      "integrity": "sha512-EV/laoX7Wq2J9TQlyIXRxTJqIw4sxfXS4OYgudGxBYRuTv0q7AM6yMEpU/Vo1I94thg9U6EZ2NfZx9GJq83u7w=="
+    "caniuse-lite@1.0.30001741": {
+      "integrity": "sha512-QGUGitqsc8ARjLdgAfxETDhRbJ0REsP6O3I96TAth/mVjh2cYzN2u+3AzPP3aVSm2FehEItaJw1xd+IGBXWeSw=="
     },
     "collapse-white-space@2.1.0": {
       "integrity": "sha512-loKTxY1zCOuG4j9f6EPnuyyYkf58RnhhWTvRoZEokgB+WbdXehfjFviyOVYkqzEWz1Q5kRiZdBYS5SwxbQYwzw=="
@@ -727,8 +727,8 @@
         "domhandler"
       ]
     },
-    "electron-to-chromium@1.5.207": {
-      "integrity": "sha512-mryFrrL/GXDTmAtIVMVf+eIXM09BBPlO5IQ7lUyKmK8d+A4VpRGG+M3ofoVef6qyF8s60rJei8ymlJxjUA8Faw=="
+    "electron-to-chromium@1.5.214": {
+      "integrity": "sha512-TpvUNdha+X3ybfU78NoQatKvQEm1oq3lf2QbnmCEdw+Bd9RuIAY+hJTvq1avzHM0f7EJfnH3vbCnbzKzisc/9Q=="
     },
     "engine.io-client@6.6.3": {
       "integrity": "sha512-T0iLjnyNWahNyv/lcjS2y4oE358tVS/SYQNxYXGAJ9/GLgH4VCvOQ/mhTjqU88mLZCQgiG8RIegFHYCdVC+j5w==",
@@ -899,8 +899,8 @@
         "whatwg-url"
       ]
     },
-    "node-releases@2.0.19": {
-      "integrity": "sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw=="
+    "node-releases@2.0.20": {
+      "integrity": "sha512-7gK6zSXEH6neM212JgfYFXe+GmZQM+fia5SsusuBIUgnPheLFBmIPhtFoAQRj8/7wASYQnbDlHPVwY0BefoFgA=="
     },
     "node-vibrant@4.0.3": {
       "integrity": "sha512-kzoIuJK90BH/k65Avt077JCX4Nhqz1LNc8cIOm2rnYEvFdJIYd8b3SQwU1MTpzcHtr8z8jxkl1qdaCfbP3olFg==",
@@ -1311,7 +1311,7 @@
     "undici-types@5.26.5": {
       "integrity": "sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA=="
     },
-    "update-browserslist-db@1.1.3_browserslist@4.25.3": {
+    "update-browserslist-db@1.1.3_browserslist@4.25.4": {
       "integrity": "sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==",
       "dependencies": [
         "browserslist",
