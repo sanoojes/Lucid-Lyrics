@@ -80,6 +80,9 @@ web_modules/
 .next
 out
 
+# back files 
+*.bak
+
 # Nuxt.js build / generate output
 .nuxt
 dist
@@ -94,8 +97,9 @@ dist
 .vuepress/dist
 
 # VitePress
-.vitepress/dist/
-.vitepress/cache/
+docs/.vitepress/dist
+docs/.vitepress/cache
+docs/node_modules
 
 # deno things
 .deno/

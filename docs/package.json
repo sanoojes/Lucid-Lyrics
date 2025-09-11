@@ -1,0 +1,18 @@
+{
+  "name": "lucid-lyrics-docs",
+  "version": "1.0.0",
+  "description": "docs for lucid lyrics",
+  "license": "MIT",
+  "author": "sanoojes",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^2.0.0-alpha.12"
+  }
+}
