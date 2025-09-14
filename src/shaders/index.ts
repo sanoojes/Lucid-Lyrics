@@ -110,8 +110,8 @@ void main() {
     }
 
     // Apply uniform fade to the whole canvas
-    finalColor.rgb *= TextureFade;
-    finalColor.a *= TextureFade;
+    // finalColor.rgb *= TextureFade;
+    // finalColor.a *= TextureFade;
 
     gl_FragColor = finalColor;
 }

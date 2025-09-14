@@ -6,8 +6,6 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useStore } from 'zustand';
 
-const MIN_OPACITY_FADE = 0.6;
-
 const AnimatedBackgroundCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -28,7 +26,7 @@ const AnimatedBackgroundCanvas: React.FC = () => {
     const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
       antialias: true,
-      alpha: true,
+      alpha: false,
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -41,7 +39,7 @@ const AnimatedBackgroundCanvas: React.FC = () => {
     const uniforms = GetShaderUniforms();
     uniformsRef.current = uniforms;
 
-    const UpdateDimensions = () => {
+    const updateDimensions = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       renderer.setSize(width, height);
@@ -66,7 +64,7 @@ const AnimatedBackgroundCanvas: React.FC = () => {
       renderer.render(scene, camera); // render once when resizing else the background will be black
     };
 
-    UpdateDimensions();
+    updateDimensions();
 
     const material = new THREE.ShaderMaterial({
       vertexShader: VertexShader,
@@ -93,14 +91,14 @@ const AnimatedBackgroundCanvas: React.FC = () => {
     };
     animate(); // start animation loop
 
-    window.addEventListener('resize', UpdateDimensions);
+    window.addEventListener('resize', updateDimensions);
 
     return () => {
       if (frameId) cancelAnimationFrame(frameId);
       renderer.dispose();
       geometry.dispose();
       material.dispose();
-      window.removeEventListener('resize', UpdateDimensions);
+      window.removeEventListener('resize', updateDimensions);
     };
   }, []);
 
@@ -132,7 +130,7 @@ const AnimatedBackgroundCanvas: React.FC = () => {
 
     uniforms.PreviousBlurredCoverArt.value = prevTexture;
 
-    uniforms.TextureFade.value = MIN_OPACITY_FADE;
+    uniforms.TextureFade.value = 0;
 
     let cancelled = false;
 
@@ -151,7 +149,7 @@ const AnimatedBackgroundCanvas: React.FC = () => {
           const elapsed = performance.now() - start;
           const t = Math.min(elapsed / duration, 1);
 
-          uniformsRef.current.TextureFade.value = MIN_OPACITY_FADE + 0.4 * t;
+          uniformsRef.current.TextureFade.value = 1 * t;
 
           if (t < 1) {
             requestAnimationFrame(fade);
