@@ -1,6 +1,6 @@
 import type { AppState, BackgroundState, LyricsState } from '@/types/store.ts';
 import { DEFAULT_APP_STATE } from '@constants';
-import { merge } from 'lodash';
+import deepMerge from '@/utils/deepMerge.ts';
 import { combine, persist, subscribeWithSelector } from 'zustand/middleware';
 import { createStore } from 'zustand/vanilla';
 
@@ -64,7 +64,7 @@ const appStore = createStore<AppState & AppStateSetters>()(
             },
           }),
 
-        importConfig: (config) => set(merge({}, DEFAULT_APP_STATE, config)),
+        importConfig: (config) => set(deepMerge(DEFAULT_APP_STATE, config)),
         exportConfig: () => {
           try {
             const config = JSON.stringify(get(), null, 2);
@@ -84,7 +84,7 @@ const appStore = createStore<AppState & AppStateSetters>()(
     {
       name: APPSTORE_NAME,
       version: 1,
-      migrate: (persistedState) => merge(DEFAULT_APP_STATE, persistedState ?? {}),
+      migrate: (persistedState) => deepMerge(DEFAULT_APP_STATE, persistedState ?? {}),
     }
   )
 );
