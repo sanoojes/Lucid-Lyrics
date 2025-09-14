@@ -99,6 +99,8 @@ dist
 # VitePress
 docs/.vitepress/dist
 docs/.vitepress/cache
+.vitepress/dist
+.vitepress/cache
 docs/node_modules
 
 # deno things
