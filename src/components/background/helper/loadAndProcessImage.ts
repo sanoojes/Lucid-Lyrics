@@ -1,11 +1,12 @@
 import type { CSSFilter } from '@/types/styles.ts';
+import { logger } from '@logger';
 import { serializeFilters } from '@utils/dom';
 import { CanvasTexture, type Texture } from 'three';
 
 async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<Texture | null> {
   try {
     if (!url) {
-      console.warn('No image URL provided');
+      logger.warn('No image URL provided');
       return null;
     }
 
@@ -22,7 +23,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<Text
     const circleCanvas = new OffscreenCanvas(originalSize, originalSize);
     const ctx = circleCanvas.getContext('2d');
     if (!ctx) {
-      console.error('Failed to get 2D context for circleCanvas');
+      logger.error('Failed to get 2D context for circleCanvas');
       return null;
     }
 
@@ -45,7 +46,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<Text
     const blurredCanvas = new OffscreenCanvas(expandedSize, expandedSize);
     const blurredCtx = blurredCanvas.getContext('2d');
     if (!blurredCtx) {
-      console.error('Failed to get 2D context for blurredCanvas');
+      logger.error('Failed to get 2D context for blurredCanvas');
       return null;
     }
 
@@ -56,7 +57,7 @@ async function loadAndProcessImage(url: string, filter: CSSFilter): Promise<Text
     texture.needsUpdate = true;
     return texture;
   } catch (err) {
-    console.error('Failed to load/process image:', err);
+    logger.error('Failed to load/process image:', err);
     return null;
   }
 }

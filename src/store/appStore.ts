@@ -1,6 +1,6 @@
 import type { AppState, BackgroundState, LyricsState } from '@/types/store.ts';
-import { DEFAULT_APP_STATE } from '@constants';
 import deepMerge from '@/utils/deepMerge.ts';
+import { DEFAULT_APP_STATE } from '@constants';
 import { combine, persist, subscribeWithSelector } from 'zustand/middleware';
 import { createStore } from 'zustand/vanilla';
 

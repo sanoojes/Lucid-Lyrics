@@ -21,28 +21,28 @@ const Tippy: React.FC<TippyProps> = ({ label = null, children, hasIcon = false, 
   const containerRef = useRef<HTMLDivElement>(null);
   const disableTippy = useStore(appStore, (s) => s.disableTippy);
 
-  const showTooltip = () => {
-    if (disableTippy) return;
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setCoords({
-        top: rect.top + window.scrollY,
-        left: rect.left + window.scrollX + rect.width / 2,
-      });
-      setVisible(true);
-    }
-  };
-
-  const hideTooltip = () => {
-    if (disableTippy) return;
-    setVisible(false);
-  };
-
   useEffect(() => {
     if (disableTippy) return;
 
     const container = containerRef.current;
     if (!container) return;
+
+    const showTooltip = () => {
+      if (disableTippy) return;
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setCoords({
+          top: rect.top + window.scrollY,
+          left: rect.left + window.scrollX + rect.width / 2,
+        });
+        setVisible(true);
+      }
+    };
+
+    const hideTooltip = () => {
+      if (disableTippy) return;
+      setVisible(false);
+    };
 
     container.addEventListener('mouseenter', showTooltip);
     container.addEventListener('mouseleave', hideTooltip);

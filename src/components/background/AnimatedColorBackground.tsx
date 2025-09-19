@@ -1,6 +1,7 @@
 import { FragmentShader, GetShaderUniforms, VertexShader } from '@/shaders/color.ts';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
+import { logger } from '@logger';
 import { useEffect, useRef } from 'react';
 import {
   Color,
@@ -136,7 +137,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ timeScale = 50 
         material.dispose();
         renderer.dispose();
       } catch (e) {
-        console.warn('Error disposing renderer resources:', e);
+        logger.warn('Error disposing renderer resources:', e);
       }
     };
   }, [colors, timeScale]);

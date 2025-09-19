@@ -1,3 +1,5 @@
+import { logger } from '@logger';
+
 export default function getProgress() {
   try {
     const state = Spicetify.Platform?.PlayerAPI?._state;
@@ -5,7 +7,7 @@ export default function getProgress() {
 
     const { positionAsOfTimestamp, timestamp } = state;
 
-    if (positionAsOfTimestamp == null || timestamp == null) {
+    if (positionAsOfTimestamp === null || timestamp === null) {
       return 0;
     }
 
@@ -16,7 +18,7 @@ export default function getProgress() {
     const now = Date.now();
     return positionAsOfTimestamp + (now - timestamp);
   } catch (error) {
-    console.error('Failed to get progress:', error);
+    logger.error('Failed to get progress:', error);
     return 0;
   }
 }

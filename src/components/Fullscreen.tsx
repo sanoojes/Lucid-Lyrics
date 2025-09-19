@@ -13,7 +13,7 @@ import { useStore } from 'zustand';
 
 const exitFullScreen = () => {
   document.exitFullscreen().catch((err) => {
-    console.error('Failed to exit fullscreen:', err);
+    logger.error('Failed to exit fullscreen:', err);
   });
   tempStore.getState().setFullscreenMode('compact');
 };
@@ -79,7 +79,7 @@ const Fullscreen: React.FC = () => {
   useEffect(() => {
     if (fullscreenMode === 'fullscreen') {
       document.documentElement.requestFullscreen().catch((err) => {
-        console.error('Failed to enter fullscreen:', err);
+        logger.error('Failed to enter fullscreen:', err);
       });
     } else if (fullscreenMode === 'compact') {
       exitFullScreen();
