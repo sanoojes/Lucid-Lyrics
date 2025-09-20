@@ -3,7 +3,7 @@ import { createLogger } from '@logger';
 import { type Socket, io } from 'socket.io-client';
 
 const logger = createLogger('[Analytics]');
-const ANALYTIC_SERVER_URL = 'http://localhost:3000';
+const ANALYTIC_SERVER_URL = 'https://analytics-spicetify-projects.sanooj.uk';
 const USER_ID_LOCAL_KEY = 'lucid:lyrics:userId';
 
 type AnalyticType = 'theme' | 'lyrics_extension' | 'glassify_theme';
