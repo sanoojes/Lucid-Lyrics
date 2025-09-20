@@ -7,7 +7,7 @@ import { logger } from '@logger';
 // List of APIs
 const API_CONSUMERS = appStore.getState().isDevMode
   ? ['http://localhost:8787']
-  : ['https://spicetify-projects.sanooj.uk', 'https://lucid-lyrics.cloudns.pro'];
+  : ['https://spicetify-projects.sanooj.uk'];
 
 let availableApi: string | null = null;
 
