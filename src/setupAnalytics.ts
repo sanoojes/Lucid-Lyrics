@@ -3,7 +3,7 @@ import { createLogger } from '@logger';
 import { type Socket, io } from 'socket.io-client';
 
 const logger = createLogger('[Analytics]');
-const ANALYTIC_SERVER_URL = 'https://analytics.lucid.sanooj.is-a.dev';
+const ANALYTIC_SERVER_URL = 'http://localhost:3000';
 const USER_ID_LOCAL_KEY = 'lucid:lyrics:userId';
 
 type AnalyticType = 'theme' | 'lyrics_extension' | 'glassify_theme';
@@ -39,10 +39,8 @@ export async function setupAnalytics(
       return;
     }
 
-    const userId = getUserId() ?? undefined;
-
     socket = io(`${ANALYTIC_SERVER_URL}/ws/users`, {
-      auth: { type: TYPE, userId },
+      auth: { type: TYPE },
       closeOnBeforeunload: true,
     });
 
@@ -57,6 +55,9 @@ export async function setupAnalytics(
     const MAX_RETRIES = 3;
 
     socket.on('connect', () => {
+      const userId = getUserId() ?? undefined;
+      socket?.emit('getUserId', userId);
+
       logger.info('Connected');
       connectionAttempts = 0;
     });
