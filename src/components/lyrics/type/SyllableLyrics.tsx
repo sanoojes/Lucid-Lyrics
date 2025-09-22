@@ -15,7 +15,10 @@ import { useStore } from 'zustand';
 type VocalPartProps = {
   part: VocalPartType;
   isLead?: boolean;
-  registerSyllable?: (el: HTMLElement | null) => void;
+  registerSyllable?: (
+    el: HTMLElement | null,
+    meta: { start: number; end: number; maxX: number; skipBg?: boolean }
+  ) => void;
 };
 
 type SyllableLyricsProps = { data: SyllableData };
@@ -23,26 +26,32 @@ type SyllableLyricsProps = { data: SyllableData };
 const SCROLL_TIMEOUT_MS = 1000;
 
 const VocalPart: React.FC<VocalPartProps> = ({ part, isLead = true, registerSyllable }) => {
-  const l = useStore(appStore, (s) => s.lyrics);
+  const { forceRomanized, maxTranslateUpLetter, maxTranslateUpWord, splitThresholdMs } = useStore(
+    appStore,
+    (s) => s.lyrics
+  );
+
   return (
     <div className={cx('line', isLead ? 'lead' : 'background')}>
       {part.Syllables.map((s, idx) => {
         const key = `${s.StartTime}-${s.EndTime}-${s.Text}-${idx}`;
         const start = s.StartTime * 1000;
         const end = s.EndTime * 1000;
-        const word = l.forceRomanized && s.RomanizedText ? s.RomanizedText : s.Text;
+        const word = forceRomanized && s.RomanizedText ? s.RomanizedText : s.Text;
 
-        if (end - start < l.splitThresholdMs) {
+        if (end - start < splitThresholdMs) {
           return (
             <span
               key={key}
-              onClick={() => seekTo(s.StartTime * 1000)}
+              onClick={() => seekTo(start)}
               className="syllable-wrapper animating-syllable"
-              data-start={start}
-              data-max-x={l.maxTranslateUpWord}
-              data-scale-coefficient={l.scaleCoefficientWord}
-              data-end={end}
-              ref={registerSyllable}
+              ref={(el) =>
+                registerSyllable?.(el, {
+                  start,
+                  end,
+                  maxX: maxTranslateUpWord,
+                })
+              }
             >
               {word}
               {!s.IsPartOfWord ? <span className="space"> </span> : null}
@@ -54,12 +63,14 @@ const VocalPart: React.FC<VocalPartProps> = ({ part, isLead = true, registerSyll
           <span
             key={key}
             className="syllable-wrapper animating-syllable"
-            data-start={start}
-            data-max-x={l.maxTranslateUpWord}
-            data-scale-coefficient={l.scaleCoefficientWord}
-            data-end={end}
-            data-skip-bg="true"
-            ref={registerSyllable}
+            ref={(el) =>
+              registerSyllable?.(el, {
+                start,
+                end,
+                maxX: maxTranslateUpWord,
+                skipBg: true,
+              })
+            }
           >
             {word.split('').map((letter, lIdx) => {
               const letterKey = `${key}-letter-${lIdx}`;
@@ -69,13 +80,15 @@ const VocalPart: React.FC<VocalPartProps> = ({ part, isLead = true, registerSyll
               return (
                 <span
                   key={letterKey}
-                  onClick={() => seekTo(s.StartTime * 1000)}
+                  onClick={() => seekTo(start)}
                   className="animating-syllable"
-                  data-start={start + fractionStart * (end - start)}
-                  data-max-x={l.maxTranslateUpLetter}
-                  data-scale-coefficient={l.scaleCoefficientLetter}
-                  data-end={start + fractionEnd * (end - start)}
-                  ref={registerSyllable}
+                  ref={(el) =>
+                    registerSyllable?.(el, {
+                      start: start + fractionStart * (end - start),
+                      end: start + fractionEnd * (end - start),
+                      maxX: maxTranslateUpLetter,
+                    })
+                  }
                 >
                   {letter}
                 </span>
@@ -93,45 +106,54 @@ const INTERLUDE_MIN_GAP_MS = 2000;
 
 const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
   const progressRef = useTrackPosition();
-
   const l = useStore(appStore, (s) => s.lyrics);
 
   const simpleBarRef = useRef<any>(null);
   const lyricsWrapperRef = useRef<HTMLDivElement>(null);
 
-  const lineRefs = useRef<HTMLDivElement[]>([]);
+  const lineRefs = useRef<{ el: HTMLDivElement; end: number }[]>([]);
   const activeLineIdxRef = useRef<number>(0);
 
   const syllableRefs = useRef<HTMLElement[]>([]);
-  const registerSyllable = useCallback((el: HTMLElement | null) => {
-    if (el) {
-      syllableRefs.current.push(el);
-    }
-  }, []);
+  const syllableMeta = useRef(
+    new Map<HTMLElement, { start: number; end: number; maxX: number; skipBg?: boolean }>()
+  );
+
+  const scrollableNodeProps = useMemo(() => ({ ref: lyricsWrapperRef }), []);
+
+  const registerSyllable = useCallback(
+    (
+      el: HTMLElement | null,
+      meta?: { start: number; end: number; maxX: number; skipBg?: boolean }
+    ) => {
+      if (el && meta) {
+        syllableRefs.current.push(el);
+        syllableMeta.current.set(el, meta);
+      }
+    },
+    []
+  );
 
   const isScrolling = useRef(false);
   const isActiveLineVisible = useRef(true);
 
-  const checkActiveLineVisibility = () => {
-    const wrapper = lyricsWrapperRef.current;
-    const activeLine = lineRefs.current[activeLineIdxRef.current];
-    if (!wrapper || !activeLine) return;
-
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const lineRect = activeLine.getBoundingClientRect();
-
-    const isVisible = lineRect.top >= wrapperRect.top && lineRect.bottom <= wrapperRect.bottom;
-
-    isActiveLineVisible.current = isVisible;
-  };
-
   useEffect(() => {
+    const checkActiveLineVisibility = () => {
+      const wrapper = lyricsWrapperRef.current;
+      const activeLine = lineRefs.current[activeLineIdxRef.current]?.el;
+      if (!wrapper || !activeLine) return;
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const lineRect = activeLine.getBoundingClientRect();
+
+      isActiveLineVisible.current =
+        lineRect.top >= wrapperRect.top && lineRect.bottom <= wrapperRect.bottom;
+    };
+
     checkActiveLineVisibility();
-
     const interval = setInterval(checkActiveLineVisibility, 1000);
-
     return () => clearInterval(interval);
-  }, [activeLineIdxRef.current]);
+  }, []);
 
   useEffect(() => {
     const element = lyricsWrapperRef.current;
@@ -148,34 +170,30 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       isScrolling.current = true;
       simpleBarRef.current?.el?.classList.remove('hide-scrollbar');
 
-      if (checkTimeoutId !== null) {
-        clearTimeout(checkTimeoutId);
-      }
+      if (checkTimeoutId !== null) clearTimeout(checkTimeoutId);
 
       checkTimeoutId = setTimeout(setNotScrolling, SCROLL_TIMEOUT_MS);
     };
 
     element.addEventListener('wheel', handleWheel, { passive: true });
-
     return () => {
-      if (checkTimeoutId !== null) {
-        clearTimeout(checkTimeoutId);
-      }
+      if (checkTimeoutId !== null) clearTimeout(checkTimeoutId);
       element.removeEventListener('wheel', handleWheel);
     };
-  }, [lyricsWrapperRef]);
+  }, []);
 
   const scrollToCurrentLine = useCallback(
     (behavior: ScrollBehavior = 'smooth', overrideIdx?: number) => {
       if (isScrolling.current) return;
       if (behavior !== 'auto' && !isActiveLineVisible.current) return;
 
-      const ref = lineRefs.current[overrideIdx ?? activeLineIdxRef.current];
+      const refObj = lineRefs.current[overrideIdx ?? activeLineIdxRef.current];
       const wrapper = lyricsWrapperRef.current;
-      if (!ref || !wrapper) return;
+      if (!refObj || !wrapper) return;
 
+      const { el } = refObj;
       const wrapperRect = wrapper.getBoundingClientRect();
-      const lineRect = ref.getBoundingClientRect();
+      const lineRect = el.getBoundingClientRect();
       const scrollTop = wrapper.scrollTop;
       const offset = lineRect.top - wrapperRect.top + scrollTop;
 
@@ -186,14 +204,11 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
         behavior,
       });
     },
-    []
+    [l.scrollOffset]
   );
 
   useEffect(() => {
-    lyricsWrapperRef.current?.scrollTo({
-      top: 0,
-      behavior: 'instant',
-    });
+    lyricsWrapperRef.current?.scrollTo({ top: 0, behavior: 'instant' });
   }, [data.Content]);
 
   useEffect(() => {
@@ -221,7 +236,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       if (removeListener) removeListener();
       else Spicetify?.Player?.origin?._events?.removeListener('update', scrollSmoothly);
     };
-  }, [progressRef]);
+  }, [scrollToCurrentLine]);
 
   useEffect(() => {
     let id: number | null = null;
@@ -231,36 +246,32 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       const progress = progressRef.current;
 
       for (let i = 0; i < lineRefs.current.length; i++) {
-        const ref = lineRefs.current[i];
-        if (!ref) continue;
-        const endTime = Number(ref.dataset.endTime);
-        if (progress <= endTime) {
+        const refObj = lineRefs.current[i];
+        if (!refObj) continue;
+        const { el, end } = refObj;
+
+        if (progress <= end) {
           currentActiveLine = i;
-          ref.classList.remove('past');
+          el.classList.remove('past');
           break;
         } else {
-          ref.classList.add('past');
+          el.classList.add('past');
         }
       }
 
       for (let i = 0; i < lineRefs.current.length; i++) {
-        const ref = lineRefs.current[i];
-        if (!ref) continue;
+        const refObj = lineRefs.current[i];
+        if (!refObj) continue;
 
+        const { el } = refObj;
         if (isScrolling.current || !isActiveLineVisible.current) {
-          ref.style.setProperty('--line-shadow-blur', '0px');
+          el.style.setProperty('--line-shadow-blur', '0px');
           continue;
         }
 
         const distance = Math.abs(i - currentActiveLine);
         const distanceBlur = distance * 1.25;
-        let blurValue = '0px';
-        if (distanceBlur <= 6) {
-          blurValue = `${distanceBlur}px`;
-        } else {
-          blurValue = '6px';
-        }
-        ref.style.setProperty('--line-shadow-blur', blurValue);
+        el.style.setProperty('--line-shadow-blur', `${Math.min(distanceBlur, 6)}px`);
       }
 
       if (activeLineIdxRef.current !== currentActiveLine) {
@@ -269,40 +280,27 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       }
 
       syllableRefs.current.forEach((el) => {
-        const start = Number(el.dataset.start);
-        const end = Number(el.dataset.end);
-        const maxX = Number(el.dataset.maxX);
-        const scaleCoefficient = Number(el.dataset.scaleCoefficient);
-        const skipBg = Boolean(el.dataset.skipBg);
+        const meta = syllableMeta.current.get(el);
+        if (!meta) return;
 
+        const { start, end, maxX, skipBg } = meta;
         const duration = end - start;
         let pct = 0;
 
-        if (progress < start) {
-          pct = 0;
-        } else if (progress <= end) {
-          pct = ((progress - start) / duration) * 100;
-        } else {
-          pct = 100;
-        }
+        if (progress < start) pct = 0;
+        else if (progress <= end) pct = ((progress - start) / duration) * 100;
+        else pct = 100;
 
         if (progress >= start && progress <= end) {
           el.style.transition = '';
           el.style.setProperty('--translate-y', `${-(pct / 100) * maxX}px`);
-          el.style.setProperty('--scale', `${1 + pct / (1000 * scaleCoefficient)}`);
           if (!skipBg) el.style.setProperty('--bg-size-x', `${pct}%`);
           el.classList.remove('past');
         } else {
-          el.style.transition = 'transform 1s ease-out, opacity .3s cubic-bezier(.61,1,.88,1)';
           el.style.removeProperty('--translate-y');
-          el.style.removeProperty('--scale');
           if (!skipBg) el.style.removeProperty('--bg-size-x');
-
-          if (progress > end) {
-            el.classList.add('past');
-          } else {
-            el.classList.remove('past');
-          }
+          if (progress > end) el.classList.add('past');
+          else el.classList.remove('past');
         }
       });
 
@@ -310,16 +308,20 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
     };
 
     id = requestAnimationFrame(animate);
-
     return () => {
       if (id) cancelAnimationFrame(id);
     };
-  }, [progressRef]);
+  }, [progressRef, scrollToCurrentLine]);
 
   const contentWithInterludes = useMemo(() => {
     const result: (
       | (typeof data.Content)[number]
-      | { interlude: true; start: number; end: number; OppositeAligned: boolean }
+      | {
+          interlude: true;
+          start: number;
+          end: number;
+          OppositeAligned: boolean;
+        }
     )[] = [];
 
     const firstContent = data.Content[0];
@@ -362,16 +364,19 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
     return result;
   }, [data.Content]);
 
-  const hasOppAligned = useMemo(() => {
-    return data.Content.some((content) => content.OppositeAligned);
-  }, [data.Content]);
+  const hasOppAligned = useMemo(
+    () => data.Content.some((content) => content.OppositeAligned),
+    [data.Content]
+  );
 
   return (
     <SimpleBar
       ref={simpleBarRef}
-      className={cx('lyrics-wrapper hide-scrollbar', { 'has-opp-aligned': hasOppAligned })}
+      className={cx('lyrics-wrapper hide-scrollbar', {
+        'has-opp-aligned': hasOppAligned,
+      })}
       classNames={SIMPLEBAR_CLASSNAMES}
-      scrollableNodeProps={{ ref: lyricsWrapperRef }}
+      scrollableNodeProps={scrollableNodeProps}
     >
       <div className="top-spacing" />
       {contentWithInterludes.map((content, idx) => {
@@ -380,18 +385,21 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
           'interlude' in content
             ? content.end
             : (content.Background && content.Background.length > 0
-                ? Math.max(...content.Background.map((value) => value.EndTime || 0))
+                ? Math.max(...content.Background.map((v) => v.EndTime || 0))
                 : content.Lead.EndTime) * 1000;
 
         return (
           <div
-            key={`content-${'interlude' in content ? `interlude-${idx}` : (content.Lead.StartTime ?? idx)}`}
+            key={`content-${
+              'interlude' in content ? `interlude-${idx}` : (content.Lead.StartTime ?? idx)
+            }`}
             className={cx('line-wrapper', {
               'left-align': !isOppAligned,
               'right-align': isOppAligned,
             })}
-            data-end-time={lastEnd}
-            ref={(el) => (lineRefs.current[idx] = el)}
+            ref={(el) => {
+              if (el) lineRefs.current[idx] = { el, end: lastEnd };
+            }}
           >
             {'interlude' in content ? (
               <Interlude
@@ -421,8 +429,7 @@ const SyllableLyrics: React.FC<SyllableLyricsProps> = ({ data }) => {
       {data?.SongWriters?.length > 0 && (
         <div
           className="line-wrapper left-align credits-line"
-          data-end-time={Number.MAX_SAFE_INTEGER}
-          ref={(el) => el && lineRefs.current.push(el)}
+          ref={(el) => el && lineRefs.current.push({ el, end: Number.MAX_SAFE_INTEGER })}
         >
           <div className="credits">
             <p>Credits: {data.SongWriters.join(', ')}</p>
