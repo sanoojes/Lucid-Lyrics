@@ -1,6 +1,7 @@
 import type { BestAvailableLyrics } from '@/types/lyrics.ts';
 import { detectLanguage } from '@/utils/lyrics/language.ts';
 import { Romanizers } from '@/utils/lyrics/romanizers/index.ts';
+import { logger } from '@logger';
 
 export async function processLyrics(lyric: BestAvailableLyrics): Promise<BestAvailableLyrics> {
   try {
