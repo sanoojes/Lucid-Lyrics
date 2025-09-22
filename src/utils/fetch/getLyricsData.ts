@@ -5,9 +5,9 @@ import { processLyrics } from '@/utils/lyrics/processLyrics.ts';
 import { logger } from '@logger';
 
 // List of APIs
-const API_CONSUMERS = appStore.getState().isDevMode
-  ? ['http://localhost:8787']
-  : ['https://spicetify-projects.sanooj.uk'];
+const API_CONSUMERS = ['https://spicetify-projects.sanooj.uk'];
+if (appStore.getState().isDevMode) API_CONSUMERS.unshift('http://localhost:8787');
+console.log(API_CONSUMERS);
 
 let availableApi: string | null = null;
 

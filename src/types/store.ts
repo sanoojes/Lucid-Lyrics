@@ -84,8 +84,6 @@ export type LyricsState = {
   splitThresholdMs: number;
   maxTranslateUpWord: number;
   maxTranslateUpLetter: number;
-  scaleCoefficientWord: number;
-  scaleCoefficientLetter: number;
   scrollOffset: number;
   forceRomanized: boolean;
   showMetadata: boolean;

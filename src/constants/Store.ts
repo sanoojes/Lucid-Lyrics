@@ -22,8 +22,6 @@ export const DEFAULT_APP_STATE: AppState = {
     splitThresholdMs: 1000,
     maxTranslateUpWord: 2,
     maxTranslateUpLetter: 2,
-    scaleCoefficientWord: 4,
-    scaleCoefficientLetter: 2,
     scrollOffset: 16,
     forceRomanized: false,
     showMetadata: true,

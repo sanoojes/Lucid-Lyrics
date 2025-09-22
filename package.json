@@ -1,43 +1,43 @@
 {
-	"name": "lucid-lyrics",
-	"version": "1.0.0",
-	"description": "A simple lyrics extension",
-	"main": "src/index.tsx",
-	"type": "module",
-	"scripts": {
-		"dev": "deno run -A @builder/builder.ts --watch --copyToSpice",
-		"build": "deno run -A @builder/builder.ts --minify",
-		"check": "deno run -A npm:@biomejs/biome check --write"
-	},
-	"dependencies": {
-		"@react-spring/web": "^10.0.2",
-		"cyrillic-romanization": "^1.1.8",
-		"franc-min": "^6.2.0",
-		"kuroshiro": "^1.2.0",
-		"langs": "^2.0.0",
-		"react": "^19.1.1",
-		"react-dom": "^19.1.1",
-		"react-color-palette": "^7.3.1",
-		"simplebar-react": "^3.3.2",
-		"zod": "^4.0.17",
-		"zustand": "^5.0.8",
-		"@tanstack/react-query": "^5.85.5",
-		"@tanstack/react-query-persist-client": "^5.85.5",
-		"@tanstack/query-async-storage-persister": "^5.85.5",
-		"idb-keyval": "^6.2.2",
-		"lz-string": "^1.5.0",
-		"node-vibrant": "^4.0.3",
-		"three": "^0.180.0",
-		"lucide-react": "^0.542.0",
-		"socket.io-client": "^4.8.1",
-		"esbuild": "^0.25.8",
-		"cssnano": "^7.1.1",
-		"postcss": "^8.5.6",
-		"autoprefixer": "^10.4.21"
-	},
-	"devDependencies": {
-		"@types/react": "^19.1.9",
-		"@types/react-dom": "^19.1.7",
-		"@types/three": "^0.179.0"
-	}
+  "name": "lucid-lyrics",
+  "version": "1.0.0",
+  "description": "A simple lyrics extension",
+  "main": "src/index.tsx",
+  "type": "module",
+  "scripts": {
+    "dev": "deno run -A @builder/builder.ts --watch --copyToSpice",
+    "build": "deno run -A @builder/builder.ts --minify",
+    "check": "deno run -A npm:@biomejs/biome check --write"
+  },
+  "dependencies": {
+    "@react-spring/web": "^10.0.2",
+    "cyrillic-romanization": "^1.1.8",
+    "franc-min": "^6.2.0",
+    "kuroshiro": "^1.2.0",
+    "langs": "^2.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-color-palette": "^7.3.1",
+    "simplebar-react": "^3.3.2",
+    "zod": "^4.0.17",
+    "zustand": "^5.0.8",
+    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query-persist-client": "^5.85.5",
+    "@tanstack/query-async-storage-persister": "^5.85.5",
+    "idb-keyval": "^6.2.2",
+    "lz-string": "^1.5.0",
+    "node-vibrant": "^4.0.3",
+    "three": "^0.180.0",
+    "lucide-react": "^0.542.0",
+    "socket.io-client": "^4.8.1",
+    "esbuild": "^0.25.8",
+    "cssnano": "^7.1.1",
+    "postcss": "^8.5.6",
+    "autoprefixer": "^10.4.21"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@types/three": "^0.179.0"
+  }
 }

@@ -156,7 +156,7 @@
     height: 35cqh;
   }
   .top-spacing {
-    height: 25cqh;
+    height: 30cqh;
   }
 
   .line {
@@ -211,7 +211,6 @@
 
   .animating-syllable {
     --translate-y: 0;
-    --scale: 1;
     --bg-size-x: 0%;
     --line-shadow-blur: inherit;
 
@@ -228,7 +227,7 @@
     );
 
     transform-origin: center center;
-    transform: translateY(var(--translate-y)) scale(var(--scale, 1));
+    transform: translateY(var(--translate-y));
 
     background-size: var(--bg-size-x) 100%;
 
@@ -240,11 +239,18 @@
     -webkit-background-clip: text;
     background-clip: text;
 
-    transition: --line-shadow-blur 0.2s ease;
+    transition:
+      --line-shadow-blur 0.2s ease,
+      transform 0 ease-out,
+      opacity 0 cubic-bezier(0.61, 1, 0.88, 1);
 
-    will-change: background-size, transform, text-shadow;
+    will-change: background-size, transform, text-shadow, transition;
 
     &.past {
+      transition:
+        --line-shadow-blur 0.2s ease,
+        transform 0.5s ease-out,
+        opacity 0.3s cubic-bezier(0.61, 1, 0.88, 1);
       --bg-size-x: 200%;
     }
   }

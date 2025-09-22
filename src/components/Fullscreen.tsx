@@ -116,7 +116,7 @@ const Fullscreen: React.FC = () => {
         />
         <LyricsRenderer />
       </div>
-      <div className="background-root">
+      <div className="lyrics-background-root">
         <Background />
       </div>
     </div>

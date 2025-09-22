@@ -1,9 +1,9 @@
-import { LetterA } from "@/components/icons";
-import { Button } from "@/components/ui";
-import appStore from "@/store/appStore.ts";
-import tempStore from "@/store/tempStore.ts";
-import { Languages } from "lucide-react";
-import { useStore } from "zustand";
+import { LetterA } from '@/components/icons';
+import { Button } from '@/components/ui';
+import appStore from '@/store/appStore.ts';
+import tempStore from '@/store/tempStore.ts';
+import { Languages } from 'lucide-react';
+import { useStore } from 'zustand';
 
 const RomanizationButton = () => {
   const hasRomanizedText = useStore(
@@ -18,9 +18,7 @@ const RomanizationButton = () => {
       onClick={appStore.getState().toggleRomanization}
       variant="icon"
       show={hasRomanizedText ?? false}
-      tippyContent={
-        forceRomanized ? "Disable Romanization" : "Enable Romanization"
-      }
+      tippyContent={forceRomanized ? 'Disable Romanization' : 'Enable Romanization'}
     >
       {forceRomanized ? <LetterA /> : <Languages />}
     </Button>

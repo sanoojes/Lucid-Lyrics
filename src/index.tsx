@@ -12,7 +12,7 @@ import { createButton } from '@/utils/playbar/createButton.ts';
 import createPage from '@/utils/routes/createPage.ts';
 import addSettings from '@/utils/settings/addSettings.tsx';
 import { Icons } from '@constants';
-import { createRenderer, getOrCreateElement, waitForElement } from '@utils/dom';
+import { createRenderer, waitForElement } from '@utils/dom';
 import { initNotificationSystem } from '@utils/notification';
 import Fullscreen from './components/Fullscreen.tsx';
 
