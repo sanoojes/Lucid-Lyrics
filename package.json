@@ -10,7 +10,6 @@
     "check": "deno run -A npm:@biomejs/biome check --write"
   },
   "dependencies": {
-    "@react-spring/web": "^10.0.2",
     "cyrillic-romanization": "^1.1.8",
     "franc-min": "^6.2.0",
     "kuroshiro": "^1.2.0",
