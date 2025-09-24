@@ -1,5 +1,3 @@
-# .github/workflows/deploy.yml
-
 name: Build and Deploy to Releases Branch
 
 on:
@@ -50,8 +48,7 @@ jobs:
           # 4. Generate a new README with links to all versions
           echo "# Project Releases" > README.md
           echo "" >> README.md
-          echo "This branch contains production-ready build artifacts for each version." >> README.md
-          echo "" >> README.md
+          echo "This branch holds the final, compiled extension files for each version, ready for use." >> README.md          echo "" >> README.md
           echo "## Latest Version" >> README.md
           echo "- **[latest](./latest)**" >> README.md
           echo "" >> README.md
