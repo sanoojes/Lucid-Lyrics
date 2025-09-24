@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Lucid Lyrics (Alpha)",
+    "description": "Yet another lyrics extension, featuring real-time lyrics, romanization support, and customizable display options.",
+    "preview": "https://cdn.jsdelivr.net/gh/sanoojes/Lucid-Lyrics@refs/heads/main/preview.png",
+    "main": "https://cdn.jsdelivr.net/gh/sanoojes/Lucid-Lyrics@refs/heads/releases/latest/lucid-lyrics.js",
+    "readme": "https://cdn.jsdelivr.net/gh/sanoojes/Lucid-Lyrics@refs/heads/main/README.md",
+    "tags": ["under development", "lyrics", "romanization", "customization", "lucid"]
+  }
+]
