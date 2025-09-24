@@ -54,6 +54,8 @@ const CONFIG = {
   INTERLUDE_DOT_COUNT: 3,
   INTERLUDE_DOT_GAP: 8,
   INTERLUDE_DOT_AMPLITUDE: 12,
+  INTERLUDE_GLOW_MAX_BLUR: 16,
+  INTERLUDE_ANIMATION_SHOW_DELAY: 300,
 
   SCROLL_RESET_TIMEOUT_MS: 1000,
   SCROLL_SMOOTHING_FACTOR: 0.1,
@@ -69,6 +71,7 @@ const CONFIG = {
     PAST_LINE: 'rgba(255, 255, 255, 0.4)',
     ACTIVE_LINE_GLOW: 'rgba(255, 255, 255, 0.8)',
     HOVER_CARD: 'rgba(255, 255, 255, 0.1)',
+    INTERLUDE_DOT: 'rgba(255, 255, 255, 1)',
   },
 } as const;
 
@@ -209,7 +212,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         const interludeEnd = currentBlockStartTime * 1000;
         const totalInterludeDuration = interludeEnd - interludeStart;
         const dotElements: LayoutElement[] = [];
-        const dotSize = CONFIG.FONT_SIZE_INTERLUDE_DOT;
+        const dotSize = fontSizes.bg / 1.5;
         const totalDotsWidth =
           CONFIG.INTERLUDE_DOT_COUNT * dotSize +
           (CONFIG.INTERLUDE_DOT_COUNT - 1) * CONFIG.INTERLUDE_DOT_GAP;
@@ -716,7 +719,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
 
         if (isAutoScrollDisabled.current && isActiveLineInView) {
           if (!scrollResetTimeoutId.current) {
-            scrollResetTimeoutId.current = setTimeout(() => {
+            scrollResetTimeoutId.current = window.setTimeout(() => {
               enableAutoScroll();
               scrollResetTimeoutId.current = null;
             }, CONFIG.SCROLL_RESET_TIMEOUT_MS);
@@ -849,6 +852,75 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         }
 
         if (line.isInterlude) {
+          ctx.save();
+          let overallInterludeOpacity = 0;
+          const progressIntoInterlude = progress - line.start;
+          const totalInterludeDuration = line.end - line.start;
+
+          if (progressIntoInterlude >= 0 && progressIntoInterlude < totalInterludeDuration) {
+            if (progressIntoInterlude < CONFIG.INTERLUDE_ANIMATION_SHOW_DELAY) {
+              overallInterludeOpacity =
+                progressIntoInterlude / CONFIG.INTERLUDE_ANIMATION_SHOW_DELAY;
+            } else if (
+              progressIntoInterlude >
+              totalInterludeDuration - CONFIG.INTERLUDE_ANIMATION_SHOW_DELAY
+            ) {
+              overallInterludeOpacity =
+                (totalInterludeDuration - progressIntoInterlude) /
+                CONFIG.INTERLUDE_ANIMATION_SHOW_DELAY;
+            } else {
+              overallInterludeOpacity = 1;
+            }
+          }
+          overallInterludeOpacity = Math.max(0, Math.min(1, overallInterludeOpacity));
+
+          const lineStartX = line.boundingBox.x;
+          ctx.fillStyle = CONFIG.COLORS.INTERLUDE_DOT;
+          ctx.shadowColor = CONFIG.COLORS.INTERLUDE_DOT;
+
+          line.elements.forEach((el) => {
+            const dotSize = el.width;
+            const radius = dotSize / 2;
+            const dotCenterX = el.x + radius;
+            const dotCenterY = lineY + radius;
+            const amplitude = el.maxX;
+            const dotProgress = Math.max(
+              0,
+              Math.min(1, (progress - el.start) / (el.end - el.start))
+            );
+
+            let translateY = 0;
+            let scale = 0.7;
+            let shadowBlur = 0;
+
+            if (dotProgress > 0 && dotProgress <= 0.5) {
+              translateY = amplitude * (dotProgress / 0.5);
+              scale = 0.75 + dotProgress / 2;
+              shadowBlur = dotProgress * CONFIG.INTERLUDE_GLOW_MAX_BLUR * 2;
+            } else if (dotProgress > 0.5 && dotProgress <= 1) {
+              translateY = amplitude * (1 - (dotProgress - 0.5) / 0.5);
+              scale = 1 - (dotProgress - 0.5) / 0.5 / 4;
+              shadowBlur = (1 - (dotProgress - 0.5) / 0.5) * CONFIG.INTERLUDE_GLOW_MAX_BLUR * 2;
+            }
+
+            scale = Math.max(0, Math.min(1, scale));
+            shadowBlur = Math.max(0, Math.min(CONFIG.INTERLUDE_GLOW_MAX_BLUR, shadowBlur));
+
+            ctx.globalAlpha = overallInterludeOpacity * 0.8;
+            ctx.shadowBlur = shadowBlur;
+
+            ctx.beginPath();
+            ctx.arc(
+              lineStartX + dotCenterX,
+              dotCenterY - translateY,
+              radius * scale,
+              0,
+              Math.PI * 2
+            );
+            ctx.fill();
+          });
+
+          ctx.restore();
           continue;
         }
 
