@@ -3,7 +3,7 @@
   --lucid-lyrics-text-color: rgb(var(--lucid-lyrics-text-rgb-color));
   --lucid-lyrics-text-past-color: rgb(var(--lucid-lyrics-text-rgb-color), 0.5);
 
-  --btn-rgb-color: 20, 20, 20;
+  --btn-rgb-color: 255, 255, 255;
 
   --lucid-lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
   --lucid-lyrics-line-height: 1.18;
@@ -22,18 +22,19 @@
   --lucid-lyrics-font-family: var(--encore-variable-font-stack);
 }
 
-.btn-sync-to-line {
-  --btn-color: rgba(var(--btn-rgb-color), 0.25);
-  --btn-hover-color: rgba(var(--btn-rgb-color), 0.5);
-  --border-color: rgba(100, 100, 100, 0.1);
+.sync-to-line-btn {
+  --btn-color: rgba(var(--btn-rgb-color), 0.05);
+  --btn-hover-color: rgba(var(--btn-rgb-color), 0.15);
+  --border-color: rgba(var(--btn-rgb-color), 0.1);
 
   font-weight: 600;
+  padding: 12px 24px;
 }
 
 .lucid-config-container {
-  --btn-color: rgba(var(--btn-rgb-color), 0.25);
-  --btn-hover-color: rgba(var(--btn-rgb-color), 0.5);
-  --border-color: rgba(100, 100, 100, 0.1);
+  --btn-color: rgba(var(--btn-rgb-color), 0.05);
+  --btn-hover-color: rgba(var(--btn-rgb-color), 0.15);
+  --border-color: rgba(var(--btn-rgb-color), 0.1);
 
   position: absolute;
   z-index: 4;

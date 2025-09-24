@@ -973,7 +973,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         type="button"
         ref={syncButtonRef}
         onClick={handleSyncClick}
-        className="lucid-lyrics-btn btn-sync-to-line"
+        className="lucid-lyrics-btn sync-to-line-btn"
         style={{
           position: 'absolute',
           top: '20px',
