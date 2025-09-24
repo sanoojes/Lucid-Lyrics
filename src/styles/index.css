@@ -59,6 +59,8 @@
 
 .lyrics-fullscreen-root,
 .lyrics-page-root {
+  container-type: size;
+
   .now-playing-widget {
     left: -100%;
 
