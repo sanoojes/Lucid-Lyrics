@@ -21,6 +21,15 @@
 .use-encore-font {
   --lucid-lyrics-font-family: var(--encore-variable-font-stack);
 }
+
+.btn-sync-to-line {
+  --btn-color: rgba(var(--btn-rgb-color), 0.25);
+  --btn-hover-color: rgba(var(--btn-rgb-color), 0.5);
+  --border-color: rgba(100, 100, 100, 0.1);
+
+  font-weight: 600;
+}
+
 .lucid-config-container {
   --btn-color: rgba(var(--btn-rgb-color), 0.25);
   --btn-hover-color: rgba(var(--btn-rgb-color), 0.5);

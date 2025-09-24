@@ -1,8 +1,10 @@
 import '@/styles/lyrics.css';
+import '@/styles/simplebar.css';
 
 import LineLyrics from '@/components/lyrics/type/LineLyrics.tsx';
 import StaticLyrics from '@/components/lyrics/type/StaticLyrics.tsx';
-import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
+// import SyllableLyrics from '@/components/lyrics/type/SyllableLyrics.tsx';
+import SyllableLyricsOnCanvas from '@/components/lyrics/type/SyllableLyricsOnCanvas.tsx';
 import { LyricsLoader } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
@@ -46,7 +48,7 @@ const Lyrics: React.FC = memo(() => {
         <LyricsLoader />
       ) : status === 'success' && data?.Type ? (
         data?.Type === 'Syllable' ? (
-          <SyllableLyrics data={data} />
+          <SyllableLyricsOnCanvas data={data} />
         ) : data?.Type === 'Line' ? (
           <LineLyrics data={data} />
         ) : (
