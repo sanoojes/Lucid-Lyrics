@@ -6,4 +6,5 @@ This branch contains production-ready build artifacts for each version.
 - **[latest](./latest)**
 
 ## All Versions
+- [](./)v1.0.0-test
 - [](./)v1.0.0

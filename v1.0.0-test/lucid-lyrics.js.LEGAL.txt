@@ -1,0 +1,38 @@
+/** @license zlib.js 2012 - imaya [ https://github.com/imaya/zlib.js ] The MIT License */
+
+Bundled license information:
+
+three/build/three.core.js:
+three/build/three.module.js:
+  /**
+   * @license
+   * Copyright 2010-2025 Three.js Authors
+   * SPDX-License-Identifier: MIT
+   */
+
+lucide-react/dist/esm/shared/src/utils.js:
+lucide-react/dist/esm/defaultAttributes.js:
+lucide-react/dist/esm/Icon.js:
+lucide-react/dist/esm/createLucideIcon.js:
+lucide-react/dist/esm/icons/chevron-down.js:
+lucide-react/dist/esm/icons/circle-question-mark.js:
+lucide-react/dist/esm/icons/fullscreen.js:
+lucide-react/dist/esm/icons/heart.js:
+lucide-react/dist/esm/icons/image-off.js:
+lucide-react/dist/esm/icons/image-upscale.js:
+lucide-react/dist/esm/icons/languages.js:
+lucide-react/dist/esm/icons/list-music.js:
+lucide-react/dist/esm/icons/maximize-2.js:
+lucide-react/dist/esm/icons/minus.js:
+lucide-react/dist/esm/icons/move-horizontal.js:
+lucide-react/dist/esm/icons/plus.js:
+lucide-react/dist/esm/icons/rotate-ccw.js:
+lucide-react/dist/esm/icons/square-arrow-out-up-left.js:
+lucide-react/dist/esm/icons/x.js:
+lucide-react/dist/esm/lucide-react.js:
+  /**
+   * @license lucide-react v0.542.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
