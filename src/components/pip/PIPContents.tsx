@@ -11,8 +11,11 @@ import { NowPlayingWidget } from '@/components/ui';
 tempStore.getState().openPiP();
 const PIPContents: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const pipShowMetadata = useStore(appStore, (s) => s.lyrics.pipShowMetadata);
+  const { pipShowMetadata, hideStatus } = useStore(appStore, (s) => s.lyrics);
   const pipRoot = useStore(tempStore, (s) => s.pipInstance.pipRoot);
+  const lyricFetchStatus = useStore(tempStore, (s) => s.player?.nowPlaying?.lyricFetchStatus);
+
+  const isFullWidget = lyricFetchStatus === 'error' && hideStatus;
 
   const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -46,7 +49,14 @@ const PIPContents: React.FC = () => {
             } as React.CSSProperties
           }
         ></div>
-        <NowPlayingWidget className={cx('top', { hide: !pipShowMetadata })} />
+        <NowPlayingWidget
+          className={cx('top', {
+            hide: !pipShowMetadata,
+            'flex-column': isFullWidget,
+            'align-left': !isFullWidget,
+            'cover-full': isFullWidget,
+          })}
+        />
         <LyricsRenderer />
         <PIPButtons className={cx({ 'show-a-bit': isHovered })} pipRoot={pipRoot} />
         <Background customWindow={pipRoot?.window ?? undefined} />

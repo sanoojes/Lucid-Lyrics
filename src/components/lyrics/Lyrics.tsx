@@ -14,9 +14,10 @@ import { useQuery } from '@tanstack/react-query';
 import { memo, useEffect } from 'react';
 import { useStore } from 'zustand';
 
-type StatusProps = { title: string };
+type StatusProps = { title: string; hide?: boolean };
 
-const Status: React.FC<StatusProps> = ({ title }) => {
+const Status: React.FC<StatusProps> = ({ title, hide = false }) => {
+  if (hide) return null;
   return (
     <div className="status-wrapper">
       <h2 className="title">{title}</h2>
@@ -28,6 +29,7 @@ const Lyrics: React.FC = memo(() => {
   const id = useStore(tempStore, (s) => s.player.nowPlaying.id);
   const isOnline = useStore(tempStore, (s) => s.isOnline);
   const isSpotifyFont = useStore(appStore, (s) => s.lyrics.isSpotifyFont);
+  const hideStatus = useStore(appStore, (s) => s.lyrics.hideStatus);
 
   const { data, status } = useQuery({
     queryKey: ['lyrics', id],
@@ -39,7 +41,7 @@ const Lyrics: React.FC = memo(() => {
   useEffect(() => {
     let lyricData = null;
     if (status === 'success') lyricData = data;
-    tempStore.getState().setPlayer('nowPlaying', { lyricData });
+    tempStore.getState().setPlayer('nowPlaying', { lyricData, lyricFetchStatus: status });
   }, [data, status]);
 
   return (
@@ -55,9 +57,9 @@ const Lyrics: React.FC = memo(() => {
           <StaticLyrics data={data} />
         )
       ) : !isOnline ? (
-        <Status title="You are offline. Please reconnect." />
+        <Status title="You are offline. Please reconnect." hide={hideStatus} />
       ) : status === 'error' ? (
-        <Status title="This song doesn't have any Lyrics!" />
+        <Status title="This song doesn't have any Lyrics!" hide={hideStatus} />
       ) : null}
     </div>
   );

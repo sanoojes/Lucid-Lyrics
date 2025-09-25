@@ -87,6 +87,7 @@ body.player-floating {
   width: 100%;
   position: absolute;
   z-index: 2;
+  color: var(--lucid-lyrics-text-color);
 
   top: 0;
   left: 0;

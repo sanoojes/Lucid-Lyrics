@@ -5,6 +5,7 @@ import type { PiPRoot } from '@/utils/picture-in-picture.ts';
 import type { PlayerButtonAPI } from '@/utils/playbar/createButton.ts';
 import type { CreatePageInstanceFns } from '@/utils/routes/createPage.ts';
 import type { CreateRendererAPI } from '@utils/dom';
+import type { QueryStatus } from '@tanstack/react-query';
 
 type Nullable<T> = T | null;
 
@@ -23,6 +24,7 @@ export type PlayerData = {
   data: Nullable<Partial<Spicetify.PlayerTrack>>;
   id: Nullable<string>;
   colors: Nullable<ColorPalette>;
+  lyricFetchStatus: Nullable<QueryStatus>;
   lyricData: Nullable<BestAvailableLyrics>;
 };
 
@@ -95,6 +97,7 @@ export type LyricsState = {
   showMetadata: boolean;
   timeOffset: number;
   metadataPosition: 'left' | 'right';
+  hideStatus: boolean;
   pipShowMetadata: boolean;
   fullScreenMetadataPosition: 'left' | 'right';
 };

@@ -1,9 +1,11 @@
 .widget-on-top {
   --cover-size: min(26cqi, 15rem);
+  --padding: max(12px, 2cqi);
+  --top-offset: calc(var(--cover-size) + var(--padding));
 
   .lyrics-container {
-    top: var(--cover-size);
-    height: calc(100% - var(--cover-size) - 16px);
+    top: var(--top-offset);
+    height: calc(100% - var(--top-offset) - 8px);
   }
 }
 
@@ -25,11 +27,11 @@
   top: 50%;
   left: 0;
 
-  transform: translate3d(0, -50%, 0);
+  transform: translate3d(0%, -50%, 0);
 
-  transition:
-    left 0.5s ease,
-    right 0.5s ease;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+  transition-property: left, right, top;
 
   &.hide {
     left: -100%;
@@ -196,11 +198,6 @@
     width: 100%;
     height: 100%;
     padding: 40cqi;
-
-    .lucide {
-      width: 100%;
-      height: 100%;
-    }
   }
   .cover-img-wrapper {
     &:before {
@@ -240,10 +237,16 @@
     }
   }
 
+  &.center {
+    --cover-size: 55cqi;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
   &.top {
-    --padding: max(12px, 2cqi);
     --cover-size: inherit;
-    inset: 0;
+    top: 0;
     position: relative;
     transform: none;
     flex-direction: row;
@@ -257,20 +260,33 @@
       opacity: 0;
     }
 
+    &.cover-full,
     &.cover-hovered {
       --cover-size: calc(min(100cqw, 100cqh) - (var(--padding) * 2));
     }
 
     .metadata-container {
       gap: 6px;
-      align-items: start;
     }
 
     .artists,
     .song-name {
       margin: 0 8px;
-      text-align: left;
     }
+
+    &.align-left {
+      .metadata-container {
+        align-items: start;
+      }
+      .artists,
+      .song-name {
+        text-align: left;
+      }
+    }
+  }
+
+  &.flex-column {
+    flex-direction: column;
   }
 }
 .l-marquee-container {

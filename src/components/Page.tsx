@@ -15,7 +15,10 @@ import {
 import { useState } from 'react';
 import { useStore } from 'zustand';
 
-const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
+const PageButtons: React.FC<{ className?: string; hideMetadataButtons: boolean }> = ({
+  className,
+  hideMetadataButtons = false,
+}) => {
   const { showMetadata, metadataPosition } = useStore(appStore, (s) => s.lyrics);
   const isPIPOpen = useStore(tempStore, (s) => s.pipInstance.isOpen);
 
@@ -51,12 +54,13 @@ const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
       <Button
         onClick={() => appStore.getState().setLyrics('showMetadata', !showMetadata)}
         variant="icon"
+        show={!hideMetadataButtons}
         tippyContent={showMetadata ? 'Hide Metadata' : 'Show Metadata'}
       >
         <ListMusic />
       </Button>
       <Button
-        show={showMetadata}
+        show={showMetadata && !hideMetadataButtons}
         onClick={() =>
           appStore
             .getState()
@@ -84,11 +88,17 @@ const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
 const Page = () => {
   const mainViewSize = useStore(tempStore, (state) => state.viewSize.main);
   const fullscreenMode = useStore(tempStore, (s) => s.fullscreenMode);
+  const lyricFetchStatus = useStore(tempStore, (s) => s.player?.nowPlaying?.lyricFetchStatus);
 
   const isDevMode = useStore(appStore, (s) => s.isDevMode);
-  const { showMetadata, metadataPosition, isSpotifyFont } = useStore(appStore, (s) => s.lyrics);
+  const { showMetadata, metadataPosition, isSpotifyFont, hideStatus } = useStore(
+    appStore,
+    (s) => s.lyrics
+  );
 
   const [isHovering, setIsHovering] = useState(false);
+
+  const position = lyricFetchStatus === 'error' && hideStatus ? 'center' : metadataPosition;
 
   if (fullscreenMode !== 'hidden') return;
   return (
@@ -96,16 +106,19 @@ const Page = () => {
       className={cx(`lyrics-page-root`, {
         'use-encore-font': isSpotifyFont,
         'show-now-playing-widget': showMetadata,
-        [`widget-on-${metadataPosition}`]: showMetadata,
+        [`widget-on-${position}`]: showMetadata,
       })}
       style={{ display: 'flex', ...mainViewSize }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
       {isDevMode ? <div className="dev-mode-banner">DEBUG</div> : null}
-      <NowPlayingWidget className={cx(metadataPosition, { hide: !showMetadata })} />
+      <NowPlayingWidget className={cx(position, { hide: !showMetadata || !hideStatus })} />
       <LyricsRenderer />
-      <PageButtons className={cx({ 'show-a-bit': isHovering })} />
+      <PageButtons
+        className={cx({ 'show-a-bit': isHovering })}
+        hideMetadataButtons={position === 'center'}
+      />
       <Background />
     </main>
   );

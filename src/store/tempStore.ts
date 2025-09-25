@@ -32,6 +32,7 @@ const DEFAULT_PLAYER_STATE: PlayerData = {
   data: null,
   id: null,
   colors: null,
+  lyricFetchStatus: null,
   lyricData: null,
 } as const;
 

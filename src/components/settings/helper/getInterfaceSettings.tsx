@@ -11,6 +11,15 @@ export const getInterfaceSettings = (state: ReturnType<typeof appStore.getState>
         id: 'interface',
         components: [
           {
+            id: 'hide-status',
+            type: 'Toggle',
+            label: 'Hide Status',
+            tippy:
+              'Hide Status message and show Now Playing Widget (when the lyrics is not Available and in Offline mode)',
+            isChecked: state.lyrics.hideStatus,
+            onChange: (hideStatus) => state.setLyrics('hideStatus', hideStatus),
+          },
+          {
             id: 'time-offset',
             type: 'Input',
             label: 'Time offset',

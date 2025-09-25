@@ -20,7 +20,7 @@ const exitFullScreen = () => {
 };
 
 const WidgetButtons: React.FC<{
-  fullScreenMetadataPosition: LyricsState['fullScreenMetadataPosition'];
+  fullScreenMetadataPosition: LyricsState['fullScreenMetadataPosition'] | 'center';
   fullscreenMode: TempState['fullscreenMode'];
 }> = ({ fullScreenMetadataPosition, fullscreenMode }) => {
   const isPIPOpen = useStore(tempStore, (s) => s.pipInstance.isOpen);
@@ -46,6 +46,7 @@ const WidgetButtons: React.FC<{
       </Button>
       <Button
         variant="icon"
+        show={fullScreenMetadataPosition !== 'center'}
         onClick={() =>
           appStore
             .getState()
@@ -84,8 +85,15 @@ const WidgetButtons: React.FC<{
 };
 
 const Fullscreen: React.FC = () => {
-  const { fullScreenMetadataPosition, isSpotifyFont } = useStore(appStore, (s) => s.lyrics);
+  const { fullScreenMetadataPosition, isSpotifyFont, hideStatus } = useStore(
+    appStore,
+    (s) => s.lyrics
+  );
   const fullscreenMode = useStore(tempStore, (s) => s.fullscreenMode);
+  const lyricFetchStatus = useStore(tempStore, (s) => s.player?.nowPlaying?.lyricFetchStatus);
+
+  const position =
+    lyricFetchStatus === 'error' && hideStatus ? 'center' : fullScreenMetadataPosition;
 
   useEffect(() => {
     if (fullscreenMode === 'fullscreen') {
@@ -110,19 +118,16 @@ const Fullscreen: React.FC = () => {
   return (
     <div
       className={cx(
-        `lyrics-fullscreen-root show-now-playing-widget widget-on-${fullScreenMetadataPosition} ${fullscreenMode}`,
+        `lyrics-fullscreen-root show-now-playing-widget widget-on-${position} ${fullscreenMode}`,
         { 'use-encore-font': isSpotifyFont }
       )}
       autoFocus
     >
       <div className="lyrics-root">
         <NowPlayingWidget
-          className={cx(fullScreenMetadataPosition)}
+          className={cx(position)}
           customButtons={
-            <WidgetButtons
-              fullScreenMetadataPosition={fullScreenMetadataPosition}
-              fullscreenMode={fullscreenMode}
-            />
+            <WidgetButtons fullScreenMetadataPosition={position} fullscreenMode={fullscreenMode} />
           }
         />
         <LyricsRenderer />
