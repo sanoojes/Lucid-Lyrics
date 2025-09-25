@@ -1,5 +1,5 @@
 import { CircleQuestionMark } from 'lucide-react';
-import { memo, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import '@/styles/ui/tippy.css';
 import appStore from '@/store/appStore.ts';

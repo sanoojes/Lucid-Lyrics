@@ -6,6 +6,7 @@ import tempStore from '@/store/tempStore.ts';
 import cx from '@cx';
 import { useCallback, useState } from 'react';
 import { useStore } from 'zustand';
+import { NowPlayingWidget } from '@/components/ui';
 
 tempStore.getState().openPiP();
 const PIPContents: React.FC = () => {
@@ -33,7 +34,19 @@ const PIPContents: React.FC = () => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* <NowPlayingWidget className={cx('top bg-blur', { hide: !pipShowMetadata })} /> */}
+        <div
+          style={
+            {
+              '-webkit-app-region': 'drag',
+              'app-region': 'drag',
+              position: 'fixed',
+              height: '40px',
+              inset: '0',
+              width: '100%',
+            } as React.CSSProperties
+          }
+        ></div>
+        <NowPlayingWidget className={cx('top', { hide: !pipShowMetadata })} />
         <LyricsRenderer />
         <PIPButtons className={cx({ 'show-a-bit': isHovered })} pipRoot={pipRoot} />
         <Background customWindow={pipRoot?.window ?? undefined} />

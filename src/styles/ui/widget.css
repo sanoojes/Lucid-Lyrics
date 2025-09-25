@@ -1,3 +1,12 @@
+.widget-on-top {
+  --cover-size: min(26cqi, 15rem);
+
+  .lyrics-container {
+    top: var(--cover-size);
+    height: calc(100% - var(--cover-size) - 16px);
+  }
+}
+
 .now-playing-widget {
   --btn-color: rgba(0, 0, 0, 0);
   --btn-hover-color: rgba(255, 255, 255, 0.2);
@@ -33,6 +42,8 @@
     align-items: center;
     display: flex;
     flex-direction: column;
+    opacity: 1;
+    transition: all 0.3s ease;
 
     .artists,
     .song-name {
@@ -169,6 +180,7 @@
   .cover-img {
     height: var(--cover-size);
     width: var(--cover-size);
+    transition: all 0.3s ease;
   }
 
   .cover-img {
@@ -225,6 +237,39 @@
     &.img-loaded::before {
       visibility: hidden;
       animation-play-state: paused;
+    }
+  }
+
+  &.top {
+    --padding: max(12px, 2cqi);
+    --cover-size: inherit;
+    inset: 0;
+    position: relative;
+    transform: none;
+    flex-direction: row;
+    padding: var(--padding);
+    width: 100%;
+    z-index: 9;
+    overflow: hidden;
+
+    &.hide {
+      top: -100%;
+      opacity: 0;
+    }
+
+    &.cover-hovered {
+      --cover-size: calc(min(100cqw, 100cqh) - (var(--padding) * 2));
+    }
+
+    .metadata-container {
+      gap: 6px;
+      align-items: start;
+    }
+
+    .artists,
+    .song-name {
+      margin: 0 8px;
+      text-align: left;
     }
   }
 }

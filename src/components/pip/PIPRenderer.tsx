@@ -37,10 +37,11 @@ const PipRenderer = () => {
           href="https://cdn.jsdelivr.net/gh/sanoojes/Lucid-Lyrics@main/fonts/styles.css"
         />
         <style>{`
+a{text-decoration: none;}a:hover{text-decoration: underline;}
 :root{--encore-variable-font-stack: SpotifyMixUITitleVariable, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, var(--fallback-fonts, sans-serif);}
-html { box-sizing: border-box; height: 100%; }
+html { box-sizing: border-box; height: 100%; overflow:hidden; }
 *, *::before, *::after { box-sizing: border-box; font-family: var(--lucid-lyrics-font-family); }
-body { margin: 0; padding: 0; height: 100%; }
+body { margin: 0; padding: 0; height: 100%; overflow:hidden;}
 .lucid-lyrics-pip-root .lyrics-container {--lucid-lyrics-horizontal-padding: 0 12cqw 0 12cqw;}`}</style>
       </>
     );

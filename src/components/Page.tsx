@@ -44,7 +44,7 @@ const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
           tempStore.getState().togglePiP();
         }}
         variant="icon"
-        tippyContent={isPIPOpen ? 'Close PiP Window' : 'Open PiP Window'}
+        tippyContent={isPIPOpen ? 'Close Miniplayer' : 'Open Miniplayer'}
       >
         <PictureInPicture2 />
       </Button>

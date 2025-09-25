@@ -1024,8 +1024,9 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     if (!canvas) return;
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
-      if (entry?.contentRect)
+      if (entry?.contentRect) {
         setCanvasSize({ width: entry.contentRect.width, height: entry.contentRect.height });
+      }
     });
     observer.observe(canvas);
     return () => observer.disconnect();

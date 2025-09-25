@@ -26,6 +26,7 @@ const NowPlayingWidget: React.FC<{ className?: string; customButtons?: React.Rea
   const { imageUrl, data } = useStore(tempStore, (s) => s.player.nowPlaying);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [isCoverHovered, setIsCoverHovered] = useState(false);
 
   useEffect(() => {
     if (!imageUrl) {
@@ -49,8 +50,16 @@ const NowPlayingWidget: React.FC<{ className?: string; customButtons?: React.Rea
   }, [imageUrl]);
 
   return (
-    <div className={cx('now-playing-widget', className)}>
-      <div className="cover-art-container">
+    <div
+      className={cx('now-playing-widget', className, {
+        'cover-hovered': isCoverHovered,
+      })}
+    >
+      <div
+        className="cover-art-container"
+        onMouseEnter={() => setIsCoverHovered(true)}
+        onMouseLeave={() => setIsCoverHovered(false)}
+      >
         <Controls customButtons={customButtons} />
         <a href={data?.album?.uri ?? ''} className="cover-link">
           <div
