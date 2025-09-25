@@ -48,8 +48,6 @@ const CONFIG = {
   LINE_GAP_MULTIPLIER_WITHIN_GROUP: 0,
   LINE_GAP_MULTIPLIER_BETWEEN_GROUPS: 0.6,
 
-  PADDING: { TOP: 200, BOTTOM: 300, HORIZONTAL: 16 },
-
   INTERLUDE_THRESHOLD_MS: 2500,
   INTERLUDE_DOT_COUNT: 3,
   INTERLUDE_DOT_GAP: 8,
@@ -91,7 +89,8 @@ const measureTextWidth = (text: string, font: string): number => {
 const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const syncButtonRef = useRef<HTMLButtonElement>(null);
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const canvasSizeRef = useRef({ width: 0, height: 0 });
+  const [revision, setRevision] = useState(0);
 
   const progressRef = useTrackPosition();
   const { forceRomanized, maxTranslateUpLetter, maxTranslateUpWord, splitThresholdMs } = useStore(
@@ -120,8 +119,18 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
   const groupAlphasRef = useRef<Map<number, number>>(new Map());
   const groupScalesRef = useRef<Map<number, number>>(new Map());
 
+  const dynamicPadding = useMemo(() => {
+    const { width, height } = canvasSizeRef.current;
+    return {
+      TOP: height * 0.25,
+      BOTTOM: height * 0.45,
+      HORIZONTAL: width * 0.05,
+    };
+  }, [revision]);
+
   const fontSizes = useMemo(() => {
-    if (typeof window === 'undefined' || canvasSize.width === 0) {
+    const { width } = canvasSizeRef.current;
+    if (typeof window === 'undefined' || width === 0) {
       return {
         lead: CONFIG.FONT_SIZE_LEAD_BASE,
         bg: CONFIG.FONT_SIZE_BG_BASE,
@@ -138,7 +147,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
 
     const minPx = minRem * rootFontSize;
     const maxPx = maxRem * rootFontSize;
-    const preferredPx = (preferredCqw / 100) * canvasSize.width;
+    const preferredPx = (preferredCqw / 100) * width;
 
     const leadSize = Math.max(minPx, Math.min(preferredPx, maxPx));
     const bgSize = leadSize * (CONFIG.FONT_SIZE_BG_BASE / CONFIG.FONT_SIZE_LEAD_BASE);
@@ -149,14 +158,15 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
       leadFontString: `700 ${leadSize}px ${CONFIG.FONT_FAMILY}`,
       bgFontString: `600 ${bgSize}px ${CONFIG.FONT_FAMILY}`,
     };
-  }, [canvasSize.width]);
+  }, [revision]);
 
   const layout = useMemo(() => {
-    if (canvasSize.width === 0 || !offscreenTextCtx) return [];
+    const { width, height } = canvasSizeRef.current;
+    if (width === 0 || !offscreenTextCtx) return [];
 
     const lines: LayoutLine[] = [];
-    let currentY = CONFIG.PADDING.TOP;
-    const availableWidth = canvasSize.width - CONFIG.PADDING.HORIZONTAL * 2;
+    let currentY = dynamicPadding.TOP;
+    const availableWidth = width - dynamicPadding.HORIZONTAL * 2;
     let lastEndTime = 0;
     let lineGroupCounter = 0;
 
@@ -170,11 +180,11 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
       wordGroup: number
     ): LayoutElement => {
       const fontHeight = isLead ? fontSizes.lead : fontSizes.bg;
-      const width = measureTextWidth(text, font);
+      const textWidth = measureTextWidth(text, font);
       return {
         text,
         x: currentX,
-        width,
+        width: textWidth,
         height: fontHeight,
         start,
         end,
@@ -182,7 +192,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         isLead,
         font,
         wordGroup,
-        boundingBox: { x: currentX, y: 0, width, height: fontHeight },
+        boundingBox: { x: currentX, y: 0, width: textWidth, height: fontHeight },
       };
     };
 
@@ -218,9 +228,9 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
           (CONFIG.INTERLUDE_DOT_COUNT - 1) * CONFIG.INTERLUDE_DOT_GAP;
 
         const lineAlign = content.OppositeAligned ? 'right' : 'left';
-        let startXOffset = CONFIG.PADDING.HORIZONTAL;
+        let startXOffset = dynamicPadding.HORIZONTAL;
         if (lineAlign === 'right') {
-          startXOffset = canvasSize.width - totalDotsWidth - CONFIG.PADDING.HORIZONTAL;
+          startXOffset = width - totalDotsWidth - dynamicPadding.HORIZONTAL;
         }
 
         for (let i = 0; i < CONFIG.INTERLUDE_DOT_COUNT; i++) {
@@ -308,8 +318,8 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         const pushLine = (lineStartOverride?: number, lineEndOverride?: number) => {
           if (lineElements.length > 0) {
             const lineStartX = content.OppositeAligned
-              ? canvasSize.width - currentX - CONFIG.PADDING.HORIZONTAL
-              : CONFIG.PADDING.HORIZONTAL;
+              ? width - currentX - dynamicPadding.HORIZONTAL
+              : dynamicPadding.HORIZONTAL;
             lines.push({
               elements: lineElements,
               y: currentY,
@@ -406,7 +416,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
 
         const lineText = currentLineWords.join(' ');
         const totalWidth = measureTextWidth(lineText, creditsFontString);
-        const startX = (canvasSize.width - totalWidth) / 2;
+        const startX = (width - totalWidth) / 2;
 
         lines.push({
           elements: [
@@ -461,24 +471,25 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     }
 
     maxScrollY.current =
-      lines.length > 0 ? lines[lines.length - 1].y + CONFIG.PADDING.BOTTOM - canvasSize.height : 0;
+      lines.length > 0 ? lines[lines.length - 1].y + dynamicPadding.BOTTOM - height : 0;
     maxScrollY.current = Math.max(0, maxScrollY.current);
 
     return lines;
   }, [
     data,
-    canvasSize.width,
-    canvasSize.height,
+    revision,
     forceRomanized,
     maxTranslateUpLetter,
     maxTranslateUpWord,
     splitThresholdMs,
     fontSizes,
+    dynamicPadding,
   ]);
 
   const groupBoundingBoxes = useMemo(() => {
+    const { width } = canvasSizeRef.current;
     const boxes = new Map<number, { x: number; y: number; width: number; height: number }>();
-    if (layout.length === 0 || canvasSize.width === 0) return boxes;
+    if (layout.length === 0 || width === 0) return boxes;
 
     const groups = new Map<number, LayoutLine[]>();
     layout.forEach((line) => {
@@ -493,8 +504,8 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     groups.forEach((linesInGroup, groupId) => {
       const minY = Math.min(...linesInGroup.map((l) => l.y));
       const maxY = Math.max(...linesInGroup.map((l) => l.y + l.height));
-      const boxX = CONFIG.PADDING.HORIZONTAL;
-      const boxWidth = canvasSize.width - CONFIG.PADDING.HORIZONTAL * 2;
+      const boxX = dynamicPadding.HORIZONTAL;
+      const boxWidth = width - dynamicPadding.HORIZONTAL * 2;
 
       boxes.set(groupId, {
         x: boxX,
@@ -505,7 +516,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     });
 
     return boxes;
-  }, [layout, canvasSize.width]);
+  }, [layout, revision, dynamicPadding]);
 
   const enableAutoScroll = useCallback(() => {
     isAutoScrollDisabled.current = false;
@@ -544,8 +555,8 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
             const activeLineTop = activeLine.y - scrollY.current;
             const activeLineBottom = activeLineTop + activeLine.height;
             return (
-              activeLineTop < height - CONFIG.PADDING.BOTTOM &&
-              activeLineBottom > CONFIG.PADDING.TOP
+              activeLineTop < height - dynamicPadding.BOTTOM &&
+              activeLineBottom > dynamicPadding.TOP
             );
           });
 
@@ -563,7 +574,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
       canvas.removeEventListener('wheel', onWheel);
       if (scrollResetTimeoutId.current) clearTimeout(scrollResetTimeoutId.current);
     };
-  }, [enableAutoScroll, layout, progressRef]);
+  }, [enableAutoScroll, layout, progressRef, dynamicPadding]);
 
   const handleCanvasInteraction = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>, type: 'click' | 'mousemove') => {
@@ -638,16 +649,14 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     let animationFrameId: number;
 
     const setupCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
-      const currentWidth = rect.width;
-      const currentHeight = rect.height;
+      const { width, height } = canvasSizeRef.current;
 
-      if (canvas.width !== currentWidth * dpr || canvas.height !== currentHeight * dpr) {
-        canvas.width = currentWidth * dpr;
-        canvas.height = currentHeight * dpr;
+      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
         ctx.scale(dpr, dpr);
       }
-      return { width: currentWidth, height: currentHeight };
+      return { width, height };
     };
 
     const draw = () => {
@@ -711,7 +720,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         const activeLineTop = primaryActiveLine.y - scrollY.current;
         const activeLineBottom = activeLineTop + primaryActiveLine.height;
         const isActiveLineInView =
-          activeLineTop < height - CONFIG.PADDING.BOTTOM && activeLineBottom > CONFIG.PADDING.TOP;
+          activeLineTop < height - dynamicPadding.BOTTOM && activeLineBottom > dynamicPadding.TOP;
 
         const shouldShowButton = isAutoScrollDisabled.current && !isActiveLineInView;
         syncButton.style.opacity = shouldShowButton ? '1' : '0';
@@ -847,7 +856,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
           ctx.font = creditsEl.font;
           ctx.fillStyle = CONFIG.COLORS.PAST_LINE;
           ctx.globalAlpha = 0.8;
-          ctx.fillText(creditsEl.text, CONFIG.PADDING.HORIZONTAL, lineY);
+          ctx.fillText(creditsEl.text, dynamicPadding.HORIZONTAL, lineY);
           ctx.restore();
           continue;
         }
@@ -942,8 +951,8 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
 
         const lineStartX =
           line.align === 'left'
-            ? CONFIG.PADDING.HORIZONTAL
-            : width - line.totalWidth - CONFIG.PADDING.HORIZONTAL;
+            ? dynamicPadding.HORIZONTAL
+            : width - line.totalWidth - dynamicPadding.HORIZONTAL;
 
         const wordsToDraw = new Map<number, LayoutElement[]>();
         line.elements.forEach((el) => {
@@ -1017,7 +1026,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
       cancelAnimationFrame(animationFrameId);
       if (scrollResetTimeoutId.current) clearTimeout(scrollResetTimeoutId.current);
     };
-  }, [layout, progressRef, scrollOffset, enableAutoScroll, groupBoundingBoxes]);
+  }, [layout, progressRef, scrollOffset, enableAutoScroll, groupBoundingBoxes, dynamicPadding]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1025,7 +1034,11 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry?.contentRect) {
-        setCanvasSize({ width: entry.contentRect.width, height: entry.contentRect.height });
+        canvasSizeRef.current = {
+          width: entry.contentRect.width,
+          height: entry.contentRect.height,
+        };
+        setRevision(Math.random());
       }
     });
     observer.observe(canvas);
