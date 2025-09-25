@@ -7,6 +7,12 @@
   padding: 12px 24px;
 }
 
+body.player-floating {
+  .lucid-config-container {
+    padding-bottom: calc(var(--player-height, 80px) + 16px);
+  }
+}
+
 .lucid-config-container {
   --btn-color: rgba(var(--btn-rgb-color), 0.05);
   --btn-hover-color: rgba(var(--btn-rgb-color), 0.15);
