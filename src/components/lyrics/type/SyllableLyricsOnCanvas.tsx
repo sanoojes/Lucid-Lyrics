@@ -106,7 +106,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
   const isAutoScrollDisabled = useRef(false);
   const scrollResetTimeoutId = useRef<number | null>(null);
 
-  const [hoveredLineIdx, setHoveredLineIdx] = useState<number | null>(null);
+  const hoveredLineIdxRef = useRef<number | null>(null);
 
   const hoverAnimState = useRef({
     groupId: null as number | null,
@@ -603,7 +603,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
           }
         }
       } else if (type === 'mousemove') {
-        setHoveredLineIdx(targetLineIdx);
+        hoveredLineIdxRef.current = targetLineIdx;
       }
     },
     [layout, groupBoundingBoxes, handleSyncClick]
@@ -624,7 +624,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
   );
 
   const handleMouseOut = useCallback(() => {
-    setHoveredLineIdx(null);
+    hoveredLineIdxRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -719,7 +719,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
 
         if (isAutoScrollDisabled.current && isActiveLineInView) {
           if (!scrollResetTimeoutId.current) {
-            scrollResetTimeoutId.current = window.setTimeout(() => {
+            scrollResetTimeoutId.current = setTimeout(() => {
               enableAutoScroll();
               scrollResetTimeoutId.current = null;
             }, CONFIG.SCROLL_RESET_TIMEOUT_MS);
@@ -752,7 +752,8 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         groupScalesRef.current.set(groupId, newScale);
       });
 
-      const hoveredGroupId = hoveredLineIdx !== null ? layout[hoveredLineIdx].lineGroup : null;
+      const hoveredGroupId =
+        hoveredLineIdxRef.current !== null ? layout[hoveredLineIdxRef.current].lineGroup : null;
       const animState = hoverAnimState.current;
 
       if (animState.groupId !== hoveredGroupId) {
@@ -1016,7 +1017,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
       cancelAnimationFrame(animationFrameId);
       if (scrollResetTimeoutId.current) clearTimeout(scrollResetTimeoutId.current);
     };
-  }, [layout, progressRef, scrollOffset, enableAutoScroll, hoveredLineIdx, groupBoundingBoxes]);
+  }, [layout, progressRef, scrollOffset, enableAutoScroll, groupBoundingBoxes]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
