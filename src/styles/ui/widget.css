@@ -238,7 +238,7 @@
   }
 
   &.center {
-    --cover-size: 55cqi;
+    --cover-size: min(55cqi, 45vh);
     top: 50% !important;
     left: 50% !important;
     transform: translate3d(-50%, -50%, 0);
