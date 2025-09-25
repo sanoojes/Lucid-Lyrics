@@ -1,7 +1,6 @@
 # Project Releases
 
-This branch contains production-ready build artifacts for each version.
-
+This branch holds the final, compiled extension files for each version, ready for use. echo 
 ## Latest Version
 - **[latest](./latest)**
 

@@ -25,6 +25,7 @@ lucide-react/dist/esm/icons/list-music.js:
 lucide-react/dist/esm/icons/maximize-2.js:
 lucide-react/dist/esm/icons/minus.js:
 lucide-react/dist/esm/icons/move-horizontal.js:
+lucide-react/dist/esm/icons/picture-in-picture-2.js:
 lucide-react/dist/esm/icons/plus.js:
 lucide-react/dist/esm/icons/rotate-ccw.js:
 lucide-react/dist/esm/icons/square-arrow-out-up-left.js:
