@@ -27,6 +27,7 @@ export const DEFAULT_APP_STATE: AppState = {
     showMetadata: true,
     timeOffset: -50,
     metadataPosition: 'left',
+    pipShowMetadata: true,
     fullScreenMetadataPosition: 'left',
   },
   disableTippy: false,

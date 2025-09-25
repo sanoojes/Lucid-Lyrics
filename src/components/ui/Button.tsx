@@ -1,6 +1,5 @@
 import { Tippy } from '@/components/ui';
 import type { ButtonProps } from '@/types/uiSchema.ts';
-import cx from '@cx';
 
 const Button: React.FC<ButtonProps> = ({
   buttonText = null,
@@ -9,10 +8,11 @@ const Button: React.FC<ButtonProps> = ({
   className = null,
   variant = 'default',
   tippyContent = null,
+  tippyContainer,
   show = true,
 }) => {
   return (
-    <Tippy label={tippyContent} show={show}>
+    <Tippy label={tippyContent} show={show} container={tippyContainer}>
       <button
         type="button"
         onClick={onClick}

@@ -15,6 +15,7 @@ import { Icons } from '@constants';
 import { createRenderer, waitForElement } from '@utils/dom';
 import { initNotificationSystem } from '@utils/notification';
 import Fullscreen from './components/Fullscreen.tsx';
+import PipRenderer from './components/pip/PIPRenderer.tsx';
 
 const main = async () => {
   // Expose Lucid Methods
@@ -62,10 +63,18 @@ const main = async () => {
       children: <Fullscreen />,
       parent: document.body,
       rootId: 'lucid-fullscreen-root',
+      autoMount: true,
     })
   );
-  tempStore.getState().fullscreenRendererInstance?.mount();
 
+  tempStore.getState().setPIPRendererInstance(
+    createRenderer({
+      children: <PipRenderer />,
+      parent: document.body,
+      rootId: 'lucid-pip-renderer-root',
+      autoMount: true,
+    })
+  );
   addLyricsToNPV();
 
   setupAnalytics();

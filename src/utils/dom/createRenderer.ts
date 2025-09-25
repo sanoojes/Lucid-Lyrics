@@ -6,6 +6,7 @@ type RenderOptions = {
   parent: Element;
   rootId: string;
   prepend?: boolean;
+  autoMount?: boolean;
   onMount?: (rootContainer: Element | null) => void;
   onUnMount?: () => void;
 };
@@ -21,6 +22,7 @@ export function createRenderer({
   parent,
   rootId,
   prepend = false,
+  autoMount = false,
   onMount,
   onUnMount,
 }: RenderOptions): CreateRendererAPI {
@@ -61,6 +63,10 @@ export function createRenderer({
     root = null;
     container = null;
     onUnMount?.();
+  }
+
+  if (autoMount) {
+    mount();
   }
 
   return { mount, update, unmount };

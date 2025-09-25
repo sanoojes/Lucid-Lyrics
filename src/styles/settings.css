@@ -168,7 +168,7 @@
     height: 32px;
     padding: 0.5rem 1.25rem;
     background: none;
-    color: var(--spice-text);
+    color: var(--lucid-lyrics-text-color);
     border: none;
     width: 100%;
     text-align: center;
@@ -213,7 +213,7 @@
 
   .rcp-root {
     --rcp-background-color: transparent;
-    --spice-subtext: var(--spice-text);
+    --spice-subtext: var(--lucid-lyrics-text-color);
   }
 
   .rcp {
@@ -336,13 +336,13 @@ input.rcp-field-input,
   justify-content: center;
   align-items: center;
   border: 1px solid var(--border-color);
-  font-family: var(--lucid-lyrics-font-family) !important;
   border-radius: 12px;
   padding: 8px 12px;
   min-height: 36px;
   transition: all 0.3s ease-in-out;
   background-color: var(--btn-color);
-  color: var(--spice-text);
+  color: var(--lucid-lyrics-text-color);
+  font-family: var(--lucid-lyrics-font-family) !important;
 
   &:hover,
   &:active {
@@ -384,7 +384,7 @@ input.rcp-field-input,
     border: rgba(var(--spice-rgb-text), 0.05);
     font-size: 14px;
     background-color: rgba(var(--spice-rgb-main), 0.5);
-    color: var(--spice-text);
+    color: var(--lucid-lyrics-text-color);
     backdrop-filter: blur(24px);
     display: flex;
     justify-content: space-between;

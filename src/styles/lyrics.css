@@ -1,27 +1,3 @@
-:root {
-  --lucid-lyrics-text-rgb-color: 255, 255, 255;
-  --lucid-lyrics-text-color: rgb(var(--lucid-lyrics-text-rgb-color));
-  --lucid-lyrics-text-past-color: rgb(var(--lucid-lyrics-text-rgb-color), 0.5);
-
-  --btn-rgb-color: 255, 255, 255;
-
-  --lucid-lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
-  --lucid-lyrics-line-height: 1.18;
-  --lucid-lyrics-font-weight: 700;
-
-  --lucid-lyrics-bg-scale: 0.75;
-  --lucid-lyrics-bg-font-weight: 600;
-
-  --lucid-lyrics-credits-font-weight: 600;
-  --lucid-lyrics-credits-scale: 0.47;
-
-  --lucid-lyrics-font-family: LucidLyrics, "SF Pro", var(--encore-variable-font-stack);
-}
-
-.use-encore-font {
-  --lucid-lyrics-font-family: var(--encore-variable-font-stack);
-}
-
 .sync-to-line-btn {
   --btn-color: rgba(var(--btn-rgb-color), 0.05);
   --btn-hover-color: rgba(var(--btn-rgb-color), 0.15);
@@ -42,7 +18,7 @@
   left: 0;
   width: 100%;
   height: fit-content;
-  padding: 2cqw;
+  padding: min(4cqi, 12px);
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), transparent);
 
   display: flex;
@@ -62,7 +38,7 @@
     opacity: 1;
   }
 
-  .lucid-lyrics-btn.icon {
+  .icon {
     padding: 12px;
     border-radius: 32px;
   }
@@ -110,10 +86,7 @@
   left: 0;
   right: 0;
 
-  transition:
-    width 0.3s ease,
-    right 0.3s ease,
-    left 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .status-wrapper {

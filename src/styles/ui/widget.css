@@ -29,11 +29,17 @@
   .metadata-container {
     container-type: inline-size;
     width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 
     .artists,
     .song-name {
+      --marquee-duration: 25s;
+      --base-font-size: clamp(0.74rem, 2.8cqw, 1.4rem);
       --max-width: 86cqw;
-      --font-size: calc(clamp(0.5rem, 3cqw, 2.4rem) * 2);
+      --font-size: calc(var(--base-font-size) * 2);
       color: #fff;
       font-size: var(--font-size);
       font-family: var(--lucid-lyrics-font-family);
@@ -44,11 +50,17 @@
       text-align: center;
       height: var(--font-size);
       max-width: var(--max-width);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .artists {
+      --marquee-duration: 15s;
       --max-width: 68cqw;
-      --font-size: calc(clamp(0.5rem, 3cqw, 2.4rem) * 1.2);
+      --font-size: calc(var(--base-font-size) * 1.2);
       font-weight: 500;
       opacity: 0.7;
       margin-top: 8px;
@@ -59,6 +71,7 @@
     position: relative;
     border-radius: var(--image-border-radius);
     overflow: hidden;
+    min-width: fit-content;
 
     .media-controls {
       display: flex;
@@ -227,7 +240,7 @@
 .l-marquee-wrapper {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee var(--marquee-duration, 12s) linear infinite alternate;
+  animation: marquee var(--marquee-duration, 20s) linear infinite alternate;
   padding: 0 8px;
   * {
     color: var(--lucid-lyrics-text-color) !important;

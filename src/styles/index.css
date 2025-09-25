@@ -1,5 +1,30 @@
 @import url("https://cdn.jsdelivr.net/gh/sanoojes/Lucid-Lyrics@main/fonts/styles.css");
 
+:root,
+.lucid-lyrics-pip {
+  --lucid-lyrics-text-rgb-color: 255, 255, 255;
+  --lucid-lyrics-text-color: rgb(var(--lucid-lyrics-text-rgb-color));
+  --lucid-lyrics-text-past-color: rgb(var(--lucid-lyrics-text-rgb-color), 0.5);
+
+  --btn-rgb-color: 255, 255, 255;
+
+  --lucid-lyrics-font-size: clamp(1.85rem, 7cqw, 3.5rem);
+  --lucid-lyrics-line-height: 1.18;
+  --lucid-lyrics-font-weight: 700;
+
+  --lucid-lyrics-bg-scale: 0.75;
+  --lucid-lyrics-bg-font-weight: 600;
+
+  --lucid-lyrics-credits-font-weight: 600;
+  --lucid-lyrics-credits-scale: 0.47;
+
+  --lucid-lyrics-font-family: LucidLyrics, "SF Pro", var(--encore-variable-font-stack);
+}
+
+.use-encore-font {
+  --lucid-lyrics-font-family: var(--encore-variable-font-stack);
+}
+
 .heart-btn {
   --btn-color: transparent;
   --btn-hover-color: transparent;

@@ -4,13 +4,13 @@ import StaticBackground from '@/components/background/StaticBackground.tsx';
 import appStore from '@/store/appStore.ts';
 import { useStore } from 'zustand';
 
-const Background: React.FC = () => {
+const Background: React.FC<{ customWindow?: Window }> = ({ customWindow = window }) => {
   const mode = useStore(appStore, (state) => state.bg.mode);
 
   return (
     <>
       {mode === 'animated' ? (
-        <AnimatedBackground />
+        <AnimatedBackground customWindow={customWindow} />
       ) : mode === 'solid' ? (
         <SolidBackground />
       ) : (

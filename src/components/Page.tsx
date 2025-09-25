@@ -4,12 +4,20 @@ import { Button, NowPlayingWidget, RomanizationButton } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import cx from '@cx';
-import { Fullscreen, ImageUpscale, ListMusic, MoveHorizontal, X } from 'lucide-react';
+import {
+  Fullscreen,
+  ImageUpscale,
+  ListMusic,
+  MoveHorizontal,
+  PictureInPicture2,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 
 const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
   const { showMetadata, metadataPosition } = useStore(appStore, (s) => s.lyrics);
+  const isPIPOpen = useStore(tempStore, (s) => s.pipInstance.isOpen);
 
   return (
     <div className={cx('lucid-config-container', className)}>
@@ -30,6 +38,15 @@ const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
         tippyContent="Enter Cinema View"
       >
         <ImageUpscale />
+      </Button>
+      <Button
+        onClick={() => {
+          tempStore.getState().togglePiP();
+        }}
+        variant="icon"
+        tippyContent={isPIPOpen ? 'Close PiP Window' : 'Open PiP Window'}
+      >
+        <PictureInPicture2 />
       </Button>
       <Button
         onClick={() => appStore.getState().setLyrics('showMetadata', !showMetadata)}
@@ -54,7 +71,7 @@ const PageButtons: React.FC<{ className?: string }> = ({ className }) => {
       </Button>
       <RomanizationButton />
       <Button
-        onClick={() => tempStore.getState().mainPageInstance?.goBack()}
+        onClick={() => tempStore.getState().mainPageInstance?.goBack?.()}
         variant="icon"
         tippyContent="Close"
       >

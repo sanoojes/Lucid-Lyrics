@@ -42,6 +42,7 @@ export type ButtonProps = {
   buttonText?: ReactNode;
   children?: ReactNode;
   tippyContent?: ReactNode;
+  tippyContainer?: HTMLElement;
   show?: boolean;
 };
 

@@ -7,7 +7,8 @@ import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import type { LyricsState, TempState } from '@/types/store.ts';
 import cx from '@cx';
-import { ImageUpscale, Maximize2, MoveHorizontal, X } from 'lucide-react';
+import { logger } from '@logger';
+import { ImageUpscale, Maximize2, MoveHorizontal, PictureInPicture2, X } from 'lucide-react';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 
@@ -22,6 +23,7 @@ const WidgetButtons: React.FC<{
   fullScreenMetadataPosition: LyricsState['fullScreenMetadataPosition'];
   fullscreenMode: TempState['fullscreenMode'];
 }> = ({ fullScreenMetadataPosition, fullscreenMode }) => {
+  const isPIPOpen = useStore(tempStore, (s) => s.pipInstance.isOpen);
   return (
     <>
       <RomanizationButton />
@@ -57,6 +59,15 @@ const WidgetButtons: React.FC<{
         }
       >
         <MoveHorizontal />
+      </Button>
+      <Button
+        onClick={() => {
+          tempStore.getState().togglePiP();
+        }}
+        variant="icon"
+        tippyContent={isPIPOpen ? 'Close PiP Window' : 'Open PiP Window'}
+      >
+        <PictureInPicture2 />
       </Button>
       <Button
         variant="icon"

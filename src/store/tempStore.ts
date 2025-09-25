@@ -1,4 +1,5 @@
 import type { PlayerData, PlayerSlot, SpotifyToken, TempState } from '@/types/store.ts';
+import { type PiPRoot, createPiPRoot } from '@/utils/picture-in-picture.ts';
 import type { PlayerButtonAPI } from '@/utils/playbar/createButton.ts';
 import type { CreatePageInstanceFns } from '@/utils/routes/createPage.ts';
 import type { CreateRendererAPI } from '@utils/dom';
@@ -18,6 +19,12 @@ export type TempSetter = {
   setMainPageInstance: (mainPageInstance: CreatePageInstanceFns) => void;
   setPlayerButtonInstance: (playerButtonInstance: PlayerButtonAPI | null) => void;
   setFullscreenRendererInstance: (fullscreenRendererInstance: CreateRendererAPI) => void;
+  setPIPRendererInstance: (pipRendererInstance: CreateRendererAPI) => void;
+
+  setPipRoot: (pipRoot: PiPRoot | null) => void;
+  openPiP: () => Promise<void>;
+  closePiP: () => void;
+  togglePiP: () => Promise<void>;
 };
 
 const DEFAULT_PLAYER_STATE: PlayerData = {
@@ -48,6 +55,11 @@ const DEFAULT_TEMP_STATE: TempState = {
   mainPageInstance: null,
   playerButtonInstance: null,
   fullscreenRendererInstance: null,
+  pipInstance: {
+    renderer: null,
+    pipRoot: null,
+    isOpen: false,
+  },
 } as const;
 
 const tempStore = createStore<TempState & TempSetter>()(
@@ -67,7 +79,10 @@ const tempStore = createStore<TempState & TempSetter>()(
 
       setIsOnline: (isOnline) => set({ isOnline }),
       setIsScrolling: (isScrolling) => set({ isScrolling }),
-      setFullscreenMode: (fullscreenMode) => set({ fullscreenMode }),
+      setFullscreenMode: (fullscreenMode) => {
+        tempStore.getState().closePiP();
+        set({ fullscreenMode });
+      },
       setSpotifyToken: (spotifyToken) =>
         set({ spotifyToken: { ...get().spotifyToken, ...spotifyToken } }),
 
@@ -77,6 +92,53 @@ const tempStore = createStore<TempState & TempSetter>()(
       setPlayerButtonInstance: (playerButtonInstance) => set({ playerButtonInstance }),
       setFullscreenRendererInstance: (fullscreenRendererInstance) =>
         set({ fullscreenRendererInstance }),
+      setPIPRendererInstance: (renderer) =>
+        set({ pipInstance: { ...get().pipInstance, renderer } }),
+      setPipRoot: (pipRoot) =>
+        set({
+          pipInstance: {
+            ...get().pipInstance,
+            pipRoot,
+            isOpen: Boolean(pipRoot),
+          },
+        }),
+
+      openPiP: async () => {
+        const { pipInstance } = get();
+        if (!pipInstance.pipRoot) {
+          const newRoot = await createPiPRoot();
+          set({
+            pipInstance: {
+              ...get().pipInstance,
+              pipRoot: newRoot,
+              isOpen: true,
+            },
+          });
+        }
+      },
+
+      closePiP: () => {
+        const { pipInstance } = get();
+        if (pipInstance.pipRoot) {
+          pipInstance.pipRoot.close();
+          set({
+            pipInstance: {
+              ...get().pipInstance,
+              pipRoot: null,
+              isOpen: false,
+            },
+          });
+        }
+      },
+
+      togglePiP: async () => {
+        const { pipInstance } = get();
+        if (pipInstance.isOpen) {
+          tempStore.getState().closePiP();
+        } else {
+          await tempStore.getState().openPiP();
+        }
+      },
     }))
   )
 );

@@ -9,13 +9,20 @@ import { useStore } from 'zustand';
 type TippyProps = {
   label?: React.ReactNode;
   children?: React.ReactNode;
+  container?: HTMLElement;
   hasIcon?: boolean;
   show?: boolean;
 };
 
 const tooltipRootId = 'tooltip-root';
 
-const Tippy: React.FC<TippyProps> = ({ label = null, children, hasIcon = false, show = true }) => {
+const Tippy: React.FC<TippyProps> = ({
+  label = null,
+  children,
+  hasIcon = false,
+  show = true,
+  container = document.body,
+}) => {
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,7 +85,7 @@ const Tippy: React.FC<TippyProps> = ({ label = null, children, hasIcon = false, 
           >
             {label}
           </div>,
-          getOrCreateElement('div', tooltipRootId, document.body)
+          getOrCreateElement('div', tooltipRootId, container)
         )}
     </>
   );

@@ -6,7 +6,9 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useStore } from 'zustand';
 
-const AnimatedBackgroundCanvas: React.FC = () => {
+const AnimatedBackgroundCanvas: React.FC<{ customWindow?: Window }> = ({
+  customWindow = window,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const uniformsRef = useRef<ReturnType<typeof GetShaderUniforms> | null>(null);
@@ -28,8 +30,8 @@ const AnimatedBackgroundCanvas: React.FC = () => {
       antialias: true,
       alpha: false,
     });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(customWindow.devicePixelRatio);
+    renderer.setSize(customWindow.innerWidth, customWindow.innerHeight);
     rendererRef.current = renderer;
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
@@ -40,12 +42,12 @@ const AnimatedBackgroundCanvas: React.FC = () => {
     uniformsRef.current = uniforms;
 
     const updateDimensions = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
+      const width = customWindow.innerWidth;
+      const height = customWindow.innerHeight;
       renderer.setSize(width, height);
 
-      const scaledWidth = width * window.devicePixelRatio;
-      const scaledHeight = height * window.devicePixelRatio;
+      const scaledWidth = width * customWindow.devicePixelRatio;
+      const scaledHeight = height * customWindow.devicePixelRatio;
       const largestAxis = scaledWidth > scaledHeight ? 'X' : 'Y';
       const largestAxisSize = Math.max(scaledWidth, scaledHeight);
 
@@ -91,16 +93,16 @@ const AnimatedBackgroundCanvas: React.FC = () => {
     };
     animate(); // start animation loop
 
-    window.addEventListener('resize', updateDimensions);
+    customWindow.addEventListener('resize', updateDimensions);
 
     return () => {
       if (frameId) cancelAnimationFrame(frameId);
       renderer.dispose();
       geometry.dispose();
       material.dispose();
-      window.removeEventListener('resize', updateDimensions);
+      customWindow.removeEventListener('resize', updateDimensions);
     };
-  }, []);
+  }, [customWindow]);
 
   useEffect(() => {
     const handleFocus = () => {
@@ -112,15 +114,15 @@ const AnimatedBackgroundCanvas: React.FC = () => {
     };
 
     if (autoStopAnimation) {
-      window.addEventListener('focus', handleFocus);
-      window.addEventListener('blur', handleBlur);
+      customWindow.addEventListener('focus', handleFocus);
+      customWindow.addEventListener('blur', handleBlur);
     }
 
     return () => {
-      window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('blur', handleBlur);
+      customWindow.removeEventListener('focus', handleFocus);
+      customWindow.removeEventListener('blur', handleBlur);
     };
-  }, [autoStopAnimation]);
+  }, [autoStopAnimation, customWindow]);
 
   useEffect(() => {
     if (!imageSrc || !uniformsRef.current) return;

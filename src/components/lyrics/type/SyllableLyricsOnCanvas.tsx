@@ -2,7 +2,7 @@ import useTrackPosition from '@/hooks/useTrackPosition.ts';
 import appStore from '@/store/appStore.ts';
 import type { SyllableData, VocalPart as VocalPartType } from '@/types/lyrics.ts';
 import seekTo from '@/utils/player/seekTo.ts';
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
 
 type LayoutElement = {
