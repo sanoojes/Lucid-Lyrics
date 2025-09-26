@@ -315,7 +315,7 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         let maxLineHeight = 0;
         let wordGroup = 0;
 
-        const pushLine = (lineStartOverride?: number, lineEndOverride?: number) => {
+        const pushLine = () => {
           if (lineElements.length > 0) {
             const lineStartX = content.OppositeAligned
               ? width - currentX - dynamicPadding.HORIZONTAL
@@ -324,10 +324,10 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
               elements: lineElements,
               y: currentY,
               height: maxLineHeight,
-              end: lineEndOverride || lineElements[lineElements.length - 1].end,
+              end: lineElements[lineElements.length - 1].end,
               align: content.OppositeAligned ? 'right' : 'left',
               totalWidth: currentX,
-              start: lineStartOverride || lineElements[0].start,
+              start: lineElements[0].start,
               lineGroup: group,
               boundingBox: { x: lineStartX, y: currentY, width: currentX, height: maxLineHeight },
             });
@@ -340,33 +340,26 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
 
         words.forEach((word) => {
           const spaceWidth = measureTextWidth(' ', fontToUse);
-          if (currentX > 0 && currentX + word.width + spaceWidth > availableWidth) {
-            pushLine();
-          }
-
           wordGroup++;
-          word.syllables.forEach((s) => {
-            const fontHeight = isLead ? fontSizes.lead : fontSizes.bg;
-            maxLineHeight = Math.max(maxLineHeight, fontHeight);
-            const start = s.StartTime * 1000;
-            const end = s.EndTime * 1000;
-            const duration = end - start;
-            const text = forceRomanized && s.RomanizedText ? s.RomanizedText : s.Text;
 
-            if (duration < splitThresholdMs || text.length === 1) {
-              const element = createTextElement(
-                text,
-                start,
-                end,
-                isLead,
-                currentX,
-                fontToUse,
-                wordGroup
-              );
-              lineElements.push(element);
-              currentX += element.width;
-            } else {
+          if (word.width > availableWidth) {
+            if (lineElements.length > 0) {
+              pushLine();
+            }
+            word.syllables.forEach((s) => {
+              const text = forceRomanized && s.RomanizedText ? s.RomanizedText : s.Text;
+              const start = s.StartTime * 1000;
+              const end = s.EndTime * 1000;
+              const duration = end - start;
+              const fontHeight = isLead ? fontSizes.lead : fontSizes.bg;
+              maxLineHeight = Math.max(maxLineHeight, fontHeight);
+
               text.split('').forEach((letter, lIdx) => {
+                const letterWidth = measureTextWidth(letter, fontToUse);
+                if (currentX + letterWidth > availableWidth && currentX > 0) {
+                  pushLine();
+                }
+
                 const fractionStart = lIdx / text.length;
                 const fractionEnd = (lIdx + 1) / text.length;
                 const element = createTextElement(
@@ -382,9 +375,53 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
                 lineElements.push(element);
                 currentX += element.width;
               });
+            });
+          } else {
+            if (currentX > 0 && currentX + spaceWidth + word.width > availableWidth) {
+              pushLine();
             }
-          });
-          currentX += spaceWidth;
+            if (currentX > 0) {
+              currentX += spaceWidth;
+            }
+            word.syllables.forEach((s) => {
+              const fontHeight = isLead ? fontSizes.lead : fontSizes.bg;
+              maxLineHeight = Math.max(maxLineHeight, fontHeight);
+              const start = s.StartTime * 1000;
+              const end = s.EndTime * 1000;
+              const duration = end - start;
+              const text = forceRomanized && s.RomanizedText ? s.RomanizedText : s.Text;
+              if (duration < splitThresholdMs || text.length === 1) {
+                const element = createTextElement(
+                  text,
+                  start,
+                  end,
+                  isLead,
+                  currentX,
+                  fontToUse,
+                  wordGroup
+                );
+                lineElements.push(element);
+                currentX += element.width;
+              } else {
+                text.split('').forEach((letter, lIdx) => {
+                  const fractionStart = lIdx / text.length;
+                  const fractionEnd = (lIdx + 1) / text.length;
+                  const element = createTextElement(
+                    letter,
+                    start + fractionStart * duration,
+                    start + fractionEnd * duration,
+                    isLead,
+                    currentX,
+                    fontToUse,
+                    wordGroup
+                  );
+                  element.maxX = maxTranslateUpLetter;
+                  lineElements.push(element);
+                  currentX += element.width;
+                });
+              }
+            });
+          }
         });
         pushLine();
       };
