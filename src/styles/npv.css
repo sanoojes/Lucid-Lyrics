@@ -3,6 +3,9 @@
   position: relative;
 
   .card-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     inset: 0;
     padding: 16px;
@@ -31,6 +34,7 @@
     }
     .card-header.show,
     .card-header:hover {
+      display: flex;
       opacity: 1;
       /* transform: translateY(0); */
       transform: translate3d(0, 0, 0);
