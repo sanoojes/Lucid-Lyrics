@@ -24,7 +24,7 @@ export type PiPOptions = Partial<{
  * pip.render(<MyComponent />);
  * pip.renderHead((head) => <style>{`body { background: black; }`}</style>);
  */
-export async function createPiPRoot(userOptions: PiPOptions = {}): Promise<PiPRoot> {
+export async function createPiPRoot(userOptions: PiPOptions = {}): Promise<PiPRoot | null> {
   if (!('documentPictureInPicture' in window)) {
     logger.error('Picture-in-Picture API not supported in this browser.');
   }
@@ -41,9 +41,13 @@ export async function createPiPRoot(userOptions: PiPOptions = {}): Promise<PiPRo
 
   const options = { ...defaultOptions, ...userOptions };
 
-  const pipWindow: Window = (await (window as any).documentPictureInPicture.requestWindow(
-    options
-  )) as Window;
+  let pipWindow: Window | null = null;
+
+  try {
+    pipWindow = (await (window as any).documentPictureInPicture.requestWindow(options)) as Window;
+  } catch {
+    return null;
+  }
   const pipDoc = pipWindow.document;
   const pipHead = pipDoc.head;
   const pipBody = pipDoc.body;
