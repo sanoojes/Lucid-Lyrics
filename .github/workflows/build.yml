@@ -36,12 +36,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           # 2. Clone the releases branch into a separate directory
-          # Using a token is necessary for pushing from a workflow
           git clone --branch=releases --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy_dir
           
           # 3. Copy build files into versioned and latest directories
           cd deploy_dir
-          rm -rf latest/* # Clear previous 'latest' build
+          rm -rf latest/*
           mkdir -p ${{ env.VERSION }}
           mkdir -p latest
           cp -r ../dist/. ./${{ env.VERSION }}
@@ -50,13 +49,15 @@ jobs:
           # 4. Generate a new README with links to all versions
           echo "# Project Releases" > README.md
           echo "" >> README.md
-          echo "This branch holds the final, compiled extension files for each version, ready for use." >> README.md          echo "" >> README.md
+          echo "This branch holds the final, compiled extension files for each version, ready for use." >> README.md
+          echo "" >> README.md
+          echo "## Current Release" >> README.md
+          echo "- **[${{ env.VERSION }}](./${{ env.VERSION }})**" >> README.md
+          echo "" >> README.md
           echo "## Latest Version" >> README.md
           echo "- **[latest](./latest)**" >> README.md
           echo "" >> README.md
           echo "## All Versions" >> README.md
-          # Find all version directories (v*), sort them naturally (v1.10.0 after v1.2.0), 
-          # reverse the order, and format as a markdown list.
           ls -d v* | sort -V -r | sed 's/^/- [&](.\/&)/' >> README.md
 
           # 5. Commit and push the changes to the releases branch
@@ -66,4 +67,4 @@ jobs:
           else
             git commit -m "Deploy: Add artifacts for version ${{ env.VERSION }}"
             git push
-          fi
+          fis
