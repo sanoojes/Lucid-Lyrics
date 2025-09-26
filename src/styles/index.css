@@ -82,6 +82,11 @@
   }
 }
 
+.lyrics-fullscreen-root {
+  position: fixed;
+  inset: 0;
+}
+
 .lyrics-fullscreen-root,
 .lyrics-page-root {
   container-type: size;
