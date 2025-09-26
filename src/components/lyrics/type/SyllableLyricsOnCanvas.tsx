@@ -1075,16 +1075,10 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
       setRevision(Math.random());
     };
     updateSize();
-    const intervalId = setInterval(updateSize, 500);
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-    }, 3000);
     const observer = new ResizeObserver(() => updateSize());
     observer.observe(canvas);
     window.addEventListener('resize', updateSize);
     return () => {
-      clearTimeout(timeoutId);
-      clearInterval(intervalId);
       observer.disconnect();
       window.removeEventListener('resize', updateSize);
     };
