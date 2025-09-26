@@ -25,6 +25,10 @@
     justify-content: center;
   }
 
+  .icon {
+    padding: 4px;
+  }
+
   .main-embedWidgetGenerator-container {
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(64px) saturate(2);
@@ -326,17 +330,13 @@
   .encore-text {
     font-family: var(--lucid-lyrics-font-family) !important;
   }
-
-  .lucid-lyrics-btn.icon {
-    padding: 4px;
-  }
 }
 
 input.rcp-field-input,
 .dropdown-button,
 .setting-input,
 .lucid-lyrics-btn {
-  display: inline-flex;
+  display: inline-flex !important;
   justify-content: center;
   align-items: center;
   border: 1px solid var(--border-color);
