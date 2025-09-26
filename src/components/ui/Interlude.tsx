@@ -26,6 +26,8 @@ const Interlude: React.FC<InterludeProps> = memo(
 
     useEffect(() => {
       let hideTimeout: number | null = null;
+      let hasClosed = false;
+
       const animate = () => {
         const progress = progressRef.current ?? 0;
         const nearStart = progress < startTime + showDelay;
@@ -63,13 +65,20 @@ const Interlude: React.FC<InterludeProps> = memo(
         const wrapperEl = wrapperRef.current;
         if (wrapperEl) {
           if (isHiding) {
-            hideTimeout = setTimeout(() => {
-              wrapperEl.classList.add('hide');
-              onClose?.();
-            }, 200);
+            if (!hasClosed) {
+              hideTimeout = setTimeout(() => {
+                wrapperEl.classList.add('hide');
+                onClose?.();
+                hasClosed = true;
+              }, 200);
+            }
           } else {
-            if (hideTimeout) clearTimeout(hideTimeout);
+            if (hideTimeout) {
+              clearTimeout(hideTimeout);
+              hideTimeout = null;
+            }
             wrapperEl.classList.remove('hide');
+            hasClosed = false;
           }
         }
 
