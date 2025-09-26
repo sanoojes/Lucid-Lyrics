@@ -960,11 +960,11 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
     <>
       <div className="lyrics-wrapper" style={{ overflow: 'hidden', width: '100%', height: '100%' }}>
         <canvas
+          className="syllable-lyrics-canvas"
           ref={canvasRef}
           onClick={handleCanvasClick}
           onMouseMove={handleMouseMove}
           onMouseOut={handleMouseOut}
-          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
         />
       </div>
       <button
@@ -972,15 +972,6 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
         ref={syncButtonRef}
         onClick={handleSyncClick}
         className="lucid-lyrics-btn sync-to-line-btn"
-        style={{
-          position: 'absolute',
-          top: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          opacity: 0,
-          zIndex: 99,
-          backdropFilter: 'blur(5px)',
-        }}
       >
         Sync Lyrics
       </button>

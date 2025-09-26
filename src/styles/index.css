@@ -231,6 +231,13 @@
   }
 }
 
+#lyrics-card-root {
+  .sync-to-line-btn {
+    top: unset;
+    bottom: 16px;
+  }
+}
+
 .flex-wrap {
   flex-wrap: wrap;
 }
