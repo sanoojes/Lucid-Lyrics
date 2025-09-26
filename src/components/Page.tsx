@@ -113,7 +113,7 @@ const Page = () => {
       onMouseLeave={() => setIsHovering(false)}
     >
       {isDevMode ? <div className="dev-mode-banner">DEBUG</div> : null}
-      <NowPlayingWidget className={cx(position, { hide: !showMetadata || !hideStatus })} />
+      <NowPlayingWidget className={cx(position, { hide: !showMetadata && !hideStatus })} />
       <LyricsRenderer />
       <PageButtons
         className={cx({ 'show-a-bit': isHovering })}
