@@ -101,7 +101,7 @@
       justify-content: center;
 
       container-type: size;
-      transition: opacity 0.3s ease-in-out;
+      transition: opacity 0.3s ease;
 
       &:hover {
         opacity: 1;
@@ -120,6 +120,12 @@
         height: fit-content;
         justify-content: center;
         align-items: center;
+      }
+
+      .playback-controls {
+        .lucid-lyrics-btn {
+          padding: 4px;
+        }
       }
 
       .control-buttons {
@@ -260,9 +266,10 @@
       opacity: 0;
     }
 
+    &:has(.cover-art-container:hover),
     &.cover-full,
     &.cover-hovered {
-      --cover-size: calc(min(100cqw, 100cqh) - (var(--padding) * 2));
+      --cover-size: max(calc(min(100cqw, 100cqh) - (var(--padding) * 2)), 50vh);
     }
 
     .metadata-container {

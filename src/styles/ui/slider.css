@@ -15,7 +15,7 @@
   background: var(--slider-bg-clr);
   border-radius: var(--slider-border-radius);
   cursor: pointer;
-  transition: --progress 1s linear;
+  transition: --progress 0.1s linear;
 }
 
 .slider-progress {

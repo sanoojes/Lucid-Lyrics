@@ -326,6 +326,10 @@
   .encore-text {
     font-family: var(--lucid-lyrics-font-family) !important;
   }
+
+  .lucid-lyrics-btn.icon {
+    padding: 4px;
+  }
 }
 
 input.rcp-field-input,
@@ -360,7 +364,6 @@ input.rcp-field-input,
     aspect-ratio: 1 / 1;
     min-height: var(--btn-icon-size, 36px);
     min-width: var(--btn-icon-size, 36px);
-    padding: 2px;
     border-radius: var(--btn-border-radius, 12px);
     &:hover {
       border-radius: var(--btn-border-hover-radius, 32px);

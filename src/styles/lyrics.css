@@ -44,11 +44,6 @@ body.player-floating {
     opacity: 1;
   }
 
-  .icon {
-    padding: 12px;
-    border-radius: 32px;
-  }
-
   .hide {
     display: none;
   }
