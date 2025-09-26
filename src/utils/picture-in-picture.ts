@@ -58,7 +58,11 @@ export async function createPiPRoot(userOptions: PiPOptions = {}): Promise<PiPRo
   let isClosed = false;
 
   const close = () => {
-    if (!pipWindow.closed) pipWindow.close();
+    try {
+      if (!pipWindow.closed) pipWindow.close();
+    } catch (err) {
+      logger.error('Failed to close PiP window.', err);
+    }
   };
 
   const isOpen = () => !isClosed && !pipWindow.closed;
@@ -73,8 +77,22 @@ export async function createPiPRoot(userOptions: PiPOptions = {}): Promise<PiPRo
   return {
     window: pipWindow,
     parentWindow: window,
-    render: (children) => (isOpen() && children ? createPortal(children, pipBody) : null),
-    renderHead: (render) => (isOpen() && render ? createPortal(render(pipHead), pipHead) : null),
+    render: (children) => {
+      try {
+        return isOpen() && children ? createPortal(children, pipBody) : null;
+      } catch (err) {
+        logger.error('Failed to render into PiP body.', err);
+        return null;
+      }
+    },
+    renderHead: (render) => {
+      try {
+        return isOpen() && render ? createPortal(render(pipHead), pipHead) : null;
+      } catch (err) {
+        logger.error('Failed to render into PiP head.', err);
+        return null;
+      }
+    },
     close,
     isOpen,
   };
