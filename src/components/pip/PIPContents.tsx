@@ -58,7 +58,7 @@ const PIPContents: React.FC = () => {
           })}
         />
         <LyricsRenderer />
-        <PIPButtons className={cx({ 'show-a-bit': isHovered })} pipRoot={pipRoot} />
+        <PIPButtons className={cx('flex-wrap', { 'show-a-bit': isHovered })} pipRoot={pipRoot} />
         <Background customWindow={pipRoot?.window ?? undefined} />
       </div>
     )

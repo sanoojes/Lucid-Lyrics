@@ -1,5 +1,5 @@
 .widget-on-top {
-  --cover-size: min(26cqi, 15rem);
+  --cover-size: min(26cqi, 12rem);
   --padding: max(12px, 2cqi);
   --top-offset: calc(var(--cover-size) + var(--padding));
 

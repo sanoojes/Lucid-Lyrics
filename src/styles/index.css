@@ -224,3 +224,7 @@
     order: 2;
   }
 }
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
