@@ -8,7 +8,6 @@ import cx from '@cx';
 import { useCallback, useState } from 'react';
 import { useStore } from 'zustand';
 
-tempStore.getState().openPiP();
 const PIPContents: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
   const { pipShowMetadata, hideStatus } = useStore(appStore, (s) => s.lyrics);
