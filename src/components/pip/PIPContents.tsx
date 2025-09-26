@@ -1,12 +1,12 @@
 import Background from '@/components/background/Background.tsx';
 import LyricsRenderer from '@/components/lyrics/LyricsRenderer.tsx';
 import PIPButtons from '@/components/pip/PIPButtons.tsx';
+import { NowPlayingWidget } from '@/components/ui';
 import appStore from '@/store/appStore.ts';
 import tempStore from '@/store/tempStore.ts';
 import cx from '@cx';
 import { useCallback, useState } from 'react';
 import { useStore } from 'zustand';
-import { NowPlayingWidget } from '@/components/ui';
 
 tempStore.getState().openPiP();
 const PIPContents: React.FC = () => {

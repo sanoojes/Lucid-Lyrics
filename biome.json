@@ -37,7 +37,7 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 100,
-    "lineEnding": "lf"
+    "lineEnding": "crlf"
   },
   "javascript": {
     "formatter": {

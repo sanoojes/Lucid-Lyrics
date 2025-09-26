@@ -4,8 +4,8 @@ import type { ColorPalette } from '@/utils/color.ts';
 import type { PiPRoot } from '@/utils/picture-in-picture.ts';
 import type { PlayerButtonAPI } from '@/utils/playbar/createButton.ts';
 import type { CreatePageInstanceFns } from '@/utils/routes/createPage.ts';
-import type { CreateRendererAPI } from '@utils/dom';
 import type { QueryStatus } from '@tanstack/react-query';
+import type { CreateRendererAPI } from '@utils/dom';
 
 type Nullable<T> = T | null;
 
