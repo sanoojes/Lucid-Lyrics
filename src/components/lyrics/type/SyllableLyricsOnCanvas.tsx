@@ -1068,18 +1068,26 @@ const SyllableLyricsOnCanvas: React.FC<CanvasLyricsProps> = ({ data }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const observer = new ResizeObserver((entries) => {
-      const entry = entries[0];
-      if (entry?.contentRect) {
-        canvasSizeRef.current = {
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-        };
-        setRevision(Math.random());
-      }
-    });
+    const updateSize = () => {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      canvasSizeRef.current = { width: rect.width, height: rect.height };
+      setRevision(Math.random());
+    };
+    updateSize();
+    const intervalId = setInterval(updateSize, 500);
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 3000);
+    const observer = new ResizeObserver(() => updateSize());
     observer.observe(canvas);
-    return () => observer.disconnect();
+    window.addEventListener('resize', updateSize);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+      observer.disconnect();
+      window.removeEventListener('resize', updateSize);
+    };
   }, []);
 
   return (
