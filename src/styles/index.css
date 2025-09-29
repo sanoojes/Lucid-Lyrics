@@ -170,9 +170,9 @@
   .artist-artistOnTour-date,
   .main-nowPlayingView-section,
   .main-nowPlayingView-credits {
-    background-color: rgba(var(--spice-rgb-text), 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    border: 1px solid rgba(var(--spice-rgb-text), 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;
   }
   .main-nowPlayingView-aboutArtistV2Button,
@@ -184,8 +184,11 @@
   .cZCuJDjrGA2QMXja_Sua /* Content Wrapper */ {
     padding-top: 68px;
   }
+
   .W3E0IT3_STcazjTeyOJa /* Header */ {
     position: absolute;
+    top: 0;
+    left: 0;
     height: 64px;
     z-index: 1;
     margin-bottom: 0;
@@ -193,30 +196,45 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 12px;
 
     & > div {
       padding: 0;
       max-height: fit-content;
       width: 100%;
     }
+    &.mdMUqcSHFw1lZIcYEblu {
+      border-radius: 24px;
+      width: calc(100% - 16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 8px;
+      background: none !important;
+    }
 
-    &.mdMUqcSHFw1lZIcYEblu:before /* Header - box shadow */ {
+    &::before {
+      content: "";
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      transition:
+        backdrop-filter 0.3s linear,
+        opacity 0.3s linear;
+    }
+
+    &.mdMUqcSHFw1lZIcYEblu::before /* Header - box shadow */ {
       backdrop-filter: blur(2rem) saturate(1.5) brightness(0.75);
     }
   }
-
-  .W3E0IT3_STcazjTeyOJa:before {
-    content: "";
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    transition:
-      backdrop-filter 0.3s linear,
-      opacity 0.3s linear;
+  .IkRGajTjItEFQkRMeH6v,
+  .IkRGajTjItEFQkRMeH6v.f2UE9n5nZcbgZrGYTU3r {
+    background: none !important;
   }
 
   .main-nowPlayingView-nowPlayingWidget {
