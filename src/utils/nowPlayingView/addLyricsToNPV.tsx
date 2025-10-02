@@ -2,6 +2,7 @@ import Background from '@/components/background/Background.tsx';
 import LyricsCard from '@/components/lyrics/LyricsCard.tsx';
 import tempStore from '@/store/tempStore.ts';
 import { logger } from '@logger';
+import type { QueryStatus } from '@tanstack/react-query';
 import { createRenderer, observeElement } from '@utils/dom';
 
 export function addLyricsToNPV() {
@@ -39,21 +40,37 @@ export function addLyricsToNPV() {
           rootId: 'lyrics-card-root',
         });
 
+        const setSidebar = (isSidebarOpen: boolean) =>
+          tempStore.getState().setIsSidebarOpen(isSidebarOpen);
+
         const handlePage = (show: boolean) => {
           if (!show) {
             mount();
+            setSidebar(true);
           } else {
             unmount();
+            setSidebar(false);
           }
         };
 
         handlePage(tempStore.getState().isLyricsOnPage);
-
         const unsub = tempStore.subscribe((s) => s.isLyricsOnPage, handlePage);
+
+        const handleLyricsStatus = (status: QueryStatus | null) => {
+          if (tempStore.getState().isLyricsOnPage) return;
+          if (status) handlePage(status !== 'success');
+        };
+        handleLyricsStatus(tempStore.getState().player.nowPlaying.lyricFetchStatus);
+        const unsub2 = tempStore.subscribe(
+          (s) => s.player.nowPlaying.lyricFetchStatus,
+          handleLyricsStatus
+        );
 
         onRemove(() => {
           unsub();
+          unsub2();
           unmount();
+          setSidebar(false);
         });
       },
       { root }
