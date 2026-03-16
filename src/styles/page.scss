@@ -216,7 +216,6 @@ $floating-transition:
 
   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
     --is-mobile: 1;
-    text-align: center;
 
     .lenis-content {
       padding: 0 10cqw;
