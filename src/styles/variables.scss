@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+$breakpoint: 768px;
+$mobile-breakpoint: $breakpoint;
+
+// Font
+$font:
+  "Inter", SpotifyMixUI, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek,
+  CircularSp-Deva, var(--fallback-fonts, sans-serif);
+$default-fonts: $font;
+
+// Font sizes
+$fs-xs: 12px;
+$fs-sm: 14px;
+$fs-base: 16px;
+$fs-lg: 22px;
+$fs-xl: 32px;
+
+// Font weights
+$fw-normal: 400;
+$fw-medium: 500;
+$fw-bold: 700;
+$fw-black: 900;
+
+// Spacing
+$space-xs: 4px;
+$space-sm: 6px;
+$space-base: 8px;
+$space-md: 12px;
+$space-lg: 16px;
+$space-xl: 20px;
+$space-2xl: 24px;
+$space-3xl: 32px;
+
+// Radius
+$r-xs: 4px;
+$r-sm: 6px;
+$r-md: 12px;
+$r-lg: 20px;
+$r-xl: 24px;
+$r-full: 9999px;
+
+// Motion
+$ease-fast: 0.2s ease;
+$ease-base: 0.3s ease;
+$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+$ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+// Colors - Base
+$color: #fff;
+$color-bg: #121212;
+$color-fg: #111;
+$default-font-color: $color;
+
+// Colors - Brand
+$color-accent: #1ed760;
+$color-accent-2: #4be782;
+$color-accent-dark: #127e38;
+
+// Colors - Text
+$color-muted: #b3b3b3;
+$color-dim: #d6d6d6;
+
+// Colors - State
+$color-danger: #dc2626;
+$color-danger-dark: #b91c1c;
+
+// Glass
+$glass-bg: rgba(255, 255, 255, 0.08);
+$glass-bd: rgba(255, 255, 255, 0.2);
+$glass-hv: rgba(255, 255, 255, 0.15);
+$border-color: $glass-bg;
+
+// Shadows
+$shadow-glass: 0 20px 50px rgba(0, 0, 0, 0.4);
+$shadow-spotify: 0 10px 40px rgba(0, 0, 0, 0.6);
+$shadow-light: 0 15px 35px rgba(0, 0, 0, 0.08);
+$shadow-overlay: 0 8px 16px rgba(0, 0, 0, 0.08);
+
+// Button
+$btn-h-sm: 34px;
+$btn-h-base: 40px;
+$btn-h-lg: 44px;
+
+:root {
+  --ll-font: #{$font};
+}

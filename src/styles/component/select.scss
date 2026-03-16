@@ -1,0 +1,66 @@
+@use "../variables" as v;
+
+.select-container {
+  position: relative;
+
+  select {
+    width: 100%;
+    height: v.$btn-h-base;
+    padding: v.$space-sm v.$space-3xl v.$space-sm v.$space-md;
+    font-size: v.$fs-sm;
+    color: v.$color;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: v.$r-sm;
+    cursor: pointer;
+    align-items: center;
+
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+
+    &::picker(select) {
+      margin: v.$space-xs 0;
+      color: v.$color;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: v.$r-sm;
+      cursor: pointer;
+      backdrop-filter: blur(12px) brightness(0.6);
+    }
+
+    &::picker-icon {
+      display: none;
+      color: white;
+      background: v.$color-bg;
+      padding: 1rem;
+    }
+
+    option {
+      padding: v.$space-sm v.$space-md;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &::checkmark {
+        display: none;
+      }
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  .select__icon {
+    position: absolute;
+    right: v.$space-sm;
+    top: 50%;
+    transform: translateY(-50%);
+    color: v.$color-muted;
+    pointer-events: none;
+  }
+}

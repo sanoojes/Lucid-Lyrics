@@ -1,0 +1,57 @@
+@use "../variables" as v;
+
+.LucidModalPortal {
+  display: block !important;
+
+  dialog {
+    padding: 0;
+    border: none;
+    border-radius: 28px;
+    corner-shape: squircle;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid v.$border-color;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-block-size: inherit !important;
+    max-inline-size: inherit !important;
+
+    transition:
+      opacity 0.4s v.$ease-out,
+      transform 0.4s v.$ease-out,
+      overlay 0.4s allow-discrete,
+      display 0.4s allow-discrete;
+
+    &:not([open]) {
+      opacity: 0;
+      transform: translateY(v.$space-lg) scale(0.96);
+    }
+
+    @starting-style {
+      &[open] {
+        opacity: 0;
+        transform: translateY(v.$space-lg) scale(0.96);
+      }
+    }
+
+    &::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 1;
+      transition:
+        opacity 0.4s v.$ease-out,
+        overlay 0.4s allow-discrete,
+        display 0.4s allow-discrete;
+    }
+
+    &:not([open])::backdrop {
+      opacity: 0;
+    }
+
+    @starting-style {
+      &[open]::backdrop {
+        opacity: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@use "../variables" as v;
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: v.$space-sm;
+  justify-content: center;
+  align-items: center;
+
+  &--right,
+  &--left {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: v.$space-xs;
+  }
+
+  .l-btn {
+    --btn-radius: 2rem;
+    --btn-height: 36px;
+    --icon-padding: #{v.$space-base};
+  }
+
+  .l-btn--active {
+    &.btn--repeat,
+    &.btn--shuffle {
+      &:after {
+        content: "";
+        position: absolute;
+        display: block;
+        height: 3px;
+        width: 3px;
+        background-color: currentColor;
+        border-radius: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+      }
+    }
+  }
+}

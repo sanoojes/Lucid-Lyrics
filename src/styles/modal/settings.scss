@@ -1,0 +1,128 @@
+@use "../variables" as v;
+
+.settings-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(60vw, 40rem);
+  max-height: 85vh;
+  border-radius: v.$r-lg;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: v.$space-md v.$space-lg;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .title {
+      margin: 0;
+      font-size: v.$fs-lg;
+      font-weight: v.$fw-bold;
+      color: v.$color;
+      letter-spacing: -0.3px;
+    }
+
+    .actions {
+      .l-btn {
+        color: v.$color-muted;
+        transition:
+          color v.$ease-fast,
+          background-color v.$ease-fast;
+
+        &:hover {
+          color: v.$color;
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+
+  .content {
+    overflow-y: auto;
+    padding: v.$space-lg v.$space-xl;
+    transition: --sb-color-thumb 0.2s ease-in-out;
+  }
+
+  .settings-fallback {
+    text-align: center;
+    padding: 3rem 1rem;
+    opacity: 0.6;
+  }
+}
+
+.search-wrapper {
+  margin-bottom: v.$space-lg;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .search-input {
+    width: 100%;
+    padding: v.$space-sm v.$space-3xl v.$space-sm #{v.$space-3xl + v.$space-sm};
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: v.$r-sm;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: v.$color;
+    font-size: v.$fs-sm;
+
+    &::placeholder {
+      color: v.$color-muted;
+    }
+
+    &:focus-within {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  .search-icon {
+    position: absolute;
+    left: v.$space-md;
+    color: v.$color-muted;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .search-clear {
+    --btn-height: 24px;
+    --btn-width: 24px;
+    --btn-padding: 2px;
+
+    position: absolute;
+    right: v.$space-sm;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.settings-section {
+  margin-bottom: v.$space-xl;
+
+  &:last-child {
+    margin-bottom: v.$space-lg;
+  }
+
+  .section-title {
+    font-size: v.$fs-sm;
+    font-weight: v.$fw-bold;
+    color: v.$color-accent;
+    text-transform: uppercase;
+    margin: 0 0 v.$space-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: v.$space-sm;
+
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(29, 185, 84, 0.3) 0%, transparent 100%);
+    }
+  }
+
+  .section-items {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-md;
+  }
+}

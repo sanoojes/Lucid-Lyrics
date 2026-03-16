@@ -1,0 +1,46 @@
+import { splitProps, type ComponentProps } from "solid-js";
+import "@/styles/component/button.scss";
+
+type Variant =
+  | "default"
+  | "destructive"
+  | "outline"
+  | "secondary"
+  | "ghost"
+  | "glass"
+  | "link"
+  | "simple";
+
+type Size = "default" | "sm" | "lg" | "icon" | "icon-lg";
+
+type Shape = "default" | "rounded" | "square";
+
+type ButtonProps = ComponentProps<"button"> & {
+  variant?: Variant;
+  size?: Size;
+  shape?: Shape;
+  iconSize?: number;
+  active?: boolean;
+};
+
+export function Button(props: ButtonProps) {
+  const [local, others] = splitProps(props, ["variant", "size", "shape", "class"]);
+
+  const variant = () => local.variant ?? "default";
+  const size = () => local.size ?? "default";
+  const shape = () => local.shape ?? "default";
+
+  const classes = () =>
+    [
+      "l-btn",
+      `l-btn--${variant()}`,
+      `l-btn--${size()}`,
+      shape() !== "default" ? `l-btn--${shape()}` : "",
+      props.active ? `l-btn--active` : "",
+      local.class,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+  return <button class={classes()} {...others} />;
+}

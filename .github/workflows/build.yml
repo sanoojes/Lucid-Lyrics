@@ -1,11 +1,15 @@
-name: Build and Deploy to Releases Branch
+name: Build and Publish
 
 on:
   push:
     tags:
-      - 'v*.*.*'
-      
+      - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to deploy (e.g., v1.2.3)"
+        required: true
+        default: "manual-build"
 
 jobs:
   deploy:
@@ -17,41 +21,56 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Deno
-        uses: denoland/setup-deno@v2
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          deno-version: v2.x 
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
 
       - name: Build project
-        run: deno task build
+        run: bun run build
 
-      - name: Get version from Git tag
+      - name: Set Version
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Checkout releases branch
+        uses: actions/checkout@v4
+        with:
+          ref: releases
+          path: releases
 
       - name: Deploy artifacts to releases branch
         run: |
+          cd releases
+
+          # Configure Git
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git clone --branch=releases --single-branch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy_dir
-          
-          cd deploy_dir
-          rm -rf latest/* # Clear previous 'latest' build
+          # Prepare directories
+          rm -rf latest
           mkdir -p ${{ env.VERSION }}
           mkdir -p latest
+
+          # Copy artifacts
           cp -r ../dist/. ./${{ env.VERSION }}
           cp -r ../dist/. ./latest
 
-          echo "# Project Releases" > README.md
-          echo "" >> README.md
-          echo "This branch holds the final, compiled extension files for each version, ready for use." >> README.md          echo "" >> README.md
-          echo "## Latest Version" >> README.md
-          echo "- **[latest](./latest)**" >> README.md
-          echo "" >> README.md
-          echo "## All Versions" >> README.md
-          ls -d v* | sort -V -r | sed 's/^\(.*\)$/- [\1](.\/\1)/' >> README.md
+          # Generate README
+          # We are inside ./releases, so the script is one directory up
+          bun run ../scripts/generate-release-readme.ts .
 
+          # Commit and Push
           git add .
           if git diff --staged --quiet; then
             echo "No changes to commit. Skipping."

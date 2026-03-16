@@ -1,0 +1,45 @@
+@use "../variables" as v;
+
+.lyrics-loading {
+  --top-pad: clamp(16px, 8vh, 80px);
+  --shimmer-base: rgba(255, 255, 255, 0.4);
+  --shimmer-highlight: rgba(255, 255, 255, 0.1);
+
+  height: calc(100% - var(--top-pad));
+  width: 100%;
+  position: relative;
+  top: var(--top-pad);
+  overflow: hidden;
+  z-index: 99;
+  margin-top: auto;
+  border-radius: 0.5cqw;
+
+  -webkit-mask-position: left top;
+  mask-position: left top;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  background: linear-gradient(
+    90deg,
+    var(--shimmer-base) 25%,
+    var(--shimmer-highlight) 50%,
+    var(--shimmer-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: lucid-shimmer 2s infinite linear;
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    --top-pad: 2rem;
+  }
+}
+
+@keyframes lucid-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}

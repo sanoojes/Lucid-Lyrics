@@ -1,0 +1,402 @@
+@use "../variables" as v;
+
+.player-widget {
+  --color-white: #{v.$color};
+  --color-black: #{v.$color-fg};
+
+  --color-spotify-bg: #{v.$color-bg};
+  --color-spotify-accent: #{v.$color-accent};
+
+  --color-light-bg: #{v.$color};
+  --color-light-text: #{v.$color-fg};
+  --color-light-artist: #555555;
+  --color-light-album: #888888;
+
+  --color-glass-bg: #{v.$glass-bg};
+  --color-glass-border: #{v.$glass-bd};
+
+  --color-overlay-strong: rgba(0, 0, 0, 0.9);
+  --color-overlay-medium: rgba(0, 0, 0, 0.4);
+  --color-overlay-transparent: rgba(0, 0, 0, 0);
+
+  --color-simple-artist: #{v.$color-dim};
+  --color-simple-album: #{v.$color-muted};
+
+  --shadow-glass: #{v.$shadow-glass};
+  --shadow-spotify: #{v.$shadow-spotify};
+  --shadow-light: #{v.$shadow-light};
+  --shadow-overlay: #{v.$shadow-overlay};
+
+  width: 100%;
+  border-radius: v.$r-lg;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition-property: background, color, box-shadow, border, width;
+  transition-duration: v.$ease-base;
+  transition-timing-function: ease;
+
+  &__image-wrapper {
+    position: relative;
+    z-index: 1;
+
+    .player-widget--simple & {
+      border-bottom-left-radius: inherit;
+      border-bottom-right-radius: inherit;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    filter: none;
+    scale: 1;
+    border-radius: inherit;
+    transition:
+      filter v.$ease-fast,
+      scale v.$ease-fast;
+  }
+
+  &__info {
+    padding: v.$space-xl;
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-sm;
+    opacity: 1;
+    transition: opacity v.$ease-base;
+    z-index: 2;
+    position: relative;
+    pointer-events: all;
+
+    &:empty {
+      opacity: 0;
+      padding: 0;
+    }
+  }
+
+  &__title {
+    font-size: v.$fs-lg;
+    font-weight: v.$fw-bold;
+    line-height: 1.2;
+    color: inherit;
+  }
+
+  &__artist {
+    font-size: v.$fs-base;
+    color: inherit;
+  }
+
+  &__album {
+    font-size: v.$fs-sm;
+    color: inherit;
+  }
+
+  &__controls {
+    position: absolute;
+    opacity: 0;
+    transition: opacity v.$ease-base;
+    bottom: v.$space-sm;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: v.$space-xs;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    z-index: 2;
+
+    .controls .l-btn {
+      --btn-height: clamp(2rem, 5cqw, 6rem);
+      border-radius: 10rem;
+      .lucide {
+        height: clamp(1rem, 2cqw, 2rem);
+        width: clamp(1rem, 2cqw, 2rem);
+      }
+    }
+  }
+
+  &__like-btn {
+    --like-btn-size: 50%;
+    position: absolute;
+    height: var(--like-btn-size);
+    width: var(--like-btn-size);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover {
+    .player-widget__like-btn,
+    .player-widget__controls {
+      opacity: 1;
+    }
+  }
+
+  &--glass {
+    backdrop-filter: blur(12px);
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: var(--shadow-glass);
+    color: var(--color-white);
+    filter: none;
+  }
+
+  &--dark {
+    background: var(--color-spotify-bg);
+    color: var(--color-white);
+    box-shadow: var(--shadow-spotify);
+
+    .player-widget {
+      &__artist {
+        color: var(--color-spotify-accent);
+      }
+
+      &__album {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  &--light {
+    background: var(--color-light-bg);
+    color: var(--color-light-text);
+    box-shadow: var(--shadow-light);
+
+    .player-widget {
+      &__title {
+        color: var(--color-light-text);
+      }
+      &__artist a {
+        color: var(--color-light-artist);
+      }
+
+      &__album {
+        color: var(--color-light-album);
+      }
+    }
+  }
+
+  &--overlay {
+    position: relative;
+    color: var(--color-white);
+    box-shadow: var(--shadow-overlay);
+
+    .player-widget {
+      &__info {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(
+          to top,
+          var(--color-overlay-strong) 0%,
+          var(--color-overlay-medium) 70%,
+          var(--color-overlay-transparent) 100%
+        );
+      }
+    }
+  }
+
+  &--simple {
+    .player-widget {
+      &__title {
+        color: var(--color-white);
+      }
+
+      &__artist {
+        color: var(--color-simple-artist);
+      }
+
+      &__album {
+        color: var(--color-simple-album);
+      }
+
+      &__image {
+        border-radius: inherit;
+      }
+    }
+  }
+
+  .btn--like {
+    opacity: 0;
+  }
+
+  &--simple,
+  &--light,
+  &--dark,
+  &--glass {
+    &:hover {
+      .btn--like {
+        opacity: 1;
+      }
+
+      & .player-widget {
+        &__image {
+          filter: blur(8px) brightness(0.6);
+          scale: 2;
+        }
+      }
+    }
+  }
+
+  &--light {
+    &:hover {
+      --color-light-text: var(--color-white);
+      --color-light-album: var(--color-simple-album);
+      --color-light-artist: var(--color-simple-artist);
+    }
+  }
+
+  &--overlay {
+    &:hover {
+      .btn--like {
+        opacity: 1;
+      }
+
+      & .player-widget__image {
+        filter: blur(8px) brightness(0.6);
+      }
+      .player-widget__info {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .l-btn {
+    &--glass,
+    &--ghost:hover {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  &--loading {
+    .player-widget__image {
+      opacity: 0;
+    }
+
+    .player-widget__info > * {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__image-placeholder {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1;
+    background: var(--color-muted);
+    border-radius: inherit;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__image-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: widget-shimmer 1.5s infinite linear;
+  }
+
+  &__title-placeholder,
+  &__artist-placeholder,
+  &__album-placeholder {
+    height: 1em;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: widget-shimmer 1.5s infinite linear;
+    }
+  }
+  &--text-center {
+    text-align: center;
+    .player-widget {
+      &__title-placeholder,
+      &__artist-placeholder,
+      &__album-placeholder {
+        left: 50%;
+        transform: translate(-50%, 0);
+      }
+    }
+  }
+
+  &__title-placeholder {
+    width: 80%;
+    height: 1.6em;
+    margin-bottom: 4px;
+  }
+
+  &__artist-placeholder {
+    width: 60%;
+    height: 1.2em;
+    margin-bottom: 2px;
+  }
+
+  &__album-placeholder {
+    width: 40%;
+  }
+
+  .player-widget__image-wrapper,
+  .player-widget__info > * {
+    animation: widget-fade-in 0.4s ease-out forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    &--simple,
+    &--light,
+    &--dark,
+    &--glass {
+      &:hover .player-widget__image {
+        scale: 1 !important;
+      }
+    }
+  }
+}
+
+@keyframes widget-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes widget-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,29 @@
+@use "../variables" as v;
+
+.alert-modal {
+  padding: v.$space-xl v.$space-2xl;
+  min-width: 320px;
+  max-width: 400px;
+  text-align: center;
+
+  .alert-message {
+    font-size: v.$fs-lg;
+    font-weight: v.$fw-medium;
+    color: v.$default-font-color;
+    line-height: 1.5;
+    margin-bottom: v.$space-sm;
+  }
+
+  .alert-description {
+    font-size: v.$fs-sm;
+    color: v.$color-muted;
+    line-height: 1.4;
+    margin-bottom: v.$space-xl;
+  }
+
+  .alert-actions {
+    display: flex;
+    gap: v.$space-md;
+    justify-content: center;
+  }
+}
