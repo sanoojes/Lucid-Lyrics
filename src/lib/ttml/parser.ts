@@ -309,7 +309,7 @@ function parseLine(ttml: TTMLRoot): LineData {
   return {
     Id: id,
     Type: "Line",
-    Songwriters: songwriters,
+    SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
     Content: content,
     StartTime: startTime,
@@ -344,7 +344,7 @@ function parseStatic(ttml: TTMLRoot): StaticData {
   return {
     Id: id,
     Type: "Static",
-    Songwriters: songwriters,
+    SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
     Lines: lines,
   };
@@ -387,7 +387,7 @@ function parseSyllable(ttml: TTMLRoot): SyllableData {
   return {
     Id: id,
     Type: "Syllable",
-    Songwriters: songwriters,
+    SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
     Content: content,
     StartTime: startTime,

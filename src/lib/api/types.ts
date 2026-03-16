@@ -1,4 +1,5 @@
-export type LyricsProviders = "spicy" | "spotify" | "user";
+import type { LyricsProviders } from "@/constants";
+
 export type APIStatus = "success" | "error" | "missing_lyrics" | "malformed" | "offline";
 
 export interface APIError {
@@ -88,7 +89,7 @@ export type SyllableContent = {
 export type SyllableData = {
   Id: string;
   Type: "Syllable";
-  Songwriters: string[];
+  SongWriters: string[];
   Artists?: string[];
   Content: SyllableContent[];
 } & TimeRange &
@@ -111,7 +112,7 @@ export type InterludeContent = {
 export type LineData = {
   Id: string;
   Type: "Line";
-  Songwriters: string[];
+  SongWriters: string[];
   Artists?: string[];
   Content: LineContent[];
 } & TimeRange &
@@ -125,7 +126,7 @@ export type StaticLine = {
 export type StaticData = {
   Id: string;
   Type: "Static";
-  Songwriters: string[];
+  SongWriters: string[];
   Artists?: string[];
   Lines: StaticLine[];
 } & Partial<CommonStates>;

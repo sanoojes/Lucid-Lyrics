@@ -17,7 +17,6 @@ import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
 const BLUR_MAP = [0, 1, 2, 3, 4, 5];
 
-
 export type SyllableLyricsProps = {
   lyrics: SyllableData;
   widgetHidden: boolean;
@@ -363,6 +362,14 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     }
   });
 
+  createEffect((prevPos: number) => {
+    const pos = currentPos();
+    if (prevPos !== undefined && Math.abs(pos - prevPos) > 1200) {
+      performScroll(true, true);
+    }
+    return pos;
+  }, currentPos());
+
   let observer: IntersectionObserver | undefined;
 
   createEffect(() => {
@@ -427,7 +434,14 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
     performScroll(true, true);
     const iId = setInterval(() => performScroll(true, true), 50);
-    const tId = setTimeout(() => clearInterval(iId), 1000);
+    const tId = setTimeout(() => clearInterval(iId), 1200);
+
+    const handleFocusChange = () => {
+      lenis.resize();
+      performScroll(false, true);
+    };
+    window.addEventListener("focus", handleFocusChange);
+    // window.addEventListener("blur", handleFocusChange);
 
     onCleanup(() => {
       ro.disconnect();
@@ -436,34 +450,50 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       clearTimeout(scrollTimeout);
       $is_active_visible.set(true);
       $jump_to_active.set(null);
+      window.removeEventListener("focus", handleFocusChange);
+      // window.removeEventListener("blur", handleFocusChange);
     });
   });
 
   const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
 
+  const getBlurAmount = (index: number, reset = false): string => {
+    if (reset) return "0px";
 
-const getBlurAmount = (index: number, reset = false): string => {
-  if (reset) return "0px";
+    const active = activeIndices();
+    let distance = Math.abs(index - firstActiveIndex());
 
-  const active = activeIndices();
-  let distance = Math.abs(index - firstActiveIndex());
+    for (const a of active) {
+      const d = Math.abs(index - a);
+      if (d < distance) distance = d;
+    }
 
-  for (const a of active) {
-    const d = Math.abs(index - a);
-    if (d < distance) distance = d;
-  }
-
-  const blur = distance >= BLUR_MAP.length ? BLUR_MAP[BLUR_MAP.length - 1] : BLUR_MAP[distance];
-  return `${blur}px`;
-};
+    const blur = distance >= BLUR_MAP.length ? BLUR_MAP[BLUR_MAP.length - 1] : BLUR_MAP[distance];
+    return `${blur}px`;
+  };
   return (
-    <div class={`syllable-lyrics${props.widgetHidden ? " widget-hidden" : ""}`} ref={containerRef} onWheel={handleUserInteraction} onTouchMove={handleUserInteraction}>
-      <div class="top-spacer" />
+    <div
+      class={`syllable-lyrics${props.widgetHidden ? " widget-hidden" : ""}`}
+      ref={containerRef}
+      onWheel={handleUserInteraction}
+      onTouchMove={handleUserInteraction}
+    >
       <For each={lineEntries()}>
         {(entry) => {
           const padding = () => (hasOppAligned() ? "5rem" : 0);
           const blur = createMemo(() => getBlurAmount(entry.index, isUserScroll()));
-          const isActive = createMemo(() => activeIndices().includes(entry.index));
+          const isActive = createMemo(() => {
+            const isTarget = activeIndices().includes(entry.index);
+
+            if (isTarget && entry.index === lineEntries().length - 1) {
+              const endTime =
+                entry.type === "interlude" ? entry.end : getVocalPartBounds(entry.content).end;
+
+              return currentPos() <= endTime;
+            }
+
+            return isTarget;
+          });
 
           return (
             <div
@@ -521,7 +551,6 @@ const getBlurAmount = (index: number, reset = false): string => {
           );
         }}
       </For>
-      <div class="bottom-spacer" />
     </div>
   );
 }

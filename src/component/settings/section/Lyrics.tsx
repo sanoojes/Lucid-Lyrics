@@ -2,13 +2,16 @@ import { useStore } from "@nanostores/solid";
 import { For } from "solid-js";
 import { SettingsRow } from "@/component/settings/Row";
 import { $providers } from "@/stores/lyrics";
+import { $page_state, toggleShowCredits } from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
 import { GripVertical } from "lucide-solid";
+import { Toggle } from "@/component/ui/Toggle";
 import { t } from "@/i18n";
 import type { LyricsProviders } from "@/lib/api/types";
 
 function LyricsSettings() {
   const providerList = useStore($providers);
+  const pageState = useStore($page_state);
 
   const reorderableProviders = () => providerList().slice(1);
 
@@ -58,6 +61,9 @@ function LyricsSettings() {
 
   return (
     <SettingsSection title={t("lyrics.title")}>
+      <SettingsRow label={t("lyrics.showCredits")} description={t("lyrics.showCreditsDesc")}>
+        <Toggle checked={pageState().showCredits} onChange={toggleShowCredits} />
+      </SettingsRow>
       <SettingsRow
         label={t("lyrics.providerOrder")}
         description={t("lyrics.providerOrderDesc")}

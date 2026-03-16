@@ -121,6 +121,8 @@ export const dict: Dict = {
   "player.scrollIntoView": "Scroll into view",
   "lyrics.providerOrder": "Provider Order",
   "lyrics.providerOrderDesc": "Drag to reorder lyrics providers",
+  "lyrics.showCredits": "Show Credits",
+  "lyrics.showCreditsDesc": "Show artists, songwriters and provider info",
   "ttml.title": "Local TTML",
   "ttml.parseError": "Parse Error",
   "ttml.overwriteSuccess": "TTML overwritten successfully",

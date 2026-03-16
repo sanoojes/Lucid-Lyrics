@@ -1,3 +1,4 @@
+import "@/styles/component/interlude.scss"
 import { createMemo, For } from "solid-js";
 
 type InterludeIndicatorProps = {

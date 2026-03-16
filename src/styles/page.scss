@@ -116,11 +116,13 @@ $floating-transition:
               --btn-bg: rgba(0, 0, 0, 0.1);
               --btn-border: rgba(0, 0, 0, 0.1);
             }
+
             &--active {
               --btn-fg: #{v.$color-accent-dark};
             }
           }
         }
+
         &__image-wrapper {
           flex: 0 0 120px;
           width: 120px;
@@ -146,12 +148,14 @@ $floating-transition:
             &__image {
               scale: 1.4;
             }
+
             &__info {
               pointer-events: none;
               opacity: 0;
             }
           }
         }
+
         &__title {
           font-size: 1.3rem;
         }
@@ -227,6 +231,29 @@ $floating-transition:
       }
     }
   }
+
+  // Spacers
+  --top-pad: 30cqh;
+  --bottom-pad: 60cqh;
+
+  .lenis-content > .top-spacer {
+    height: var(--top-pad);
+    width: 100%;
+  }
+
+  .lenis-content > .bottom-spacer {
+    height: var(--bottom-pad);
+    width: 100%;
+  }
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    --top-pad: 2rem;
+    --bottom-pad: 70cqh;
+
+    &.widget-hidden {
+      --top-pad: 40cqh;
+    }
+  }
 }
 
 .floating-hover-target {
@@ -297,59 +324,12 @@ $floating-transition:
   }
 }
 
-@keyframes l-page-entry {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 30px, 0) scale(0.95);
-    filter: blur(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: blur(0);
-  }
-}
-
-@keyframes imagePop {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translate3d(0, 100%, 0) scale(0.95);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 1;
-  }
-}
-
-.static-lyrics {
-  --top-pad: 30cqh;
-  --bottom-pad: 48cqh;
-  --lead-font-weight: 700;
-
-  padding-top: var(--top-pad);
-  padding-bottom: var(--bottom-pad);
-
-  font-size: clamp(1.8rem, 4cqw, 3.2rem);
-  font-weight: var(--lead-font-weight);
-}
-
 .line-lyrics,
+.static-lyrics,
 .syllable-lyrics {
-  --top-pad: 30cqh;
-  --bottom-pad: 60cqh;
   --lead-font-weight: 700;
   --lead-font-size: clamp(1.8rem, 4cqw, 3.2rem);
+
   --bg-font-weight: 600;
   --bg-font-size: calc(var(--lead-font-size) * 0.75);
 
@@ -360,63 +340,6 @@ $floating-transition:
   font-size: var(--lead-font-size);
   font-weight: var(--lead-font-weight);
 
-  & > .top-spacer {
-    height: var(--top-pad);
-    width: 100%;
-  }
-  & > .bottom-spacer {
-    height: var(--bottom-pad);
-    width: 100%;
-  }
-
-  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
-    --top-pad: 2rem;
-    --bottom-pad: 70cqh;
-
-    &.widget-hidden {
-      --top-pad: 40cqh;
-    }
-  }
-}
-
-.interlude-indicator {
-  display: flex;
-  gap: var(--interlude-dots-gap, 14px);
-  align-items: center;
-  justify-content: flex-start;
-  height: 0;
-  opacity: 0;
-  overflow: visible;
-  pointer-events: none;
-  padding: 4px;
-  transform: scale(0.8);
-  transform-origin: left center;
-  transition:
-    opacity 0.1s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &.active {
-    height: var(--interlude-height, 32px);
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
-  }
-
-  &.opp-aligned {
-    justify-content: flex-end;
-    transform-origin: right center;
-  }
-}
-
-.interlude-dot {
-  width: var(--interlude-size, 10px);
-  height: var(--interlude-size, 10px);
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.9);
-}
-
-.line-lyrics,
-.syllable-lyrics {
   .line-wrapper {
     --blur: 0;
     --scale: 1;
@@ -443,5 +366,65 @@ $floating-transition:
       content: "";
       margin-right: 0.3ch;
     }
+  }
+}
+
+// .lyrics-area {
+//   &:hover {
+//     .line-wrapper {
+//       filter: blur(0);
+//       opacity: 1;
+//     }
+//   }
+// }
+
+.lyrics-credits {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 1rem 0 0;
+  opacity: 0.6;
+  scale: 1;
+
+  .credit-item {
+    margin-bottom: 2px;
+  }
+}
+
+@keyframes l-page-entry {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) scale(0.95);
+    filter: blur(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes imagePop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translate3d(0, 100%, 0) scale(0.95);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
   }
 }

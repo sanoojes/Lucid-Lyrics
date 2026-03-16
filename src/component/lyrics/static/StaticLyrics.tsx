@@ -11,7 +11,7 @@ const StaticLyrics: Component<LineLyricsProps> = (props) => {
     <div class="static-lyrics">
       <For each={props.lyrics.Lines}>
         {(item) => (
-          <div class="line-item">{romanize() ? (item.RomanizedText ?? item.Text) : item.Text}</div>
+          <div class="line-wrapper">{romanize() ? (item.RomanizedText ?? item.Text) : item.Text}</div>
         )}
       </For>
     </div>

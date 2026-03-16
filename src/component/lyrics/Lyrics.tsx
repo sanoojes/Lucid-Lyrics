@@ -1,6 +1,16 @@
 import { lyricsResource, lyricsResourceAction } from "@/api/solid";
 import { t } from "@/i18n";
-import { Switch, Match, Suspense, createMemo, createEffect, on } from "solid-js";
+import {
+  Switch,
+  Match,
+  Suspense,
+  createMemo,
+  createEffect,
+  on,
+  type JSXElement,
+  children,
+  Show,
+} from "solid-js";
 
 import LyricsLoader from "@/component/lyrics/Loader";
 import LineLyrics from "@/component/lyrics/line/LineLyrics";
@@ -9,15 +19,27 @@ import LyricsStatus from "@/component/lyrics/LyricsStatus";
 import SyllableLyrics from "@/component/lyrics/syllable/SyllableLyrics";
 import SolidLenis from "@/component/ui/Lenis";
 import { $is_active_visible } from "@/stores";
+import LyricsCredits from "@/component/lyrics/LyricsCredits";
 
 type LyricsProps = {
   widgetHidden: boolean;
+  showCredits: boolean;
 };
+
+function LyricsSpacer(props: { children: JSXElement }) {
+  const resolved = children(() => props.children);
+  return (
+    <>
+      <div class="top-spacer" />
+      {resolved()}
+      <div class="bottom-spacer" />
+    </>
+  );
+}
+
 function Lyrics(props: LyricsProps) {
   const response = createMemo(() => lyricsResource());
-  const lyricsData = createMemo(() => response()?.data);
   const handleRetry = () => lyricsResourceAction.refetch();
-  const widgetHidden = () => props.widgetHidden;
 
   createEffect(
     on(response, () => {
@@ -37,6 +59,7 @@ function Lyrics(props: LyricsProps) {
           <Match when={lyricsResource.loading}>
             <LyricsLoader />
           </Match>
+
           <Match when={response()?.status === "offline"}>
             <LyricsStatus
               type="offline"
@@ -45,9 +68,11 @@ function Lyrics(props: LyricsProps) {
               onRetry={handleRetry}
             />
           </Match>
+
           <Match when={response()?.status === "missing_lyrics"}>
             <LyricsStatus type="missing" message={t("lyrics.status.missing")} />
           </Match>
+
           <Match when={response()?.status === "error" || response()?.status === "malformed"}>
             <LyricsStatus
               type="error"
@@ -56,19 +81,32 @@ function Lyrics(props: LyricsProps) {
               onRetry={handleRetry}
             />
           </Match>
-          <Match when={response()?.status === "success" && lyricsData()}>
+
+          <Match when={response()?.status === "success" && response()?.data}>
             {(data) => {
               const d = data();
-              switch (d.Type) {
-                case "Syllable":
-                  return <SyllableLyrics lyrics={d} widgetHidden={widgetHidden()} />;
-                case "Line":
-                  return <LineLyrics lyrics={d} widgetHidden={widgetHidden()} />;
-                case "Static":
-                  return <StaticLyrics lyrics={d} />;
-                default:
-                  return <LyricsStatus type="missing" message={t("lyrics.status.unsupported")} />;
+
+              if (d.Type !== "Syllable" && d.Type !== "Line" && d.Type !== "Static") {
+                return <LyricsStatus type="missing" message={t("lyrics.status.unsupported")} />;
               }
+
+              return (
+                <LyricsSpacer>
+                  {(() => {
+                    switch (d.Type) {
+                      case "Syllable":
+                        return <SyllableLyrics lyrics={d} widgetHidden={props.widgetHidden} />;
+                      case "Line":
+                        return <LineLyrics lyrics={d} widgetHidden={props.widgetHidden} />;
+                      case "Static":
+                        return <StaticLyrics lyrics={d} />;
+                    }
+                  })()}
+                  <Show when={props.showCredits}>
+                    <LyricsCredits lyrics={d} />
+                  </Show>
+                </LyricsSpacer>
+              );
             }}
           </Match>
         </Switch>

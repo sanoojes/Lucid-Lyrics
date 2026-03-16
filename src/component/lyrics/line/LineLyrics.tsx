@@ -12,12 +12,7 @@ import {
 } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import {
-  $current_position,
-  $is_active_visible,
-  $jump_to_active,
-  $romanize,
-} from "@/stores";
+import { $current_position, $is_active_visible, $jump_to_active, $romanize } from "@/stores";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
 
@@ -90,10 +85,9 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const [isUserScroll, setIsUserScroll] = createSignal(false);
   const [isInteracting, setIsInteracting] = createSignal(false);
-  const [visibleElements, setVisibleElements] = createSignal<Set<number>>(
-    new Set(),
-    { equals: false }
-  );
+  const [visibleElements, setVisibleElements] = createSignal<Set<number>>(new Set(), {
+    equals: false,
+  });
   const [scrollOffset, setScrollOffset] = createSignal(0);
 
   const currentPos = useStore($current_position);
@@ -120,17 +114,13 @@ export default function LineLyrics(props: LineLyricsProps) {
         const start = e.type === "interlude" ? e.start : e.content.StartTime * 1000;
         return start > pos;
       });
-      return nextIdx === -1
-        ? entries[entries.length - 1].index
-        : Math.max(0, nextIdx - 1);
+      return nextIdx === -1 ? entries[entries.length - 1].index : Math.max(0, nextIdx - 1);
     }
 
     return 0;
   });
 
-  const hasOppAligned = createMemo(() =>
-    props.lyrics.Content.some((v) => v.OppositeAligned)
-  );
+  const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
 
   function updateOffset(isWidgetHidden = props.widgetHidden) {
     if (!containerRef) return;
@@ -144,7 +134,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = untrack(activeIndex); 
+    const idx = untrack(activeIndex);
     const targetRef = itemRefs.get(idx);
     if (idx !== -1 && targetRef && lenis && (forceScroll || !untrack(isUserScroll))) {
       lenis.scrollTo(targetRef, {
@@ -181,8 +171,8 @@ export default function LineLyrics(props: LineLyricsProps) {
       (w) => {
         updateOffset(w);
         performScroll(true, true);
-      }
-    )
+      },
+    ),
   );
 
   createEffect(() => {
@@ -197,9 +187,17 @@ export default function LineLyrics(props: LineLyricsProps) {
         getLenis()?.resize();
         requestAnimationFrame(() => performScroll(true, true));
       },
-      { defer: true }
-    )
+      { defer: true },
+    ),
   );
+
+  createEffect((prevPos: number) => {
+    const pos = currentPos();
+    if (prevPos !== undefined && Math.abs(pos - prevPos) > 1200) {
+      performScroll(true, true);
+    }
+    return pos;
+  }, currentPos());
 
   let observer: IntersectionObserver | undefined;
   const observedRefs = new Set<Element>();
@@ -215,15 +213,21 @@ export default function LineLyrics(props: LineLyricsProps) {
               const idx = Number((el as any).__lyricsIndex);
               if (isNaN(idx)) continue;
               if (entry.isIntersecting) {
-                if (!prev.has(idx)) { prev.add(idx); changed = true; }
+                if (!prev.has(idx)) {
+                  prev.add(idx);
+                  changed = true;
+                }
               } else {
-                if (prev.has(idx)) { prev.delete(idx); changed = true; }
+                if (prev.has(idx)) {
+                  prev.delete(idx);
+                  changed = true;
+                }
               }
             }
             return changed ? prev : prev;
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0.1 },
       );
     }
 
@@ -260,23 +264,27 @@ export default function LineLyrics(props: LineLyricsProps) {
     updateOffset();
     lenis?.resize();
 
-    let attempt = 0;
-    const maxAttempts = 5;
-    const tryScroll = () => {
-      performScroll(true, true);
-      if (++attempt < maxAttempts) {
-        setTimeout(tryScroll, 50 * (1 << attempt));
-      }
-    };
-    tryScroll();
+    performScroll(true, true);
+    const iId = setInterval(() => performScroll(true, true), 50);
+    const tId = setTimeout(() => clearInterval(iId), 1200);
+
+    const handleFocusChange = () => {
+      lenis.resize();
+      performScroll(false, true);}
+    window.addEventListener("focus", handleFocusChange);
+    // window.addEventListener("blur", handleFocusChange);
 
     onCleanup(() => {
+      clearInterval(iId);
+      clearTimeout(tId);
       ro.disconnect();
       observer?.disconnect();
       observedRefs.clear();
       if (scrollTimeout !== undefined) clearTimeout(scrollTimeout);
       $is_active_visible.set(true);
       $jump_to_active.set(null);
+      window.removeEventListener("focus", handleFocusChange);
+      // window.removeEventListener("blur", handleFocusChange);
     });
   });
 
@@ -287,12 +295,19 @@ export default function LineLyrics(props: LineLyricsProps) {
       onWheel={handleUserInteraction}
       onTouchMove={handleUserInteraction}
     >
-      <div class="top-spacer" />
       <For each={lineEntries()}>
         {(entry) => {
-          const isActive = createMemo(() => entry.index === activeIndex());
+          const isActive = createMemo(() => {
+            const isTargetIndex = entry.index === activeIndex();
 
-    
+            if (isTargetIndex && entry.index === lineEntries().length - 1) {
+              const endTime = entry.type === "interlude" ? entry.end : entry.content.EndTime * 1000;
+              return currentPos() <= endTime;
+            }
+
+            return isTargetIndex;
+          });
+
           const blurStyle = createMemo(() => {
             if (isUserScroll()) return "0px";
             const d = Math.abs(entry.index - activeIndex());
@@ -300,8 +315,11 @@ export default function LineLyrics(props: LineLyricsProps) {
           });
 
           const refCallback = (el: HTMLDivElement | null) => {
-            if (!el) { itemRefs.delete(entry.index); return; }
-            (el as any).__lyricsIndex = entry.index; 
+            if (!el) {
+              itemRefs.delete(entry.index);
+              return;
+            }
+            (el as any).__lyricsIndex = entry.index;
             itemRefs.set(entry.index, el);
             if (observer && !observedRefs.has(el)) {
               observer.observe(el);
@@ -334,9 +352,7 @@ export default function LineLyrics(props: LineLyricsProps) {
           const padding = hasOppAligned() ? "5rem" : undefined;
 
           const displayText = createMemo(() =>
-            romanize()
-              ? entry.content.RomanizedText || entry.content.Text
-              : entry.content.Text
+            romanize() ? entry.content.RomanizedText || entry.content.Text : entry.content.Text,
           );
 
           const progress = createMemo(() => {
@@ -374,8 +390,7 @@ export default function LineLyrics(props: LineLyricsProps) {
                   position: "relative",
                   display: "inline-block",
                   "text-align": entry.content.OppositeAligned ? "right" : "left",
-                  "text-shadow":
-                    "0px 0px var(--shadow-blur) rgba(255,255,255,var(--shadow-alpha))",
+                  "text-shadow": "0px 0px var(--shadow-blur) rgba(255,255,255,var(--shadow-alpha))",
                   "background-image":
                     "linear-gradient(180deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))",
                   "-webkit-background-clip": "text",
@@ -389,7 +404,6 @@ export default function LineLyrics(props: LineLyricsProps) {
           );
         }}
       </For>
-      <div class="bottom-spacer" />
     </div>
   );
 }

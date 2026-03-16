@@ -118,6 +118,8 @@ export type Dict = {
   "advanced.ttmlMakerModeDesc": string;
   "lyrics.providerOrder": string;
   "lyrics.providerOrderDesc": string;
+  "lyrics.showCredits": string;
+  "lyrics.showCreditsDesc": string;
   "ttml.title": string;
   "ttml.parseError": string;
   "ttml.overwriteSuccess": string;

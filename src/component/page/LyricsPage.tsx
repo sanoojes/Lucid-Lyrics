@@ -25,7 +25,7 @@ const LyricsPage = () => {
         <div class="widget-area" classList={{ "widget-area--hidden": isHidden() }}>
           <PlayerWidget />
         </div>
-        <Lyrics widgetHidden={isHidden()} />
+        <Lyrics widgetHidden={isHidden()} showCredits={pageState().showCredits} />
         <div class="floating-hover-target" />
         <div class="floating-area">
           <Controls />

@@ -63,7 +63,7 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
       result = {
         Id: trackId,
         Type: "Line",
-        Songwriters: [],
+        SongWriters: [],
         Content: content,
         StartTime: content.length > 0 ? content[0].StartTime : 0,
         EndTime: content.length > 0 ? content[content.length - 1].EndTime : 0,
@@ -73,7 +73,7 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
       result = {
         Id: trackId,
         Type: "Static",
-        Songwriters: [],
+        SongWriters: [],
         Lines: lines.map(
           (line: any) =>
             ({

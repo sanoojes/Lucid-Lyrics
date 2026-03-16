@@ -3,8 +3,7 @@ import { getName } from "@/stores/persist";
 import { computed } from "nanostores";
 import { DEFAULT_PAGE_STATE } from "@/constants";
 
-export type PageState = { widget: "hidden" | "show"; romanize: boolean };
-
+export type PageState = { widget: "hidden" | "show"; romanize: boolean; showCredits: boolean };
 export const $page_state = persistentJSON<PageState>(getName("page-state"), DEFAULT_PAGE_STATE);
 
 export function resetPageState() {
@@ -20,6 +19,10 @@ export const $romanize = computed($page_state, (s) => s.romanize);
 
 export function toggleRomanize() {
   updatePageState((state) => ({ ...state, romanize: !state.romanize }));
+}
+
+export function toggleShowCredits() {
+  updatePageState((state) => ({ ...state, showCredits: !state.showCredits }));
 }
 
 export function toggleWidget() {

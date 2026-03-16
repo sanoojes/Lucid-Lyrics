@@ -1,17 +1,12 @@
 import { get, set, del, update } from "idb-keyval";
 import { compressToUTF16, decompressFromUTF16 } from "lz-string";
 import { createLogger } from "@/utils/logger";
-import type {
-  FetchOptions,
-  Lyrics,
-  LyricsProviders,
-  LyricsHandler,
-  APIResponse,
-} from "@/lib/api/types";
+import type { FetchOptions, Lyrics, LyricsHandler, APIResponse } from "@/lib/api/types";
 import { processLyrics } from "@/language/processor";
 import { getModule } from "@/lib/dom/load";
 import { $providers } from "@/stores";
 import { lyricsStore } from "@/stores/idb";
+import type { LyricsProviders } from "@/constants";
 
 const log = createLogger("api:main");
 const CACHE_TTL_DAYS = 7;

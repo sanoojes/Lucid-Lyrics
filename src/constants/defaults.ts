@@ -45,6 +45,7 @@ export const DEFAULT_PROVIDER_ORDER = ["user", "spicy", "spotify"] satisfies Lyr
 export const DEFAULT_PAGE_STATE = {
   widget: "show",
   romanize: false,
+  showCredits: true,
 } satisfies PageState;
 
 export const DEFAULT_WIDGET_STATE = {
