@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/solid";
 import { For } from "solid-js";
 import { SettingsRow } from "@/component/settings/Row";
 import { $providers } from "@/stores/lyrics";
-import { $page_state, toggleShowCredits } from "@/stores/page";
+import { $page_state, toggleShowCredits, toggleHideScrollbar } from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
 import { GripVertical } from "lucide-solid";
 import { Toggle } from "@/component/ui/Toggle";
@@ -63,6 +63,9 @@ function LyricsSettings() {
     <SettingsSection title={t("lyrics.title")}>
       <SettingsRow label={t("lyrics.showCredits")} description={t("lyrics.showCreditsDesc")}>
         <Toggle checked={pageState().showCredits} onChange={toggleShowCredits} />
+      </SettingsRow>
+      <SettingsRow label={t("lyrics.hideScrollbar")} description={t("lyrics.hideScrollbarDesc")}>
+        <Toggle checked={pageState().hideScrollbar} onChange={toggleHideScrollbar} />
       </SettingsRow>
       <SettingsRow
         label={t("lyrics.providerOrder")}

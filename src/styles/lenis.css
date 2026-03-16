@@ -29,6 +29,16 @@
   &:hover {
     --sb-color-thumb: rgba(255, 255, 255, 0.25);
   }
+
+  &.hide-scrollbars,
+  .hide-scrollbars & {
+    --sb-width: none !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    &::-webkit-scrollbar {
+      display: none !important;
+    }
+  }
 }
 .lenis-content {
   height: 100%;

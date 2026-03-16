@@ -123,6 +123,8 @@ export const dict: Dict = {
   "lyrics.providerOrderDesc": "Drag to reorder lyrics providers",
   "lyrics.showCredits": "Show Credits",
   "lyrics.showCreditsDesc": "Show artists, songwriters and provider info",
+  "lyrics.hideScrollbar": "Hide Scrollbar",
+  "lyrics.hideScrollbarDesc": "Hide the lyrics scrollbar",
   "ttml.title": "Local TTML",
   "ttml.parseError": "Parse Error",
   "ttml.overwriteSuccess": "TTML overwritten successfully",

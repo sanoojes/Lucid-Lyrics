@@ -270,7 +270,8 @@ export default function LineLyrics(props: LineLyricsProps) {
 
     const handleFocusChange = () => {
       lenis.resize();
-      performScroll(false, true);}
+      performScroll(false, true);
+    };
     window.addEventListener("focus", handleFocusChange);
     // window.addEventListener("blur", handleFocusChange);
 

@@ -1,7 +1,6 @@
 import "@/styles/page.scss";
 import "@/styles/lenis.css";
 import { useStore } from "@nanostores/solid";
-import { onMount } from "solid-js";
 import { ListMusic } from "lucide-solid";
 
 import { Background } from "@/component/ui/Background";
@@ -21,7 +20,7 @@ const LyricsPage = () => {
 
   return (
     <>
-      <div class="lucid-contents">
+      <div class={`lucid-contents${pageState().hideScrollbar ? " hide-scrollbars" : ""}`}>
         <div class="widget-area" classList={{ "widget-area--hidden": isHidden() }}>
           <PlayerWidget />
         </div>

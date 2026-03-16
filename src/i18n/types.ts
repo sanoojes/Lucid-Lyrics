@@ -120,6 +120,8 @@ export type Dict = {
   "lyrics.providerOrderDesc": string;
   "lyrics.showCredits": string;
   "lyrics.showCreditsDesc": string;
+  "lyrics.hideScrollbar": string;
+  "lyrics.hideScrollbarDesc": string;
   "ttml.title": string;
   "ttml.parseError": string;
   "ttml.overwriteSuccess": string;

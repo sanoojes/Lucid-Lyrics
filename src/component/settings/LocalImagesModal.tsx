@@ -38,25 +38,31 @@ function LocalImagesModal() {
     setIsDragging(false);
   };
 
+  const processImageFiles = async (files?: FileList | null) => {
+    if (!files) return;
+
+    const imageFiles = Array.from(files).filter((file) => file.type.startsWith("image/"));
+    if (imageFiles.length === 0) return;
+
+    const savePromises = imageFiles.map((file) => saveLocalImage(file));
+    const savedImages = await Promise.all(savePromises);
+
+    setImages((prev) => [...prev, ...savedImages]);
+
+    const lastSavedId = savedImages[savedImages.length - 1].id;
+    updateLocalSelectedId(lastSavedId);
+  };
+
   const handleDrop = async (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    const files = e.dataTransfer?.files;
-    if (!files) return;
+    await processImageFiles(e.dataTransfer?.files);
+  };
 
-    let lastSavedId = null;
-
-    for (const file of files) {
-      if (file.type.startsWith("image/")) {
-        const saved = await saveLocalImage(file);
-        setImages((prev) => [...prev, saved]);
-        lastSavedId = saved.id;
-      }
-    }
-
-    if (lastSavedId) {
-      updateLocalSelectedId(lastSavedId);
-    }
+  const handleFileUpload = async (e: Event) => {
+    const input = e.target as HTMLInputElement;
+    await processImageFiles(input.files);
+    input.value = "";
   };
 
   onMount(async () => {
@@ -64,28 +70,6 @@ function LocalImagesModal() {
     setImages(imgs);
     setIsLoading(false);
   });
-
-  const handleFileUpload = async (e: Event) => {
-    const input = e.target as HTMLInputElement;
-    const files = input.files;
-    if (!files) return;
-
-    let lastSavedId = null;
-
-    for (const file of files) {
-      if (file.type.startsWith("image/")) {
-        const saved = await saveLocalImage(file);
-        setImages((prev) => [...prev, saved]);
-        lastSavedId = saved.id;
-      }
-    }
-
-    if (lastSavedId) {
-      updateLocalSelectedId(lastSavedId);
-    }
-
-    input.value = "";
-  };
 
   const handleDelete = async (id: string) => {
     const currentImages = images();

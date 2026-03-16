@@ -32,10 +32,5 @@
     }
   },
   "globals": {},
-  "ignorePatterns": [
-    "dist/**",
-    "src/language/lib/pinyin.mjs",
-    "src/language/lib/kuromoji/index.cjs",
-    "src/language/lib/greek-romanization.mjs"
-  ]
+  "ignorePatterns": ["dist/**", "packages/**"]
 }

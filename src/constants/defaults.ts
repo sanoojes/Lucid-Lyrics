@@ -1,4 +1,4 @@
-import type { LyricsProviders } from "@/lib/api/types";
+import type { LyricsProviders } from "@/constants";
 import type { BackgroundState, PageState, WidgetState } from "@/stores";
 
 const customUrl = "https://picsum.photos/1920/1080";
@@ -46,6 +46,7 @@ export const DEFAULT_PAGE_STATE = {
   widget: "show",
   romanize: false,
   showCredits: true,
+  hideScrollbar: false,
 } satisfies PageState;
 
 export const DEFAULT_WIDGET_STATE = {

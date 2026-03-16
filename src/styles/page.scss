@@ -209,12 +209,12 @@ $floating-transition:
   }
 
   .lenis-content {
-    padding: 0 2cqw 0 4cqw;
+    padding: 0 4cqw;
   }
 
   .lucid-contents:has(.widget-area--hidden) & {
     .lenis-content {
-      padding: 0 16cqw 0 15cqw;
+      padding: 0 15cqw;
     }
   }
 

@@ -5,7 +5,6 @@ import {
   splitProps,
   onCleanup,
   type ComponentProps,
-  type JSX,
 } from "solid-js";
 import { Portal } from "solid-js/web";
 import "@/styles/component/dialog.scss";

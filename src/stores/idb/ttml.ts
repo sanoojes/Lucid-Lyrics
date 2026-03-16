@@ -1,4 +1,4 @@
-import { get, set, del, keys } from "idb-keyval";
+import { get, set, del } from "idb-keyval";
 import { lyricsStore } from "@/stores/idb";
 import { parse, type ParseResult } from "@/lib/ttml/parser";
 
