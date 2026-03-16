@@ -57,7 +57,6 @@ export type Dict = {
   "lyrics.provider": string;
   "lyrics.provider.spicy": string;
   "lyrics.provider.spotify": string;
-  "lyrics.primarySource": string;
   "widget.title": string;
   "widget.variant": string;
   "widget.variant.glass": string;
@@ -87,7 +86,6 @@ export type Dict = {
   "menu.settingsMenuError": string;
   "player.buttonsError": string;
   "player.addButtons": string;
-  "language.limitedSupport": string;
   "language.romanizeError": string;
   "player.pause": string;
   "player.play": string;
