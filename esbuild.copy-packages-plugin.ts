@@ -1,62 +1,20 @@
 import type { Plugin } from "esbuild";
-import { existsSync, cpSync, statSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, cpSync, statSync, readdirSync } from "fs";
 import { join } from "path";
-import { transform } from "esbuild";
 
-const JS_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"];
-
-function isJsFile(filename: string): boolean {
-  return JS_EXTENSIONS.some((ext) => filename.endsWith(ext));
-}
-
-async function copyAndMinify(srcDir: string, destDir: string): Promise<number> {
-  let totalSize = 0;
-  const items = readdirSync(srcDir);
-
-  const promises: Promise<void>[] = [];
-  const fileOps: { destPath: string; srcPath: string; size: number }[] = [];
-
+function getDirSize(dir: string): number {
+  let size = 0;
+  const items = readdirSync(dir);
   for (const item of items) {
-    const srcPath = join(srcDir, item);
-    const destPath = join(destDir, item);
-    const stat = statSync(srcPath);
-
-    if (!stat) continue;
-
+    const fullPath = join(dir, item);
+    const stat = statSync(fullPath);
     if (stat.isDirectory()) {
-      if (!existsSync(destPath)) {
-        cpSync(srcPath, destPath, { recursive: true });
-      }
-      promises.push(
-        copyAndMinify(srcPath, destPath).then((size) => {
-          totalSize += size;
-        }),
-      );
+      size += getDirSize(fullPath);
     } else {
-      fileOps.push({ destPath, srcPath, size: Number(stat.size) });
+      size += stat.size;
     }
   }
-
-  const fileResults = await Promise.all(
-    fileOps.map(async ({ destPath, srcPath, size }) => {
-      if (isJsFile(srcPath)) {
-        const code = readFileSync(srcPath, "utf-8");
-        const result = await transform(code, {
-          minify: true,
-          loader: srcPath.endsWith(".ts") || srcPath.endsWith(".tsx") ? "ts" : "js",
-        });
-        writeFileSync(destPath, result.code);
-        return Buffer.byteLength(result.code, "utf-8");
-      } else {
-        cpSync(srcPath, destPath);
-        return size;
-      }
-    }),
-  );
-
-  totalSize += fileResults.reduce((a, b) => a + b, 0);
-
-  return totalSize;
+  return size;
 }
 
 function formatSize(bytes: number): string {
@@ -73,7 +31,7 @@ export function copyPackagesPlugin(options: CopyPackagesPluginOptions): Plugin {
   return {
     name: "copy-packages-plugin",
     setup(build) {
-      build.onEnd(async () => {
+      build.onEnd(() => {
         const outDir = build.initialOptions.outdir;
         if (!outDir) {
           console.warn("copy-packages-plugin: no outdir specified");
@@ -83,38 +41,28 @@ export function copyPackagesPlugin(options: CopyPackagesPluginOptions): Plugin {
         const outputPath = join(outDir, "packages");
 
         if (existsSync(inputDir)) {
-          console.log("Copying and minifying packages...");
+          console.log("Copying packages...");
 
+          let totalSize = 0;
           const packages = readdirSync(inputDir);
 
           for (const pkg of packages) {
             const pkgPath = join(inputDir, pkg);
             const stat = statSync(pkgPath);
+            let pkgSize = 0;
 
             if (stat.isDirectory()) {
-              const destPkgPath = join(outputPath, pkg);
-              if (!existsSync(destPkgPath)) {
-                const size = await copyAndMinify(pkgPath, destPkgPath);
-                console.log(`  - ${pkg}: ${formatSize(size)}`);
-              }
+              pkgSize = getDirSize(pkgPath);
             } else {
-              const destPkgPath = join(outputPath, pkg);
-              if (isJsFile(pkg)) {
-                const code = readFileSync(pkgPath, "utf-8");
-                const result = await transform(code, {
-                  minify: true,
-                  loader: pkg.endsWith(".ts") || pkg.endsWith(".tsx") ? "ts" : "js",
-                });
-                writeFileSync(destPkgPath, result.code);
-                console.log(`  - ${pkg}: ${formatSize(Buffer.byteLength(result.code, "utf-8"))}`);
-              } else {
-                cpSync(pkgPath, destPkgPath);
-                console.log(`  - ${pkg}: ${formatSize(stat.size)}`);
-              }
+              pkgSize = stat.size;
             }
+
+            totalSize += pkgSize;
+            console.log(`  - ${pkg}: ${formatSize(pkgSize)}`);
           }
 
-          console.log("  ! Copied and minified all packages");
+          cpSync(inputDir, outputPath, { recursive: true });
+          console.log(`  ! Copied all packages\n  Total Size: ${formatSize(totalSize)}`);
         } else {
           console.warn(`Packages input not found: ${inputDir}`);
         }
