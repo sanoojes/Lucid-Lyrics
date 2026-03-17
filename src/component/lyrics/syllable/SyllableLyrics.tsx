@@ -282,7 +282,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     },
   );
 
-  const firstActiveIndex = createMemo(() => activeIndices()[0] ?? 0);
+  const lastActiveIndex = createMemo(() => activeIndices()[activeIndices().length - 1] ?? 0);
 
   const [scrollOffset, setScrollOffset] = createSignal(0);
 
@@ -300,7 +300,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = firstActiveIndex();
+    const idx = lastActiveIndex();
     const targetRef = itemRefs.get(idx);
 
     if (idx !== -1 && targetRef && lenis && (forceScroll || !isUserScroll())) {
@@ -323,7 +323,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   );
 
   createEffect(() => {
-    const idx = firstActiveIndex();
+    const idx = lastActiveIndex();
     if (idx !== -1 && itemRefs.has(idx)) {
       performScroll(false);
     }
@@ -351,7 +351,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   };
 
   createEffect(() => {
-    const activeVisible = visibleElements().has(firstActiveIndex());
+    const activeVisible = visibleElements().has(lastActiveIndex());
     $is_active_visible.set(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
@@ -461,7 +461,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     if (reset) return "0px";
 
     const active = activeIndices();
-    let distance = Math.abs(index - firstActiveIndex());
+    let distance = Math.abs(index - lastActiveIndex());
 
     for (const a of active) {
       const d = Math.abs(index - a);
@@ -475,7 +475,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     <div
       class="syllable-lyrics"
       ref={containerRef}
-      on:wheel={{ handleEvent: handleUserInteraction, passive: true }} 
+      on:wheel={{ handleEvent: handleUserInteraction, passive: true }}
       on:touchmove={{ handleEvent: handleUserInteraction, passive: true }}
     >
       <For each={lineEntries()}>
