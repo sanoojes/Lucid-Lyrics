@@ -1,10 +1,12 @@
 # Project Releases
 
-This branch holds the final, compiled extension files for each version, ready for use. echo 
+> **Note:** This branch (`releases`) is automatically generated and maintained by GitHub Actions. It contains the final, compiled extension files. Do not commit changes directly to this branch.
+ 
 ## Latest Version
 - **[latest](./latest)**
 
 ## All Versions
+- [v1.0.15](./v1.0.15)
 - [v1.0.14](./v1.0.14)
 - [v1.0.13](./v1.0.13)
 - [v1.0.12](./v1.0.12)
