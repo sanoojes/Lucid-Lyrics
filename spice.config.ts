@@ -1,4 +1,4 @@
-import { defineConfig } from "@spicetify/creator";
+import { defineConfig } from "@spicemod/creator";
 import { solidPlugin } from "esbuild-plugin-solid";
 import { glsl } from "esbuild-plugin-glsl";
 import { name, version } from "./package.json";
