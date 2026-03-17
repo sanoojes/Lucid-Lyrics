@@ -1,0 +1,245 @@
+@use "../variables" as v;
+
+.ttml-modal {
+  .content {
+    scrollbar-width: thin;
+    padding: v.$space-lg v.$space-xl;
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-lg;
+    position: relative;
+    transition: background-color v.$ease-fast;
+
+    &.drag-over {
+      background-color: rgba(v.$color-accent, 0.1);
+
+      &::before {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: v.$space-xs;
+      margin: v.$space-xs;
+      border: 2px dashed v.$color-accent;
+      border-radius: v.$r-lg;
+      opacity: 0;
+      transform: scale(0.96);
+      transition:
+        opacity v.$ease-out,
+        transform v.$ease-out;
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+
+  .message {
+    display: flex;
+    align-items: center;
+    gap: v.$space-sm;
+    padding: v.$space-md v.$space-lg;
+    border-radius: v.$r-md;
+    font-size: v.$fs-sm;
+    animation: slideIn 0.3s ease-out;
+
+    &--success {
+      background: rgba(v.$color-accent, 0.15);
+      color: v.$color-accent;
+      border: 1px solid rgba(v.$color-accent, 0.3);
+    }
+
+    &--error {
+      background: rgba(v.$color-danger, 0.15);
+      color: v.$color-danger;
+      border: 1px solid rgba(v.$color-danger, 0.3);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .upload-section {
+    display: flex;
+    justify-content: center;
+    border-radius: v.$r-md;
+    gap: v.$space-md;
+    padding: v.$space-lg;
+    transition: all v.$ease-fast;
+    border: 2px dashed v.$glass-bd;
+    background: v.$glass-bg;
+  }
+
+  .upload-button {
+    &:hover {
+      border-color: v.$color-accent;
+      background: rgba(v.$color-accent, 0.1);
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: v.$space-xl;
+    color: v.$color-muted;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: v.$space-md;
+    padding: v.$space-xl;
+    color: v.$color-muted;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .current-song-ttml {
+    background: v.$glass-bg;
+    border-radius: v.$r-md;
+    padding: v.$space-md;
+    border: 1px solid v.$glass-bd;
+
+    .current-song-header {
+      display: flex;
+      align-items: center;
+      gap: v.$space-sm;
+      color: v.$color-accent;
+      margin-bottom: v.$space-sm;
+
+      .icon {
+        flex-shrink: 0;
+      }
+
+      .label {
+        font-weight: v.$fw-bold;
+      }
+    }
+
+    .song-info {
+      display: flex;
+      flex-direction: column;
+      gap: v.$space-xs;
+      padding-left: v.$space-md;
+    }
+
+    .song-buttons {
+      display: flex;
+      gap: v.$space-md;
+      margin-top: v.$space-lg;
+      padding-left: v.$space-md;
+    }
+
+    .song-name {
+      color: v.$color;
+      font-weight: v.$fw-bold;
+    }
+
+    .song-artist {
+      color: v.$color-muted;
+      font-size: v.$fs-sm;
+    }
+
+    .song-album {
+      color: v.$color-muted;
+      font-size: v.$fs-xs;
+    }
+  }
+
+  .ttml-list {
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-md;
+
+    .list-header {
+      font-size: v.$fs-sm;
+      color: v.$color-muted;
+      margin: 0;
+    }
+  }
+
+  .is-current {
+    border-color: v.$color-accent;
+    box-shadow:
+      0 0 0 1px v.$color-accent,
+      0 4px 12px rgba(v.$color-accent, 0.3);
+  }
+  .ttml-item {
+    display: flex;
+    justify-content: space-between;
+    gap: v.$space-md;
+    align-items: center;
+    padding: v.$space-md;
+    background: v.$glass-bg;
+    border-radius: v.$r-md;
+    border: 1px solid v.$glass-bd;
+    transition: all v.$ease-fast;
+
+    &:hover {
+      border-color: rgba(v.$color, 0.3);
+    }
+
+    .ttml-info {
+      display: flex;
+      flex-direction: column;
+      gap: v.$space-xs;
+      min-width: 0;
+      flex: 1;
+
+      .ttml-song-name {
+        display: flex;
+        align-items: center;
+        gap: v.$space-sm;
+        font-weight: v.$fw-bold;
+        white-space: nowrap;
+        overflow: hidden;
+        color: v.$color;
+        text-overflow: ellipsis;
+      }
+
+      .ttml-artist {
+        color: v.$color-muted;
+        font-size: v.$fs-sm;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .ttml-album {
+        color: v.$color-muted;
+        font-size: v.$fs-xs;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .ttml-actions {
+      display: flex;
+      align-items: center;
+      gap: v.$space-sm;
+      flex-shrink: 0;
+
+      .current-badge {
+        background-color: v.$color-accent;
+        color: v.$color-fg;
+        font-size: v.$fs-xs;
+        font-weight: v.$fw-bold;
+        padding: 2px v.$space-sm;
+        border-radius: v.$r-sm;
+      }
+    }
+  }
+}

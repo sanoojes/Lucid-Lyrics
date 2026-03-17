@@ -1,0 +1,45 @@
+@use "../variables" as v;
+
+.lyrics-status-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding: v.$space-2xl;
+  transition: opacity v.$ease-base;
+  color: rgba(v.$color, 0.7);
+
+  .status-icon {
+    margin-bottom: v.$space-sm;
+  }
+
+  .status-message {
+    font-size: 1.2rem;
+    font-weight: v.$fw-medium;
+    margin: 0;
+  }
+
+  .status-code {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-top: v.$space-xs;
+  }
+
+  &.is-error .status-icon-svg {
+    color: #ff5f5f;
+  }
+  &.is-offline .status-icon-svg {
+    color: v.$color;
+  }
+  &.is-missing .status-icon-svg {
+    color: #fbd38d;
+  }
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    height: 90%;
+  }
+}

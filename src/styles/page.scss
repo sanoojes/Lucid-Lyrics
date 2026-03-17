@@ -1,0 +1,509 @@
+@use "variables" as v;
+
+$primary-transition:
+  opacity 0.7s v.$ease-bounce,
+  transform 0.7s v.$ease-bounce,
+  filter 0.7s v.$ease-bounce;
+
+$layout-transition:
+  transform 0.6s v.$ease-spring,
+  opacity 0.4s ease,
+  filter 0.5s ease;
+
+$floating-transition:
+  opacity 0.6s v.$ease-out,
+  transform 0.6s v.$ease-out;
+
+#lucid-page {
+  container-type: inline-size;
+  container-name: lucid-page;
+  background: transparent;
+  overflow: hidden;
+  font-family: v.$default-fonts;
+  color: v.$default-font-color;
+  border-radius: inherit;
+}
+
+.lucid-contents {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  position: relative;
+  z-index: 2;
+  width: 100cqw;
+  height: 100cqh;
+  max-height: 100cqh;
+  gap: 0;
+  border-radius: inherit;
+  transition: $primary-transition;
+
+  .widget-area {
+    flex: 0 0 40%;
+    display: flex;
+    width: min(100%, 70cqh);
+    will-change: transform, opacity;
+    animation: l-page-entry 0.8s $primary-transition both;
+    transition: $layout-transition;
+
+    &--hidden {
+      flex: 0 0 0;
+      margin: 0;
+      opacity: 0;
+      transform: translate3d(-40px, 0, 0) scale(0.9);
+      filter: blur(15px);
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .player-widget {
+      width: 40cqw;
+      transition: max-width 0.5s ease;
+      margin: 0 0 0 6cqw;
+
+      &__image-wrapper {
+        animation: imagePop 0.6s v.$ease-bounce 0.1s both;
+      }
+    }
+  }
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    flex-direction: column;
+    gap: 0;
+
+    .widget-area {
+      flex: 0 0 18cqh;
+      width: 100%;
+      max-width: 100%;
+      justify-content: center;
+      animation-name: l-page-entry;
+      isolation: isolate;
+
+      &--hidden {
+        flex: 0 0 0;
+        transform: translate3d(0, -40px, 0) scale(0.8);
+      }
+
+      .player-widget {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 90cqw;
+        max-width: 30rem;
+        height: fit-content;
+        padding: v.$space-lg;
+        gap: v.$space-lg;
+        margin: 1rem 0;
+        text-align: left;
+        animation: l-page-entry 0.4s ease-out both;
+
+        &__title-placeholder,
+        &__artist-placeholder,
+        &__album-placeholder {
+          left: 0;
+          transform: none;
+        }
+
+        &--overlay {
+          box-shadow: none;
+        }
+
+        &--light {
+          .l-btn {
+            --btn-fg: rgba(0, 0, 0, 0.9);
+            --btn-hover-bg: rgba(0, 0, 0, 0.2);
+
+            &--glass,
+            &:hover {
+              --btn-bg: rgba(0, 0, 0, 0.1);
+              --btn-border: rgba(0, 0, 0, 0.1);
+            }
+
+            &--active {
+              --btn-fg: #{v.$color-accent-dark};
+            }
+          }
+        }
+
+        &__image-wrapper {
+          flex: 0 0 120px;
+          width: 120px;
+          height: 120px;
+          border-radius: v.$r-md;
+        }
+
+        &__info {
+          flex: 1;
+          min-width: 0;
+          padding: 0;
+          position: relative;
+          bottom: auto;
+          background: transparent;
+        }
+
+        &__like-btn {
+          --like-btn-size: 80%;
+        }
+
+        &:hover {
+          .player-widget {
+            &__image {
+              scale: 1.4;
+            }
+
+            &__info {
+              pointer-events: none;
+              opacity: 0;
+            }
+          }
+        }
+
+        &__title {
+          font-size: 1.3rem;
+        }
+
+        &__controls {
+          top: 50%;
+          left: 125%;
+          transform: translate3d(0%, -50%, 0);
+          pointer-events: all;
+
+          .controls .l-btn {
+            --btn-height: clamp(32px, 8cqw, 48px);
+          }
+        }
+      }
+    }
+
+    .lyrics-area {
+      animation: l-page-entry 0.5s ease-out 0.2s both;
+    }
+  }
+}
+
+.lyrics-area {
+  --is-mobile: 0;
+  --sb-color-thumb: transparent;
+
+  height: 100%;
+  width: 100%;
+
+  $mask-image: linear-gradient(
+    180deg,
+    transparent 0,
+    #000 48px,
+    #000 calc(100% - 48px),
+    transparent 100%
+  );
+  -webkit-mask-image: $mask-image;
+  mask-image: $mask-image;
+
+  animation: l-page-entry 0.5s v.$ease-bounce 0.15s both;
+  transition:
+    --sb-color-thumb 0.2s ease-in-out,
+    $layout-transition;
+
+  font-kerning: none;
+  text-rendering: optimizeSpeed;
+
+  &:hover {
+    --sb-color-thumb: rgba(255, 255, 255, 0.25);
+  }
+
+  .lenis-content {
+    padding: 0 4cqw;
+  }
+
+  &.widget-hidden {
+    .lenis-content {
+      padding: 0 15cqw;
+    }
+  }
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    --is-mobile: 1;
+    $padding-x: 12cqw;
+
+    .lenis-content {
+      padding: 0 $padding-x;
+    }
+
+    &.widget-hidden {
+      .lenis-content {
+        padding: 0 $padding-x;
+      }
+    }
+  }
+
+  // Spacers
+  --top-pad: 40cqh;
+  --bottom-pad: 60cqh;
+
+  .lenis-content > .top-spacer {
+    height: var(--top-pad);
+    width: 100%;
+  }
+
+  .lenis-content > .bottom-spacer {
+    height: var(--bottom-pad);
+    width: 100%;
+  }
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    --top-pad: 2rem;
+    --bottom-pad: 70cqh;
+
+    &.widget-hidden {
+      --top-pad: 40cqh;
+    }
+  }
+}
+
+// .floating-hover-target {
+//   height: 2rem;
+//   width: 60%;
+//   position: absolute;
+//   bottom: 0;
+//   left: 50%;
+//   transform: translate(-50%);
+//   z-index: 5;
+
+//   &.on-top {
+//     bottom: unset;
+//     top: 0;
+//   }
+
+//   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+//     width: 100%;
+//   }
+// }
+
+.floating-area {
+  position: absolute;
+  bottom: max(2.5cqh, 1rem);
+  left: 50%;
+  z-index: 10;
+
+  transform: translate3d(-50%, 20px, 0);
+  opacity: 0;
+  pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: auto;
+  min-width: 300px;
+  max-width: 70vw;
+  padding: v.$space-md v.$space-2xl;
+
+  background: v.$glass-bg;
+  border: 1px solid v.$glass-bd;
+  border-radius: 100px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px) brightness(0.9);
+
+  transition: $floating-transition;
+
+  &:hover,
+  #lucid-page:hover &,
+  .lucid-contents > .floating-hover-target:hover + & {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0);
+    pointer-events: all;
+  }
+
+  &.on-top {
+    bottom: unset;
+    top: max(2.5cqh, 1rem);
+
+    transform: translate3d(-50%, -20px, 0);
+
+    &:hover,
+    #lucid-page:hover &,
+    .lucid-contents > .floating-hover-target:hover + & {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  .separator {
+    width: 1px;
+    min-width: 1px;
+    height: v.$space-2xl;
+    background: v.$glass-bd;
+    margin: 0 4px;
+  }
+
+  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+    bottom: v.$space-md;
+    max-width: calc(100% - v.$space-3xl);
+    padding: v.$space-sm v.$space-lg;
+    pointer-events: all;
+
+    &.on-top {
+      bottom: unset;
+      top: v.$space-md;
+    }
+  }
+}
+
+.line-lyrics,
+.static-lyrics,
+.syllable-lyrics {
+  --lead-font-weight: 700;
+  --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
+
+  --bg-font-weight: 600;
+  --bg-font-size: calc(var(--lead-font-size) * 0.75);
+
+  --interlude-height: max(calc(var(--lead-font-size) * 1.2), 32px);
+  --interlude-dots-gap: max(calc(var(--interlude-height) * 0.35), 16px);
+  --interlude-size: max(calc(var(--interlude-height) * 0.3), 10px);
+
+  font-size: var(--lead-font-size);
+  font-weight: var(--lead-font-weight);
+
+  .line-wrapper {
+    --blur: 0;
+    --scale: 1;
+    --opacity: 0.6;
+
+    filter: blur(var(--blur));
+    transform: scale(var(--scale));
+    opacity: var(--opacity);
+    border-radius: 12px;
+
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    transition-property: filter, scale, opacity;
+    will-change: filter, scale, opacity;
+
+    &:hover {
+      filter: blur(0);
+      opacity: 0.8;
+    }
+
+    &.rtl {
+      direction: rtl;
+      text-align: right;
+    }
+  }
+
+  .trailing-whitespace {
+    &:after {
+      content: "";
+      margin-right: 0.3ch;
+    }
+  }
+}
+
+.static-lyrics {
+  .line-wrapper {
+    --opacity: 1;
+  }
+}
+
+// .lyrics-area {
+//   &:hover {
+//     .line-wrapper {
+//       filter: blur(0);
+//       opacity: 1;
+//     }
+//   }
+// }
+
+.lyrics-credits {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 1rem 0 0;
+  opacity: 0.6;
+  scale: 1;
+
+  .credit-item {
+    margin-bottom: 2px;
+  }
+}
+
+.has-glassify-theme {
+  & {
+    overflow: hidden;
+    box-shadow: var(--shadow-glass-large) !important;
+    padding-top: v.$space-md;
+    padding-bottom: calc(var(--player-height) + v.$space-md);
+  }
+
+  .player-widget--glass {
+    border: none;
+    box-shadow: var(--shadow-glass-large);
+  }
+  .floating-area {
+    border: none;
+    box-shadow: var(--shadow-glass, var(--shadow-glass-large));
+
+    &.on-bottom {
+      bottom: calc(var(--player-height) + v.$space-md);
+    }
+  }
+}
+
+.has-lucid-theme {
+  & {
+    overflow: hidden;
+    padding-top: v.$space-md;
+    padding-bottom: calc(var(--player-height) + v.$space-md);
+  }
+
+  .player-widget--glass {
+    border: var(--default-border);
+  }
+  .floating-area {
+    border: var(--default-border);
+
+    &.on-bottom {
+      bottom: calc(var(--player-height) + v.$space-md);
+    }
+  }
+}
+
+@keyframes l-page-entry {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) scale(0.95);
+    filter: blur(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes imagePop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translate3d(0, 100%, 0) scale(0.95);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}

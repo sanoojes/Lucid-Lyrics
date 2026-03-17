@@ -1,0 +1,50 @@
+.l-marquee {
+  --left-pad: 6px;
+  --move: 0px;
+
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--left-pad),
+    #000 calc(100% - var(--left-pad)),
+    transparent
+  );
+
+  &:hover &--wrapper {
+    animation-play-state: paused;
+  }
+
+  &--wrapper {
+    display: inline-block;
+    padding-inline: var(--left-pad);
+    white-space: nowrap;
+    transform: translateX(0);
+    animation: l-marquee var(--marquee-anim-time, 30s) cubic-bezier(0.5, 0, 0.2, 1) 2 alternate;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    -webkit-mask-image: none;
+    mask-image: none;
+
+    &--wrapper {
+      animation: none;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+@keyframes l-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--move)));
+  }
+}

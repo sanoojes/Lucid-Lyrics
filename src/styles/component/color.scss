@@ -1,0 +1,30 @@
+@use "../variables" as v;
+
+.color {
+  display: flex;
+  align-items: center;
+  gap: v.$space-md;
+
+  &__input {
+    width: 36px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: v.$r-sm;
+    cursor: pointer;
+    background: transparent;
+    appearance: none;
+
+    &::-webkit-color-swatch {
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: v.$r-sm;
+    }
+  }
+
+  &__value {
+    font-size: v.$fs-xs;
+    font-family: monospace;
+    color: v.$color-muted;
+    text-transform: uppercase;
+  }
+}

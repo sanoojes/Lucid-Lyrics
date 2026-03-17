@@ -1,0 +1,148 @@
+@use "../variables" as v;
+
+.l-img-modal {
+  .content {
+    scrollbar-width: thin;
+    padding: v.$space-lg v.$space-xl;
+    display: flex;
+    flex-direction: column;
+    gap: v.$space-lg;
+    position: relative;
+    transition: background-color v.$ease-fast;
+
+    &.drag-over {
+      background-color: rgba(v.$color-accent, 0.1);
+
+      &::before {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: v.$space-xs;
+      margin: v.$space-xs;
+      border: 2px dashed v.$color-accent;
+      border-radius: v.$r-lg;
+      opacity: 0;
+      transform: scale(0.96);
+      transition:
+        opacity v.$ease-out,
+        transform v.$ease-out;
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+
+  .upload-section {
+    display: flex;
+    justify-content: center;
+    border-radius: v.$r-md;
+    gap: v.$space-md;
+    padding: v.$space-lg;
+    transition: all v.$ease-fast;
+    border: 2px dashed v.$glass-bd;
+    background: v.$glass-bg;
+  }
+
+  .upload-button {
+    &:hover {
+      border-color: v.$color-accent;
+      background: rgba(v.$color-accent, 0.1);
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: v.$space-xl;
+    color: v.$color-muted;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: v.$space-md;
+    padding: v.$space-xl;
+    color: v.$color-muted;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: v.$space-md;
+  }
+
+  .image-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: v.$r-md;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all v.$ease-fast;
+
+    &:hover {
+      border-color: rgba(v.$color, 0.3);
+      transform: translateY(-2px);
+
+      .image-overlay {
+        opacity: 1;
+      }
+    }
+
+    &.selected {
+      border-color: v.$color-accent;
+      box-shadow:
+        0 0 0 1px v.$color-accent,
+        0 4px 12px rgba(v.$color-accent, 0.3);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+      display: flex;
+      align-items: start;
+      justify-content: end;
+      opacity: 0;
+      transition: opacity v.$ease-fast;
+      padding: v.$space-xs;
+    }
+
+    .selected-badge {
+      position: absolute;
+      bottom: v.$space-sm;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: v.$color-accent;
+      color: v.$color-fg;
+      font-size: v.$fs-xs;
+      font-weight: v.$fw-bold;
+      padding: 2px v.$space-sm;
+      border-radius: v.$r-sm;
+    }
+
+    .thumbnail-error {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: v.$color-bg;
+      color: v.$color-muted;
+    }
+  }
+}

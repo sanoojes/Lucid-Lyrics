@@ -1,0 +1,108 @@
+@use "variables" as v;
+
+.l-player-btn,
+.l-player-btn__wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lucid-error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+
+  .error-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px;
+    border-radius: 24px;
+    background: rgba(var(--spice-rgb-card), 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+
+    .icon-wrapper {
+      margin-bottom: 20px;
+      color: var(--spice-subtext);
+      opacity: 0.8;
+    }
+    .title {
+      font-size: 28px;
+      font-weight: 900;
+      margin: 0 0 8px;
+    }
+    .message {
+      font-size: 16px;
+      color: var(--spice-subtext);
+      margin-bottom: 24px;
+      code {
+        background: var(--spice-main);
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-family: ui-monospace, monospace;
+        font-size: 0.9em;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+    .error-details {
+      background: var(--spice-main);
+      padding: 12px;
+      border-radius: 8px;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--spice-subtext);
+      max-width: 100%;
+      overflow-x: auto;
+      margin-bottom: 24px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .button-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+}
+
+[data-path="/preferences"] {
+  margin: -16px -8px 0 -8px;
+}
+
+.ll-ss-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 12px 12px;
+  border-radius: 16px;
+  border: 1px solid v.$border-color;
+  background-color: rgba(0, 0, 0, 0.3);
+  gap: 16px;
+  cursor: pointer;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: v.$color-dim;
+  }
+
+  p {
+    font-size: 0.75rem;
+    color: v.$color-muted;
+  }
+}
+
+.x-settings-section {
+  order: 2;
+}

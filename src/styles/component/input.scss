@@ -1,0 +1,44 @@
+@use "../variables" as v;
+
+.l-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-xs;
+  width: 9rem;
+
+  input {
+    width: 100%;
+    height: v.$btn-h-sm;
+    padding: v.$space-sm v.$space-md;
+    font-size: v.$fs-sm;
+    color: v.$color;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: v.$r-sm;
+    font-family: v.$font;
+    outline: none;
+    transition:
+      background v.$ease-fast,
+      border-color v.$ease-fast;
+
+    &::placeholder {
+      color: v.$color-muted;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    &.error {
+      border-color: v.$color-danger;
+
+      &:focus {
+        border-color: v.$color-danger;
+      }
+    }
+  }
+  .error-text {
+    font-size: v.$fs-xs;
+    color: v.$color-danger;
+  }
+}

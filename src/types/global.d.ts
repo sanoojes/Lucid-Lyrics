@@ -1,14 +1,37 @@
-import type appStore from '@/store/appStore.ts';
-import type tempStore from '@/store/tempStore.ts';
+type Nullable<T> = T | null;
 
-declare global {
-  interface Window {
-    __lucid_lyrics: {
-      Reset: () => void;
-      Config: () => ReturnType<typeof appStore.getState>;
-      SetDevMode: (isDevMode: boolean) => void;
-      _appStore: typeof appStore;
-      _tempStore: typeof tempStore;
-    };
+declare const __APP_NAME__: string;
+declare const __APP_VERSION__: string;
+declare const __IS_DEV__: boolean;
+declare const __LUCID_DEV_MODE__: boolean;
+
+type HistoryLocation = { pathname: string };
+
+type PlatformHistory = {
+  location: HistoryLocation;
+  entries: HistoryLocation[];
+  push: (location: string) => void;
+  listen: (cb: (location: HistoryLocation | undefined) => void) => void;
+};
+
+declare namespace Spicetify {
+  interface Platform extends global.Spicetify.Platform {
+    History: PlatformHistory;
+    PlayerAPI: PlayerAPI;
   }
+}
+
+type GlobalLucid = {
+  setDevMode: (c: "on" | "off") => void;
+  toggleDevMode: () => void;
+  toggleRomanize: () => void;
+  toggleWidget: () => void;
+  reset: () => void;
+  setShowCredits: (c: boolean) => void;
+  setHideScrollbar: (c: boolean) => void;
+  stores: Record<string, any>;
+};
+
+interface Window {
+  LucidLyrics: GlobalLucid;
 }

@@ -1,0 +1,9 @@
+#sonner-root {
+  position: absolute;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+#sonner-root [data-sonner-toaster] {
+  pointer-events: auto;
+}

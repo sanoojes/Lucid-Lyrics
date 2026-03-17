@@ -1,0 +1,143 @@
+@use "../variables" as v;
+
+.l-btn {
+  --btn-bg: var(--primary-bg, #{v.$color-fg});
+  --btn-fg: var(--primary-fg, #{v.$color});
+  --btn-border: transparent;
+  --btn-hover-bg: var(--primary-hover, #222);
+  --btn-hover-fg: var(--btn-fg);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$space-sm;
+
+  border-radius: var(--btn-radius, #{v.$r-sm});
+  font-weight: v.$fw-medium;
+  border: 1px solid var(--btn-border);
+
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  cursor: pointer;
+  position: relative;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--btn-hover-bg);
+    color: var(--btn-hover-fg);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &--rounded {
+    --btn-radius: #{v.$r-full};
+  }
+  &--square {
+    --btn-radius: 0;
+  }
+
+  &--default {
+    height: v.$btn-h-base;
+    padding: 0 v.$space-lg;
+    font-size: v.$fs-sm;
+  }
+
+  &--sm {
+    height: v.$btn-h-sm;
+    padding: 0 v.$space-md;
+    font-size: v.$fs-xs;
+  }
+
+  &--lg {
+    height: v.$btn-h-lg;
+    padding: 0 28px;
+  }
+
+  &--icon {
+    width: var(--btn-height, #{v.$btn-h-base});
+    height: var(--btn-height, #{v.$btn-h-base});
+    padding: var(--icon-padding, #{v.$space-xs});
+  }
+
+  &--primary {
+    --btn-bg: #{v.$color-fg};
+    --btn-hover-bg: #222;
+  }
+
+  &--secondary {
+    --btn-bg: #2a2a2a;
+    --btn-hover-bg: #3a3a3a;
+  }
+
+  &--outline {
+    --btn-bg: rgba(255, 255, 255, 0.1);
+    --btn-border: rgba(255, 255, 255, 0.1);
+    --btn-hover-bg: rgba(255, 255, 255, 0.12);
+  }
+
+  &--ghost {
+    --btn-bg: transparent;
+    --btn-hover-bg: rgba(255, 255, 255, 0.1);
+  }
+
+  &--glass {
+    --btn-bg: #{v.$glass-bg};
+    --btn-border: #{v.$glass-bd};
+    --btn-hover-bg: #{v.$glass-hv};
+  }
+
+  &--destructive {
+    --btn-bg: #{v.$color-danger};
+    --btn-hover-bg: #{v.$color-danger-dark};
+  }
+
+  &--accent {
+    --btn-bg: #{v.$color-accent};
+    --btn-fg: #000;
+    --btn-hover-bg: #{v.$color-accent-2};
+  }
+
+  &--active {
+    --btn-bg: transparent;
+    --btn-fg: #{v.$color-accent-2};
+  }
+
+  &.hide-btn {
+    display: none;
+  }
+}
+
+.btn--like {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: v.$space-sm;
+  border: none;
+  background: none;
+  color: v.$color;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.btn--active {
+    color: v.$color-accent;
+  }
+}
