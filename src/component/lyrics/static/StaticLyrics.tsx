@@ -15,11 +15,7 @@ const StaticLyrics: Component<LineLyricsProps> = (props) => {
             romanize() ? (item.RomanizedText ?? item.Text) : item.Text,
           );
           const isLineRTL = createMemo(() => item.IsRTL);
-          return (
-            <div class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}>
-              {text()}
-            </div>
-          );
+          return <div class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}>{text()}</div>;
         }}
       </For>
     </div>
