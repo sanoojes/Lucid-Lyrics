@@ -329,7 +329,7 @@ $floating-transition:
 .static-lyrics,
 .syllable-lyrics {
   --lead-font-weight: 700;
-  --lead-font-size: clamp(1.8rem, 4cqw, 3.2rem);
+  --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
 
   --bg-font-weight: 600;
   --bg-font-size: calc(var(--lead-font-size) * 0.75);
