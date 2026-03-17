@@ -9,6 +9,7 @@ import { renderModalRoot } from "@/lib/modal";
 import { setupSettingsMenu } from "@/menu";
 import { GITHUB_ISSUES_LINK } from "@/constants";
 import { dictResource, t } from "@/i18n";
+import { setupNPV } from "@/npv";
 
 type Task = {
   name: string;
@@ -30,6 +31,7 @@ async function App() {
       { name: "toast", fn: setupSonner },
       { name: "router", fn: async () => await router.onReady() },
       { name: "player", fn: setupPlayerButtons },
+      { name: "npv", fn: setupNPV },
       {
         name: "ui",
         fn: async () => {

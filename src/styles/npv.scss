@@ -1,0 +1,25 @@
+.lucid-background {
+  &.npv-background {
+    z-index: -1;
+  }
+}
+
+.Root__right-sidebar,
+#Desktop_PanelContainer_Id {
+  .main-nowPlayingView-contextItemInfo:before {
+    display: none;
+    content: none;
+    visibility: hidden;
+  }
+}
+
+.use-lucid-lyrics-npv {
+  .artist-artistOnTour-date,
+  .main-nowPlayingView-section,
+  .main-nowPlayingView-credits {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+}
