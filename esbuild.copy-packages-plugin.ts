@@ -41,11 +41,28 @@ export function copyPackagesPlugin(options: CopyPackagesPluginOptions): Plugin {
         const outputPath = join(outDir, "packages");
 
         if (existsSync(inputDir)) {
-          const originalSize = getDirSize(inputDir);
           console.log("Copying packages...");
 
+          let totalSize = 0;
+          const packages = readdirSync(inputDir);
+
+          for (const pkg of packages) {
+            const pkgPath = join(inputDir, pkg);
+            const stat = statSync(pkgPath);
+            let pkgSize = 0;
+
+            if (stat.isDirectory()) {
+              pkgSize = getDirSize(pkgPath);
+            } else {
+              pkgSize = stat.size;
+            }
+
+            totalSize += pkgSize;
+            console.log(`  - ${pkg}: ${formatSize(pkgSize)}`);
+          }
+
           cpSync(inputDir, outputPath, { recursive: true });
-          console.log(`  Copied packages\n  Total Size: ${formatSize(originalSize)}`);
+          console.log(`  ! Copied all packages\n  Total Size: ${formatSize(totalSize)}`);
         } else {
           console.warn(`Packages input not found: ${inputDir}`);
         }
