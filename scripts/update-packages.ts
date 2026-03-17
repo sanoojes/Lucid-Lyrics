@@ -2,7 +2,6 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { Buffer } from "node:buffer";
 import { $ } from "bun";
-import { MODULE_METADATA as SOURCE_METADATA } from "@/constants/module";
 
 type ModuleMeta = {
   name: string;
@@ -14,17 +13,19 @@ const JSDELIVR = "https://cdn.jsdelivr.net";
 const ESM_SH = "https://esm.sh";
 
 const DOWNLOAD_MODULES: ModuleMeta[] = [
-  { ...SOURCE_METADATA.pinyin, url: `${JSDELIVR}/npm/pinyin@4.0.0/+esm` },
+  { name: "pinyin", version: "4.0.0", url: `${JSDELIVR}/npm/pinyin@4.0.0/+esm` },
   {
-    ...SOURCE_METADATA["cyrillic-romanization"],
+    name: "cyrillic-romanization",
+    version: "1.1.8",
     url: `${JSDELIVR}/npm/cyrillic-romanization@1.1.8/+esm`,
   },
   {
-    ...SOURCE_METADATA["greek-transliteration"],
+    name: "greek-transliteration",
+    version: "2.0.0",
     url: `${JSDELIVR}/npm/greek-transliteration@2.0.0/+esm`,
   },
-  { ...SOURCE_METADATA.franc, url: `${ESM_SH}/franc@6.2.0/es2022/franc.bundle.mjs` },
-  { ...SOURCE_METADATA.kuroshiro, url: `${JSDELIVR}/npm/kuroshiro@1.2.0/+esm` },
+  { name: "franc", version: "6.2.0", url: `${ESM_SH}/franc@6.2.0/es2022/franc.bundle.mjs` },
+  { name: "kuroshiro", version: "1.2.0", url: `${JSDELIVR}/npm/kuroshiro@1.2.0/+esm` },
 ];
 
 const NPM_BASE_URL = "https://www.npmjs.com/package/";
@@ -105,7 +106,7 @@ async function main() {
   const path = "packages/README.md";
   await writeFile(path, readmeContent);
 
-  await $`oxfmt ./${path}`.quiet();
+  await $`bunx oxfmt ${path}`.quiet();
 
   console.log(`\x1b[32mGenerated and formatted README.md\x1b[0m`);
   console.log(`\x1b[32mAll tasks completed successfully!\x1b[0m`);
