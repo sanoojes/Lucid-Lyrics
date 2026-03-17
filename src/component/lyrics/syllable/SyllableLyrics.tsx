@@ -224,7 +224,6 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   const romanize = useStore($romanize);
   const getLenis = useLenis();
   const getContentRef = useLenisContent();
-
   const lineEntries = createMemo((): LineEntry[] => {
     const content = props.lyrics.Content || [];
     const entries: LineEntry[] = [];
@@ -329,29 +328,43 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     const idx = lastActiveIndex();
     const targetRef = itemRefs.get(idx);
 
-    if (idx !== -1 && targetRef && lenis && (forceScroll || !isUserScroll())) {
-      lenis.scrollTo(targetRef, {
-        offset: scrollOffset(),
-        immediate,
-        userData: { autoScroll: true },
-      });
-    }
+    if (!lenis || !targetRef) return;
+    if (!forceScroll && isUserScroll()) return;
+
+    const wrapper = lenis.rootElement;
+    if (!wrapper) return;
+
+    const targetRect = targetRef.getBoundingClientRect();
+    const wrapperRect = wrapper.getBoundingClientRect();
+
+    const absoluteY =
+      targetRect.top - wrapperRect.top + lenis.scroll + scrollOffset();
+
+    lenis.scrollTo(absoluteY, {
+      immediate,
+      userData: { autoScroll: true },
+    });
   };
 
   createEffect(
     on(
       () => props.widgetHidden,
       (widgetHidden) => {
-        updateOffset(widgetHidden);
-        performScroll(true, true);
+        requestAnimationFrame(() => {
+          updateOffset(widgetHidden);
+          performScroll(true, true);
+        });
       },
     ),
   );
 
   createEffect(() => {
     const idx = lastActiveIndex();
-    if (idx !== -1 && itemRefs.has(idx)) {
-      performScroll(false);
+
+    if (!isUserScroll() && idx !== -1 && itemRefs.has(idx)) {
+      requestAnimationFrame(() => {
+        performScroll(false);
+      });
     }
   });
 
@@ -360,8 +373,13 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       romanize,
       () => {
         const lenis = getLenis();
-        lenis?.resize();
-        requestAnimationFrame(() => performScroll(true, true));
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            lenis?.resize();
+            performScroll(true, true);
+          });
+        });
       },
       { defer: true },
     ),
@@ -373,7 +391,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     setIsInteracting(true);
     setIsUserScroll(true);
     if (scrollTimeout) clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => setIsInteracting(false), 3000);
+    scrollTimeout = setTimeout(() => setIsInteracting(false), 5000);
   };
 
   createEffect(() => {
@@ -448,34 +466,38 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     const lenis = getLenis();
 
     const onResize = () => {
-      updateOffset();
-      performScroll(true, true);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          updateOffset();
+          performScroll(true, true);
+        });
+      });
     };
 
     const ro = new ResizeObserver(onResize);
-    if (contentRef) ro.observe(contentRef);
 
-    updateOffset();
-    lenis?.resize();
+    if (contentRef) {
+      ro.observe(contentRef);
+      contentRef.addEventListener("wheel", handleUserInteraction, { passive: true });
+      contentRef.addEventListener("touchmove", handleUserInteraction, { passive: true });
+    }
 
-    performScroll(true, true);
-    const iId = setInterval(() => performScroll(true, true), 100);
-    const tId = setTimeout(() => clearInterval(iId), 1000);
-
-    const handleFocusChange = () => {
-      lenis.resize();
-      performScroll(false, true);
-    };
-    window.addEventListener("focus", handleFocusChange);
-
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        updateOffset();
+        lenis?.resize();
+        performScroll(true, true);
+      });
+    });
     onCleanup(() => {
+      if (contentRef) {
+        contentRef.removeEventListener("wheel", handleUserInteraction);
+        contentRef.removeEventListener("touchmove", handleUserInteraction);
+      }
       ro.disconnect();
-      clearInterval(iId);
-      clearTimeout(tId);
       clearTimeout(scrollTimeout);
       $is_active_visible.set(true);
       $jump_to_active.set(null);
-      window.removeEventListener("focus", handleFocusChange);
     });
   });
 
@@ -497,12 +519,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   };
 
   return (
-    <div
-      class={"syllable-lyrics"}
-      ref={containerRef}
-      on:wheel={{ handleEvent: handleUserInteraction, passive: true }}
-      on:touchmove={{ handleEvent: handleUserInteraction, passive: true }}
-    >
+    <div class={"syllable-lyrics"} ref={containerRef}>
       <For each={lineEntries()}>
         {(entry) => {
           const padding = () => (hasOppAligned() ? "5rem" : 0);

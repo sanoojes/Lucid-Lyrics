@@ -1,15 +1,5 @@
 import type { LineData } from "@/lib/api/types";
-import {
-  batch,
-  createEffect,
-  createMemo,
-  createSignal,
-  For,
-  on,
-  onCleanup,
-  onMount,
-  untrack,
-} from "solid-js";
+import { createEffect, createMemo, createSignal, For, on, onCleanup, onMount } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
 import { $current_position, $is_active_visible, $jump_to_active, $romanize } from "@/stores";
@@ -84,13 +74,13 @@ function buildLineEntries(lyrics: LineData): LineEntry[] {
 export default function LineLyrics(props: LineLyricsProps) {
   let containerRef!: HTMLDivElement;
 
+  // Use the exact tracking map approach from SyllableLyrics
   const itemRefs = new Map<number, HTMLDivElement>();
+  const elementToIndex = new WeakMap<Element, number>();
 
   const [isUserScroll, setIsUserScroll] = createSignal(false);
   const [isInteracting, setIsInteracting] = createSignal(false);
-  const [visibleElements, setVisibleElements] = createSignal<Set<number>>(new Set(), {
-    equals: false,
-  });
+  const [visibleElements, setVisibleElements] = createSignal<Set<number>>(new Set());
   const [scrollOffset, setScrollOffset] = createSignal(0);
 
   const currentPos = useStore($current_position);
@@ -125,74 +115,101 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
 
-  function updateOffset(isWidgetHidden = props.widgetHidden) {
+  function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
     if (!containerRef) return;
     const style = getComputedStyle(containerRef);
     const isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0", 10);
     const lenis = getLenis();
-    if (!lenis) return;
+    if (!lenis?.rootElement) return;
+
     const height = lenis.rootElement.clientHeight;
-    setScrollOffset(-(isMobile && !isWidgetHidden ? 48 : height / 2.7));
+    const off = -(isMobile && !isWidgetHidden ? 48 : height / 2.7);
+    setScrollOffset(off);
   }
 
+  // Matching absolute math scroll mechanism
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = untrack(activeIndex);
+    const idx = activeIndex();
     const targetRef = itemRefs.get(idx);
-    if (idx !== -1 && targetRef && lenis && (forceScroll || !untrack(isUserScroll))) {
-      lenis.scrollTo(targetRef, {
-        offset: untrack(scrollOffset),
-        immediate,
-        userData: { autoScroll: true },
-      });
-    }
-  };
 
-  let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
+    if (!lenis || !targetRef) return;
+    if (!forceScroll && isUserScroll()) return;
 
-  const handleUserInteraction = () => {
-    batch(() => {
-      setIsInteracting(true);
-      setIsUserScroll(true);
+    const wrapper = lenis.rootElement;
+    if (!wrapper) return;
+
+    const targetRect = targetRef.getBoundingClientRect();
+    const wrapperRect = wrapper.getBoundingClientRect();
+
+    const absoluteY =
+      targetRect.top - wrapperRect.top + lenis.scroll + scrollOffset();
+
+    lenis.scrollTo(absoluteY, {
+      immediate,
+      userData: { autoScroll: true },
     });
-    if (scrollTimeout !== undefined) clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => setIsInteracting(false), 1500);
   };
-
-  createEffect(() => {
-    const activeVisible = visibleElements().has(activeIndex());
-    $is_active_visible.set(activeVisible);
-    if (!isInteracting() && isUserScroll() && activeVisible) {
-      batch(() => setIsUserScroll(false));
-      performScroll(false);
-    }
-  });
 
   createEffect(
     on(
       () => props.widgetHidden,
-      (w) => {
-        updateOffset(w);
-        performScroll(true, true);
+      (widgetHidden) => {
+        requestAnimationFrame(() => {
+          updateOffset(widgetHidden);
+          performScroll(true, true);
+        });
       },
     ),
   );
 
   createEffect(() => {
     const idx = activeIndex();
-    if (idx !== -1 && itemRefs.has(idx)) performScroll(false);
+
+    if (!isUserScroll() && idx !== -1 && itemRefs.has(idx)) {
+      requestAnimationFrame(() => {
+        performScroll(false);
+      });
+    }
   });
 
   createEffect(
     on(
       romanize,
       () => {
-        getLenis()?.resize();
-        requestAnimationFrame(() => performScroll(true, true));
+        const lenis = getLenis();
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            lenis?.resize();
+            performScroll(true, true);
+          });
+        });
       },
       { defer: true },
     ),
   );
+
+  let scrollTimeout: ReturnType<typeof setTimeout>;
+
+  const handleUserInteraction = () => {
+    setIsInteracting(true);
+    setIsUserScroll(true);
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => setIsInteracting(false), 5000);
+  };
+
+  createEffect(() => {
+    const activeVisible = visibleElements().has(activeIndex());
+    $is_active_visible.set(activeVisible);
+
+    if (!isInteracting() && isUserScroll()) {
+      if (activeVisible) {
+        setIsUserScroll(false);
+        performScroll(false);
+      }
+    }
+  });
 
   createEffect((prevPos: number) => {
     const pos = currentPos();
@@ -203,106 +220,95 @@ export default function LineLyrics(props: LineLyricsProps) {
   }, currentPos());
 
   let observer: IntersectionObserver | undefined;
-  const observedRefs = new Set<Element>();
 
-  function syncObserver() {
+  createEffect(() => {
+    lineEntries();
+
     if (!observer) {
       observer = new IntersectionObserver(
         (entries) => {
           setVisibleElements((prev) => {
-            let changed = false;
+            const nextSet = new Set(prev);
+            let hasChanges = false;
+
             for (const entry of entries) {
-              const el = entry.target as HTMLDivElement;
-              const idx = Number((el as any).__lyricsIndex);
-              if (isNaN(idx)) continue;
+              const idx = elementToIndex.get(entry.target);
+              if (idx === undefined) continue;
+
               if (entry.isIntersecting) {
-                if (!prev.has(idx)) {
-                  prev.add(idx);
-                  changed = true;
+                if (!nextSet.has(idx)) {
+                  nextSet.add(idx);
+                  hasChanges = true;
                 }
               } else {
-                if (prev.has(idx)) {
-                  prev.delete(idx);
-                  changed = true;
+                if (nextSet.has(idx)) {
+                  nextSet.delete(idx);
+                  hasChanges = true;
                 }
               }
             }
-            return changed ? prev : prev;
+
+            return hasChanges ? nextSet : prev;
           });
         },
         { threshold: 0.1 },
       );
     }
 
-    const current = new Set(itemRefs.values());
+    observer.disconnect();
 
-    for (const el of observedRefs) {
-      if (!current.has(el as HTMLDivElement)) {
-        observer.unobserve(el);
-        observedRefs.delete(el);
-      }
-    }
+    queueMicrotask(() => {
+      itemRefs.forEach((el) => observer!.observe(el));
+    });
 
-    for (const el of current) {
-      if (!observedRefs.has(el)) {
-        observer.observe(el);
-        observedRefs.add(el);
-      }
-    }
-  }
-
-  createEffect(on(lineEntries, syncObserver));
+    onCleanup(() => observer?.disconnect());
+  });
 
   onMount(() => {
-    const lenis = getLenis();
     $jump_to_active.set(() => performScroll(false, true));
 
-    const ro = new ResizeObserver(() => {
-      updateOffset();
-      performScroll(true, true);
-    });
     const contentRef = getContentRef();
-    if (contentRef) ro.observe(contentRef);
+    const lenis = getLenis();
 
-    updateOffset();
-    lenis?.resize();
-
-    performScroll(true, true);
-    const iId = setInterval(() => performScroll(true, true), 50);
-    const tId = setTimeout(() => clearInterval(iId), 1200);
-
-    const handleFocusChange = () => {
-      lenis.resize();
-      performScroll(false, true);
+    const onResize = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          updateOffset();
+          performScroll(true, true);
+        });
+      });
     };
-    window.addEventListener("focus", handleFocusChange);
+
+    const ro = new ResizeObserver(onResize);
+
+    if (contentRef) {
+      ro.observe(contentRef);
+      contentRef.addEventListener("wheel", handleUserInteraction, { passive: true });
+      contentRef.addEventListener("touchmove", handleUserInteraction, { passive: true });
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        updateOffset();
+        lenis?.resize();
+        performScroll(true, true);
+      });
+    });
 
     onCleanup(() => {
-      clearInterval(iId);
-      clearTimeout(tId);
+      if (contentRef) {
+        contentRef.removeEventListener("wheel", handleUserInteraction);
+        contentRef.removeEventListener("touchmove", handleUserInteraction);
+      }
       ro.disconnect();
-      observer?.disconnect();
-      observedRefs.clear();
-      if (scrollTimeout !== undefined) clearTimeout(scrollTimeout);
+      clearTimeout(scrollTimeout);
       $is_active_visible.set(true);
       $jump_to_active.set(null);
-      window.removeEventListener("focus", handleFocusChange);
     });
   });
 
   return (
-    <div
-      class="line-lyrics"
-      ref={containerRef}
-      on:wheel={{
-        handleEvent: handleUserInteraction,
-        passive: true,
-      }}
-      on:touchmove={{
-        handleEvent: handleUserInteraction,
-        passive: true,
-      }}
-    >
+    <div class="line-lyrics" ref={containerRef}>
       <For each={lineEntries()}>
         {(entry) => {
           const isActive = createMemo(() => {
@@ -322,19 +328,6 @@ export default function LineLyrics(props: LineLyricsProps) {
             return d >= 5 ? "5px" : `${d}px`;
           });
 
-          const refCallback = (el: HTMLDivElement | null) => {
-            if (!el) {
-              itemRefs.delete(entry.index);
-              return;
-            }
-            (el as any).__lyricsIndex = entry.index;
-            itemRefs.set(entry.index, el);
-            if (observer && !observedRefs.has(el)) {
-              observer.observe(el);
-              observedRefs.add(el);
-            }
-          };
-
           const isLineRTL = () => {
             if (entry.type === "interlude") return entry.isRTL;
             return entry.content.IsRTL;
@@ -344,7 +337,11 @@ export default function LineLyrics(props: LineLyricsProps) {
             return (
               <div
                 class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
-                ref={refCallback}
+                ref={(el) => {
+                  if (!el) return;
+                  elementToIndex.set(el, entry.index);
+                  itemRefs.set(entry.index, el);
+                }}
                 style={{
                   "--blur": blurStyle(),
                   "--scale": isActive() ? 1.01 : 1,
@@ -396,7 +393,11 @@ export default function LineLyrics(props: LineLyricsProps) {
           return (
             <div
               class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
-              ref={refCallback}
+              ref={(el) => {
+                if (!el) return;
+                elementToIndex.set(el, entry.index);
+                itemRefs.set(entry.index, el);
+              }}
               style={{
                 "--blur": blurStyle(),
                 "--scale": isActive() ? 1.01 : 1,
