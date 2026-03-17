@@ -235,8 +235,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
           entries.push({
             type: "interlude",
             index: lineIdx++,
-            start: end - 100,
-            end: nextBounds.start - 100,
+            start: Math.max(0, end - 100),
+            end: Math.max(0, nextBounds.start - 100),
             oppAligned: c.OppositeAligned,
             isIntro: false,
           });
