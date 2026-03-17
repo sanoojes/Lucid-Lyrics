@@ -142,8 +142,7 @@ export default function LineLyrics(props: LineLyricsProps) {
     const targetRect = targetRef.getBoundingClientRect();
     const wrapperRect = wrapper.getBoundingClientRect();
 
-    const absoluteY =
-      targetRect.top - wrapperRect.top + lenis.scroll + scrollOffset();
+    const absoluteY = targetRect.top - wrapperRect.top + lenis.scroll + scrollOffset();
 
     lenis.scrollTo(absoluteY, {
       immediate,
