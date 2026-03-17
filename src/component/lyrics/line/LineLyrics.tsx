@@ -270,6 +270,7 @@ export default function LineLyrics(props: LineLyricsProps) {
     const lenis = getLenis();
 
     const onResize = () => {
+      lenis.resize();
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           updateOffset();

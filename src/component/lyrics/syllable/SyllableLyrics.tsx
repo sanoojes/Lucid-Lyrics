@@ -465,6 +465,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     const lenis = getLenis();
 
     const onResize = () => {
+      lenis.resize();
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           updateOffset();
