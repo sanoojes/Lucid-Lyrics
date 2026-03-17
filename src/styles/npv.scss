@@ -18,9 +18,6 @@
 .use-lucid-lyrics-npv {
   .Root__right-sidebar,
   #Desktop_PanelContainer_Id {
-    .main-nowPlayingView-sectionHeader {
-    }
-
     .artist-artistOnTour-date,
     .main-nowPlayingView-section,
     .main-nowPlayingView-credits {
@@ -51,7 +48,7 @@
         }
       }
     }
-    
+
     [data-encore-id="buttonSecondary"],
     .HzFr0RR3h12KSHxTlDOJ.kP94Cs1WuGwEMjEPrwgT {
       background-color: rgba(255, 255, 255, 0.1);
@@ -84,9 +81,12 @@
       overflow: hidden;
       display: flex;
       align-items: center;
-      transition: all 0.3s ease;
+      transition-property: background-color, width, margin, backdrop-filter;
+      transition-duration: 0.3s;
+      transition-timing-function: ease;
       border: none;
       border-radius: 12px;
+      background-color: transparent;
 
       & > div {
         padding: 0;
@@ -118,6 +118,7 @@
 
       &.EnViFhuIR5WVeEopJHu3::before,
     &.mdMUqcSHFw1lZIcYEblu::before /* Header - box shadow */ {
+        background-color: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(2rem) saturate(1.5) brightness(0.75);
       }
     }

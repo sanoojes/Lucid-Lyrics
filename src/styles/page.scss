@@ -222,14 +222,15 @@ $floating-transition:
 
   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
     --is-mobile: 1;
+    $padding-x: 12cqw;
 
     .lenis-content {
-      padding: 0 10cqw;
+      padding: 0 $padding-x;
     }
 
     &.widget-hidden {
       .lenis-content {
-        padding: 0 14cqw;
+        padding: 0 $padding-x;
       }
     }
   }
@@ -428,7 +429,7 @@ $floating-transition:
   }
 }
 
-.has-glassify-theme{
+.has-glassify-theme {
   & {
     overflow: hidden;
     box-shadow: var(--shadow-glass-large) !important;
@@ -450,8 +451,8 @@ $floating-transition:
   }
 }
 
-.has-lucid-theme{
-    & {
+.has-lucid-theme {
+  & {
     overflow: hidden;
     padding-top: v.$space-md;
     padding-bottom: calc(var(--player-height) + v.$space-md);
