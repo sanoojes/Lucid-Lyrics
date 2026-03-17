@@ -169,4 +169,9 @@ export const dict: Dict = {
   "ttml.applyTTML": "Apply to Current Song",
   "ttml.applyConfirm": 'Apply TTML for "{{songName}}" by {{artistName}} to the current song?',
   "ttml.applySuccess": "TTML applied successfully",
+  "npv.title": "Now Playing View",
+  "npv.hideBackground": "Hide Background",
+  "npv.hideBackgroundDesc": "Hide the background in Now Playing View",
+  "npv.useStyles": "Use Lucid Styles",
+  "npv.useStylesDesc": "Use Lucid Lyrics styles (might interfere with other themes)",
 } as const;

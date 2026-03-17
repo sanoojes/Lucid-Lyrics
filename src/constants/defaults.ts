@@ -2,6 +2,11 @@ import type { LyricsProviders } from "@/constants";
 import type { BackgroundState, PageState, WidgetState } from "@/stores";
 import type { CacheSettings } from "@/stores/dev";
 
+type NpvSettingsState = {
+  hideBackground: boolean;
+  useStyles: boolean;
+};
+
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
   mode: "animated",
@@ -63,4 +68,9 @@ export const DEFAULT_WIDGET_STATE = {
 
 export const DEFAULT_CACHE_SETTINGS: CacheSettings = {
   ttlDays: 10,
+};
+
+export const DEFAULT_NPV_SETTINGS: NpvSettingsState = {
+  hideBackground: false,
+  useStyles: true,
 };

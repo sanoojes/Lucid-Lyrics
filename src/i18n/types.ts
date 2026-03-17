@@ -166,4 +166,9 @@ export type Dict = {
   "ttml.applyTTML": string;
   "ttml.applyConfirm": string;
   "ttml.applySuccess": string;
+  "npv.title": string;
+  "npv.hideBackground": string;
+  "npv.hideBackgroundDesc": string;
+  "npv.useStyles": string;
+  "npv.useStylesDesc": string;
 };

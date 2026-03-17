@@ -6,6 +6,7 @@ import { Button } from "@/component/ui/Button";
 import { createSignal, Show } from "solid-js";
 import { SettingsContext } from "@/component/settings/context";
 import WidgetSettings from "@/component/settings/section/Widget";
+import NowPlayingViewSettings from "@/component/settings/section/NowPlayingView";
 import BackgroundSettings from "@/component/settings/section/Background";
 import LyricsSettings from "@/component/settings/section/Lyrics";
 import LanguageSettings from "@/component/settings/section/Language";
@@ -63,6 +64,7 @@ export function SettingsModal() {
             <MainList searchQuery={searchQuery()}>
               <LanguageSettings />
               <WidgetSettings />
+              <NowPlayingViewSettings />
               <BackgroundSettings />
               <LyricsSettings />
               <AdvancedSettings />
