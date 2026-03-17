@@ -7,6 +7,8 @@ import {
   setHideScrollbar,
   setShowCredits,
   setShowControls,
+  setGuessForVideo,
+  setVideoProgressOffset,
   setFloatingPosition,
 } from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
@@ -15,6 +17,7 @@ import { Toggle } from "@/component/ui/Toggle";
 import { Select } from "@/component/ui/Select";
 import { t } from "@/i18n";
 import type { LyricsProviders } from "@/constants";
+import Input from "@/component/ui/Input";
 
 const providerLabels: Record<LyricsProviders, string> = {
   user: "User (TTML)",
@@ -77,6 +80,21 @@ function LyricsSettings() {
       <SettingsRow label={t("lyrics.showControls")} description={t("lyrics.showControlsDesc")}>
         <Toggle checked={pageState().showControls} onChange={setShowControls} />
       </SettingsRow>
+      <SettingsRow label={t("lyrics.guessForVideo")} description={t("lyrics.guessForVideoDesc")}>
+        <Toggle checked={pageState().guessForVideo} onChange={setGuessForVideo} />
+      </SettingsRow>
+      {pageState().guessForVideo && (
+        <SettingsRow
+          label={t("lyrics.videoProgressOffset")}
+          description={t("lyrics.videoProgressOffsetDesc")}
+        >
+          <Input
+            type="number"
+            value={String(pageState().videoProgressOffset)}
+            onChange={(value) => setVideoProgressOffset(Number(value))}
+          />
+        </SettingsRow>
+      )}
       <SettingsRow
         label={t("lyrics.floatingPosition")}
         description={t("lyrics.floatingPositionDesc")}

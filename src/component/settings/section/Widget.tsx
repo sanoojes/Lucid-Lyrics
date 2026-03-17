@@ -9,6 +9,7 @@ import {
   setHideTitle,
   setHideAlbum,
   setHideArtist,
+  setUseAudioImageOnly,
 } from "@/stores/widget";
 import type { PlayerWidgetVariants } from "@/component/ui/PlayingWidget";
 import { SettingsSection } from "@/component/settings/Section";
@@ -45,6 +46,12 @@ function WidgetSettings() {
       </SettingsRow>
       <SettingsRow label={t("widget.hideAlbum")} description={t("widget.hideAlbumDesc")}>
         <Toggle checked={widget().hideAlbum} onChange={setHideAlbum} />
+      </SettingsRow>
+      <SettingsRow
+        label={t("widget.useAudioImageOnly")}
+        description={t("widget.useAudioImageOnlyDesc")}
+      >
+        <Toggle checked={widget().useAudioImageOnly} onChange={setUseAudioImageOnly} />
       </SettingsRow>
     </SettingsSection>
   );

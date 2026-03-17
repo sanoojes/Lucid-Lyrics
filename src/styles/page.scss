@@ -428,7 +428,7 @@ $floating-transition:
   }
 }
 
-.has-glassify-theme{
+.has-glassify-theme {
   & {
     overflow: hidden;
     box-shadow: var(--shadow-glass-large) !important;
@@ -450,8 +450,8 @@ $floating-transition:
   }
 }
 
-.has-lucid-theme{
-    & {
+.has-lucid-theme {
+  & {
     overflow: hidden;
     padding-top: v.$space-md;
     padding-bottom: calc(var(--player-height) + v.$space-md);

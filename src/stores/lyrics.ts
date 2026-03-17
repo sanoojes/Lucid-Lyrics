@@ -7,11 +7,15 @@ import { DEFAULT_PROVIDER_ORDER, type LyricsProviders } from "@/constants";
 
 export type LyricsQuery = FetchOptions;
 export const $lyrics_query = computed($player_data, (player) => {
-  const trackId = player?.uri?.split(":")[2];
+  const uri =
+    player?.mediaType === "video"
+      ? player?.metadata?.["audio_association"] || player.uri
+      : player?.uri;
+  const trackId = uri?.split(":")[2];
   if (!trackId) return null;
   return {
     id: trackId,
-    data: { name: player.name },
+    data: { name: player?.name },
   } satisfies LyricsQuery;
 });
 

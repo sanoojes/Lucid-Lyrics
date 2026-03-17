@@ -268,6 +268,16 @@ declare namespace Spicetify {
     album_track_count: string;
     popularity: string;
     associated_video_id: string;
+    audio_association: string;
+    audio_association_image: string;
+    audio_association_image_height: string;
+    audio_association_image_height_large: string;
+    audio_association_image_height_small: string;
+    audio_association_image_large: string;
+    audio_association_image_small: string;
+    audio_association_image_width: string;
+    audio_association_image_width_large: string;
+    audio_association_image_width_small: string;
     video_association: string;
     video_association_image: string;
     video_association_image_height: string;

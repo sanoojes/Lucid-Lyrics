@@ -1,6 +1,6 @@
 import { Renderer, Geometry, Program, Mesh, Texture } from "ogl";
 import { useStore } from "@nanostores/solid";
-import { $animated_options, $current_track_image } from "@/stores";
+import { $animated_options, $current_track_audio_image, $current_track_image } from "@/stores";
 import { createMemo, createEffect, onMount, onCleanup } from "solid-js";
 import { useLocalImage } from "@/component/ui/background/hooks";
 import Tempus from "@darkroom.engineering/tempus";
@@ -14,12 +14,14 @@ const AnimatedLayer = () => {
 
   const options = useStore($animated_options);
   const currentTrackImage = useStore($current_track_image);
+  const currentAudioTrackImage = useStore($current_track_audio_image);
   const { localUrl } = useLocalImage();
 
   const activeUrl = createMemo(() => {
     const opt = options();
     if (opt.mode === "custom") return opt.customUrl;
     if (opt.mode === "local") return localUrl() ?? currentTrackImage();
+    if (opt.useAudioImageOnly) return currentAudioTrackImage() || currentTrackImage();
     return currentTrackImage();
   });
 

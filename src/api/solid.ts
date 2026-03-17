@@ -18,6 +18,9 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
     async (source) => {
       log.debug("request", source);
       try {
+        if (source === null) {
+          throw new Error("Invalid source");
+        }
         const result = await API.fetch(source);
         log.debug("result", result);
         return result;

@@ -1,3 +1,5 @@
+import { $page_state, $player_states } from "@/stores";
+
 interface SyncedPosition {
   startedAt: number;
   position: number;
@@ -11,14 +13,16 @@ export function requestPositionSync() {
   try {
     const Platform = Spicetify.Platform;
     const startedAt = Date.now();
-    const isLocal = Platform.PlaybackAPI._isLocal;
+    const isLocal = Platform.PlaybackAPI._isLocal && !$player_states.get().isVideo;
+
+    // Removed the offset calculation from here so syncedPosition stays pristine
 
     const sync: Promise<SyncedPosition> = isLocal
       ? Platform.PlayerAPI._contextPlayer
           .getPositionState({})
           .then(({ position }: { position: number }) => ({
             startedAt,
-            position: Number(position),
+            position: Number(position), // Raw position
           }))
       : (canSyncNonLocal > 0
           ? Platform.PlayerAPI._contextPlayer.resume({})
@@ -28,8 +32,9 @@ export function requestPositionSync() {
           return {
             startedAt,
             position:
-              Platform.PlayerAPI._state.positionAsOfTimestamp +
-              (Date.now() - Platform.PlayerAPI._state.timestamp),
+              Date.now() -
+              Platform.PlayerAPI._state.timestamp +
+              Platform.PlayerAPI._state.positionAsOfTimestamp, // Raw position
           };
         });
 
@@ -52,9 +57,14 @@ export function getProgress(): number {
 
   const Platform = Spicetify.Platform;
 
-  if (!Spicetify.Player.isPlaying()) {
-    return Platform.PlayerAPI._state.positionAsOfTimestamp;
-  }
+  const page_state = $page_state.get();
+  const offset =
+    page_state.guessForVideo && $player_states.get().isVideo
+      ? page_state.videoProgressOffset || 0
+      : 0;
 
-  return syncedPosition.position + (Date.now() - syncedPosition.startedAt);
+  if (!Spicetify.Player.isPlaying()) {
+    return Platform.PlayerAPI._state.positionAsOfTimestamp + offset;
+  }
+  return syncedPosition.position + (Date.now() - syncedPosition.startedAt) + offset;
 }

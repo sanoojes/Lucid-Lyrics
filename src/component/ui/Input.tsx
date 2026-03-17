@@ -4,10 +4,11 @@ import "@/styles/component/input.scss";
 const URL_REGEX = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d+)?(\/.*)?$/i;
 
 const Input: Component<{
-  value: string | undefined;
+  value: string | number | undefined;
   onChange: (value: string) => void;
   placeholder?: string;
   validateUrl?: boolean;
+  type?: "text" | "number";
 }> = (props) => {
   const [error, setError] = createSignal<string | null>(null);
 
@@ -28,9 +29,9 @@ const Input: Component<{
   return (
     <div class="l-input-container">
       <input
-        type="text"
+        type={props.type ?? "text"}
         classList={{ error: !!error() }}
-        value={props.value || ""}
+        value={props.value ?? ""}
         onInput={(e) => handleInput(e.currentTarget.value)}
         placeholder={props.placeholder}
       />

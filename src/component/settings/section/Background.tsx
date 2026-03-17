@@ -97,6 +97,18 @@ function BackgroundSettings() {
           />
         </SettingsRow>
 
+        <Show when={imageMode() === "player"}>
+          <SettingsRow
+            label={t("bg.useAudioImageOnly")}
+            description={t("bg.useAudioImageOnlyDesc")}
+          >
+            <Toggle
+              checked={bg().options.image.useAudioImageOnly}
+              onChange={(v) => updateImageOptions({ useAudioImageOnly: v })}
+            />
+          </SettingsRow>
+        </Show>
+
         <Show when={imageMode() === "custom"}>
           <SettingsRow label={t("bg.customUrl")}>
             <Input
@@ -147,6 +159,18 @@ function BackgroundSettings() {
             options={IMG_MODE_OPTIONS()}
           />
         </SettingsRow>
+
+        <Show when={bg().options.animated.mode === "player"}>
+          <SettingsRow
+            label={t("bg.useAudioImageOnly")}
+            description={t("bg.useAudioImageOnlyDesc")}
+          >
+            <Toggle
+              checked={bg().options.animated.useAudioImageOnly}
+              onChange={(v) => updateAnimatedOptions({ useAudioImageOnly: v })}
+            />
+          </SettingsRow>
+        </Show>
 
         <Show when={bg().options.animated.mode === "custom"}>
           <SettingsRow label={t("bg.customUrl")}>

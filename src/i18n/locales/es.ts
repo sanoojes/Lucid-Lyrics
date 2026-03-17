@@ -20,6 +20,9 @@ export const dict: Dict = {
   "bg.scale": "Escala",
   "bg.source": "Fuente",
   "bg.albumArt": "Portada del Álbum",
+  "bg.useAudioImageOnly": "Usar Imagen de Portada de Audio (Experimental)",
+  "bg.useAudioImageOnlyDesc":
+    "Usar imagen de portada de audio en lugar de video (si está presente)",
   "bg.customUrl": "URL Personalizada",
   "bg.autoPause": "Pausa Automática",
   "bg.solidColor": "Color de fondo sólido",
@@ -74,6 +77,9 @@ export const dict: Dict = {
   "widget.hideAlbumDesc": "Ocultar el nombre del álbum",
   "widget.hideArtist": "Ocultar Artista",
   "widget.hideArtistDesc": "Ocultar el nombre del artista",
+  "widget.useAudioImageOnly": "Usar Imagen de Portada de Audio (Experimental)",
+  "widget.useAudioImageOnlyDesc":
+    "Usar imagen de portada de audio en lugar de video (si está presente)",
   "widget.chooseStyle": "Elige el estilo visual del widget",
   "common.appLoadError": "Lucid Lyrics falló al cargar",
   "common.reportIssue": "Por favor informa esto en nuestro GitHub o Discord",
@@ -143,6 +149,12 @@ export const dict: Dict = {
   "lyrics.hideScrollbarDesc": "Ocultar la barra de desplazamiento de las letras",
   "lyrics.showControls": "Mostrar Controles",
   "lyrics.showControlsDesc": "Mostrar controles del reproductor en el área flotante",
+  "lyrics.guessForVideo": "Adivinar Letras para Videos Musicales (Experimental)",
+  "lyrics.guessForVideoDesc":
+    "Adivinar letras para videos (puede estar desincronizado o ser inexact",
+  "lyrics.videoProgressOffset": "Desplazamiento de Progreso de Video",
+  "lyrics.videoProgressOffsetDesc":
+    "Ajustar el desplazamiento de progreso de las letras para videos (en milisegundos)",
   "lyrics.floatingPosition": "Posición del Control Flotante",
   "lyrics.floatingPositionDesc": "Posición del área de controles flotante",
   "position.top": "Arriba",

@@ -1,7 +1,7 @@
 import "@/styles/component/widget.scss";
-import { $current_track_image, $player_data, $widget } from "@/stores";
+import { $current_track_audio_image, $current_track_image, $player_data, $widget } from "@/stores";
 import { useStore } from "@nanostores/solid";
-import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { For, Show, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
 import Marquee from "@/component/ui/Marquee";
 import Controls from "@/component/ui/player/Controls";
 import LikeButton from "@/component/ui/player/LikeButton";
@@ -13,6 +13,12 @@ const PlayerWidget = () => {
   const widget = useStore($widget);
   const playerData = useStore($player_data);
   const currentTrackImage = useStore($current_track_image);
+  const currentAudioTrackImage = useStore($current_track_audio_image);
+  const coverArt = createMemo(() =>
+    widget().useAudioImageOnly
+      ? (currentAudioTrackImage() || currentTrackImage())
+      : currentTrackImage(),
+  );
 
   const [isLoading, setIsLoading] = createSignal(!playerData()?.name);
 
@@ -27,7 +33,7 @@ const PlayerWidget = () => {
 
   createEffect(() => {
     const data = playerData();
-    const image = currentTrackImage();
+    const image = coverArt();
     const hasMetadata = !!(data?.name || data?.metadata?.title);
 
     if (hasMetadata && image) {
@@ -51,14 +57,14 @@ const PlayerWidget = () => {
     >
       <div class="player-widget__image-wrapper">
         <Show
-          when={!isLoading() && currentTrackImage()}
+          when={!isLoading() && coverArt()}
           fallback={
             <div class="player-widget__image-placeholder">
               <div class="player-widget__image-shimmer" />
             </div>
           }
         >
-          <img class="player-widget__image" src={currentTrackImage()} alt="cover" />
+          <img class="player-widget__image" src={coverArt()} alt="cover" />
         </Show>
         <div class="player-widget__like-btn">
           <LikeButton />

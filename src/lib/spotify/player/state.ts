@@ -1,8 +1,12 @@
 import type { ShuffleState } from "@/lib/spotify/player/types";
+import { $page_state } from "@/stores";
 
 export function seekTo(progress: number) {
   try {
-    Spicetify?.Player?.seek(progress);
+    const page_state = $page_state.get();
+    Spicetify?.Player?.seek(
+      progress - (page_state.guessForVideo ? page_state.videoProgressOffset || 0 : 0),
+    );
     // Spicetify?.Player?.play();
   } catch {}
 }
@@ -62,4 +66,9 @@ export function setLiked(like: boolean) {
 
 export function toggleLiked() {
   Spicetify.Player.toggleHeart();
+}
+
+export type MediaType = "audio" | "video" | "unknown";
+export function getMediaType() {
+  return (Spicetify.Player.data?.item?.mediaType as MediaType) || "unknown";
 }

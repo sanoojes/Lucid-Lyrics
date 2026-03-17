@@ -9,6 +9,8 @@ export type PageState = {
   showCredits: boolean;
   hideScrollbar: boolean;
   showControls: boolean;
+  guessForVideo: boolean;
+  videoProgressOffset: number;
   floatingPosition: "top" | "bottom";
 };
 export const $page_state = persistentJSON<PageState>(getName("page-state"), DEFAULT_PAGE_STATE);
@@ -38,6 +40,14 @@ export function setHideScrollbar(hideScrollbar: boolean) {
 
 export function setShowControls(showControls: boolean) {
   updatePageState((state) => ({ ...state, showControls }));
+}
+
+export function setGuessForVideo(guessForVideo: boolean) {
+  updatePageState((state) => ({ ...state, guessForVideo }));
+}
+
+export function setVideoProgressOffset(videoProgressOffset: number) {
+  updatePageState((state) => ({ ...state, videoProgressOffset }));
 }
 
 export function setFloatingPosition(floatingPosition: "top" | "bottom") {

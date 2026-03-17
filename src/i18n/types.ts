@@ -26,6 +26,8 @@ export type Dict = {
   "bg.scale": string;
   "bg.source": string;
   "bg.albumArt": string;
+  "bg.useAudioImageOnly": string;
+  "bg.useAudioImageOnlyDesc": string;
   "bg.customUrl": string;
   "bg.autoPause": string;
   "bg.solidColor": string;
@@ -72,6 +74,8 @@ export type Dict = {
   "widget.hideAlbumDesc": string;
   "widget.hideArtist": string;
   "widget.hideArtistDesc": string;
+  "widget.useAudioImageOnly": string;
+  "widget.useAudioImageOnlyDesc": string;
   "widget.chooseStyle": string;
   "common.appLoadError": string;
   "common.reportIssue": string;
@@ -140,6 +144,10 @@ export type Dict = {
   "lyrics.hideScrollbarDesc": string;
   "lyrics.showControls": string;
   "lyrics.showControlsDesc": string;
+  "lyrics.guessForVideo": string;
+  "lyrics.guessForVideoDesc": string;
+  "lyrics.videoProgressOffset": string;
+  "lyrics.videoProgressOffsetDesc": string;
   "lyrics.floatingPosition": string;
   "lyrics.floatingPositionDesc": string;
   "position.top": string;

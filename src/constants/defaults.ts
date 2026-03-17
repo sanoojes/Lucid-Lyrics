@@ -14,6 +14,7 @@ export const DEFAULT_BACKGROUND_STATE = {
     color: "#000000",
     image: {
       mode: "player",
+      useAudioImageOnly: false,
       customUrl,
       scale: 130,
       filter: {
@@ -33,6 +34,7 @@ export const DEFAULT_BACKGROUND_STATE = {
     },
     animated: {
       mode: "player",
+      useAudioImageOnly: false,
       scale: 130,
       autoPause: true,
       customUrl,
@@ -55,6 +57,8 @@ export const DEFAULT_PAGE_STATE = {
   showCredits: true,
   hideScrollbar: false,
   showControls: true,
+  guessForVideo: true,
+  videoProgressOffset: 0,
   floatingPosition: "bottom",
 } satisfies PageState;
 
@@ -64,6 +68,7 @@ export const DEFAULT_WIDGET_STATE = {
   hideTitle: false,
   hideArtist: false,
   hideAlbum: true,
+  useAudioImageOnly: false,
 } satisfies WidgetState;
 
 export const DEFAULT_CACHE_SETTINGS: CacheSettings = {

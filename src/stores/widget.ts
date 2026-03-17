@@ -8,6 +8,7 @@ export type WidgetState = {
   hideTitle: boolean;
   hideAlbum: boolean;
   hideArtist: boolean;
+  useAudioImageOnly: boolean;
 };
 
 export const $widget = persistentJSON<WidgetState>(getName("widget"), DEFAULT_WIDGET_STATE);
@@ -25,3 +26,4 @@ export const setCenterText = (centerText: boolean) => update({ centerText });
 export const setHideTitle = (hideTitle: boolean) => update({ hideTitle });
 export const setHideAlbum = (hideAlbum: boolean) => update({ hideAlbum });
 export const setHideArtist = (hideArtist: boolean) => update({ hideArtist });
+export const setUseAudioImageOnly = (useAudioImageOnly: boolean) => update({ useAudioImageOnly });

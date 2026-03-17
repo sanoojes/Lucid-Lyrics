@@ -1,6 +1,7 @@
 import { atom, computed, onMount, task } from "nanostores";
 import {
   getLiked,
+  getMediaType,
   getProgress,
   getRepeat,
   getShuffle,
@@ -23,7 +24,7 @@ onMount($player_data, () => {
   });
 
   const handleSongChange = (e: any) => {
-    const trackItem = e?.data?.item ?? Spicetify.Player.data.item;
+    const trackItem = e?.data?.item ?? Spicetify.Player.data?.item;
     $player_data.set(trackItem);
   };
 
@@ -34,16 +35,24 @@ onMount($player_data, () => {
   };
 });
 
+const getImage = (d: Partial<Spicetify.PlayerTrack>) =>
+  d?.metadata?.image_xlarge_url ||
+  d?.metadata?.image_large_url ||
+  d?.metadata?.image_url ||
+  d?.images?.[0]?.url ||
+  d?.metadata?.image_small_url;
 export const $current_track_image = computed($player_data, (d) => {
   if (!d) return undefined;
-  return (
-    d?.metadata?.image_xlarge_url ||
-    d?.metadata?.image_large_url ||
-    d?.metadata?.image_url ||
-    d?.images?.[0]?.url ||
-    d?.metadata?.image_small_url ||
-    undefined
-  );
+  return getImage(d);
+});
+export const $current_track_audio_image = computed($player_data, (d) => {
+  if (!d || d?.mediaType !== "video") return undefined;
+  const m = d?.metadata;
+  const url =
+    m?.audio_association_image_large ||
+    m?.audio_association_image ||
+    m?.audio_association_image_small;
+  return url ? `spotify:image:${url}` : getImage(d);
 });
 
 export const $current_position = atom<number>(0);
@@ -79,6 +88,8 @@ export const $player_states = atom({
   shuffle: getShuffle() !== "none",
   smartShuffle: getShuffle() === "smart",
   liked: getLiked(),
+  isVideo: getMediaType() === "video",
+  // mediaType: getMediaType(),
 });
 
 interface PlayerUpdateData {
@@ -103,14 +114,16 @@ onMount($player_states, () => {
   let _events: PlayerOrigin["_events"];
 
   const listener = ({ data }: PlayerEvent) => {
-    if (data.repeat !== undefined || data.shuffle !== undefined) {
+    if (data?.repeat !== undefined || data?.shuffle !== undefined) {
       $player_states.set({
-        repeat: data.repeat ?? $player_states.get().repeat,
-        shuffle: data.shuffle ?? $player_states.get().shuffle,
-        smartShuffle: data.smartShuffle ?? $player_states.get().smartShuffle,
+        repeat: data?.repeat ?? $player_states.get().repeat,
+        shuffle: data?.shuffle ?? $player_states.get().shuffle,
+        smartShuffle: data?.smartShuffle ?? $player_states.get().smartShuffle,
         liked: data?.item?.metadata["collection.in_collection"]
-          ? data.item?.metadata["collection.in_collection"] === "true"
+          ? data?.item?.metadata["collection.in_collection"] === "true"
           : getLiked(),
+
+        isVideo: data?.item?.mediaType === "video",
       });
     }
   };

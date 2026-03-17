@@ -123,6 +123,7 @@ export type BackgroundState = {
       scale: number;
       filter: CSSFilter;
       customUrl?: string;
+      useAudioImageOnly: boolean;
       local: {
         time: number;
         slideshow: boolean;
@@ -133,6 +134,7 @@ export type BackgroundState = {
     };
     animated: {
       mode: ImageTypes;
+      useAudioImageOnly: boolean;
       scale: number;
       customUrl?: string;
       filter: CSSFilter;

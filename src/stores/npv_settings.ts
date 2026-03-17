@@ -9,7 +9,7 @@ export type NpvSettingsState = {
 
 export const $npv_settings = persistentJSON<NpvSettingsState>(
   getName("npv_settings"),
-  DEFAULT_NPV_SETTINGS
+  DEFAULT_NPV_SETTINGS,
 );
 
 export function resetNpvSettings() {
