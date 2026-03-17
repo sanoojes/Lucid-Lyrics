@@ -3,6 +3,16 @@ import * as fs from "fs";
 import * as path from "path";
 import { transform } from "esbuild";
 
+const colors = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  cyan: "\x1b[36m",
+  gray: "\x1b[90m",
+  red: "\x1b[31m",
+};
+
 interface LocalePluginOptions {
   localesDir: string;
 }
@@ -14,12 +24,19 @@ export function localePlugin(options: LocalePluginOptions): Plugin {
     name: "locale-plugin",
     setup(build) {
       const _outdir = build.initialOptions.outdir;
+
       if (!_outdir) {
-        console.error("Locale plugin requires outdir option to be set");
+        console.error(
+          `${colors.red}locale-plugin: Requires "outdir" option to be set in esbuild${colors.reset}`,
+        );
         return;
       }
+
       const outDir = path.join(_outdir, "locales");
+
       build.onEnd(async () => {
+        const start = performance.now();
+
         if (!fs.existsSync(outDir)) {
           fs.mkdirSync(outDir, { recursive: true });
         }
@@ -28,9 +45,17 @@ export function localePlugin(options: LocalePluginOptions): Plugin {
           .readdirSync(localesDir)
           .filter((f) => f.endsWith(".ts") && !f.endsWith(".d.ts"));
 
-        console.log("Building locales...");
+        if (files.length === 0) {
+          console.warn(
+            `${colors.yellow}locale-plugin: No TypeScript files found in ${localesDir}${colors.reset}`,
+          );
+          return;
+        }
+
+        console.log(`${colors.cyan}${colors.bold}Compiling locales...${colors.reset}`);
 
         let totalSize = 0;
+        const results: { name: string; size: number; sizeLabel: string }[] = [];
 
         for (const file of files) {
           const localeName = path.basename(file, ".ts");
@@ -52,11 +77,31 @@ export function localePlugin(options: LocalePluginOptions): Plugin {
 
           const stats = fs.statSync(outputPath);
           totalSize += stats.size;
-          const sizeKB = (stats.size / 1024).toFixed(2);
-          console.log(`  ${localeName}.js (${sizeKB} KB)`);
+
+          results.push({
+            name: `${localeName}.js`,
+            size: stats.size,
+            sizeLabel: `${(stats.size / 1024).toFixed(2)} KB`,
+          });
         }
 
-        console.log(`Total Locale Size: ${(totalSize / 1024).toFixed(2)} KB`);
+        results.sort((a, b) => a.name.localeCompare(b.name));
+
+        const nameWidth = Math.max(...results.map((r) => r.name.length));
+        const sizeWidth = Math.max(...results.map((r) => r.sizeLabel.length));
+
+        for (const row of results) {
+          console.log(
+            `  ${colors.green}${row.name.padEnd(nameWidth)}${colors.reset}  ${colors.gray}${row.sizeLabel.padStart(sizeWidth)}${colors.reset}`,
+          );
+        }
+
+        console.log(`${colors.green}Locales compiled successfully${colors.reset}`);
+        console.log(`  ${colors.bold}Output:${colors.reset}     ${outDir}`);
+        console.log(`  ${colors.bold}Files:${colors.reset}      ${files.length}`);
+        console.log(
+          `  ${colors.bold}Total Size:${colors.reset} ${(totalSize / 1024).toFixed(2)} KB`,
+        );
       });
     },
   };
