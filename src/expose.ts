@@ -3,6 +3,8 @@ import {
   $page_state,
   $providers,
   $widget,
+  setShowCredits,
+  setHideScrollbar,
   toggleRomanize,
   toggleWidget,
 } from "@/stores";
@@ -12,6 +14,8 @@ import { resetAllConfig } from "@/stores/reset";
 function exposeGlobals() {
   window.LucidLyrics = {
     setDevMode,
+    setShowCredits,
+    setHideScrollbar,
     toggleDevMode,
     toggleRomanize,
     toggleWidget,

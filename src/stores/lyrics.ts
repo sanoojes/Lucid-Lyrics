@@ -1,9 +1,9 @@
-import { type FetchOptions, type LyricsProviders } from "@/lib/api/types";
+import { type FetchOptions } from "@/lib/api/types";
 import { $player_data } from "@/stores/player";
 import { persistentJSON } from "@nanostores/persistent";
 import { atom, computed } from "nanostores";
 import { getName } from "@/stores/persist";
-import { DEFAULT_PROVIDER_ORDER } from "@/constants";
+import { DEFAULT_PROVIDER_ORDER, type LyricsProviders } from "@/constants";
 
 export type LyricsQuery = FetchOptions;
 export const $lyrics_query = computed($player_data, (player) => {

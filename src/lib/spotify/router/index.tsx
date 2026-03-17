@@ -29,6 +29,7 @@ export const $router_state = atom({
 const log = createLogger("router");
 
 const SELECTORS = {
+  // MAIN_VIEW: "#main-view .main-view-container__scroll-node-child > main, .Root__main-view .main-view-container__scroll-node-child > main",
   MAIN_VIEW: "#main-view, .Root__main-view",
   CONTAINER_ID: "lucid-page",
 };
@@ -90,7 +91,6 @@ class Router {
     $router_state.set({ path, isNavigating: true });
 
     if (!isMatched) {
-      this._cleanupCurrentRoute();
       this._togglePage(path, false);
       $router_state.set({ ...$router_state.get(), isNavigating: false });
       return;
@@ -160,7 +160,6 @@ class Router {
 
     if (!isActive) {
       if (container) {
-        container.innerHTML = "";
         container.remove();
       }
       return null;
@@ -176,9 +175,8 @@ class Router {
 
     container.dataset.path = path;
     container.style.position = "relative";
-    container.style.display = "block";
 
-    if (hideSiblings && container) {
+    if (hideSiblings) {
       this._hideSiblings(main, container);
     }
 

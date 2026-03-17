@@ -27,6 +27,8 @@ type GlobalLucid = {
   toggleRomanize: () => void;
   toggleWidget: () => void;
   reset: () => void;
+  setShowCredits: (c: boolean) => void;
+  setHideScrollbar: (c: boolean) => void;
   stores: Record<string, any>;
 };
 

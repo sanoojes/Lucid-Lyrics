@@ -26,12 +26,12 @@ export function toggleRomanize() {
   updatePageState((state) => ({ ...state, romanize: !state.romanize }));
 }
 
-export function toggleShowCredits() {
-  updatePageState((state) => ({ ...state, showCredits: !state.showCredits }));
+export function setShowCredits(showCredits: boolean) {
+  updatePageState((state) => ({ ...state, showCredits }));
 }
 
-export function toggleHideScrollbar() {
-  updatePageState((state) => ({ ...state, hideScrollbar: !state.hideScrollbar }));
+export function setHideScrollbar(hideScrollbar: boolean) {
+  updatePageState((state) => ({ ...state, hideScrollbar }));
 }
 
 export function toggleWidget() {
