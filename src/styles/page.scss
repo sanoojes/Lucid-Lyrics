@@ -282,11 +282,10 @@ $floating-transition:
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
 
   width: auto;
   min-width: 300px;
-  max-width: 90vw;
+  max-width: 70vw;
   padding: v.$space-md v.$space-2xl;
 
   background: v.$glass-bg;
@@ -310,13 +309,15 @@ $floating-transition:
 
   .separator {
     width: 1px;
+    min-width: 1px;
     height: v.$space-2xl;
     background: v.$glass-bd;
+    margin: 0 4px;
   }
 
   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
     bottom: v.$space-md;
-    width: 90%;
+    max-width: calc(100% - v.$space-3xl);
     padding: v.$space-sm v.$space-lg;
     opacity: 1;
     transform: translate3d(-50%, 0, 0);
