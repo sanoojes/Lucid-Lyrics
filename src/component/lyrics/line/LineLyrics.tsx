@@ -291,7 +291,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   return (
     <div
-      class={`line-lyrics${props.widgetHidden ? " widget-hidden" : ""}`}
+      class="line-lyrics"
       ref={containerRef}
       on:wheel={{
         handleEvent: handleUserInteraction,
