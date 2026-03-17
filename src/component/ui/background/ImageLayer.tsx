@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/solid";
 import { $current_track_image, $image_options } from "@/stores";
-import { createMemo, Show } from "solid-js";
+import { createMemo, createEffect, Show } from "solid-js";
 import { useLocalImage } from "@/component/ui/background/hooks";
 
 const ImageLayer = () => {
@@ -24,6 +24,11 @@ const ImageLayer = () => {
       default:
         return currentTrackImage();
     }
+  });
+
+  createEffect(() => {
+    activeUrl();
+    setIsLoaded(false);
   });
 
   return (

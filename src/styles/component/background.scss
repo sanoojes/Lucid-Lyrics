@@ -24,6 +24,11 @@
       transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
       filter 0.3s ease;
   }
+  .bg-animated {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
   .bg-loaded {
     opacity: 1;
   }

@@ -1,4 +1,12 @@
-import { createSignal, createEffect, onCleanup, createMemo, createRoot } from "solid-js";
+import {
+  createSignal,
+  createEffect,
+  onCleanup,
+  createMemo,
+  createRoot,
+  type Accessor,
+  type Setter,
+} from "solid-js";
 import {
   getLocalImage,
   createBlobUrl,
@@ -15,9 +23,15 @@ import {
 } from "@/stores";
 import { useStore } from "@nanostores/solid";
 
-let instance: ReturnType<typeof createRoot> | undefined;
+interface LocalImageInstance {
+  localUrl: Accessor<string | undefined>;
+  isLoaded: Accessor<boolean>;
+  setIsLoaded: Setter<boolean>;
+}
 
-export function useLocalImage() {
+let instance: LocalImageInstance | undefined;
+
+export function useLocalImage(): LocalImageInstance {
   if (!instance) {
     instance = createRoot(() => {
       const options = useStore($image_options);

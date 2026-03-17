@@ -133,6 +133,7 @@ export type BackgroundState = {
     };
     animated: {
       mode: ImageTypes;
+      scale: number;
       customUrl?: string;
       filter: CSSFilter;
       autoPause: boolean;

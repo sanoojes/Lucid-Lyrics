@@ -1,5 +1,6 @@
 import { defineConfig } from "@spicetify/creator";
 import { solidPlugin } from "esbuild-plugin-solid";
+import { glsl } from "esbuild-plugin-glsl";
 import { name, version } from "./package.json";
 import { localePlugin } from "./esbuild.locale-plugin";
 import { join } from "path";
@@ -35,6 +36,9 @@ export default defineConfig({
         localesDir,
       }),
       saveMetafilePlugin(),
+      glsl({
+        minify: true,
+      }),
       solidPlugin({
         solid: {
           generate: "dom",

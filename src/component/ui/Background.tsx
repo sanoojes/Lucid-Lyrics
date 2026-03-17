@@ -1,4 +1,4 @@
-import "@/styles/component/background.css";
+import "@/styles/component/background.scss";
 import { useStore } from "@nanostores/solid";
 import { Match, Switch } from "solid-js";
 import AnimatedLayer from "@/component/ui/background/AnimatedLayer";

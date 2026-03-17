@@ -53,7 +53,7 @@ onMount($current_position, () => {
 
   const unsubscribe = Tempus.add(() => {
     $current_position.set(getProgress());
-  });
+  }, 0);
 
   return () => {
     unsubscribe();

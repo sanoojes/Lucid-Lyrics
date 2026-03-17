@@ -3,7 +3,7 @@ import type { BackgroundState, PageState, WidgetState } from "@/stores";
 
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
-  mode: "image",
+  mode: "animated",
   options: {
     color: "#000000",
     image: {
@@ -11,8 +11,8 @@ export const DEFAULT_BACKGROUND_STATE = {
       customUrl,
       scale: 130,
       filter: {
-        blur: 32,
-        saturation: 150,
+        blur: 48,
+        saturation: 200,
         contrast: 110,
         brightness: 70,
         opacity: 100,
@@ -27,13 +27,14 @@ export const DEFAULT_BACKGROUND_STATE = {
     },
     animated: {
       mode: "player",
+      scale: 130,
       autoPause: true,
       customUrl,
       filter: {
-        blur: 0,
-        saturation: 100,
-        contrast: 100,
-        brightness: 100,
+        blur: 48,
+        saturation: 200,
+        contrast: 110,
+        brightness: 70,
         opacity: 100,
       },
     },

@@ -51,7 +51,7 @@ const FILTERS = (): {
     key: "saturation",
     label: t("bg.saturation"),
     min: 0,
-    max: 200,
+    max: 500,
     step: 1,
     suffix: "%",
   },
@@ -165,8 +165,8 @@ function BackgroundSettings() {
 
         <SettingsRow label={t("bg.scale")} description={t("bg.scaleOf")}>
           <Slider
-            value={bg().options.image.scale}
-            onChange={(v) => updateImageOptions({ scale: v })}
+            value={bg().options.animated.scale}
+            onChange={(v) => updateAnimatedOptions({ scale: v })}
             min={100}
             max={200}
             step={10}

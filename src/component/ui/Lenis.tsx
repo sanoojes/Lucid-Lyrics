@@ -102,7 +102,7 @@ export function SolidLenis(props: LenisProps) {
     setLenis(lenisInstance);
 
     if (local.autoRaf !== false) {
-      const rafId = Tempus.add((time: number) => lenisInstance.raf(time), local.rafPriority ?? 0);
+      const rafId = Tempus.add((time: number) => lenisInstance.raf(time), local.rafPriority ?? -1);
       onCleanup(() => rafId());
     }
 
