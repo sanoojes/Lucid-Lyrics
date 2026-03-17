@@ -9,7 +9,9 @@ import vertex from "@/shaders/animatedBg/vertex.glsl";
 import fragment from "@/shaders/animatedBg/fragment.glsl";
 
 const AnimatedLayer = () => {
+  let canvasRef!: HTMLCanvasElement;
   let containerRef!: HTMLDivElement;
+
   const options = useStore($animated_options);
   const currentTrackImage = useStore($current_track_image);
   const { localUrl } = useLocalImage();
@@ -22,16 +24,12 @@ const AnimatedLayer = () => {
   });
 
   onMount(() => {
-    if (!containerRef) return;
-
     const renderer = new Renderer({
+      canvas: canvasRef,
       dpr: Math.min(window.devicePixelRatio, 2),
       alpha: true,
     });
     const gl = renderer.gl;
-    const canvas = gl.canvas;
-    canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;";
-    containerRef.appendChild(canvas);
 
     const geometry = new Geometry(gl, {
       position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
@@ -52,7 +50,7 @@ const AnimatedLayer = () => {
         uContrast: { value: 1.0 },
         uOpacity: { value: 1.0 },
         uTime: { value: 0.0 },
-        uResolution: { value: [containerRef.clientWidth, containerRef.clientHeight] },
+        uResolution: { value: [containerRef.clientHeight, containerRef.clientWidth] },
       },
       transparent: true,
       depthTest: false,
@@ -66,6 +64,7 @@ const AnimatedLayer = () => {
         const { width, height } = entry.contentRect;
         renderer.setSize(width, height);
         program.uniforms.uResolution.value = [width, height];
+        renderer.render({ scene: mesh });
       }
     });
     ro.observe(containerRef);
@@ -73,6 +72,7 @@ const AnimatedLayer = () => {
     createEffect(() => {
       const url = activeUrl();
       if (!url) return;
+
       const img = new Image();
       img.crossOrigin = url.startsWith("spotify:") ? null : "anonymous";
       img.src = url;
@@ -93,9 +93,8 @@ const AnimatedLayer = () => {
       program.uniforms.uOpacity.value = filter.opacity / 100;
     });
 
-    const unsubscribe = Tempus.add((time: number, deltaTime: number) => {
+    const unsubscribe = Tempus.add((_time: number, deltaTime: number) => {
       const dt = deltaTime / 1000;
-
       program.uniforms.uTime.value += dt * 0.5;
 
       if (program.uniforms.uFade.value < 1.0) {
@@ -108,19 +107,23 @@ const AnimatedLayer = () => {
     onCleanup(() => {
       ro.disconnect();
       unsubscribe();
-      canvas.remove();
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
     });
   });
 
   return (
-    <div
-      ref={containerRef}
-      class="bg-animated"
-      style={{
-        filter: `blur(${options().filter.blur}px)`,
-        transform: `scale(${options().scale}%)`,
-      }}
-    />
+    <div ref={containerRef} class="bg-animated">
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "absolute",
+          inset: 0,
+          filter: `blur(${options().filter.blur}px)`,
+          transform: `scale(${options().scale / 100})`,
+          "pointer-events": "none",
+        }}
+      />
+    </div>
   );
 };
 
