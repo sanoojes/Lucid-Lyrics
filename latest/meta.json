@@ -95,7 +95,7 @@
       "format": "esm"
     },
     "src/constants/index.ts": {
-      "bytes": 441,
+      "bytes": 440,
       "imports": [
         {
           "path": "src/constants/defaults.ts",
@@ -49783,7 +49783,7 @@
           "bytesInOutput": 673
         },
         "src/constants/index.ts": {
-          "bytesInOutput": 104
+          "bytesInOutput": 103
         },
         "src/constants/module.ts": {
           "bytesInOutput": 736
@@ -50497,7 +50497,7 @@
           "bytesInOutput": 680
         }
       },
-      "bytes": 381868
+      "bytes": 381867
     }
   }
 }
