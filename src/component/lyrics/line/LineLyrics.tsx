@@ -293,8 +293,14 @@ export default function LineLyrics(props: LineLyricsProps) {
     <div
       class={`line-lyrics${props.widgetHidden ? " widget-hidden" : ""}`}
       ref={containerRef}
-      onWheel={handleUserInteraction}
-      onTouchMove={handleUserInteraction}
+      on:wheel={{
+        handleEvent: handleUserInteraction,
+        passive: true,
+      }}
+      on:touchmove={{
+        handleEvent: handleUserInteraction,
+        passive: true,
+      }}
     >
       <For each={lineEntries()}>
         {(entry) => {

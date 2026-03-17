@@ -475,8 +475,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     <div
       class={`syllable-lyrics${props.widgetHidden ? " widget-hidden" : ""}`}
       ref={containerRef}
-      onWheel={handleUserInteraction}
-      onTouchMove={handleUserInteraction}
+      on:wheel={{ handleEvent: handleUserInteraction, passive: true }} // Replaced with passive listeners
+      on:touchmove={{ handleEvent: handleUserInteraction, passive: true }}
     >
       <For each={lineEntries()}>
         {(entry) => {
