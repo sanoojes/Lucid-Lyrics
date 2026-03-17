@@ -1,0 +1,46 @@
+@use "../variables" as v;
+
+.adv-settings {
+  &__cache-row {
+    display: flex;
+    align-items: center;
+    gap: v.$space-sm;
+  }
+
+  &__cache-info {
+    font-size: v.$fs-sm;
+    color: v.$color-muted;
+  }
+
+  &__storage-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: v.$space-sm;
+    width: 100%;
+    font-size: v.$fs-sm;
+
+    .adv-settings__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: v.$space-sm v.$space-md;
+      background: v.$glass-bg;
+      border-radius: v.$r-md;
+      border: 1px solid v.$border-color;
+
+      .stat-label {
+        font-size: v.$fs-xs;
+        color: v.$color;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .stat-value {
+        font-weight: 600;
+        color: v.$color-accent;
+        margin-top: 2px;
+      }
+    }
+  }
+}

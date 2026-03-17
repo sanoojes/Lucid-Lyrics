@@ -6,6 +6,7 @@ import { processLyrics } from "@/language/processor";
 import { getModule } from "@/lib/dom/load";
 import { $providers } from "@/stores";
 import { lyricsStore } from "@/stores/idb";
+import { setStorageStats } from "@/stores/storage";
 import type { LyricsProviders } from "@/constants";
 
 const log = createLogger("api:main");
@@ -39,6 +40,16 @@ export class LyricsAPI {
     this._handlers = new Map<string, LyricsHandler>(
       handlers.map((handler) => [handler.id, handler]),
     );
+    this._initStorageStats();
+  }
+
+  private async _initStorageStats() {
+    try {
+      const stats = await get<StorageStats>(STATS_KEY, lyricsStore);
+      setStorageStats(stats || { totalOriginal: 0, totalCompressed: 0, entryCount: 0 });
+    } catch (err) {
+      log.error("stats_init_failed", err);
+    }
   }
 
   private async _updateStats(diff: Partial<StorageStats>): Promise<void> {
@@ -52,6 +63,8 @@ export class LyricsAPI {
         }),
         lyricsStore,
       );
+      const newStats = await get<StorageStats>(STATS_KEY, lyricsStore);
+      setStorageStats(newStats || { totalOriginal: 0, totalCompressed: 0, entryCount: 0 });
     } catch (err) {
       log.error("stats_sync_failed", err);
     }
@@ -298,6 +311,42 @@ export class LyricsAPI {
       }
     } catch (err) {
       log.error("cleanup_err", err);
+    }
+  }
+
+  async clearAllCache(): Promise<void> {
+    try {
+      await lyricsStore("readwrite", (store) => {
+        return new Promise<void>((resolve, reject) => {
+          const request = store.openCursor();
+
+          request.onsuccess = (event) => {
+            const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+
+            if (cursor) {
+              if (cursor.key !== STATS_KEY) {
+                cursor.delete();
+              }
+              cursor.continue();
+            } else {
+              resolve();
+            }
+          };
+          request.onerror = () => reject(request.error);
+        });
+      });
+
+      await update<StorageStats>(
+        STATS_KEY,
+        () => ({
+          totalOriginal: 0,
+          totalCompressed: 0,
+          entryCount: 0,
+        }),
+        lyricsStore,
+      );
+    } catch (err) {
+      log.error("clear_all_cache_err", err);
     }
   }
 

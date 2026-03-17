@@ -116,6 +116,16 @@ export type Dict = {
   "advanced.devModeDesc": string;
   "advanced.ttmlMakerMode": string;
   "advanced.ttmlMakerModeDesc": string;
+  "advanced.clearCache": string;
+  "advanced.clearCacheDesc": string;
+  "advanced.clearCacheButton": string;
+  "advanced.storageStats": string;
+  "advanced.storageStatsDesc": string;
+  "advanced.original": string;
+  "advanced.compressed": string;
+  "advanced.entries": string;
+  "advanced.clearCacheSuccess": string;
+  "advanced.clearCacheError": string;
   "lyrics.providerOrder": string;
   "lyrics.providerOrderDesc": string;
   "lyrics.showCredits": string;
