@@ -27,7 +27,29 @@ export type SupportedLanguage =
   | "gujarati"
   | "tamil"
   | "telugu"
-  | "bengali";
+  | "bengali"
+  | "arabic"
+  | "hebrew"
+  | "persian"
+  | "urdu";
+
+export const RTL_LANGUAGES: SupportedLanguage[] = [
+  "arabic",
+  "hebrew",
+  "persian",
+  "urdu",
+];
+
+export const RTL_REGEX = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF\u0590-\u05FF]/;
+
+export function isRTL(language: SupportedLanguage | "unknown"): boolean {
+  if (language === "unknown") return false;
+  return RTL_LANGUAGES.includes(language);
+}
+
+export function containsRTL(text: string): boolean {
+  return RTL_REGEX.test(text);
+}
 
 interface LanguageConfig {
   name: SupportedLanguage;
@@ -57,6 +79,10 @@ const LANGUAGE_CONFIGS: LanguageConfig[] = [
   { name: "telugu", regex: /[\u0c00-\u0c7f]/, francCodes: ["tel"] },
   { name: "hindi", regex: /[\u0900-\u097F]/, francCodes: ["hin"] },
   { name: "georgian", regex: /[\u10A0-\u10FF]/, francCodes: ["kat"] },
+  { name: "arabic", regex: /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/, francCodes: ["ara"] },
+  { name: "hebrew", regex: /[\u0590-\u05FF]/, francCodes: ["heb"] },
+  { name: "persian", regex: /[\u0600-\u06FF\uFB50-\uFDFF]/, francCodes: ["pes", "fas"] },
+  { name: "urdu", regex: /[\u0600-\u06FF\u0750-\u077F]/, francCodes: ["urd"] },
 ];
 
 export function detectLanguage(text: string): {

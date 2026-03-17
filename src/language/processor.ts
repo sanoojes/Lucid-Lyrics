@@ -1,4 +1,4 @@
-import { detectLanguage } from "@/language";
+import { detectLanguage, isRTL } from "@/language";
 import { Romanizers } from "@/language/romanizers/index.ts";
 import { createLogger } from "@/utils/logger";
 import type { Lyrics } from "@/lib/api/types";
@@ -17,10 +17,18 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
 
     lyric.HasRomanizedText = false;
     lyric.NeedsRomanization = false;
+    lyric.IsRTL = false;
+
+    let detectedLang: ReturnType<typeof detectLanguage>["language"] = "unknown";
 
     await addRomanizationToLyrics(lyric, async (txt, contextTxt) => {
       const { language: lang, usedFranc: francUsed } = detectLanguage(contextTxt);
       usedFranc = usedFranc || francUsed;
+
+      if (!detectedLang || detectedLang === "unknown") {
+        detectedLang = lang;
+        lyric.IsRTL = isRTL(lang);
+      }
 
       if (lang && lang !== "unknown" && Romanizers[lang]) {
         lyric.NeedsRomanization = true;

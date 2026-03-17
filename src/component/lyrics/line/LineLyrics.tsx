@@ -15,6 +15,7 @@ import { useStore } from "@nanostores/solid";
 import { $current_position, $is_active_visible, $jump_to_active, $romanize } from "@/stores";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
+import { containsRTL } from "@/language";
 
 export type LineLyricsProps = {
   lyrics: LineData;
@@ -362,6 +363,11 @@ export default function LineLyrics(props: LineLyricsProps) {
             romanize() ? entry.content.RomanizedText || entry.content.Text : entry.content.Text,
           );
 
+          const isLineRTL = createMemo(() => {
+            const text = displayText();
+            return containsRTL(text);
+          });
+
           const progress = createMemo(() => {
             if (!isActive()) return 0;
             const start = entry.content.StartTime * 1000;
@@ -374,7 +380,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
           return (
             <div
-              class="line-wrapper"
+              class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
               ref={refCallback}
               style={{
                 "--blur": blurStyle(),
@@ -396,10 +402,9 @@ export default function LineLyrics(props: LineLyricsProps) {
                   "--shadow-alpha": (progress() / 200) * 0.85,
                   position: "relative",
                   display: "inline-block",
-                  "text-align": entry.content.OppositeAligned ? "right" : "left",
+                  "text-align": isLineRTL() ? (entry.content.OppositeAligned ? "left" : "right") : (entry.content.OppositeAligned ? "right" : "left"),
                   "text-shadow": "0px 0px var(--shadow-blur) rgba(255,255,255,var(--shadow-alpha))",
-                  "background-image":
-                    "linear-gradient(180deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))",
+                  "background-image": `linear-gradient(${isLineRTL() ? 0 : 180}deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))`,
                   "-webkit-background-clip": "text",
                   "-webkit-text-fill-color": "transparent",
                   "background-clip": "text",

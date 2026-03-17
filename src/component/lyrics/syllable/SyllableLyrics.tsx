@@ -15,6 +15,7 @@ import { $current_position, $is_active_visible, $jump_to_active, $romanize } fro
 import { SPACE_REGEX, splitGraphemes } from "@/lib/string";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
+import { containsRTL } from "@/language";
 const BLUR_MAP = [0, 1, 2, 3, 4, 5];
 
 export type SyllableLyricsProps = {
@@ -40,15 +41,24 @@ type LineEntry =
 
 type Word = { Syllables: Syllable[] };
 
-const COMMON_STYLES_LINE_LEAD = (oppAligned: boolean = false, hasBg: boolean, isBg = false) =>
+const COMMON_STYLES_LINE_LEAD = (
+  oppAligned: boolean = false,
+  hasBg: boolean,
+  isBg = false,
+  isRTL = false,
+  paddingLeft?: number | string,
+  paddingRight?: number | string,
+) =>
   ({
     position: "relative",
     display: "block",
     cursor: "pointer",
     "content-visibility": "auto",
     "backface-visibility": "hidden",
-    "text-align": oppAligned ? "right" : "left",
+    "text-align": isRTL ? (oppAligned ? "left" : "right") : oppAligned ? "right" : "left",
     "margin-bottom": hasBg && !isBg ? "4px" : undefined,
+    "padding-left": paddingLeft !== undefined ? String(paddingLeft) : undefined,
+    "padding-right": paddingRight !== undefined ? String(paddingRight) : undefined,
     ...(isBg
       ? {
           "font-size": "var(--bg-font-size)",
@@ -84,6 +94,9 @@ type LeadRendererProps = {
   hasBg?: boolean;
   romanize: boolean;
   currentPos: number;
+  isRTL?: boolean;
+  paddingLeft?: number | string;
+  paddingRight?: number | string;
 };
 
 function LeadRenderer(props: LeadRendererProps) {
@@ -110,7 +123,14 @@ function LeadRenderer(props: LeadRendererProps) {
 
   return (
     <span
-      style={COMMON_STYLES_LINE_LEAD(props.oppAligned, !!props.hasBg, props.background)}
+      style={COMMON_STYLES_LINE_LEAD(
+        props.oppAligned,
+        !!props.hasBg,
+        props.background,
+        props.isRTL,
+        props.paddingLeft,
+        props.paddingRight,
+      )}
       onClick={handleClick}
       role="button"
       tabIndex={0}
@@ -166,7 +186,7 @@ function LeadRenderer(props: LeadRendererProps) {
 
                               position: "relative",
                               display: "inline-block",
-                              "background-image": `linear-gradient(90deg, rgba(255, 255, 255, 0.85) var(--char-progress), rgba(255, 255, 255, 0.4) var(--char-progress-2))`,
+                              "background-image": `linear-gradient(${props.isRTL ? 270 : 90}deg, rgba(255, 255, 255, 0.85) var(--char-progress), rgba(255, 255, 255, 0.4) var(--char-progress-2))`,
                               "-webkit-background-clip": "text",
                               "-webkit-text-fill-color": "transparent",
                               "background-clip": "text",
@@ -472,6 +492,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     const blur = distance >= BLUR_MAP.length ? BLUR_MAP[BLUR_MAP.length - 1] : BLUR_MAP[distance];
     return `${blur}px`;
   };
+
   return (
     <div
       class="syllable-lyrics"
@@ -496,9 +517,29 @@ function SyllableLyrics(props: SyllableLyricsProps) {
             return isTarget;
           });
 
+          const isLineRTL = createMemo(() => {
+            if (entry.type === "interlude") return false;
+            const text = entry.content.Lead.Syllables.map((s) => s.Text).join("");
+            return containsRTL(text);
+          });
+
+          const paddingRight = () => {
+            if (entry.type === "interlude") return 0;
+            const isRtl = isLineRTL();
+            const isOpposite = entry.content.OppositeAligned;
+            return isRtl === isOpposite ? padding() : 0;
+          };
+
+          const paddingLeft = () => {
+            if (entry.type === "interlude") return 0;
+            const isRtl = isLineRTL();
+            const isOpposite = entry.content.OppositeAligned;
+            return isRtl !== isOpposite ? padding() : 0;
+          };
+
           return (
             <div
-              class="line-wrapper"
+              class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
               ref={(el) => {
                 if (!el) return;
                 elementToIndex.set(el, entry.index);
@@ -509,10 +550,6 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                 "--scale": isActive() ? 1.01 : 1,
                 "--opacity": isActive() ? 1 : 0.6,
                 "margin-bottom": entry.type === "interlude" ? 0 : "12px",
-                "padding-right":
-                  entry.type === "interlude" ? 0 : entry.content.OppositeAligned ? 0 : padding(),
-                "padding-left":
-                  entry.type === "interlude" ? 0 : entry.content.OppositeAligned ? padding() : 0,
               }}
             >
               {entry.type === "interlude" ? (
@@ -530,6 +567,9 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                     hasBg={!!entry.content.Background}
                     romanize={romanize()}
                     currentPos={currentPos()}
+                    isRTL={isLineRTL()}
+                    paddingLeft={paddingLeft()}
+                    paddingRight={paddingRight()}
                   />
                   <Show when={entry.content.Background}>
                     {(bg) => (
@@ -541,6 +581,9 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                             oppAligned={entry.content.OppositeAligned}
                             romanize={romanize()}
                             currentPos={currentPos()}
+                            isRTL={isLineRTL()}
+                            paddingLeft={paddingLeft()}
+                            paddingRight={paddingRight()}
                           />
                         )}
                       </For>

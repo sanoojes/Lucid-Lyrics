@@ -359,6 +359,11 @@ $floating-transition:
       filter: blur(0);
       opacity: 0.8;
     }
+
+    &.rtl {
+      direction: rtl;
+      text-align: right;
+    }
   }
 
   .trailing-whitespace {
