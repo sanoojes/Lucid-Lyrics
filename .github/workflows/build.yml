@@ -30,7 +30,7 @@ jobs:
         run: bun install
 
       - name: Build project
-        run: bun run build
+        run: SPICETIFY_SKIP=true bun run build
 
       - name: Set Version
         id: get_version

@@ -40,7 +40,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@spicemod/creator": "0.0.28",
+    "@spicemod/creator": "0.0.29",
     "@types/gsap": "^3.0.0",
     "@types/kuromoji": "^0.1.3",
     "@types/react": "^18.3.28",
