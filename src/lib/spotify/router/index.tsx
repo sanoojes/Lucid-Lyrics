@@ -90,6 +90,7 @@ class Router {
     $router_state.set({ path, isNavigating: true });
 
     if (!isMatched) {
+      this._cleanupCurrentRoute();
       this._togglePage(path, false);
       $router_state.set({ ...$router_state.get(), isNavigating: false });
       return;
@@ -157,23 +158,27 @@ class Router {
 
     let container = document.getElementById(SELECTORS.CONTAINER_ID);
 
-    if (!container) {
-      if (!isActive) return null;
+    if (!isActive) {
+      if (container) {
+        container.innerHTML = "";
+        container.remove();
+      }
+      return null;
+    }
 
+    if (!container) {
       container = document.createElement("main");
       container.id = SELECTORS.CONTAINER_ID;
       main.appendChild(container);
-    } else if (container.parentElement !== main && isActive) {
+    } else if (container.parentElement !== main) {
       main.appendChild(container);
     }
 
-    if (container) {
-      container.dataset.path = path;
-      container.style.position = "relative";
-      container.style.display = isActive ? "block" : "none";
-    }
+    container.dataset.path = path;
+    container.style.position = "relative";
+    container.style.display = "block";
 
-    if (isActive && hideSiblings && container) {
+    if (hideSiblings && container) {
       this._hideSiblings(main, container);
     }
 
