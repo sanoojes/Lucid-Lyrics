@@ -46,6 +46,7 @@ const COMMON_STYLES_LINE_LEAD = (oppAligned: boolean = false, hasBg: boolean, is
     display: "block",
     cursor: "pointer",
     "content-visibility": "auto",
+    "backface-visibility": "hidden",
     "text-align": oppAligned ? "right" : "left",
     "margin-bottom": hasBg && !isBg ? "4px" : undefined,
     ...(isBg
