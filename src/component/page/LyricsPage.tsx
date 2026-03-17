@@ -18,8 +18,8 @@ import { $installed_theme } from "@/stores/theme";
 
 const LyricsPage = () => {
   const pageState = useStore($page_state);
+  const installedTheme = useStore($installed_theme);
   const isHidden = () => pageState().widget === "hidden";
-  const installedTheme = () => useStore($installed_theme);
   const themeClassname = () => (installedTheme() ? ` has-${installedTheme()}-theme` : "");
 
   return (

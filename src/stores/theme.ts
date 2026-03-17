@@ -1,19 +1,23 @@
 import { waitForElement } from "@/lib/dom/wait";
 import { logger } from "@/utils/logger";
-import { atom } from "nanostores";
+import { atom, onMount } from "nanostores";
 
 export const $installed_theme = atom<string | null>(null);
+
+onMount($installed_theme, () => {
+  addThemeSpecificStyles();
+});
 
 type DetectorFn = (timeout: number) => boolean | Promise<boolean>;
 type Detector = string | DetectorFn;
 
 const themeDetectors: Record<string, Detector> = {
-  glassify: ".glassify-bg",
+  glassify: ".glassify-bg,#glassify-bg",
   lucid: ".lucid-bg,#lucid-bg",
 };
 
 export async function addThemeSpecificStyles() {
-  const timeout = 10000;
+  const timeout = 12000;
   const checks = Object.entries(themeDetectors).map(async ([themeName, detector]) => {
     try {
       let isPresent = false;
