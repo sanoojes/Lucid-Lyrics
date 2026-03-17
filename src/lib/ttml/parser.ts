@@ -93,6 +93,9 @@ interface TTML {
   "xml:lang"?: string;
   head?: TTMLHead;
   body?: TTMLBody;
+  audio?: {
+    lyricOffset?: string;
+  };
 }
 
 interface TTMLRoot {
@@ -114,11 +117,12 @@ const parseTime = (timeStr: string | undefined): number => {
   const colonIdx = timeStr.indexOf(":");
   if (colonIdx === -1) return parseFloat(timeStr);
 
-  const mins = timeStr.charCodeAt(0) - 48;
+  const mins = parseInt(timeStr.slice(0, colonIdx), 10);
   const secStart = colonIdx + 1;
   const secLen = timeStr.length - secStart;
   let seconds = 0;
   let decimal = 0;
+  let digitsAfterDecimal = 0;
 
   for (let i = 0; i < secLen; i++) {
     const c = timeStr.charCodeAt(secStart + i);
@@ -127,7 +131,8 @@ const parseTime = (timeStr: string | undefined): number => {
       continue;
     }
     if (decimal > 0) {
-      seconds += (c - 48) / Math.pow(10, decimal--);
+      digitsAfterDecimal++;
+      seconds += (c - 48) / Math.pow(10, digitsAfterDecimal);
     } else {
       seconds = seconds * 10 + (c - 48);
     }
@@ -203,9 +208,10 @@ function parseSyllableLine(
   p: TTMLP,
   agents: Map<string, string>,
   divAgentId?: string,
+  timeOffset: number = 0,
 ): SyllableContent {
-  const pBegin = parseTime(p.begin);
-  const pEnd = parseTime(p.end);
+  const pBegin = parseTime(p.begin) - timeOffset;
+  const pEnd = parseTime(p.end) - timeOffset;
   const spans = toArray(p.span);
 
   const leadSyllables: Syllable[] = [];
@@ -221,8 +227,8 @@ function parseSyllableLine(
 
       for (let j = 0; j < bgSpans.length; j++) {
         const bgSpan = bgSpans[j];
-        const start = parseTime(bgSpan.begin);
-        const end = parseTime(bgSpan.end);
+        const start = parseTime(bgSpan.begin) - timeOffset;
+        const end = parseTime(bgSpan.end) - timeOffset;
         bgSyllables.push({
           Text: bgSpan["#text"] || "",
           IsPartOfWord: false,
@@ -244,8 +250,8 @@ function parseSyllableLine(
       leadSyllables.push({
         Text: span["#text"] || "",
         IsPartOfWord: false,
-        StartTime: parseTime(span.begin),
-        EndTime: parseTime(span.end),
+        StartTime: parseTime(span.begin) - timeOffset,
+        EndTime: parseTime(span.end) - timeOffset,
       });
     }
   }
@@ -272,6 +278,9 @@ function parseLine(ttml: TTMLRoot): LineData {
   const agents = extractAgents(metadata);
   const { spotifyId, artists } = extractMetaData(metadata);
 
+  const lyricOffset = tt?.audio?.lyricOffset ? parseFloat(tt.audio.lyricOffset) : 0.04;
+  const timeOffset = lyricOffset;
+
   const divs = toArray(body?.div);
   const content: LineContent[] = [];
   let startTime = 0;
@@ -284,8 +293,8 @@ function parseLine(ttml: TTMLRoot): LineData {
 
     for (let j = 0; j < ps.length; j++) {
       const p = ps[j];
-      const pBegin = parseTime(p.begin);
-      const pEnd = parseTime(p.end);
+      const pBegin = parseTime(p.begin) - timeOffset;
+      const pEnd = parseTime(p.end) - timeOffset;
 
       if (content.length === 0) {
         startTime = pBegin;
@@ -358,6 +367,9 @@ function parseSyllable(ttml: TTMLRoot): SyllableData {
   const agents = extractAgents(metadata);
   const { spotifyId, artists } = extractMetaData(metadata);
 
+  const lyricOffset = tt?.audio?.lyricOffset ? parseFloat(tt.audio.lyricOffset) : 0.04;
+  const timeOffset = lyricOffset;
+
   const divs = toArray(body?.div);
   const content: SyllableContent[] = [];
   let startTime = 0;
@@ -370,15 +382,15 @@ function parseSyllable(ttml: TTMLRoot): SyllableData {
 
     for (let j = 0; j < ps.length; j++) {
       const p = ps[j];
-      const pBegin = parseTime(p.begin);
-      const pEnd = parseTime(p.end);
+      const pBegin = parseTime(p.begin) - timeOffset;
+      const pEnd = parseTime(p.end) - timeOffset;
 
       if (content.length === 0) {
         startTime = pBegin;
       }
       endTime = pEnd;
 
-      content.push(parseSyllableLine(p, agents, divAgentId));
+      content.push(parseSyllableLine(p, agents, divAgentId, timeOffset));
     }
   }
 
