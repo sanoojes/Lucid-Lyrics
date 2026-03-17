@@ -1,4 +1,4 @@
-import { detectLanguage, isRTL } from "@/language";
+import { detectLanguage, isRTL, containsRTL } from "@/language";
 import { Romanizers } from "@/language/romanizers/index.ts";
 import { createLogger } from "@/utils/logger";
 import type { Lyrics } from "@/lib/api/types";
@@ -65,6 +65,7 @@ async function addRomanizationToLyrics(
       await Promise.all(
         lyric.Content.map(async (content) => {
           content.RomanizedText = await converter(content.Text, content.Text);
+          content.IsRTL = containsRTL(content.Text);
         }),
       );
       break;
@@ -73,6 +74,7 @@ async function addRomanizationToLyrics(
       await Promise.all(
         lyric.Lines.map(async (line) => {
           line.RomanizedText = await converter(line.Text, line.Text);
+          line.IsRTL = containsRTL(line.Text);
         }),
       );
       break;
@@ -81,7 +83,10 @@ async function addRomanizationToLyrics(
       const syllablePromises: Promise<void>[] = [];
 
       for (const content of lyric.Content) {
-        const leadContext = content.Lead.Syllables.map((s) => s.Text).join("");
+        const leadText = content.Lead.Syllables.map((s) => s.Text).join("");
+        content.IsRTL = containsRTL(leadText);
+
+        const leadContext = leadText;
 
         for (const syllable of content.Lead.Syllables) {
           syllablePromises.push(
@@ -93,7 +98,12 @@ async function addRomanizationToLyrics(
 
         if (content.Background) {
           for (const bg of content.Background) {
-            const bgContext = bg.Syllables.map((s) => s.Text).join("");
+            const bgText = bg.Syllables.map((s) => s.Text).join("");
+            if (!content.IsRTL) {
+              content.IsRTL = containsRTL(bgText);
+            }
+
+            const bgContext = bgText;
 
             for (const syllable of bg.Syllables) {
               syllablePromises.push(

@@ -15,7 +15,7 @@ import { $current_position, $is_active_visible, $jump_to_active, $romanize } fro
 import { SPACE_REGEX, splitGraphemes } from "@/lib/string";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
-import { containsRTL } from "@/language";
+
 const BLUR_MAP = [0, 1, 2, 3, 4, 5];
 
 export type SyllableLyricsProps = {
@@ -37,6 +37,7 @@ type LineEntry =
       end: number;
       oppAligned: boolean;
       isIntro: boolean;
+      isRTL: boolean;
     };
 
 type Word = { Syllables: Syllable[] };
@@ -95,8 +96,7 @@ type LeadRendererProps = {
   romanize: boolean;
   currentPos: number;
   isRTL?: boolean;
-  paddingLeft?: number | string;
-  paddingRight?: number | string;
+  globalPadding: number | string;
 };
 
 function LeadRenderer(props: LeadRendererProps) {
@@ -121,6 +121,9 @@ function LeadRenderer(props: LeadRendererProps) {
 
   const handleClick = () => seekTo(props.vocalPart.StartTime * 1000);
 
+  const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : 0);
+  const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : 0);
+
   return (
     <span
       style={COMMON_STYLES_LINE_LEAD(
@@ -128,8 +131,8 @@ function LeadRenderer(props: LeadRendererProps) {
         !!props.hasBg,
         props.background,
         props.isRTL,
-        props.paddingLeft,
-        props.paddingRight,
+        paddingLeft(),
+        paddingRight(),
       )}
       onClick={handleClick}
       role="button"
@@ -239,6 +242,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
           end: start,
           oppAligned: c.OppositeAligned,
           isIntro: true,
+          isRTL: c.IsRTL,
         });
       }
 
@@ -260,6 +264,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
             end: Math.max(0, nextBounds.start - 100),
             oppAligned: c.OppositeAligned,
             isIntro: false,
+            isRTL: c.IsRTL,
           });
         }
       }
@@ -454,15 +459,14 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     lenis?.resize();
 
     performScroll(true, true);
-    const iId = setInterval(() => performScroll(true, true), 50);
-    const tId = setTimeout(() => clearInterval(iId), 1200);
+    const iId = setInterval(() => performScroll(true, true), 100);
+    const tId = setTimeout(() => clearInterval(iId), 1000);
 
     const handleFocusChange = () => {
       lenis.resize();
       performScroll(false, true);
     };
     window.addEventListener("focus", handleFocusChange);
-    // window.addEventListener("blur", handleFocusChange);
 
     onCleanup(() => {
       ro.disconnect();
@@ -472,7 +476,6 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       $is_active_visible.set(true);
       $jump_to_active.set(null);
       window.removeEventListener("focus", handleFocusChange);
-      // window.removeEventListener("blur", handleFocusChange);
     });
   });
 
@@ -495,7 +498,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
   return (
     <div
-      class="syllable-lyrics"
+      class={"syllable-lyrics"}
       ref={containerRef}
       on:wheel={{ handleEvent: handleUserInteraction, passive: true }}
       on:touchmove={{ handleEvent: handleUserInteraction, passive: true }}
@@ -517,24 +520,9 @@ function SyllableLyrics(props: SyllableLyricsProps) {
             return isTarget;
           });
 
-          const isLineRTL = createMemo(() => {
-            if (entry.type === "interlude") return false;
-            const text = entry.content.Lead.Syllables.map((s) => s.Text).join("");
-            return containsRTL(text);
-          });
-
-          const paddingRight = () => {
-            if (entry.type === "interlude") return 0;
-            const isRtl = isLineRTL();
-            const isOpposite = entry.content.OppositeAligned;
-            return isRtl === isOpposite ? padding() : 0;
-          };
-
-          const paddingLeft = () => {
-            if (entry.type === "interlude") return 0;
-            const isRtl = isLineRTL();
-            const isOpposite = entry.content.OppositeAligned;
-            return isRtl !== isOpposite ? padding() : 0;
+          const isLineRTL = () => {
+            if (entry.type === "interlude") return entry.isRTL;
+            return entry.content.IsRTL;
           };
 
           return (
@@ -557,7 +545,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                   start={entry.start}
                   end={entry.end}
                   currentPos={currentPos()}
-                  oppAligned={entry.oppAligned}
+                  oppAligned={isLineRTL() ? !entry.oppAligned : entry.oppAligned}
+                  rtl={isLineRTL()}
                 />
               ) : (
                 <>
@@ -568,8 +557,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                     romanize={romanize()}
                     currentPos={currentPos()}
                     isRTL={isLineRTL()}
-                    paddingLeft={paddingLeft()}
-                    paddingRight={paddingRight()}
+                    globalPadding={padding()}
                   />
                   <Show when={entry.content.Background}>
                     {(bg) => (
@@ -582,8 +570,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                             romanize={romanize()}
                             currentPos={currentPos()}
                             isRTL={isLineRTL()}
-                            paddingLeft={paddingLeft()}
-                            paddingRight={paddingRight()}
+                            globalPadding={padding()}
                           />
                         )}
                       </For>

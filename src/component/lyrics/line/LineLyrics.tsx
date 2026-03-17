@@ -15,7 +15,6 @@ import { useStore } from "@nanostores/solid";
 import { $current_position, $is_active_visible, $jump_to_active, $romanize } from "@/stores";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
-import { containsRTL } from "@/language";
 
 export type LineLyricsProps = {
   lyrics: LineData;
@@ -36,6 +35,7 @@ type LineEntry =
       end: number;
       oppAligned: boolean;
       isIntro: boolean;
+      isRTL: boolean;
     };
 
 function buildLineEntries(lyrics: LineData): LineEntry[] {
@@ -55,6 +55,7 @@ function buildLineEntries(lyrics: LineData): LineEntry[] {
         end: start,
         oppAligned: c.OppositeAligned,
         isIntro: true,
+        isRTL: c.IsRTL,
       });
     }
 
@@ -71,6 +72,7 @@ function buildLineEntries(lyrics: LineData): LineEntry[] {
           end: next.StartTime * 1000 - 100,
           oppAligned: c.OppositeAligned,
           isIntro: false,
+          isRTL: c.IsRTL,
         });
       }
     }
@@ -274,7 +276,6 @@ export default function LineLyrics(props: LineLyricsProps) {
       performScroll(false, true);
     };
     window.addEventListener("focus", handleFocusChange);
-    // window.addEventListener("blur", handleFocusChange);
 
     onCleanup(() => {
       clearInterval(iId);
@@ -286,7 +287,6 @@ export default function LineLyrics(props: LineLyricsProps) {
       $is_active_visible.set(true);
       $jump_to_active.set(null);
       window.removeEventListener("focus", handleFocusChange);
-      // window.removeEventListener("blur", handleFocusChange);
     });
   });
 
@@ -335,10 +335,15 @@ export default function LineLyrics(props: LineLyricsProps) {
             }
           };
 
+          const isLineRTL = () => {
+            if (entry.type === "interlude") return entry.isRTL;
+            return entry.content.IsRTL;
+          };
+
           if (entry.type === "interlude") {
             return (
               <div
-                class="line-wrapper"
+                class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
                 ref={refCallback}
                 style={{
                   "--blur": blurStyle(),
@@ -351,7 +356,8 @@ export default function LineLyrics(props: LineLyricsProps) {
                   start={entry.start}
                   end={entry.end}
                   currentPos={currentPos()}
-                  oppAligned={entry.oppAligned}
+                  oppAligned={isLineRTL() ? !entry.oppAligned : entry.oppAligned}
+                  rtl={isLineRTL()}
                 />
               </div>
             );
@@ -359,14 +365,23 @@ export default function LineLyrics(props: LineLyricsProps) {
 
           const padding = hasOppAligned() ? "5rem" : undefined;
 
+          const paddingRight = () => {
+            if (!padding) return undefined;
+            const isRtl = isLineRTL();
+            const isOpposite = entry.content.OppositeAligned;
+            return isRtl === isOpposite ? padding : undefined;
+          };
+
+          const paddingLeft = () => {
+            if (!padding) return undefined;
+            const isRtl = isLineRTL();
+            const isOpposite = entry.content.OppositeAligned;
+            return isRtl !== isOpposite ? padding : undefined;
+          };
+
           const displayText = createMemo(() =>
             romanize() ? entry.content.RomanizedText || entry.content.Text : entry.content.Text,
           );
-
-          const isLineRTL = createMemo(() => {
-            const text = displayText();
-            return containsRTL(text);
-          });
 
           const progress = createMemo(() => {
             if (!isActive()) return 0;
@@ -387,8 +402,8 @@ export default function LineLyrics(props: LineLyricsProps) {
                 "--scale": isActive() ? 1.01 : 1,
                 "--opacity": isActive() ? 1 : 0.6,
                 "margin-bottom": "12px",
-                "padding-right": entry.content.OppositeAligned ? undefined : padding,
-                "padding-left": entry.content.OppositeAligned ? padding : undefined,
+                "padding-right": paddingRight(),
+                "padding-left": paddingLeft(),
               }}
             >
               <span
@@ -402,9 +417,15 @@ export default function LineLyrics(props: LineLyricsProps) {
                   "--shadow-alpha": (progress() / 200) * 0.85,
                   position: "relative",
                   display: "inline-block",
-                  "text-align": isLineRTL() ? (entry.content.OppositeAligned ? "left" : "right") : (entry.content.OppositeAligned ? "right" : "left"),
+                  "text-align": isLineRTL()
+                    ? entry.content.OppositeAligned
+                      ? "left"
+                      : "right"
+                    : entry.content.OppositeAligned
+                      ? "right"
+                      : "left",
                   "text-shadow": "0px 0px var(--shadow-blur) rgba(255,255,255,var(--shadow-alpha))",
-                  "background-image": `linear-gradient(${isLineRTL() ? 0 : 180}deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))`,
+                  "background-image": `linear-gradient(180deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))`,
                   "-webkit-background-clip": "text",
                   "-webkit-text-fill-color": "transparent",
                   "background-clip": "text",

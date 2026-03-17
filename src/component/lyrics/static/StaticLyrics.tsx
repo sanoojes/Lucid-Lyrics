@@ -2,7 +2,6 @@ import type { StaticData } from "@/lib/api/types";
 import { $romanize } from "@/stores";
 import { useStore } from "@nanostores/solid";
 import { For, type Component, createMemo } from "solid-js";
-import { containsRTL } from "@/language";
 
 type LineLyricsProps = { lyrics: StaticData };
 
@@ -15,7 +14,7 @@ const StaticLyrics: Component<LineLyricsProps> = (props) => {
           const text = createMemo(() =>
             romanize() ? (item.RomanizedText ?? item.Text) : item.Text,
           );
-          const isLineRTL = createMemo(() => containsRTL(text()));
+          const isLineRTL = createMemo(() => item.IsRTL);
           return (
             <div class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}>
               {text()}

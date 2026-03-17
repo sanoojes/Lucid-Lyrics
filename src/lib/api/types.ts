@@ -78,6 +78,7 @@ export type VocalPart = {
 
 export type AlignedContent = {
   OppositeAligned: boolean;
+  IsRTL: boolean;
 };
 
 /* Syllable lyrics */
@@ -122,6 +123,7 @@ export type LineData = {
 /* Static lyrics */
 export type StaticLine = {
   Text: string;
+  IsRTL: boolean;
 } & RomanizedText;
 
 export type StaticData = {

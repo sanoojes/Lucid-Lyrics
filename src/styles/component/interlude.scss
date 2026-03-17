@@ -25,6 +25,11 @@
     justify-content: flex-end;
     transform-origin: right center;
   }
+
+  &.rtl.opp-aligned {
+    justify-content: flex-start;
+    transform-origin: left center;
+  }
 }
 
 .interlude-dot {

@@ -6,6 +6,7 @@ type InterludeIndicatorProps = {
   end: number;
   currentPos: number;
   oppAligned?: boolean;
+  rtl?: boolean;
 };
 
 export function Interlude(props: InterludeIndicatorProps) {
@@ -22,7 +23,7 @@ export function Interlude(props: InterludeIndicatorProps) {
   return (
     <div
       class="interlude-indicator"
-      classList={{ active: isActive(), "opp-aligned": props.oppAligned }}
+      classList={{ active: isActive(), "opp-aligned": props.oppAligned, rtl: props.rtl }}
     >
       <For each={[0, 1, 2]}>
         {(index) => {
