@@ -2,10 +2,17 @@ import { useStore } from "@nanostores/solid";
 import { For } from "solid-js";
 import { SettingsRow } from "@/component/settings/Row";
 import { $providers } from "@/stores/lyrics";
-import { $page_state, setHideScrollbar, setShowCredits } from "@/stores/page";
+import {
+  $page_state,
+  setHideScrollbar,
+  setShowCredits,
+  setShowControls,
+  setFloatingPosition,
+} from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
 import { GripVertical } from "lucide-solid";
 import { Toggle } from "@/component/ui/Toggle";
+import { Select } from "@/component/ui/Select";
 import { t } from "@/i18n";
 import type { LyricsProviders } from "@/constants";
 
@@ -66,6 +73,22 @@ function LyricsSettings() {
       </SettingsRow>
       <SettingsRow label={t("lyrics.hideScrollbar")} description={t("lyrics.hideScrollbarDesc")}>
         <Toggle checked={pageState().hideScrollbar} onChange={setHideScrollbar} />
+      </SettingsRow>
+      <SettingsRow label={t("lyrics.showControls")} description={t("lyrics.showControlsDesc")}>
+        <Toggle checked={pageState().showControls} onChange={setShowControls} />
+      </SettingsRow>
+      <SettingsRow
+        label={t("lyrics.floatingPosition")}
+        description={t("lyrics.floatingPositionDesc")}
+      >
+        <Select
+          value={pageState().floatingPosition}
+          onChange={(v) => setFloatingPosition(v as "top" | "bottom")}
+          options={[
+            { label: t("position.bottom"), value: "bottom" },
+            { label: t("position.top"), value: "top" },
+          ]}
+        />
       </SettingsRow>
       <SettingsRow
         label={t("lyrics.providerOrder")}

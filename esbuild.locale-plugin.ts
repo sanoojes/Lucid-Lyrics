@@ -35,8 +35,6 @@ export function localePlugin(options: LocalePluginOptions): Plugin {
       const outDir = path.join(_outdir, "locales");
 
       build.onEnd(async () => {
-        const start = performance.now();
-
         if (!fs.existsSync(outDir)) {
           fs.mkdirSync(outDir, { recursive: true });
         }

@@ -212,7 +212,7 @@ $floating-transition:
     padding: 0 4cqw;
   }
 
-  .lucid-contents:has(.widget-area--hidden) & {
+  &.widget-hidden {
     .lenis-content {
       padding: 0 15cqw;
     }
@@ -225,9 +225,9 @@ $floating-transition:
       padding: 0 10cqw;
     }
 
-    .lucid-contents:not(.widget-area--hidden) & {
+    &.widget-hidden {
       .lenis-content {
-        padding: 0 10cqw;
+        padding: 0 14cqw;
       }
     }
   }
@@ -256,18 +256,24 @@ $floating-transition:
   }
 }
 
-.floating-hover-target {
-  height: 2rem;
-  width: 60%;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%);
+// .floating-hover-target {
+//   height: 2rem;
+//   width: 60%;
+//   position: absolute;
+//   bottom: 0;
+//   left: 50%;
+//   transform: translate(-50%);
+//   z-index: 5;
 
-  @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
-    width: 100%;
-  }
-}
+//   &.on-top {
+//     bottom: unset;
+//     top: 0;
+//   }
+
+//   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
+//     width: 100%;
+//   }
+// }
 
 .floating-area {
   position: absolute;
@@ -303,6 +309,18 @@ $floating-transition:
     pointer-events: all;
   }
 
+  &.on-top {
+    bottom: unset;
+    top: max(2.5cqh, 1rem);
+
+    transform: translate3d(-50%, -20px, 0);
+
+    #lucid-page:hover &,
+    .lucid-contents > .floating-hover-target:hover + & {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
   &--hidden {
     display: none;
   }
@@ -319,9 +337,12 @@ $floating-transition:
     bottom: v.$space-md;
     max-width: calc(100% - v.$space-3xl);
     padding: v.$space-sm v.$space-lg;
-    opacity: 1;
-    transform: translate3d(-50%, 0, 0);
     pointer-events: all;
+
+    &.on-top {
+      bottom: unset;
+      top: v.$space-md;
+    }
   }
 }
 

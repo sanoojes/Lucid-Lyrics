@@ -30,10 +30,6 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-function formatTime(ms: number): string {
-  return `${ms.toFixed(0)}ms`;
-}
-
 interface CopyPackagesPluginOptions {
   inputDir: string;
 }

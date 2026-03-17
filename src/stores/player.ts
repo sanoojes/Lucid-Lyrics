@@ -100,14 +100,7 @@ interface PlayerOrigin {
   };
 }
 onMount($player_states, () => {
-  const waitForOrigin = async () => {
-    while (!Spicetify.Player?.origin?._events) {
-      await new Promise((r) => setTimeout(r, 100));
-    }
-    return Spicetify.Player.origin;
-  };
-
-  let origin: PlayerOrigin;
+  let _events: PlayerOrigin["_events"];
 
   const listener = ({ data }: PlayerEvent) => {
     if (data.repeat !== undefined || data.shuffle !== undefined) {
@@ -123,14 +116,14 @@ onMount($player_states, () => {
   };
 
   const setup = async () => {
-    origin = await waitForOrigin();
-    origin._events.addListener("update", listener);
+    _events = await wait(() => Spicetify.Player?.origin?._events);
+    _events.addListener("update", listener);
   };
 
   setup();
 
   return () => {
-    origin?._events?.removeListener("update", listener);
+    _events?.removeListener("update", listener);
   };
 });
 

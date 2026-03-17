@@ -109,8 +109,12 @@ export type Dict = {
   "settings.resetDesc": string;
   "settings.resetButton": string;
   "settings.resetConfirm": string;
+  "settings.resetting": string;
+  "settings.resettingDesc": string;
   "settings.resetComplete": string;
   "settings.resetCompleteDesc": string;
+  "settings.resetFailed": string;
+  "settings.resetFailedDesc": string;
   "advanced.title": string;
   "advanced.devMode": string;
   "advanced.devModeDesc": string;
@@ -134,6 +138,12 @@ export type Dict = {
   "lyrics.showCreditsDesc": string;
   "lyrics.hideScrollbar": string;
   "lyrics.hideScrollbarDesc": string;
+  "lyrics.showControls": string;
+  "lyrics.showControlsDesc": string;
+  "lyrics.floatingPosition": string;
+  "lyrics.floatingPositionDesc": string;
+  "position.top": string;
+  "position.bottom": string;
   "ttml.title": string;
   "ttml.parseError": string;
   "ttml.overwriteSuccess": string;

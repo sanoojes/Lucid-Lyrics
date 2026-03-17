@@ -49,6 +49,8 @@ export const DEFAULT_PAGE_STATE = {
   romanize: false,
   showCredits: true,
   hideScrollbar: false,
+  showControls: true,
+  floatingPosition: "bottom",
 } satisfies PageState;
 
 export const DEFAULT_WIDGET_STATE = {

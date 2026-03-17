@@ -151,7 +151,10 @@ function LeadRenderer(props: LeadRendererProps) {
 
                 return (
                   <span
-                    class={`syllable${isTrailing ? " trailing-whitespace" : ""}`}
+                    class="syllable"
+                    classList={{
+                      "trailing-whitespace": isTrailing,
+                    }}
                     style={{ display: "inline-block", position: "relative" }}
                   >
                     <For each={splitText()}>
@@ -544,7 +547,10 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
           return (
             <div
-              class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
+              class="line-wrapper"
+              classList={{
+                rtl: isLineRTL(),
+              }}
               ref={(el) => {
                 if (!el) return;
                 elementToIndex.set(el, entry.index);

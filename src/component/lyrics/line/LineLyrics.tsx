@@ -336,7 +336,10 @@ export default function LineLyrics(props: LineLyricsProps) {
           if (entry.type === "interlude") {
             return (
               <div
-                class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
+                class={"line-wrapper"}
+                classList={{
+                  rtl: isLineRTL(),
+                }}
                 ref={(el) => {
                   if (!el) return;
                   elementToIndex.set(el, entry.index);
@@ -392,7 +395,10 @@ export default function LineLyrics(props: LineLyricsProps) {
 
           return (
             <div
-              class={`line-wrapper${isLineRTL() ? " rtl" : ""}`}
+              class="line-wrapper"
+              classList={{
+                rtl: isLineRTL(),
+              }}
               ref={(el) => {
                 if (!el) return;
                 elementToIndex.set(el, entry.index);

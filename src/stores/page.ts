@@ -8,6 +8,8 @@ export type PageState = {
   romanize: boolean;
   showCredits: boolean;
   hideScrollbar: boolean;
+  showControls: boolean;
+  floatingPosition: "top" | "bottom";
 };
 export const $page_state = persistentJSON<PageState>(getName("page-state"), DEFAULT_PAGE_STATE);
 
@@ -32,6 +34,14 @@ export function setShowCredits(showCredits: boolean) {
 
 export function setHideScrollbar(hideScrollbar: boolean) {
   updatePageState((state) => ({ ...state, hideScrollbar }));
+}
+
+export function setShowControls(showControls: boolean) {
+  updatePageState((state) => ({ ...state, showControls }));
+}
+
+export function setFloatingPosition(floatingPosition: "top" | "bottom") {
+  updatePageState((state) => ({ ...state, floatingPosition }));
 }
 
 export function toggleWidget() {
