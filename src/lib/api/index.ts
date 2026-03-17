@@ -7,10 +7,10 @@ import { getModule } from "@/lib/dom/load";
 import { $providers } from "@/stores";
 import { lyricsStore } from "@/stores/idb";
 import { setStorageStats } from "@/stores/storage";
+import { $cache_settings } from "@/stores/dev";
 import type { LyricsProviders } from "@/constants";
 
 const log = createLogger("api:main");
-const CACHE_TTL_DAYS = 7;
 const STATS_KEY = "__cache_stats__";
 
 interface StorageStats {
@@ -209,7 +209,8 @@ export class LyricsAPI {
   }
 
   private async _saveToCache(cacheKey: string, data: Lyrics): Promise<void> {
-    const expiry = Date.now() + CACHE_TTL_DAYS * 24 * 60 * 60 * 1000;
+    const ttlDays = $cache_settings.get().ttlDays;
+    const expiry = Date.now() + ttlDays * 24 * 60 * 60 * 1000;
     try {
       const existing = await get<CachedLyrics>(cacheKey, lyricsStore);
       const jsonString = JSON.stringify(data);

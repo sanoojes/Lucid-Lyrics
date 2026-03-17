@@ -126,6 +126,8 @@ export type Dict = {
   "advanced.entries": string;
   "advanced.clearCacheSuccess": string;
   "advanced.clearCacheError": string;
+  "advanced.cacheTTL": string;
+  "advanced.cacheTTLDesc": string;
   "lyrics.providerOrder": string;
   "lyrics.providerOrderDesc": string;
   "lyrics.showCredits": string;

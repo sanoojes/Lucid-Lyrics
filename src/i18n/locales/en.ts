@@ -127,6 +127,8 @@ export const dict: Dict = {
   "advanced.entries": "Entries",
   "advanced.clearCacheSuccess": "Cleared Lyrics Cache",
   "advanced.clearCacheError": "Failed to clear lyrics cache",
+  "advanced.cacheTTL": "Cache Duration",
+  "advanced.cacheTTLDesc": "How long to keep lyrics cached (in days)",
   "player.scrollToActive": "Sync",
   "player.scrollIntoView": "Scroll into view",
   "lyrics.providerOrder": "Provider Order",

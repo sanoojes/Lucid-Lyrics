@@ -1,5 +1,6 @@
 import type { LyricsProviders } from "@/constants";
 import type { BackgroundState, PageState, WidgetState } from "@/stores";
+import type { CacheSettings } from "@/stores/dev";
 
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
@@ -57,3 +58,7 @@ export const DEFAULT_WIDGET_STATE = {
   hideArtist: false,
   hideAlbum: true,
 } satisfies WidgetState;
+
+export const DEFAULT_CACHE_SETTINGS: CacheSettings = {
+  ttlDays: 10,
+};

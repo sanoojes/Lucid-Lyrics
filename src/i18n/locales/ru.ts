@@ -127,6 +127,8 @@ export const dict: Dict = {
   "advanced.entries": "Записей",
   "advanced.clearCacheSuccess": "Кэш текстов очищен",
   "advanced.clearCacheError": "Не удалось очистить кэш текстов",
+  "advanced.cacheTTL": "Длительность кэша",
+  "advanced.cacheTTLDesc": "Как долго хранить тексты в кэше (в днях)",
   "player.scrollToActive": "Sync",
   "player.scrollIntoView": "Прокрутить в видимую область",
   "lyrics.providerOrder": "Порядок Поставщиков",
