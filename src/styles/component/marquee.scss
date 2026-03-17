@@ -14,12 +14,12 @@
     transparent
   );
 
-  &:hover .l-marquee--wrapper {
+  &:hover &--wrapper {
     animation-play-state: paused;
   }
 
   &--wrapper {
-    display: inline-flex;
+    display: inline-block;
     padding-inline: var(--left-pad);
     white-space: nowrap;
     transform: translateX(0);

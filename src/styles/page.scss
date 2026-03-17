@@ -369,6 +369,12 @@ $floating-transition:
   }
 }
 
+.static-lyrics {
+  .line-wrapper {
+    --opacity: 1;
+  }
+}
+
 // .lyrics-area {
 //   &:hover {
 //     .line-wrapper {
