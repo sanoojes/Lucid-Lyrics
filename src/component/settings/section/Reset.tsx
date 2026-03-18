@@ -8,7 +8,7 @@ import { showAlert } from "@/lib/modal";
 
 function ResetSettings() {
   const handleReset = () => {
-    showAlert(t("settings.resetConfirm"), ()=>resetAllConfig());
+    showAlert(t("settings.resetConfirm"), () => resetAllConfig());
   };
 
   return (

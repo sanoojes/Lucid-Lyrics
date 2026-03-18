@@ -6,7 +6,7 @@ import { toast } from "solid-sonner";
 import NPVBackground from "@/component/ui/NPVBackground";
 import NPVCard from "@/component/ui/NPVCard";
 import { createLogger } from "@/utils/logger";
-import {t} from "@/i18n"
+import { t } from "@/i18n";
 
 const log = createLogger("npv");
 
@@ -35,8 +35,11 @@ export function setupNPV() {
       for (const entry of entries) {
         if (entry.target === el) {
           const { width, height } = entry.contentRect;
-          (el as HTMLElement).style.setProperty("--npv-width", `${width??window.innerWidth}px`);
-          (el as HTMLElement).style.setProperty("--npv-height", `${height??window.innerHeight}px`);
+          (el as HTMLElement).style.setProperty("--npv-width", `${width ?? window.innerWidth}px`);
+          (el as HTMLElement).style.setProperty(
+            "--npv-height",
+            `${height ?? window.innerHeight}px`,
+          );
         }
       }
     });

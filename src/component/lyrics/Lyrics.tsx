@@ -51,7 +51,7 @@ function Lyrics(props: LyricsProps) {
 
   return (
     <SolidLenis
-      class={`lyrics-area${props.widgetHidden?" widget-hidden":""}`}
+      class={`lyrics-area${props.widgetHidden ? " widget-hidden" : ""}`}
       options={{
         lerp: 0.08,
       }}
