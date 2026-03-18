@@ -480,6 +480,9 @@ $floating-transition:
   & {
     overflow: hidden;
     box-shadow: var(--shadow-glass-large) !important;
+  }
+
+  .player-floating & {
     padding-top: v.$space-md;
     padding-bottom: calc(var(--player-height) + v.$space-md);
   }
@@ -492,7 +495,7 @@ $floating-transition:
     border: none;
     box-shadow: var(--shadow-glass, var(--shadow-glass-large));
 
-    &.on-bottom {
+    body.player-floating &.on-bottom {
       bottom: calc(var(--player-height) + v.$space-md);
     }
   }
@@ -501,6 +504,9 @@ $floating-transition:
 .has-lucid-theme {
   & {
     overflow: hidden;
+  }
+
+  .player-floating & {
     padding-top: v.$space-md;
     padding-bottom: calc(var(--player-height) + v.$space-md);
   }
@@ -511,7 +517,7 @@ $floating-transition:
   .floating-area {
     border: var(--default-border);
 
-    &.on-bottom {
+    body.player-floating &.on-bottom {
       bottom: calc(var(--player-height) + v.$space-md);
     }
   }
