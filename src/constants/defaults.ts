@@ -67,7 +67,7 @@ export const DEFAULT_WIDGET_STATE = {
 } satisfies WidgetState;
 
 export const DEFAULT_CACHE_SETTINGS: CacheSettings = {
-  ttlDays: 10,
+  ttlDays: 14,
 };
 
 export const DEFAULT_NPV_SETTINGS: NpvSettingsState = {
