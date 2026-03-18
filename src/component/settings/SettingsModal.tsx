@@ -3,7 +3,7 @@ import { useDialog } from "@/lib/modal/component/Dialog";
 import { showModal } from "@/lib/modal";
 import { X, Search } from "lucide-solid";
 import { Button } from "@/component/ui/Button";
-import { createSignal, Show } from "solid-js";
+import { createEffect, createSignal, on, Show } from "solid-js";
 import { SettingsContext } from "@/component/settings/context";
 import WidgetSettings from "@/component/settings/section/Widget";
 import NowPlayingViewSettings from "@/component/settings/section/NowPlayingView";
@@ -22,6 +22,18 @@ export function SettingsModal() {
   const { close } = useDialog();
   const [searchQuery, setSearchQuery] = createSignal("");
 
+  createEffect(
+    on(
+      () => inputRef,
+      () => {
+        setTimeout(() => {
+          if (inputRef) {
+            inputRef.focus();
+          }
+        });
+      },
+    ),
+  );
   return (
     <div class="settings-modal">
       <header>

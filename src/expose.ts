@@ -7,6 +7,7 @@ import {
   setHideScrollbar,
   toggleRomanize,
   toggleWidget,
+  $npv_state,
 } from "@/stores";
 import { $developer_mode, setDevMode, toggleDevMode } from "@/stores/dev";
 import { resetAllConfig } from "@/stores/reset";
@@ -26,6 +27,7 @@ function exposeGlobals() {
       $page_state,
       $background,
       $providers,
+      $npv_state,
     },
   };
 }

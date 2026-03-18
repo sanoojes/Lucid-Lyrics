@@ -191,8 +191,8 @@ $floating-transition:
   $mask-image: linear-gradient(
     180deg,
     transparent 0,
-    #000 48px,
-    #000 calc(100% - 48px),
+    #000 var(--top-mask-size, 48px),
+    #000 calc(100% - var(--bottom-mask-size, 48px)),
     transparent 100%
   );
   -webkit-mask-image: $mask-image;
@@ -293,9 +293,8 @@ $floating-transition:
   justify-content: center;
 
   width: auto;
-  min-width: 300px;
   max-width: 70vw;
-  padding: v.$space-md v.$space-2xl;
+  padding: v.$space-md;
 
   background: v.$glass-bg;
   border: 1px solid v.$glass-bd;
@@ -304,6 +303,18 @@ $floating-transition:
   backdrop-filter: blur(12px) brightness(0.9);
 
   transition: $floating-transition;
+
+  &--hidden {
+    display: none;
+  }
+
+  .separator {
+    width: 1px;
+    min-width: 1px;
+    height: v.$space-2xl;
+    background: v.$glass-bd;
+    margin: v.$space-sm 0;
+  }
 
   &:hover,
   #lucid-page:hover &,
@@ -326,16 +337,52 @@ $floating-transition:
     }
   }
 
-  &--hidden {
-    display: none;
+  &.on-right,
+  &.on-left {
+    bottom: unset;
+    top: 50%;
+    flex-direction: column;
+    width: 100%;
+    min-width: fit-content;
+    max-width: fit-content;
+    padding: v.$space-md;
+
+    .controls {
+      flex-direction: column;
+      &--right,
+      &--left {
+        flex-direction: column;
+      }
+    }
+
+    .separator {
+      width: 100%;
+      min-width: 100%;
+      height: 1px;
+      margin: v.$space-sm 0;
+    }
   }
 
-  .separator {
-    width: 1px;
-    min-width: 1px;
-    height: v.$space-2xl;
-    background: v.$glass-bd;
-    margin: 0 4px;
+  &.on-right {
+    left: unset;
+    right: 0;
+    transform: translate3d(100%, -50%, 0);
+
+    &:hover,
+    #lucid-page:hover &,
+    .lucid-contents > .floating-hover-target:hover + & {
+      transform: translate3d(-#{v.$space-lg}, -50%, 0);
+    }
+  }
+  &.on-left {
+    left: 0;
+    right: unset;
+    transform: translate3d(-100%, -50%, 0);
+    &:hover,
+    #lucid-page:hover &,
+    .lucid-contents > .floating-hover-target:hover + & {
+      transform: translate3d(#{v.$space-lg}, -50%, 0);
+    }
   }
 
   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {

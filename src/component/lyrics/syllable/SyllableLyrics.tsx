@@ -11,7 +11,8 @@ import {
 } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $is_active_visible, $jump_to_active, $romanize } from "@/stores";
+import { $current_position, $romanize } from "@/stores";
+import { useRenderer } from "@/context/LyricsRenderer";
 import { SPACE_REGEX, splitGraphemes } from "@/lib/string";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
@@ -225,6 +226,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
   const currentPos = useStore($current_position);
   const romanize = useStore($romanize);
+  const { setIsActiveVisible, setJumpToActive } = useRenderer();
   const getLenis = useLenis();
   const getContentRef = useLenisContent();
   const lineEntries = createMemo((): LineEntry[] => {
@@ -317,12 +319,13 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
     if (!containerRef) return;
     const style = getComputedStyle(containerRef);
-    const isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0", 10);
+    const isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0");
+    const isNPV = Number.parseInt(style.getPropertyValue("--is-npv") || "0");
     const lenis = getLenis();
     if (!lenis?.rootElement) return;
 
     const height = lenis.rootElement.clientHeight;
-    const off = -(isMobile && !isWidgetHidden ? 48 : height / 2.7);
+    const off = -(isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7);
     setScrollOffset(off);
   }
 
@@ -398,7 +401,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
   createEffect(() => {
     const activeVisible = visibleElements().has(lastActiveIndex());
-    $is_active_visible.set(activeVisible);
+    setIsActiveVisible(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
       if (activeVisible) {
@@ -462,7 +465,10 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   });
 
   onMount(() => {
-    $jump_to_active.set(() => performScroll(false, true));
+    setJumpToActive(() => () => {
+      getLenis().resize();
+      performScroll(false, true);
+    });
 
     const contentRef = getContentRef();
     const lenis = getLenis();
@@ -499,8 +505,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       }
       ro.disconnect();
       clearTimeout(scrollTimeout);
-      $is_active_visible.set(true);
-      $jump_to_active.set(null);
+      setIsActiveVisible(true);
+      setJumpToActive(null);
     });
   });
 
@@ -522,7 +528,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   };
 
   return (
-    <div class={"syllable-lyrics"} ref={containerRef}>
+    <div class="syllable-lyrics" ref={containerRef}>
       <For each={lineEntries()}>
         {(entry) => {
           const padding = () => (hasOppAligned() ? "5rem" : 0);

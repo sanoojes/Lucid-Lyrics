@@ -1,6 +1,5 @@
-import { $is_active_visible, $jump_to_active } from "@/stores";
+import { useRenderer } from "@/context/LyricsRenderer";
 import { Button } from "@/component/ui/Button";
-import { useStore } from "@nanostores/solid";
 import { LocateFixed } from "lucide-solid";
 import { Show, type Component } from "solid-js";
 import { t } from "@/i18n";
@@ -10,22 +9,22 @@ type Props = {
 };
 
 const ScrollToActiveButton: Component<Props> = (props) => {
-  const isActiveVisible = useStore($is_active_visible);
+  const renderer = useRenderer();
 
   const title = t("player.scrollToActive");
 
   return (
     <Button
       onClick={() => {
-        const jump = $jump_to_active.get();
+        const jump = renderer.jumpToActive();
         if (jump) jump();
       }}
       class="jump-to-active-btn"
       classList={{
-        "hide-btn": isActiveVisible(),
+        "hide-btn": renderer.isActiveVisible(),
       }}
       variant="ghost"
-      disabled={isActiveVisible()}
+      disabled={renderer.isActiveVisible()}
       title={title}
       aria-label={title}
     >

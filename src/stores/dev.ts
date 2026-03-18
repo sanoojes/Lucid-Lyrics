@@ -1,5 +1,5 @@
 import { persistentAtom } from "@nanostores/persistent";
-import { persistentJSON } from "@nanostores/persistent";
+import { persistentJSON } from "@/lib/nanostores";
 import { getName } from "@/stores/persist";
 import { DEFAULT_CACHE_SETTINGS } from "@/constants";
 

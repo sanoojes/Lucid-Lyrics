@@ -191,13 +191,6 @@ function BackgroundSettings() {
             </SettingsRow>
           )}
         </For>
-
-        <SettingsRow label={t("bg.autoPause")} description={t("bg.pauseAnimation")}>
-          <Toggle
-            checked={bg().options.animated.autoPause}
-            onChange={(v) => updateAnimatedOptions({ autoPause: v })}
-          />
-        </SettingsRow>
       </Show>
     </SettingsSection>
   );

@@ -8,6 +8,7 @@ import {
   setShowCredits,
   setShowControls,
   setFloatingPosition,
+  type Positions,
 } from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
 import { GripVertical } from "lucide-solid";
@@ -83,10 +84,12 @@ function LyricsSettings() {
       >
         <Select
           value={pageState().floatingPosition}
-          onChange={(v) => setFloatingPosition(v as "top" | "bottom")}
+          onChange={(v) => setFloatingPosition(v as Positions)}
           options={[
             { label: t("position.bottom"), value: "bottom" },
             { label: t("position.top"), value: "top" },
+            { label: t("position.left"), value: "left" },
+            { label: t("position.right"), value: "right" },
           ]}
         />
       </SettingsRow>

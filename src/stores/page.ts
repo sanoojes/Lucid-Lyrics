@@ -1,7 +1,9 @@
-import { persistentJSON } from "@nanostores/persistent";
+import { persistentJSON } from "@/lib/nanostores";
 import { getName } from "@/stores/persist";
 import { computed } from "nanostores";
 import { DEFAULT_PAGE_STATE } from "@/constants";
+
+export type Positions = "top" | "bottom" | "left" | "right";
 
 export type PageState = {
   widget: "hidden" | "show";
@@ -9,10 +11,9 @@ export type PageState = {
   showCredits: boolean;
   hideScrollbar: boolean;
   showControls: boolean;
-  floatingPosition: "top" | "bottom";
+  floatingPosition: Positions;
 };
 export const $page_state = persistentJSON<PageState>(getName("page-state"), DEFAULT_PAGE_STATE);
-
 export function resetPageState() {
   $page_state.set(DEFAULT_PAGE_STATE);
 }
@@ -40,7 +41,7 @@ export function setShowControls(showControls: boolean) {
   updatePageState((state) => ({ ...state, showControls }));
 }
 
-export function setFloatingPosition(floatingPosition: "top" | "bottom") {
+export function setFloatingPosition(floatingPosition: Positions) {
   updatePageState((state) => ({ ...state, floatingPosition }));
 }
 

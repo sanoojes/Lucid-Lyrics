@@ -13,25 +13,115 @@
     content: none;
     visibility: hidden;
   }
+  .main-nowPlayingView-nowPlayingWidget {
+    order: 1;
+  }
+  .main-nowPlayingView-section {
+    order: 3;
+  }
+  .lyrics-npv-card {
+    order: 2;
+    padding: v.$space-base v.$space-lg;
+
+    &.is-open {
+      .npv-card-header {
+        padding-bottom: v.$space-md;
+      }
+    }
+    .lyrics-area {
+      --is-mobile: 1;
+      --top-mask-size: 8px;
+      --bottom-mask-size: 32px;
+
+      --top-pad: max(calc((var(--npv-height) * var(--npv-height-percent)) / 10), 8px);
+      --bottom-pad: max(calc((var(--npv-height) * var(--npv-height-percent)) / 1.75), 64px);
+
+      $content-padding: 0 4cqw;
+
+      .lenis-content {
+        padding: $content-padding;
+      }
+
+      &.widget-hidden {
+        .lenis-content {
+          padding: $content-padding;
+        }
+      }
+    }
+  }
+
+  .npv-card-header {
+    &.auto-hide {
+      transform: translate3d(-100%, 0, 0);
+      opacity: 0;
+      visibility: hidden;
+
+      transition:
+        transform 0.3s ease,
+        opacity 0.3s ease,
+        visibility 0.3s allow-discrete;
+
+      @starting-style {
+        transform: translate3d(-100%, 0, 0);
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .lyrics-npv-card:hover & {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  .lucide {
+    transition: transform 0.3s ease;
+  }
+  .rotate-icon {
+    transform: rotate(180deg);
+  }
+  .npv-lyrics-root {
+    --npv-height-percent: 0.4;
+    height: calc(var(--npv-height) * var(--npv-height-percent));
+    width: 100%;
+    max-height: 100vh;
+  }
 }
 
 .use-lucid-lyrics-npv {
-  .Root__right-sidebar,
-  #Desktop_PanelContainer_Id {
+  .Root__right-sidebar {
+    .RDlmt3TnmiGDFq273xIf,
+    .Q4LnnBmyoXc5ojyZzR5V,
     .artist-artistOnTour-date,
     .main-nowPlayingView-section,
     .main-nowPlayingView-credits {
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: v.$r-md;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      overflow: hidden;
 
       & > button {
         background-color: transparent !important;
       }
     }
+
+    .Q4e5h5G6qGXM2uKkgUyo {
+      margin: 0 6px;
+      border-radius: v.$r-md;
+      &:hover,
+      &:hover::after {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+      }
+    }
+    .Box-group-listRow-isInteractive-minBlockSize_56px {
+      &:hover::after {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+      }
+    }
+
     .main-nowPlayingView-section {
       &.tB3JVNYttFlVC_oYVfjI {
+        margin-inline: 0;
         .main-nowPlayingView-sectionHeader {
           padding: v.$space-sm v.$space-md;
         }
@@ -64,13 +154,14 @@
     }
 
     .zAvxP9ntNk6SsomFXWUv,
-  div[data-testid="NPV_Panel_OpenDiv"],
-  .cZCuJDjrGA2QMXja_Sua /* Content Wrapper */ {
+    div[role="group"].DE2HfkFPaJgt9ZUgVcqP,
+    div[data-testid="NPV_Panel_OpenDiv"],
+    .cZCuJDjrGA2QMXja_Sua /* Content Wrapper */ {
       padding-top: 68px;
     }
 
     .xjf0Pj3YnoegOkJUpaPS,
-  .W3E0IT3_STcazjTeyOJa /* Header */ {
+    .W3E0IT3_STcazjTeyOJa /* Header */ {
       position: absolute;
       top: 0;
       left: 0;
@@ -117,7 +208,7 @@
       }
 
       &.EnViFhuIR5WVeEopJHu3::before,
-    &.mdMUqcSHFw1lZIcYEblu::before /* Header - box shadow */ {
+      &.mdMUqcSHFw1lZIcYEblu::before /* Header - box shadow */ {
         background-color: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(2rem) saturate(1.5) brightness(0.75);
       }

@@ -1,4 +1,4 @@
-import { persistentJSON } from "@nanostores/persistent";
+import { persistentJSON } from "@/lib/nanostores";
 import { computed } from "nanostores";
 import { getName } from "@/stores/persist";
 import { DEFAULT_BACKGROUND_STATE } from "@/constants";
@@ -136,7 +136,6 @@ export type BackgroundState = {
       scale: number;
       customUrl?: string;
       filter: CSSFilter;
-      autoPause: boolean;
     };
   };
 };

@@ -1,11 +1,6 @@
 import type { LyricsProviders } from "@/constants";
-import type { BackgroundState, PageState, WidgetState } from "@/stores";
+import type { BackgroundState, NpvSettingsState, PageState, WidgetState } from "@/stores";
 import type { CacheSettings } from "@/stores/dev";
-
-type NpvSettingsState = {
-  hideBackground: boolean;
-  useStyles: boolean;
-};
 
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
@@ -34,7 +29,6 @@ export const DEFAULT_BACKGROUND_STATE = {
     animated: {
       mode: "player",
       scale: 130,
-      autoPause: true,
       customUrl,
       filter: {
         blur: 48,
@@ -66,11 +60,15 @@ export const DEFAULT_WIDGET_STATE = {
   hideAlbum: true,
 } satisfies WidgetState;
 
-export const DEFAULT_CACHE_SETTINGS: CacheSettings = {
+export const DEFAULT_CACHE_SETTINGS = {
   ttlDays: 14,
-};
+} satisfies CacheSettings;
 
-export const DEFAULT_NPV_SETTINGS: NpvSettingsState = {
+export const DEFAULT_NPV_SETTINGS = {
   hideBackground: false,
   useStyles: true,
-};
+  showLyrics: true,
+  cardHeightPercent: 37,
+  cardMinHeight: 400,
+  autoHideCardHeader: false,
+} satisfies NpvSettingsState;

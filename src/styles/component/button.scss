@@ -44,26 +44,36 @@
   }
 
   &--default {
-    height: v.$btn-h-base;
+    height: v.$btn-size-base;
     padding: 0 v.$space-lg;
     font-size: v.$fs-sm;
   }
 
   &--sm {
-    height: v.$btn-h-sm;
+    height: v.$btn-size-sm;
     padding: 0 v.$space-md;
     font-size: v.$fs-xs;
   }
 
   &--lg {
-    height: v.$btn-h-lg;
+    height: v.$btn-size-lg;
     padding: 0 28px;
   }
 
-  &--icon {
-    width: var(--btn-height, #{v.$btn-h-base});
-    height: var(--btn-height, #{v.$btn-h-base});
+  &--icon,
+  &--icon-sm {
+    width: var(--btn-size, #{v.$btn-size-base});
+    height: var(--btn-size, #{v.$btn-size-base});
     padding: var(--icon-padding, #{v.$space-xs});
+  }
+  &--icon-sm {
+    --btn-size: #{v.$btn-size-sm};
+
+    .lucide {
+      $size: 20px;
+      height: var(--lucide-size, $size);
+      width: var(--lucide-size, $size);
+    }
   }
 
   &--primary {

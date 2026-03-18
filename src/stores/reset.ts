@@ -1,10 +1,12 @@
 import { clear } from "idb-keyval";
 import { imageStore, lyricsStore, moduleStore } from "@/stores/idb";
-
-import { resetBackground } from "@/stores/background";
-import { resetWidget } from "@/stores/widget";
-import { resetPageState } from "@/stores/page";
-import { resetProviders } from "@/stores/lyrics";
+import {
+  resetBackground,
+  resetWidget,
+  resetPageState,
+  resetProviders,
+  resetNpvSettings,
+} from "@/stores";
 import { resetLocale, t } from "@/i18n";
 import { toast } from "@/lib/sonner";
 import { closeAllModals } from "@/lib/modal";
@@ -21,6 +23,7 @@ export async function resetAllConfig() {
   try {
     resetBackground();
     resetWidget();
+    resetNpvSettings();
     resetPageState();
     resetProviders();
     resetLocale();

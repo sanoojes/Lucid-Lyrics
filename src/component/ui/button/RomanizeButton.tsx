@@ -6,8 +6,10 @@ import LetterA from "@/component/icon/LetterA";
 import { toggleRomanize, $romanize } from "@/stores";
 import { $has_romanized } from "@/stores";
 import { t } from "@/i18n";
-
-const RomanizeButton = () => {
+type RomanizeButtonProps = {
+  isSmall?: boolean;
+};
+const RomanizeButton = (props: RomanizeButtonProps) => {
   const hasRomanized = useStore($has_romanized);
   const romanize = useStore($romanize);
 
@@ -17,7 +19,7 @@ const RomanizeButton = () => {
     <Show when={hasRomanized()}>
       <Button
         variant="ghost"
-        size="icon"
+        size={props.isSmall ? "icon-sm" : "icon"}
         onClick={toggleRomanize}
         class="romanize-btn"
         aria-label={title()}

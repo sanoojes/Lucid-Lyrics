@@ -1,5 +1,6 @@
-import { createSignal, Show, type Component } from "solid-js";
+import { createSignal, Show, onMount, type Component } from "solid-js";
 import "@/styles/component/input.scss";
+import debounce from "@/utils/debounce";
 
 const URL_REGEX = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d+)?(\/.*)?$/i;
 
@@ -8,8 +9,11 @@ const Input: Component<{
   onChange: (value: string) => void;
   placeholder?: string;
   validateUrl?: boolean;
+  autofocus?: boolean;
 }> = (props) => {
   const [error, setError] = createSignal<string | null>(null);
+
+  let inputRef!: HTMLInputElement;
 
   const handleInput = (value: string) => {
     if (props.validateUrl && value) {
@@ -25,14 +29,24 @@ const Input: Component<{
     }
   };
 
+  const onInput = debounce((e) => handleInput(e.currentTarget.value), 300);
+
+  onMount(() => {
+    if (props.autofocus && inputRef) {
+      inputRef.focus();
+    }
+  });
+
   return (
     <div class="l-input-container">
       <input
+        ref={inputRef}
         type="text"
         classList={{ error: !!error() }}
         value={props.value || ""}
-        onInput={(e) => handleInput(e.currentTarget.value)}
+        onInput={onInput}
         placeholder={props.placeholder}
+        autofocus={props.autofocus ?? false}
       />
       <Show when={error()}>
         <span class="error-text">{error()}</span>

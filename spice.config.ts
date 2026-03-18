@@ -17,6 +17,7 @@ export default defineConfig({
   linter: "oxlint",
   template: "extension",
   packageManager: "bun",
+  cssId: "lucid-lyrics-styles",
   devModeVarName: "__LUCID_DEV_MODE__",
   esbuildOptions: {
     define: {

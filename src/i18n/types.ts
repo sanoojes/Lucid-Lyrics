@@ -27,14 +27,12 @@ export type Dict = {
   "bg.source": string;
   "bg.albumArt": string;
   "bg.customUrl": string;
-  "bg.autoPause": string;
   "bg.solidColor": string;
   "bg.whereImage": string;
   "bg.scaleOf": string;
   "bg.forImage": string;
   "bg.forAnimated": string;
   "bg.whereAnimated": string;
-  "bg.pauseAnimation": string;
   "bg.local": string;
   "bg.localImages": string;
   "bg.manageImages": string;
@@ -144,6 +142,8 @@ export type Dict = {
   "lyrics.floatingPositionDesc": string;
   "position.top": string;
   "position.bottom": string;
+  "position.left": string;
+  "position.right": string;
   "ttml.title": string;
   "ttml.parseError": string;
   "ttml.overwriteSuccess": string;
@@ -171,4 +171,10 @@ export type Dict = {
   "npv.hideBackgroundDesc": string;
   "npv.useStyles": string;
   "npv.useStylesDesc": string;
+  "npv.backgroundError": string;
+  "npv.cardError": string;
+  "npv.autoHideCardHeader": string;
+  "npv.autoHideCardHeaderDesc": string;
+  "npv.cardHeightPercent": string;
+  "npv.cardHeightPercentDesc": string;
 };

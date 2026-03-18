@@ -1,13 +1,14 @@
-import { $is_active_visible, $jump_to_active } from "@/stores";
+import { useRenderer } from "@/context/LyricsRenderer";
 import { Button } from "@/component/ui/Button";
-import { useStore } from "@nanostores/solid";
 import { AudioLines } from "lucide-solid";
 import { t } from "@/i18n";
 import { createMemo, createSignal, onCleanup } from "solid-js";
 import debounce from "@/utils/debounce";
-
-const ScrollToActiveLyricsButton = () => {
-  const isActiveVisible = useStore($is_active_visible);
+type ScrollToActiveLyricsButtonProps = {
+  isSmall?: boolean;
+};
+const ScrollToActiveLyricsButton = (props: ScrollToActiveLyricsButtonProps) => {
+  const { isActiveVisible, jumpToActive } = useRenderer();
   const [debouncedVisible, setDebouncedVisible] = createSignal(true);
 
   const updateVisibility = debounce((visible: boolean) => {
@@ -23,8 +24,7 @@ const ScrollToActiveLyricsButton = () => {
   });
 
   const handleClick = () => {
-    const jumpFn = $jump_to_active.get();
-    jumpFn?.();
+    jumpToActive()?.();
   };
 
   return (
@@ -33,10 +33,10 @@ const ScrollToActiveLyricsButton = () => {
       title={t("player.scrollToActive")}
       onClick={handleClick}
       class="jump-to-active-btn"
-      size="icon"
+      size={props.isSmall ? "icon-sm" : "icon"}
       variant="ghost"
       disabled={debouncedVisible()}
-      classList={{ "hide-btn": debouncedVisible() }}
+      classList={{ "hide-btn": debouncedVisible() || !jumpToActive() }}
     >
       <AudioLines />
     </Button>

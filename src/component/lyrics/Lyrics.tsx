@@ -18,7 +18,7 @@ import StaticLyrics from "@/component/lyrics/static/StaticLyrics";
 import LyricsStatus from "@/component/lyrics/LyricsStatus";
 import SyllableLyrics from "@/component/lyrics/syllable/SyllableLyrics";
 import SolidLenis from "@/component/ui/Lenis";
-import { $is_active_visible } from "@/stores";
+import { useRenderer } from "@/context/LyricsRenderer";
 import LyricsCredits from "@/component/lyrics/LyricsCredits";
 
 type LyricsProps = {
@@ -40,19 +40,18 @@ function LyricsSpacer(props: { children: JSXElement }) {
 function Lyrics(props: LyricsProps) {
   const response = createMemo(() => lyricsResource());
   const handleRetry = () => lyricsResourceAction.refetch();
+  const { setIsActiveVisible, setJumpToActive } = useRenderer();
 
   createEffect(
     on(response, () => {
-      $is_active_visible.set(true);
+      setIsActiveVisible(true);
+      setJumpToActive(null);
     }),
   );
 
   return (
     <SolidLenis
-      class="lyrics-area"
-      classList={{
-        "widget-hidden": props.widgetHidden,
-      }}
+      class={`lyrics-area${props.widgetHidden?" widget-hidden":""}`}
       options={{
         lerp: 0.08,
       }}

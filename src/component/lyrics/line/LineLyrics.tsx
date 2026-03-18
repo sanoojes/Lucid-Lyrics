@@ -2,7 +2,8 @@ import type { LineData } from "@/lib/api/types";
 import { createEffect, createMemo, createSignal, For, on, onCleanup, onMount } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $is_active_visible, $jump_to_active, $romanize } from "@/stores";
+import { $current_position, $romanize } from "@/stores";
+import { useRenderer } from "@/context/LyricsRenderer";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
 
@@ -74,7 +75,6 @@ function buildLineEntries(lyrics: LineData): LineEntry[] {
 export default function LineLyrics(props: LineLyricsProps) {
   let containerRef!: HTMLDivElement;
 
-  // Use the exact tracking map approach from SyllableLyrics
   const itemRefs = new Map<number, HTMLDivElement>();
   const elementToIndex = new WeakMap<Element, number>();
 
@@ -85,6 +85,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const currentPos = useStore($current_position);
   const romanize = useStore($romanize);
+  const { setJumpToActive, setIsActiveVisible } = useRenderer();
   const getLenis = useLenis();
   const getContentRef = useLenisContent();
 
@@ -118,16 +119,16 @@ export default function LineLyrics(props: LineLyricsProps) {
   function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
     if (!containerRef) return;
     const style = getComputedStyle(containerRef);
-    const isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0", 10);
+    const isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0");
+    const isNPV = Number.parseInt(style.getPropertyValue("--is-npv") || "0");
     const lenis = getLenis();
     if (!lenis?.rootElement) return;
 
     const height = lenis.rootElement.clientHeight;
-    const off = -(isMobile && !isWidgetHidden ? 48 : height / 2.7);
+    const off = -(isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7);
     setScrollOffset(off);
   }
 
-  // Matching absolute math scroll mechanism
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
     const idx = activeIndex();
@@ -200,7 +201,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   createEffect(() => {
     const activeVisible = visibleElements().has(activeIndex());
-    $is_active_visible.set(activeVisible);
+    setIsActiveVisible(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
       if (activeVisible) {
@@ -264,7 +265,10 @@ export default function LineLyrics(props: LineLyricsProps) {
   });
 
   onMount(() => {
-    $jump_to_active.set(() => performScroll(false, true));
+    setJumpToActive(() => () => {
+      getLenis().resize();
+      performScroll(false, true);
+    });
 
     const contentRef = getContentRef();
     const lenis = getLenis();
@@ -302,8 +306,8 @@ export default function LineLyrics(props: LineLyricsProps) {
       }
       ro.disconnect();
       clearTimeout(scrollTimeout);
-      $is_active_visible.set(true);
-      $jump_to_active.set(null);
+      setIsActiveVisible(true);
+      setJumpToActive(null);
     });
   });
 

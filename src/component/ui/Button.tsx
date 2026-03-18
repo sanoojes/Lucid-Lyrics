@@ -11,7 +11,7 @@ type Variant =
   | "link"
   | "simple";
 
-type Size = "default" | "sm" | "lg" | "icon" | "icon-lg";
+type Size = "default" | "sm" | "lg" | "icon" | "icon-sm";
 
 type Shape = "default" | "rounded" | "square";
 
