@@ -44062,7 +44062,7 @@
       "format": "esm"
     },
     "src/i18n/locales/en.ts": {
-      "bytes": 8282,
+      "bytes": 8425,
       "imports": [],
       "format": "esm"
     },
@@ -45592,7 +45592,7 @@
       "format": "esm"
     },
     "src/stores/npv.ts": {
-      "bytes": 1366,
+      "bytes": 1456,
       "imports": [
         {
           "path": "src/lib/nanostores.ts",
@@ -49591,7 +49591,7 @@
       "format": "esm"
     },
     "src/router.tsx": {
-      "bytes": 6572,
+      "bytes": 7257,
       "imports": [
         {
           "path": "node_modules/solid-js/web/dist/web.js",
@@ -49642,6 +49642,11 @@
           "path": "src/lib/spotify/router/component/ErrorPage.tsx",
           "kind": "import-statement",
           "original": "@/lib/spotify/router/component/ErrorPage"
+        },
+        {
+          "path": "node_modules/nanostores/index.js",
+          "kind": "import-statement",
+          "original": "nanostores"
         }
       ],
       "format": "esm"
@@ -49796,7 +49801,7 @@
       "format": "esm"
     },
     "src/component/ui/NPVCard.tsx": {
-      "bytes": 10794,
+      "bytes": 13792,
       "imports": [
         {
           "path": "node_modules/solid-js/web/dist/web.js",
@@ -49849,6 +49854,11 @@
           "original": "solid-js"
         },
         {
+          "path": "src/i18n/index.tsx",
+          "kind": "import-statement",
+          "original": "@/i18n"
+        },
+        {
           "path": "src/component/ui/Button.tsx",
           "kind": "import-statement",
           "original": "@/component/ui/Button"
@@ -49872,6 +49882,11 @@
           "path": "src/component/ui/button/RomanizeButton.tsx",
           "kind": "import-statement",
           "original": "./button/RomanizeButton"
+        },
+        {
+          "path": "src/router.tsx",
+          "kind": "import-statement",
+          "original": "@/router"
         }
       ],
       "format": "esm"
@@ -50189,6 +50204,9 @@
         "node_modules/lucide-solid/dist/esm/icons/skip-forward.js": {
           "bytesInOutput": 209
         },
+        "node_modules/lucide-solid/dist/esm/icons/square-arrow-out-up-left.js": {
+          "bytesInOutput": 231
+        },
         "node_modules/lucide-solid/dist/esm/icons/trash-2.js": {
           "bytesInOutput": 300
         },
@@ -50226,7 +50244,7 @@
           "bytesInOutput": 1786
         },
         "src/i18n/locales/en.ts": {
-          "bytesInOutput": 7492
+          "bytesInOutput": 7619
         },
         "src/i18n/index.tsx": {
           "bytesInOutput": 803
@@ -50316,7 +50334,7 @@
           "bytesInOutput": 211
         },
         "src/stores/npv.ts": {
-          "bytesInOutput": 320
+          "bytesInOutput": 350
         },
         "src/stores/page.ts": {
           "bytesInOutput": 453
@@ -50721,7 +50739,7 @@
           "bytesInOutput": 441
         },
         "src/router.tsx": {
-          "bytesInOutput": 653
+          "bytesInOutput": 682
         },
         "src/player.ts": {
           "bytesInOutput": 332
@@ -50742,7 +50760,7 @@
           "bytesInOutput": 220
         },
         "src/component/ui/NPVCard.tsx": {
-          "bytesInOutput": 1305
+          "bytesInOutput": 1600
         },
         "src/npv.tsx": {
           "bytesInOutput": 836
@@ -50751,7 +50769,7 @@
           "bytesInOutput": 680
         }
       },
-      "bytes": 327215
+      "bytes": 327927
     },
     "dist/app.css": {
       "imports": [
