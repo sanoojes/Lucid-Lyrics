@@ -44205,7 +44205,7 @@
       "format": "esm"
     },
     "src/styles/page.scss": {
-      "bytes": 10732,
+      "bytes": 10845,
       "imports": [
         {
           "path": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
@@ -47948,7 +47948,7 @@
       "format": "esm"
     },
     "src/component/lyrics/Lyrics.tsx": {
-      "bytes": 17362,
+      "bytes": 17370,
       "imports": [
         {
           "path": "node_modules/solid-js/web/dist/web.js",
@@ -49216,7 +49216,7 @@
       "format": "esm"
     },
     "src/component/settings/section/Reset.tsx": {
-      "bytes": 3899,
+      "bytes": 3903,
       "imports": [
         {
           "path": "node_modules/solid-js/web/dist/web.js",
@@ -49750,7 +49750,7 @@
       "format": "esm"
     },
     "src/styles/npv.scss": {
-      "bytes": 8674,
+      "bytes": 6458,
       "imports": [
         {
           "path": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
@@ -49877,7 +49877,7 @@
       "format": "esm"
     },
     "src/npv.tsx": {
-      "bytes": 8202,
+      "bytes": 8266,
       "imports": [
         {
           "path": "node_modules/solid-js/web/dist/web.js",
@@ -50772,7 +50772,7 @@
           "bytesInOutput": 2183
         },
         "src/styles/page.scss": {
-          "bytesInOutput": 10065
+          "bytesInOutput": 10178
         },
         "src/styles/lenis.css": {
           "bytesInOutput": 1350
@@ -50835,10 +50835,10 @@
           "bytesInOutput": 673
         },
         "src/styles/npv.scss": {
-          "bytesInOutput": 8284
+          "bytesInOutput": 6135
         }
       },
-      "bytes": 50181
+      "bytes": 48145
     }
   }
 }
