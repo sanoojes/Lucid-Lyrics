@@ -36,4 +36,5 @@ export const setAutoHideCardHeader = (autoHideCardHeader: boolean) =>
   update({ autoHideCardHeader });
 export const setCardHeightPercent = (cardHeightPercent: number) => update({ cardHeightPercent });
 export const setCardMinHeight = (cardMinHeight: number) => update({ cardMinHeight });
+export const setShowLyrics = (showLyrics: boolean) => update((prev) => ({ showLyrics }));
 export const toggleShowLyrics = () => update((prev) => ({ showLyrics: !prev.showLyrics }));

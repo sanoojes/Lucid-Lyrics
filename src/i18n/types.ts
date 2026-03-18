@@ -177,4 +177,8 @@ export type Dict = {
   "npv.autoHideCardHeaderDesc": string;
   "npv.cardHeightPercent": string;
   "npv.cardHeightPercentDesc": string;
+  "npv.lyrics": string;
+  "npv.openLyrics": string;
+  "npv.closeLyrics": string;
+  "npv.goToLyricsPage": string;
 };

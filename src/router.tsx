@@ -1,12 +1,17 @@
 import { toast } from "@/lib/sonner";
 import { render } from "solid-js/web";
 import { ErrorBoundary } from "solid-js";
-import Router from "@/lib/spotify/router";
+import Router, { $router_state } from "@/lib/spotify/router";
 import { BASE_ROUTE } from "@/constants";
 import LyricsPage from "@/component/page/LyricsPage";
 import SpotifySettings from "@/component/page/SpotifySettings";
 import { t } from "@/i18n";
 import ErrorPage from "@/lib/spotify/router/component/ErrorPage";
+import { computed } from "nanostores";
+
+export const $in_lyrics_page = computed($router_state, ({ path }) => {
+  return path === BASE_ROUTE;
+});
 
 const router = new Router(BASE_ROUTE, {
   "/": {

@@ -313,7 +313,7 @@ $floating-transition:
     min-width: 1px;
     height: v.$space-2xl;
     background: v.$glass-bd;
-    margin: v.$space-sm 0;
+    margin: 0 v.$space-sm;
   }
 
   &:hover,

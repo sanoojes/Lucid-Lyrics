@@ -180,4 +180,8 @@ export const dict: Dict = {
   "npv.autoHideCardHeaderDesc": "Automatically hide the card header when not hovering over it",
   "npv.cardHeightPercent": "Card Height",
   "npv.cardHeightPercentDesc": "Height of Card relative to NPV height",
+  "npv.lyrics": "Lyrics",
+  "npv.openLyrics": "Open Lyrics",
+  "npv.closeLyrics": "Close Lyrics",
+  "npv.goToLyricsPage": "Go to Lyrics Page",
 } as const;

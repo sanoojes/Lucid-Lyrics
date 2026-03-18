@@ -181,4 +181,8 @@ export const dict: Dict = {
   "npv.autoHideCardHeaderDesc": "Автоматически скрывать заголовок карточки при наведении",
   "npv.cardHeightPercent": "Высота Карточки",
   "npv.cardHeightPercentDesc": "Высота карточки относительно высоты NPV",
+  "npv.lyrics": "Тексты",
+  "npv.openLyrics": "Открыть Тексты",
+  "npv.closeLyrics": "Закрыть Тексты",
+  "npv.goToLyricsPage": "Перейти на Страницу Текстов",
 } as const;

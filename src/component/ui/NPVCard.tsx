@@ -1,17 +1,24 @@
-import { $npv_state, $page_state, toggleShowLyrics } from "@/stores";
+import { $npv_state, $page_state, setShowLyrics, toggleShowLyrics } from "@/stores";
 import { useStore } from "@nanostores/solid";
-import { ChevronDown } from "lucide-solid";
+import { ChevronDown, SquareArrowOutUpLeft } from "lucide-solid";
 import { Show } from "solid-js";
+import { t } from "@/i18n";
 import { Button } from "@/component/ui/Button";
 import Lyrics from "@/component/lyrics/Lyrics";
 import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
 import { LyricsRendererProvider } from "@/context/LyricsRenderer";
 import RomanizeButton from "./button/RomanizeButton";
+import router, { $in_lyrics_page } from "@/router";
 
 const NPVCard = () => {
   const npvState = useStore($npv_state);
   const pageState = useStore($page_state);
+  const isAtLyricsPage = useStore($in_lyrics_page);
   const isOpen = () => npvState().showLyrics;
+  const handleGoToPage = async () => {
+    await router.navigate("/");
+    setShowLyrics(false);
+  };
 
   return (
     <div
@@ -31,16 +38,27 @@ const NPVCard = () => {
             class="e-9890-text encore-text-body-medium-bold encore-internal-color-text-base"
             data-encore-id="text"
           >
-            <div class="main-nowPlayingView-sectionHeaderText">Lyrics</div>
+            <div class="main-nowPlayingView-sectionHeaderText">{t("npv.lyrics")}</div>
           </h2>
           <div class="section-btn-wrapper">
             <Show when={isOpen()}>
               <ScrollToActiveLyricsButton isSmall />
               <RomanizeButton isSmall />
             </Show>
+            <Show when={!isAtLyricsPage()}>
+              <Button
+                onClick={handleGoToPage}
+                title={t("npv.goToLyricsPage")}
+                variant="ghost"
+                size="icon-sm"
+              >
+                <SquareArrowOutUpLeft />
+              </Button>
+            </Show>
+
             <Button
               onClick={toggleShowLyrics}
-              title={isOpen() ? "Close Lyrics" : "Open Lyrics"}
+              title={isOpen() ? t("npv.closeLyrics") : t("npv.openLyrics")}
               variant="ghost"
               size="icon-sm"
             >

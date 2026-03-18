@@ -181,4 +181,8 @@ export const dict: Dict = {
     "Ocultar automáticamente el encabezado de la tarjeta cuando no se pasa el cursor sobre ella",
   "npv.cardHeightPercent": "Altura de Tarjeta",
   "npv.cardHeightPercentDesc": "Altura de la tarjeta relativa a la altura del NPV",
+  "npv.lyrics": "Letras",
+  "npv.openLyrics": "Abrir Letras",
+  "npv.closeLyrics": "Cerrar Letras",
+  "npv.goToLyricsPage": "Ir a Página de Letras",
 } as const;
