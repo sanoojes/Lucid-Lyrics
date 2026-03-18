@@ -21,7 +21,7 @@
   }
   .lyrics-npv-card {
     order: 2;
-    padding: v.$space-base v.$space-lg;
+    padding: v.$space-md v.$space-lg;
 
     &.is-open {
       .npv-card-header {
@@ -151,67 +151,6 @@
     .Uw4tcZdmh7s4BMdgCCuu,
     .k90FaSa2GhsINq5izwhz {
       background-color: transparent !important;
-    }
-
-    .zAvxP9ntNk6SsomFXWUv,
-    div[role="group"].DE2HfkFPaJgt9ZUgVcqP,
-    div[data-testid="NPV_Panel_OpenDiv"],
-    .cZCuJDjrGA2QMXja_Sua /* Content Wrapper */ {
-      padding-top: 68px;
-    }
-
-    .xjf0Pj3YnoegOkJUpaPS,
-    .W3E0IT3_STcazjTeyOJa /* Header */ {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 64px;
-      z-index: 1;
-      margin-bottom: 0;
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      transition-property: background-color, width, margin, backdrop-filter;
-      transition-duration: 0.3s;
-      transition-timing-function: ease;
-      border: none;
-      border-radius: 12px;
-      background-color: transparent;
-
-      & > div {
-        padding: 0;
-        max-height: fit-content;
-        width: 100%;
-      }
-      &.EnViFhuIR5WVeEopJHu3,
-      &.mdMUqcSHFw1lZIcYEblu {
-        border-radius: 24px;
-        width: calc(100% - 16px);
-        margin: 8px;
-        background: none !important;
-      }
-
-      &::before {
-        content: "";
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        border-radius: inherit;
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-        transition:
-          backdrop-filter 0.3s linear,
-          opacity 0.3s linear;
-      }
-
-      &.EnViFhuIR5WVeEopJHu3::before,
-      &.mdMUqcSHFw1lZIcYEblu::before /* Header - box shadow */ {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(2rem) saturate(1.5) brightness(0.75);
-      }
     }
 
     .IkRGajTjItEFQkRMeH6v,
