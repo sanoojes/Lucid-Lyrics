@@ -1,7 +1,3 @@
-import { name, version } from "package.json" with { type: "json" };
-export const NAME = name;
-export const VERSION = version;
-
 import {
   applyCasingPattern,
   ARM_PUNCTUATION_MAP,

@@ -1,10 +1,6 @@
 import { farsiArabicPhoneticMap, urduArabicPhoneticMap } from "@/maps";
 import transliterate from "@/transliterate";
 
-import { name, version } from "package.json" with { type: "json" };
-export const NAME = name;
-export const VERSION = version;
-
 const combinedPhoneticMap: Record<string, string> = {
   ...farsiArabicPhoneticMap,
   ...urduArabicPhoneticMap,

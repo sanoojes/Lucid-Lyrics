@@ -1,6 +1,3 @@
-import { VERSION as ARABIC_VERSION } from "arabic-transliteration";
-import { VERSION as ARMENIAN_VERSION } from "armenian-transliteration";
-
 const JSDELIVR = "https://cdn.jsdelivr.net";
 const JSDELIVR_TO_REPO = __LUCID_DEV_MODE__
   ? "http://localhost:54321/files"
@@ -53,12 +50,12 @@ export const MODULE_METADATA = {
   },
   [ARMENIAN_TRANSLITERATION]: {
     name: ARMENIAN_TRANSLITERATION,
-    version: ARMENIAN_VERSION,
+    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${ARMENIAN_TRANSLITERATION}/index.js`,
   },
   [ARABIC_TRANSLITERATION]: {
     name: ARABIC_TRANSLITERATION,
-    version: ARABIC_VERSION,
+    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${ARABIC_TRANSLITERATION}/index.js`,
   },
   [LOCALE]: {
