@@ -35,8 +35,16 @@ const AnimatedLayer = () => {
       position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
     });
 
-    const texture = new Texture(gl, { generateMipmaps: false });
-    const prevTexture = new Texture(gl, { generateMipmaps: false });
+    const texture = new Texture(gl, { 
+      generateMipmaps: false,
+      minFilter: gl.LINEAR,
+      magFilter: gl.LINEAR,
+    });
+    const prevTexture = new Texture(gl, { 
+      generateMipmaps: false,
+      minFilter: gl.LINEAR,
+      magFilter: gl.LINEAR,
+    });
 
     const program = new Program(gl, {
       vertex,
@@ -73,16 +81,35 @@ const AnimatedLayer = () => {
       const url = activeUrl();
       if (!url) return;
 
-      const img = new Image();
-      img.crossOrigin = url.startsWith("spotify:") ? null : "anonymous";
-      img.src = url;
-      img.onload = () => {
-        prevTexture.image = texture.image || img;
-        prevTexture.needsUpdate = true;
-        texture.image = img;
-        texture.needsUpdate = true;
-        program.uniforms.uFade.value = 0.0;
+      const loadImage = async () => {
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const bitmap = await createImageBitmap(blob, {
+            imageOrientation: 'flipY',
+            premultiplyAlpha: 'none',
+            colorSpaceConversion: 'none',
+          });
+          
+          prevTexture.image = (texture.image || bitmap) as any;
+          prevTexture.needsUpdate = true;
+          texture.image = bitmap as any;
+          texture.needsUpdate = true;
+          program.uniforms.uFade.value = 0.0;
+        } catch (e) {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.src = url;
+          img.onload = () => {
+            prevTexture.image = texture.image || img;
+            prevTexture.needsUpdate = true;
+            texture.image = img;
+            texture.needsUpdate = true;
+            program.uniforms.uFade.value = 0.0;
+          };
+        }
       };
+      loadImage();
     });
 
     createEffect(() => {
