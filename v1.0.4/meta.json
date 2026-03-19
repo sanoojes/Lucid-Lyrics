@@ -83,30 +83,9 @@
       "imports": [],
       "format": "esm"
     },
-    "packages/arabic-transliteration/dist/index.js": {
-      "bytes": 61679,
-      "imports": [],
-      "format": "esm"
-    },
-    "packages/armenian-transliteration/dist/index.js": {
-      "bytes": 2951,
-      "imports": [],
-      "format": "esm"
-    },
     "src/constants/module.ts": {
-      "bytes": 2214,
-      "imports": [
-        {
-          "path": "packages/arabic-transliteration/dist/index.js",
-          "kind": "import-statement",
-          "original": "arabic-transliteration"
-        },
-        {
-          "path": "packages/armenian-transliteration/dist/index.js",
-          "kind": "import-statement",
-          "original": "armenian-transliteration"
-        }
-      ],
+      "bytes": 2057,
+      "imports": [],
       "format": "esm"
     },
     "src/constants/versions.ts": {
@@ -50095,14 +50074,8 @@
         "src/constants/index.ts": {
           "bytesInOutput": 103
         },
-        "packages/arabic-transliteration/dist/index.js": {
-          "bytesInOutput": 161148
-        },
-        "packages/armenian-transliteration/dist/index.js": {
-          "bytesInOutput": 104
-        },
         "src/constants/module.ts": {
-          "bytesInOutput": 861
+          "bytesInOutput": 871
         },
         "src/constants/versions.ts": {
           "bytesInOutput": 39
@@ -50828,7 +50801,7 @@
           "bytesInOutput": 707
         }
       },
-      "bytes": 490650
+      "bytes": 329408
     },
     "dist/app.css": {
       "imports": [

@@ -1,6 +1,4 @@
 //#region src/index.d.ts
-declare const NAME: string;
-declare const VERSION: string;
 /**
  * Transliterates arbitrary text containing both Armenian and non-Armenian characters
  * (including punctuation) into Latin.
@@ -17,4 +15,4 @@ declare const VERSION: string;
  */
 declare function transliterateArmenian(text: string): string;
 //#endregion
-export { NAME, VERSION, transliterateArmenian as default, transliterateArmenian };
+export { transliterateArmenian as default, transliterateArmenian };
