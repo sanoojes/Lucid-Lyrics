@@ -83,6 +83,7 @@ jobs:
         run: |
           cd dist && zip -r "../lucid-lyrics-${{ env.VERSION }}.zip" . -x "packages/*" && cd ..
           cd dist/packages && zip -r "../../lucid-lyrics-packages-${{ env.VERSION }}.zip" . && cd ../..
+          zip -r "lucid-lyrics-full-${{ env.VERSION }}.zip" dist
 
       - name: Prepare Specific Assets
         run: |
@@ -95,6 +96,7 @@ jobs:
           files: |
             dist/lucid-lyrics.js
             lucid-lyrics-${{ env.VERSION }}.zip
+            lucid-lyrics-full-${{ env.VERSION }}.zip
             lucid-lyrics-packages-${{ env.VERSION }}.zip
             armenian-transliteration.js
             arabic-transliteration.js
