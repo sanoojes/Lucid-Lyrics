@@ -44,7 +44,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout releases branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: releases
           path: releases
