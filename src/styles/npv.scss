@@ -8,6 +8,13 @@
 
 .Root__right-sidebar,
 #Desktop_PanelContainer_Id {
+  background-color: transparent !important;
+  &::before {
+    content: none;
+    visibility: hidden;
+    display: none;
+  }
+
   .main-nowPlayingView-contextItemInfo:before {
     display: none;
     content: none;

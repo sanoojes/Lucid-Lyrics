@@ -11,7 +11,7 @@ import { t } from "@/i18n";
 const log = createLogger("npv");
 
 const NPV_BG_SELECTORS =
-  "#Desktop_PanelContainer_Id,.Root__right-sidebar aside.NowPlayingView,.Root__right-sidebar aside";
+  ".Root__right-sidebar .oXO9_yYs6JyOwkBn8E4a, #Desktop_PanelContainer_Id,.Root__right-sidebar aside.NowPlayingView,.Root__right-sidebar aside";
 const NPV_CARD_PARENT_SELECTORS =
   '#Desktop_PanelContainer_Id div[data-testid="NPV_Panel_OpenDiv"], .Root__right-sidebar div[data-testid="NPV_Panel_OpenDiv"]';
 
