@@ -44,6 +44,7 @@ export const MODULE_METADATA = {
     localeVersions: {
       es: "1.0.0",
       ru: "1.0.0",
+      sk: "1.0.0",
     },
   },
 } as const;
