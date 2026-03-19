@@ -28,7 +28,6 @@ const Input: Component<{
     }
   };
 
-
   onMount(() => {
     if (props.autofocus && inputRef) {
       inputRef.focus();

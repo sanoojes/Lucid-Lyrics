@@ -80,7 +80,8 @@ export const dict: Dict = {
   "common.confirm": "Potvrdiť",
   "common.loading": "Načítava sa...",
   "common.forceReload": "Vynútené načítanie",
-  "router.lyricsPageError": "Pri načítavaní stránky s textom piesne sa niečo pokazilo. Skúste to znova.",
+  "router.lyricsPageError":
+    "Pri načítavaní stránky s textom piesne sa niečo pokazilo. Skúste to znova.",
   "router.settingsError": "Pri pridávaní nastavení sa vyskytla chyba.",
   "menu.appName": "Lucid Lyrics",
   "menu.settingsMenuError": "Nepodarilo sa pridať ponuku Nastavenia",
@@ -110,7 +111,8 @@ export const dict: Dict = {
   "settings.resetting": "Resetovanie...",
   "settings.resettingDesc": "Vymazanie vyrovnávacej pamäte a obnovenie nastavení",
   "settings.resetComplete": "Úspešné obnovenie",
-  "settings.resetCompleteDesc": "Vynútené načítanie nie je potrebné, ale odporúča sa, ak niečo nevyzerá správne",
+  "settings.resetCompleteDesc":
+    "Vynútené načítanie nie je potrebné, ale odporúča sa, ak niečo nevyzerá správne",
   "settings.resetFailed": "Obnovenie zlyhalo",
   "settings.resetFailedDesc": "Pri resetovaní sa vyskytla chyba",
   "advanced.title": "Pokročilé",
@@ -119,7 +121,8 @@ export const dict: Dict = {
   "advanced.ttmlMakerMode": "Režim TTML Maker",
   "advanced.ttmlMakerModeDesc": "Povoliť lokálne nahrávanie TTML",
   "advanced.clearCache": "Vymazať vyrovnávaciu pamäť textov skladieb",
-  "advanced.clearCacheDesc": "Odstrániť všetky texty piesní uložené vo vyrovnávacej pamäti z úložiska",
+  "advanced.clearCacheDesc":
+    "Odstrániť všetky texty piesní uložené vo vyrovnávacej pamäti z úložiska",
   "advanced.clearCacheButton": "Vyprázdniť",
   "advanced.storageStats": "Úložisko textov piesní",
   "advanced.storageStatsDesc": "Podrobnosti o využití úložiska",
@@ -166,7 +169,8 @@ export const dict: Dict = {
   "ttml.allUploadedTTML": "Všetky nahrané súbory TTML",
   "ttml.current": "Súčasné",
   "ttml.applyTTML": "Použiť na aktuálnu skladbu",
-  "ttml.applyConfirm": 'Použiť TTML pre skladbu "{{songName}}" od {{artistName}} na aktuálnu skladbu?',
+  "ttml.applyConfirm":
+    'Použiť TTML pre skladbu "{{songName}}" od {{artistName}} na aktuálnu skladbu?',
   "ttml.applySuccess": "TTML sa úspešne aplikoval",
   "npv.title": "Panel Práve sa prehráva",
   "npv.hideBackground": "Skryť pozadie",
