@@ -77,39 +77,68 @@ const AnimatedLayer = () => {
     });
     ro.observe(containerRef);
 
-    createEffect(() => {
-      const url = activeUrl();
-      if (!url) return;
+    let isLoading = false;
+    let currentUri = "";
 
-      const loadImage = async () => {
+    const createBlackImage = (): HTMLCanvasElement => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1;
+      canvas.height = 1;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, 1, 1);
+      return canvas;
+    };
+
+    const applyImage = (image: TexImageSource) => {
+      prevTexture.image = (texture.image || image) as any;
+      prevTexture.needsUpdate = true;
+      texture.image = image as any;
+      texture.needsUpdate = true;
+      program.uniforms.uFade.value = 0.0;
+      isLoading = false;
+    };
+
+    const loadWithImageElement = (uri: string, crossOrigin: string | null) => {
+      const img = new Image();
+      img.crossOrigin = crossOrigin;
+      img.src = uri;
+      img.onload = () => applyImage(img);
+      img.onerror = () => applyImage(createBlackImage());
+    };
+
+    const loadImage = async (uri: string) => {
+      if (uri === currentUri || isLoading) return;
+      isLoading = true;
+      currentUri = uri;
+
+      const canFetch = !uri.startsWith("spotify:");
+
+      if (canFetch) {
         try {
-          const response = await fetch(url);
+          const response = await fetch(uri);
           const blob = await response.blob();
           const bitmap = await createImageBitmap(blob, {
             imageOrientation: "flipY",
             premultiplyAlpha: "none",
             colorSpaceConversion: "none",
           });
-
-          prevTexture.image = (texture.image || bitmap) as any;
-          prevTexture.needsUpdate = true;
-          texture.image = bitmap as any;
-          texture.needsUpdate = true;
-          program.uniforms.uFade.value = 0.0;
-        } catch (e) {
-          const img = new Image();
-          img.crossOrigin = url.startsWith("spotify:") ? null : "anonymous";
-          img.src = url;
-          img.onload = () => {
-            prevTexture.image = texture.image || img;
-            prevTexture.needsUpdate = true;
-            texture.image = img;
-            texture.needsUpdate = true;
-            program.uniforms.uFade.value = 0.0;
-          };
+          applyImage(bitmap);
+          return;
+        } catch {
+          loadWithImageElement(uri, canFetch ? "anonymous" : null);
         }
-      };
-      loadImage();
+      }
+      loadWithImageElement(uri, canFetch ? "anonymous" : null);
+    };
+
+    createEffect(() => {
+      const uri = activeUrl();
+      if (uri) {
+        loadImage(uri);
+      } else {
+        applyImage(createBlackImage());
+      }
     });
 
     createEffect(() => {
