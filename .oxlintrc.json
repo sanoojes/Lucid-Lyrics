@@ -32,5 +32,13 @@
     }
   },
   "globals": {},
-  "ignorePatterns": ["dist/**", "packages/**"]
+  "ignorePatterns": [
+    "dist/**",
+    "packages/pinyin.mjs",
+    "packages/franc.mjs",
+    "packages/kuromoji/**",
+    "packages/kuroshiro.mjs",
+    "packages/greek-transliteration.mjs",
+    "packages/cyrillic-romanization.mjs"
+  ]
 }
