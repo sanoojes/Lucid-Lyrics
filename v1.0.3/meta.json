@@ -45498,7 +45498,7 @@
       "format": "esm"
     },
     "src/stores/background.ts": {
-      "bytes": 3741,
+      "bytes": 3795,
       "imports": [
         {
           "path": "node_modules/@nanostores/persistent/index.js",
@@ -45784,7 +45784,7 @@
       "format": "esm"
     },
     "src/component/ui/background/AnimatedLayer.tsx": {
-      "bytes": 18670,
+      "bytes": 21557,
       "imports": [
         {
           "path": "node_modules/solid-js/web/dist/web.js",
@@ -48794,13 +48794,8 @@
       ]
     },
     "src/component/ui/Input.tsx": {
-      "bytes": 7745,
+      "bytes": 7289,
       "imports": [
-        {
-          "path": "node_modules/solid-js/web/dist/web.js",
-          "kind": "import-statement",
-          "original": "solid-js/web"
-        },
         {
           "path": "node_modules/solid-js/web/dist/web.js",
           "kind": "import-statement",
@@ -48845,11 +48840,6 @@
           "path": "src/styles/component/input.scss",
           "kind": "import-statement",
           "original": "@/styles/component/input.scss"
-        },
-        {
-          "path": "src/utils/debounce.ts",
-          "kind": "import-statement",
-          "original": "@/utils/debounce"
         }
       ],
       "format": "esm"
@@ -50313,7 +50303,7 @@
           "bytesInOutput": 5003
         },
         "src/stores/background.ts": {
-          "bytesInOutput": 1013
+          "bytesInOutput": 1023
         },
         "src/stores/index.ts": {
           "bytesInOutput": 0
@@ -50355,7 +50345,7 @@
           "bytesInOutput": 3697
         },
         "src/component/ui/background/AnimatedLayer.tsx": {
-          "bytesInOutput": 1925
+          "bytesInOutput": 2228
         },
         "src/component/ui/background/ColorLayer.tsx": {
           "bytesInOutput": 143
@@ -50691,7 +50681,7 @@
           "bytesInOutput": 0
         },
         "src/component/ui/Input.tsx": {
-          "bytesInOutput": 804
+          "bytesInOutput": 785
         },
         "src/styles/modal/local-images.scss": {
           "bytesInOutput": 0
@@ -50763,7 +50753,7 @@
           "bytesInOutput": 680
         }
       },
-      "bytes": 327780
+      "bytes": 328074
     },
     "dist/app.css": {
       "imports": [
