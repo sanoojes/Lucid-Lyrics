@@ -1,4 +1,4 @@
-import { persistentJSON } from "@/lib/nanostores";
+import { persistentJSON } from "@nanostores/persistent";
 import { getName } from "@/stores/persist";
 import type { PlayerWidgetVariants } from "@/component/ui/PlayingWidget";
 import { DEFAULT_WIDGET_STATE } from "@/constants";

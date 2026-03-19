@@ -41,8 +41,6 @@ export function copyPackagesPlugin(options: CopyPackagesPluginOptions): Plugin {
     name: "copy-packages-plugin",
     setup(build) {
       build.onEnd(() => {
-        const start = performance.now();
-
         const outDir = build.initialOptions.outdir;
         if (!outDir) {
           console.warn(

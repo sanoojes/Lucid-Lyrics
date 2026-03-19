@@ -1,4 +1,4 @@
-import { persistentJSON } from "@/lib/nanostores";
+import { persistentJSON } from "@nanostores/persistent";
 import { getName } from "@/stores/persist";
 import { DEFAULT_NPV_SETTINGS } from "@/constants";
 
@@ -36,5 +36,5 @@ export const setAutoHideCardHeader = (autoHideCardHeader: boolean) =>
   update({ autoHideCardHeader });
 export const setCardHeightPercent = (cardHeightPercent: number) => update({ cardHeightPercent });
 export const setCardMinHeight = (cardMinHeight: number) => update({ cardMinHeight });
-export const setShowLyrics = (showLyrics: boolean) => update((prev) => ({ showLyrics }));
+export const setShowLyrics = (showLyrics: boolean) => update({ showLyrics });
 export const toggleShowLyrics = () => update((prev) => ({ showLyrics: !prev.showLyrics }));

@@ -7,7 +7,7 @@ import { Button } from "@/component/ui/Button";
 import Lyrics from "@/component/lyrics/Lyrics";
 import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
 import { LyricsRendererProvider } from "@/context/LyricsRenderer";
-import RomanizeButton from "./button/RomanizeButton";
+import RomanizeButton from "@/component/ui/button/RomanizeButton";
 import router, { $in_lyrics_page } from "@/router";
 
 const NPVCard = () => {

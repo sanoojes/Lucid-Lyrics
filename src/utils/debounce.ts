@@ -1,5 +1,4 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
-
 export type DebouncedFunction<T extends Array<unknown>> = {
   (...args: T): void;
   clear(): void;
@@ -35,7 +34,6 @@ export type DebouncedFunction<T extends Array<unknown>> = {
  * @param wait The time in milliseconds to delay the function.
  * @returns The debounced function.
  */
-// deno-lint-ignore no-explicit-any
 function debounce<T extends Array<any>>(
   fn: (this: DebouncedFunction<T>, ...args: T) => void,
   wait: number = 300,
@@ -49,7 +47,7 @@ function debounce<T extends Array<any>>(
       debounced.clear();
       fn.call(debounced, ...args);
     };
-    timeout = Number(setTimeout(flush, wait));
+    timeout = setTimeout(flush, wait);
   }) as DebouncedFunction<T>;
 
   debounced.clear = () => {
