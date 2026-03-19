@@ -79,10 +79,20 @@ jobs:
             git push
           fi
 
+      - name: Create Zip Archives
+        run: |
+          cd dist && zip -r "../lucid-lyrics-${{ env.VERSION }}.zip" . -x "packages/*" && cd ..
+          cd dist/packages && zip -r "../../lucid-lyrics-packages-${{ env.VERSION }}.zip" . && cd ../..
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/**/*
+          files: |
+            lucid-lyrics-${{ env.VERSION }}.zip
+            lucid-lyrics-packages-${{ env.VERSION }}.zip
+            dist/lucid-lyrics.js
+            dist/packages/armenian-transliteration/*
+            dist/packages/arabic-transliteration/*
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
           generate_release_notes: true
