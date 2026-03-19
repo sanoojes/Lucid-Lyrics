@@ -49,13 +49,13 @@ export const $current_track_image = computed($player_data, (d) => {
 export const $current_position = atom<number>(0);
 
 onMount($current_position, () => {
-  requestPositionSync();
-
+  const dispose = requestPositionSync();
   const unsubscribe = Tempus.add(() => {
     $current_position.set(getProgress());
   }, 0);
 
   return () => {
+    dispose();
     unsubscribe();
   };
 });
