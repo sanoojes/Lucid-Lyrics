@@ -58,7 +58,7 @@ const AnimatedLayer = () => {
         uContrast: { value: 1.0 },
         uOpacity: { value: 1.0 },
         uTime: { value: 0.0 },
-        uResolution: { value: [containerRef.clientHeight, containerRef.clientWidth] },
+        uResolution: { value: [containerRef.clientWidth, containerRef.clientHeight] },
       },
       transparent: true,
       depthTest: false,
@@ -77,7 +77,6 @@ const AnimatedLayer = () => {
     });
     ro.observe(containerRef);
 
-    let isLoading = false;
     let currentUri = "";
 
     const createBlackImage = (): HTMLCanvasElement => {
@@ -96,23 +95,18 @@ const AnimatedLayer = () => {
       texture.image = image as any;
       texture.needsUpdate = true;
       program.uniforms.uFade.value = 0.0;
-      isLoading = false;
-    };
-
-    const loadWithImageElement = (uri: string, crossOrigin: string | null) => {
-      const img = new Image();
-      img.crossOrigin = crossOrigin;
-      img.src = uri;
-      img.onload = () => applyImage(img);
-      img.onerror = () => applyImage(createBlackImage());
     };
 
     const loadImage = async (uri: string) => {
-      if (uri === currentUri || isLoading) return;
-      isLoading = true;
+      if (uri === currentUri) return;
       currentUri = uri;
-
       const canFetch = !uri.startsWith("spotify:");
+
+      const applyIfCurrent = (image: TexImageSource) => {
+        if (uri === currentUri) {
+          applyImage(image);
+        }
+      };
 
       if (canFetch) {
         try {
@@ -123,13 +117,16 @@ const AnimatedLayer = () => {
             premultiplyAlpha: "none",
             colorSpaceConversion: "none",
           });
-          applyImage(bitmap);
+          applyIfCurrent(bitmap);
           return;
-        } catch {
-          loadWithImageElement(uri, canFetch ? "anonymous" : null);
-        }
+        } catch {}
       }
-      loadWithImageElement(uri, canFetch ? "anonymous" : null);
+
+      const img = new Image();
+      img.crossOrigin = canFetch ? "anonymous" : null;
+      img.src = uri;
+      img.onload = () => applyIfCurrent(img);
+      img.onerror = () => applyIfCurrent(createBlackImage());
     };
 
     createEffect(() => {
@@ -137,6 +134,7 @@ const AnimatedLayer = () => {
       if (uri) {
         loadImage(uri);
       } else {
+        currentUri = "";
         applyImage(createBlackImage());
       }
     });
