@@ -47827,7 +47827,7 @@
       "format": "esm"
     },
     "src/component/lyrics/syllable/SyllableLyrics.tsx": {
-      "bytes": 76746,
+      "bytes": 77347,
       "imports": [
         {
           "path": "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js",
@@ -50645,7 +50645,7 @@
           "bytesInOutput": 0
         },
         "src/component/lyrics/syllable/SyllableLyrics.tsx": {
-          "bytesInOutput": 7752
+          "bytesInOutput": 7780
         },
         "src/component/lyrics/LyricsCredits.tsx": {
           "bytesInOutput": 916
@@ -50801,7 +50801,7 @@
           "bytesInOutput": 707
         }
       },
-      "bytes": 329408
+      "bytes": 329436
     },
     "dist/app.css": {
       "imports": [
