@@ -11,18 +11,19 @@ import { createLogger } from "@/utils/logger";
 
 const log = createLogger("i18n");
 
-export type Locale = "en" | "es" | "ru";
+export type Locale = "en" | "es" | "ru" | "sk";
 
 export type RawDictionary = Dict;
 export type Dictionary = Flatten<RawDictionary>;
 
 const DEFAULT_DICT = flatten(enDict);
 export { DEFAULT_DICT };
-export const SUPPORTED_LOCALES: Locale[] = ["en", "es", "ru"] as const;
+export const SUPPORTED_LOCALES: Locale[] = ["en", "es", "ru", "sk"] as const;
 export const LANGUAGE_OPTIONS = [
   { label: "English (English)", value: "en" },
   { label: "Русский (Russian)", value: "ru" },
   { label: "Español (Spanish)", value: "es" },
+  { label: "Slovenčina (Slovak)", value: "sk" },
 ] as const;
 
 async function fetchDictionary(locale: Locale): Promise<Dictionary> {
