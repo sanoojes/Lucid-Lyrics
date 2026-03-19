@@ -319,7 +319,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     },
   );
 
-  const lastActiveIndex = createMemo(() => activeIndices()[activeIndices().length - 1] ?? 0);
+  const firstActiveIndex = createMemo(() => activeIndices()[0] ?? 0);
 
   const [scrollOffset, setScrollOffset] = createSignal(0);
 
@@ -332,13 +332,16 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     if (!lenis?.rootElement) return;
 
     const height = lenis.rootElement.clientHeight;
-    const off = -(isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7);
+    const baseOffset = isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7;
+    const activeCount = activeIndices().length;
+    const lineOffset = activeCount > 1 ? (activeCount - 1) * 20 : 0;
+    const off = -(baseOffset + lineOffset);
     setScrollOffset(off);
   }
 
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = lastActiveIndex();
+    const idx = firstActiveIndex();
     const targetRef = itemRefs.get(idx);
 
     if (!lenis || !targetRef) return;
@@ -371,7 +374,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   );
 
   createEffect(() => {
-    const idx = lastActiveIndex();
+    const idx = firstActiveIndex();
 
     if (!isUserScroll() && idx !== -1 && itemRefs.has(idx)) {
       requestAnimationFrame(() => {
@@ -407,7 +410,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   };
 
   createEffect(() => {
-    const activeVisible = visibleElements().has(lastActiveIndex());
+    const activeVisible = visibleElements().has(firstActiveIndex());
     setIsActiveVisible(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
@@ -523,7 +526,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     if (reset) return "0px";
 
     const active = activeIndices();
-    let distance = Math.abs(index - lastActiveIndex());
+    let distance = Math.abs(index - firstActiveIndex());
 
     for (const a of active) {
       const d = Math.abs(index - a);
