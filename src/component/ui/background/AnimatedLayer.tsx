@@ -35,12 +35,12 @@ const AnimatedLayer = () => {
       position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
     });
 
-    const texture = new Texture(gl, { 
+    const texture = new Texture(gl, {
       generateMipmaps: false,
       minFilter: gl.LINEAR,
       magFilter: gl.LINEAR,
     });
-    const prevTexture = new Texture(gl, { 
+    const prevTexture = new Texture(gl, {
       generateMipmaps: false,
       minFilter: gl.LINEAR,
       magFilter: gl.LINEAR,
@@ -86,11 +86,11 @@ const AnimatedLayer = () => {
           const response = await fetch(url);
           const blob = await response.blob();
           const bitmap = await createImageBitmap(blob, {
-            imageOrientation: 'flipY',
-            premultiplyAlpha: 'none',
-            colorSpaceConversion: 'none',
+            imageOrientation: "flipY",
+            premultiplyAlpha: "none",
+            colorSpaceConversion: "none",
           });
-          
+
           prevTexture.image = (texture.image || bitmap) as any;
           prevTexture.needsUpdate = true;
           texture.image = bitmap as any;
@@ -98,7 +98,7 @@ const AnimatedLayer = () => {
           program.uniforms.uFade.value = 0.0;
         } catch (e) {
           const img = new Image();
-          img.crossOrigin = "anonymous";
+          img.crossOrigin = url.startsWith("spotify:") ? null : "anonymous";
           img.src = url;
           img.onload = () => {
             prevTexture.image = texture.image || img;
