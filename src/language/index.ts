@@ -31,7 +31,8 @@ export type SupportedLanguage =
   | "arabic"
   | "hebrew"
   | "persian"
-  | "urdu";
+  | "urdu"
+  | "armenian";
 
 export const RTL_LANGUAGES: SupportedLanguage[] = ["arabic", "hebrew", "persian", "urdu"];
 
@@ -83,6 +84,7 @@ const LANGUAGE_CONFIGS: LanguageConfig[] = [
   { name: "hebrew", regex: /[\u0590-\u05FF]/, francCodes: ["heb"] },
   { name: "persian", regex: /[\u0600-\u06FF\uFB50-\uFDFF]/, francCodes: ["pes", "fas"] },
   { name: "urdu", regex: /[\u0600-\u06FF\u0750-\u077F]/, francCodes: ["urd"] },
+  { name: "armenian", regex: /[\u0530-\u058F]/, francCodes: ["hye"] },
 ];
 
 export function detectLanguage(text: string): {

@@ -1,44 +1,68 @@
+import { VERSION as ARABIC_VERSION } from "arabic-transliteration";
+import { VERSION as ARMENIAN_VERSION } from "armenian-transliteration";
+
 const JSDELIVR = "https://cdn.jsdelivr.net";
 const JSDELIVR_TO_REPO = __LUCID_DEV_MODE__
   ? "http://localhost:54321/files"
   : `${JSDELIVR}/gh/sanoojes/Lucid-Lyrics@refs/heads/releases/latest`;
 const JSDELIVR_PACKAGE_REPO = `${JSDELIVR_TO_REPO}/packages`;
-const KUROMOJI_PATH = `${JSDELIVR_PACKAGE_REPO}/kuromoji`;
+
+const PINYIN = "pinyin";
+const CYRILLIC_ROMANIZATION = "cyrillic-romanization";
+const GREEK_TRANSLITERATION = "greek-transliteration";
+const FRANC = "franc";
+const KUROSHIRO = "kuroshiro";
+const KUROMOJI = "kuromoji";
+const ARABIC_TRANSLITERATION = "arabic-transliteration";
+const ARMENIAN_TRANSLITERATION = "armenian-transliteration";
+const LOCALE = "locale";
+
+const KUROMOJI_PATH = `${JSDELIVR_PACKAGE_REPO}/${KUROMOJI}`;
 export const KUROMOJI_DICT_PATH = `${KUROMOJI_PATH}/dict`;
 
 export const MODULE_METADATA = {
-  pinyin: {
-    name: "pinyin",
+  [PINYIN]: {
+    name: PINYIN,
     version: "4.0.0",
-    url: `${JSDELIVR_PACKAGE_REPO}/pinyin.mjs`,
+    url: `${JSDELIVR_PACKAGE_REPO}/${PINYIN}.mjs`,
   },
-  "cyrillic-romanization": {
-    name: "cyrillic-romanization",
+  [CYRILLIC_ROMANIZATION]: {
+    name: CYRILLIC_ROMANIZATION,
     version: "1.1.8",
-    url: `${JSDELIVR_PACKAGE_REPO}/cyrillic-romanization.mjs`,
+    url: `${JSDELIVR_PACKAGE_REPO}/${CYRILLIC_ROMANIZATION}.mjs`,
   },
-  "greek-transliteration": {
-    name: "greek-transliteration",
+  [GREEK_TRANSLITERATION]: {
+    name: GREEK_TRANSLITERATION,
     version: "2.0.0",
-    url: `${JSDELIVR_PACKAGE_REPO}/greek-transliteration.mjs`,
+    url: `${JSDELIVR_PACKAGE_REPO}/${GREEK_TRANSLITERATION}.mjs`,
   },
-  franc: {
-    name: "franc",
+  [FRANC]: {
+    name: FRANC,
     version: "6.2.0",
-    url: `${JSDELIVR_PACKAGE_REPO}/franc.mjs`,
+    url: `${JSDELIVR_PACKAGE_REPO}/${FRANC}.mjs`,
   },
-  kuroshiro: {
-    name: "kuroshiro",
+  [KUROSHIRO]: {
+    name: KUROSHIRO,
     version: "1.2.0",
-    url: `${JSDELIVR_PACKAGE_REPO}/kuroshiro.mjs`,
+    url: `${JSDELIVR_PACKAGE_REPO}/${KUROSHIRO}.mjs`,
   },
-  kuromoji: {
-    name: "kuromoji",
+  [KUROMOJI]: {
+    name: KUROMOJI,
     version: "0.1.2",
     url: `${KUROMOJI_PATH}/index.mjs`,
   },
-  locale: {
-    name: "locale",
+  [ARMENIAN_TRANSLITERATION]: {
+    name: ARMENIAN_TRANSLITERATION,
+    version: ARMENIAN_VERSION,
+    url: `${JSDELIVR_PACKAGE_REPO}/${ARMENIAN_TRANSLITERATION}/index.js`,
+  },
+  [ARABIC_TRANSLITERATION]: {
+    name: ARABIC_TRANSLITERATION,
+    version: ARABIC_VERSION,
+    url: `${JSDELIVR_PACKAGE_REPO}/${ARABIC_TRANSLITERATION}/index.js`,
+  },
+  [LOCALE]: {
+    name: LOCALE,
     version: "1.0.0",
     baseUrl: `${JSDELIVR_TO_REPO}/locales/`,
     localeVersions: {

@@ -5,13 +5,15 @@ import { moduleStore } from "@/stores/idb";
 
 type ModuleName = keyof typeof MODULE_METADATA;
 type ModuleRegistry = {
-  pinyin: typeof import("pinyin");
+  "arabic-transliteration": typeof import("arabic-transliteration");
+  "armenian-transliteration": typeof import("armenian-transliteration");
   "cyrillic-romanization": typeof import("cyrillic-romanization");
   "greek-transliteration": typeof import("greek-transliteration");
   franc: typeof import("franc");
-  kuroshiro: { default: any };
   kuromoji: any;
+  kuroshiro: { default: any };
   locale: { dict: Record<string, string> };
+  pinyin: typeof import("pinyin");
 };
 
 type CachedModule = {

@@ -333,8 +333,8 @@ export default function LineLyrics(props: LineLyricsProps) {
           });
 
           const isLineRTL = () => {
-            if (entry.type === "interlude") return entry.isRTL;
-            return entry.content.IsRTL;
+            if (entry.type === "interlude") return entry.isRTL && !romanize();
+            return entry.content.IsRTL && !romanize();
           };
 
           if (entry.type === "interlude") {

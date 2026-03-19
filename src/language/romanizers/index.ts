@@ -11,20 +11,24 @@ import { romanizePunjabi } from "@/language/romanizers/punjabi";
 import { romanizeTamil } from "@/language/romanizers/tamil";
 import { romanizeTelugu } from "@/language/romanizers/telugu";
 import { romanizeGeorgian } from "@/language/romanizers/georgian";
+import { romanizeArmenian } from "@/language/romanizers/armenian";
 import type { SupportedLanguage } from "@/language";
+import { romanizeArabic } from "@/language/romanizers/arabic";
 
 export const Romanizers: Record<SupportedLanguage, (text: string) => Promise<string> | string> = {
   hindi: romanizeHindi,
-  japanese: romanizeJapanese,
-  korean: romanizeKorean,
-  chinese: romanizeChinese,
-  cyrillic: romanizeCyrillic,
-  punjabi: romanizePunjabi,
   tamil: romanizeTamil,
+  greek: romanizeGreek,
   telugu: romanizeTelugu,
+  korean: romanizeKorean,
   bengali: romanizeBengali,
+  chinese: romanizeChinese,
+  punjabi: romanizePunjabi,
+  cyrillic: romanizeCyrillic,
+  japanese: romanizeJapanese,
   malayalam: romanizeMalayalam,
   gujarati: romanizeGujarati,
-  greek: romanizeGreek,
   georgian: romanizeGeorgian,
+  armenian: romanizeArmenian,
+  arabic: romanizeArabic,
 };

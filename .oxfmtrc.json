@@ -1,4 +1,11 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["packages/**", "!packages/README.md"]
+  "ignorePatterns": [
+    "packages/pinyin.mjs",
+    "packages/franc.mjs",
+    "packages/kuromoji/**",
+    "packages/kuroshiro.mjs",
+    "packages/greek-transliteration.mjs",
+    "packages/cyrillic-romanization.mjs"
+  ]
 }

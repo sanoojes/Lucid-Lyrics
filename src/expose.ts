@@ -12,6 +12,7 @@ import {
 import { $developer_mode, setDevMode, toggleDevMode } from "@/stores/dev";
 import { resetAllConfig } from "@/stores/reset";
 import router from "@/router";
+import API from "@/api";
 
 function exposeGlobals() {
   window.LucidLyrics = {
@@ -22,6 +23,7 @@ function exposeGlobals() {
     toggleRomanize,
     toggleWidget,
     reset: resetAllConfig,
+    clearLyricsCache: () => API.clearAllCache(),
     router,
     stores: {
       $widget,

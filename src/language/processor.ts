@@ -32,8 +32,15 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
 
       if (lang && lang !== "unknown" && Romanizers[lang]) {
         lyric.NeedsRomanization = true;
-        lyric.HasRomanizedText = true;
-        return await Romanizers[lang](txt);
+
+        try {
+          const romanizedResult = await Romanizers[lang](txt);
+          lyric.HasRomanizedText = true;
+          return romanizedResult;
+        } catch {
+          log.error(`Romanizer for language: ${lang}`);
+          return null;
+        }
       }
 
       return null;
@@ -64,8 +71,12 @@ async function addRomanizationToLyrics(
     case "Line":
       await Promise.all(
         lyric.Content.map(async (content) => {
-          content.RomanizedText = await converter(content.Text, content.Text);
-          content.IsRTL = containsRTL(content.Text);
+          try {
+            content.RomanizedText = await converter(content.Text, content.Text);
+            content.IsRTL = containsRTL(content.Text);
+          } catch {
+            log.warn("Failed to romanize line, skipping to next");
+          }
         }),
       );
       break;
@@ -73,8 +84,12 @@ async function addRomanizationToLyrics(
     case "Static":
       await Promise.all(
         lyric.Lines.map(async (line) => {
-          line.RomanizedText = await converter(line.Text, line.Text);
-          line.IsRTL = containsRTL(line.Text);
+          try {
+            line.RomanizedText = await converter(line.Text, line.Text);
+            line.IsRTL = containsRTL(line.Text);
+          } catch {
+            log.warn("Failed to romanize static line, skipping to next");
+          }
         }),
       );
       break;
@@ -91,7 +106,11 @@ async function addRomanizationToLyrics(
         for (const syllable of content.Lead.Syllables) {
           syllablePromises.push(
             (async () => {
-              syllable.RomanizedText = await converter(syllable.Text, leadContext);
+              try {
+                syllable.RomanizedText = await converter(syllable.Text, leadContext);
+              } catch {
+                log.warn("Failed to romanize lead syllable, skipping");
+              }
             })(),
           );
         }
@@ -108,7 +127,11 @@ async function addRomanizationToLyrics(
             for (const syllable of bg.Syllables) {
               syllablePromises.push(
                 (async () => {
-                  syllable.RomanizedText = await converter(syllable.Text, bgContext);
+                  try {
+                    syllable.RomanizedText = await converter(syllable.Text, bgContext);
+                  } catch {
+                    log.warn("Failed to romanize background syllable, skipping");
+                  }
                 })(),
               );
             }

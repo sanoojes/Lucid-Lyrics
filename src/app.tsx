@@ -44,11 +44,12 @@ async function App() {
         fn: () =>
           preloadModules([
             "pinyin",
+            "franc",
             "kuromoji",
             "kuroshiro",
             "cyrillic-romanization",
             "greek-transliteration",
-            "franc",
+            "armenian-transliteration",
           ]),
       },
     ];
@@ -67,6 +68,9 @@ async function App() {
       const m = "In Development Mode !";
       logger.info(m);
       toast.info(m);
+
+      router.navigate("/");
+      window.LucidLyrics?.clearLyricsCache?.()
     }
   } catch (err) {
     toast.error(t("common.appLoadError"), {

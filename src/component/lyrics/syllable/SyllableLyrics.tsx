@@ -125,6 +125,12 @@ function LeadRenderer(props: LeadRendererProps) {
   const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : 0);
   const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : 0);
 
+  const fullText = createMemo(() => {
+    return props.vocalPart.Syllables.map((syllable) =>
+      props.romanize ? (syllable.RomanizedText ?? syllable.Text) : syllable.Text,
+    ).join("");
+  });
+
   return (
     <span
       style={COMMON_STYLES_LINE_LEAD(
@@ -138,6 +144,7 @@ function LeadRenderer(props: LeadRendererProps) {
       onClick={handleClick}
       role="button"
       tabIndex={0}
+      aria-label={fullText()}
     >
       <For each={words()}>
         {(word, wordIdx) => (
@@ -547,8 +554,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
           });
 
           const isLineRTL = () => {
-            if (entry.type === "interlude") return entry.isRTL;
-            return entry.content.IsRTL;
+            if (entry.type === "interlude") return entry.isRTL && !romanize();
+            return entry.content.IsRTL && !romanize();
           };
 
           return (
