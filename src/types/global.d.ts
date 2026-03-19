@@ -30,6 +30,7 @@ type GlobalLucid = {
   setShowCredits: (c: boolean) => void;
   setHideScrollbar: (c: boolean) => void;
   stores: Record<string, any>;
+  router: any;
 };
 
 interface Window {

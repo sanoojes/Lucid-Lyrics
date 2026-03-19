@@ -11,6 +11,7 @@ import {
 } from "@/stores";
 import { $developer_mode, setDevMode, toggleDevMode } from "@/stores/dev";
 import { resetAllConfig } from "@/stores/reset";
+import router from "@/router";
 
 function exposeGlobals() {
   window.LucidLyrics = {
@@ -21,6 +22,7 @@ function exposeGlobals() {
     toggleRomanize,
     toggleWidget,
     reset: resetAllConfig,
+    router,
     stores: {
       $widget,
       $developer_mode,
