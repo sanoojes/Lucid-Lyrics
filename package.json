@@ -11,7 +11,8 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
-    "update:packages": "bun scripts/update-packages.ts"
+    "update:packages": "bun scripts/update-packages.ts",
+    "generate-links": "bun scripts/generate-jsdelivr-links.ts"
   },
   "dependencies": {
     "@darkroom.engineering/tempus": "^0.0.46",

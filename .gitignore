@@ -32,3 +32,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Generated JSDelivr Links
+jsdelivr.txt
