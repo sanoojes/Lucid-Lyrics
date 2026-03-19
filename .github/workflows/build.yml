@@ -66,9 +66,8 @@ jobs:
           cp -r ../dist/. ./${{ env.VERSION }}
           cp -r ../dist/. ./latest
 
-          # Generate README
-          # We are inside ./releases, so the script is one directory up
-          bun run generate-release-readme .
+          # Generate Readme and version.json
+          bun run generate-release-artifacts .
 
           # Commit and Push
           git add .

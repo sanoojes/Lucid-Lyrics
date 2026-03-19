@@ -8,6 +8,7 @@ async function generateReadme(): Promise<void> {
     .filter((entry) => entry.isDirectory() && entry.name.startsWith("v"))
     .map((entry) => entry.name);
 
+  // Sorts versions descending (e.g., v10.0.0, v2.0.0, v1.0.0)
   versions.sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: "base" }));
 
   let readmeContent = `# Project Releases
@@ -28,13 +29,28 @@ async function generateReadme(): Promise<void> {
     }
   }
 
-  const outputPath = `${targetDir}/README.md`;
-  await Bun.write(outputPath, readmeContent);
+  const readmePath = `${targetDir}/README.md`;
+  await Bun.write(readmePath, readmeContent);
 
-  console.log(`Successfully generated ${outputPath}`);
+  if (versions.length > 0) {
+    const latestVersion = versions[0];
+    const versionJsonPath = `${targetDir}/version.json`;
+    const versionJsonPath2 = `${targetDir}/latest/version.json`;
+
+    const versionData = JSON.stringify({
+      version: latestVersion,
+      latest: latestVersion,
+    });
+
+    await Bun.write(versionJsonPath, versionData);
+    await Bun.write(versionJsonPath2, versionData);
+    console.log(`Successfully generated ${versionJsonPath} (${latestVersion})`);
+  }
+
+  console.log(`Successfully generated ${readmePath}`);
 }
 
 generateReadme().catch((err) => {
-  console.error("Failed to generate README:", err);
+  console.error("Failed to generate files:", err);
   process.exit(1);
 });
