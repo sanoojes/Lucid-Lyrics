@@ -17,17 +17,14 @@ export const $slideshow = persistentJSON<Slideshow>(getName("bg-slideshow"), {
   elapsedTime: null,
 });
 
+export function updateSlideshow(state: Partial<Slideshow>) {
+  $slideshow.set({ ...$slideshow.get(), ...state });
+}
 export function updateSlideshowStart(startTime: Slideshow["startTime"]) {
-  $slideshow.set({
-    ...$slideshow.get(),
-    startTime,
-  });
+  updateSlideshow({ startTime });
 }
 export function updateSlideshowElapsed(elapsedTime: Slideshow["elapsedTime"]) {
-  $slideshow.set({
-    ...$slideshow.get(),
-    elapsedTime,
-  });
+  updateSlideshow({ elapsedTime });
 }
 
 export function updateBackground(updater: (state: BackgroundState) => BackgroundState) {
