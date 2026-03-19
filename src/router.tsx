@@ -8,6 +8,7 @@ import SpotifySettings from "@/component/page/SpotifySettings";
 import { t } from "@/i18n";
 import ErrorPage from "@/lib/spotify/router/component/ErrorPage";
 import { computed } from "nanostores";
+import { logger } from "@/utils/logger";
 
 export const $in_lyrics_page = computed($router_state, ({ path }) => {
   return path === BASE_ROUTE;
@@ -16,18 +17,21 @@ export const $in_lyrics_page = computed($router_state, ({ path }) => {
 const router = new Router(BASE_ROUTE, {
   "/": {
     onMount: (el) => {
-      const clean = render(
+      const dispose = render(
         () => (
           <ErrorBoundary
             fallback={(err) => {
-              const errorMessage = err instanceof Error ? err.message : String(err);
               console.error(err);
               toast.error(t("router.lyricsPageError"));
               return (
                 <ErrorPage
                   icon="error"
-                  message={errorMessage}
-                  title="Something went wrong while loading lyrics"
+                  title="Something went wrong !"
+                  message={`Failed to load lyrics page`}
+                  errorDetails={String(err)}
+                  showRetry
+                  onRetry={() => router.navigate("/")}
+                  onHome={() => router.navigate("/", true)}
                 />
               );
             }}
@@ -38,7 +42,10 @@ const router = new Router(BASE_ROUTE, {
         el,
       );
 
-      return () => clean();
+      return () => {
+        dispose();
+        if (__LUCID_DEV_MODE__) logger.debug("Disposed: '/'");
+      };
     },
     hideSiblings: true,
   },
@@ -47,7 +54,7 @@ const router = new Router(BASE_ROUTE, {
     selector:
       ".main-view-container__scroll-node-child .x-settings-container, .main-view-container__scroll-node-child .x-settings-container",
     onMount: (el) => {
-      const clean = render(
+      const dispose = render(
         () => (
           <ErrorBoundary
             fallback={(err) => {
@@ -62,7 +69,10 @@ const router = new Router(BASE_ROUTE, {
         el,
       );
 
-      return () => clean();
+      return () => {
+        dispose();
+        if (__LUCID_DEV_MODE__) logger.debug("Disposed: '/preferences'");
+      };
     },
   },
 });
