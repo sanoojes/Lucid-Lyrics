@@ -70,7 +70,7 @@ async function App() {
       toast.info(m);
 
       router.navigate("/");
-      window.LucidLyrics?.clearLyricsCache?.()
+      window.LucidLyrics?.clearLyricsCache?.();
     }
   } catch (err) {
     toast.error(t("common.appLoadError"), {
