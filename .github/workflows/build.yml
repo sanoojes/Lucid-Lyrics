@@ -68,7 +68,7 @@ jobs:
 
           # Generate README
           # We are inside ./releases, so the script is one directory up
-          bun run ../scripts/generate-release-readme.ts .
+          bun run generate-release-readme .
 
           # Commit and Push
           git add .

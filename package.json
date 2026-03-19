@@ -18,6 +18,7 @@
     "fmt": "oxfmt",
     "build:packages": "bun --filter './packages/*' build",
     "update:packages": "bun run build:packages && bun scripts/update-packages.ts",
+    "generate-release-readme": "bun run scripts/generate-release-readme.ts",
     "generate-links": "bun scripts/generate-jsdelivr-links.ts"
   },
   "dependencies": {
