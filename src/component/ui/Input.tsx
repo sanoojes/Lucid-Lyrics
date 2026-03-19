@@ -1,6 +1,5 @@
 import { createSignal, Show, onMount, type Component } from "solid-js";
 import "@/styles/component/input.scss";
-import debounce from "@/utils/debounce";
 
 const URL_REGEX = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d+)?(\/.*)?$/i;
 
@@ -29,7 +28,6 @@ const Input: Component<{
     }
   };
 
-  const onInput = debounce((e) => handleInput(e.currentTarget.value), 300);
 
   onMount(() => {
     if (props.autofocus && inputRef) {
@@ -44,7 +42,7 @@ const Input: Component<{
         type="text"
         classList={{ error: !!error() }}
         value={props.value || ""}
-        onInput={onInput}
+        onInput={(e) => handleInput(e.currentTarget.value)}
         placeholder={props.placeholder}
         autofocus={props.autofocus ?? false}
       />
