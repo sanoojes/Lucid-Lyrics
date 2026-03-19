@@ -84,15 +84,20 @@ jobs:
           cd dist && zip -r "../lucid-lyrics-${{ env.VERSION }}.zip" . -x "packages/*" && cd ..
           cd dist/packages && zip -r "../../lucid-lyrics-packages-${{ env.VERSION }}.zip" . && cd ../..
 
+      - name: Prepare Specific Assets
+        run: |
+          cp dist/packages/armenian-transliteration/index.js armenian-transliteration.js
+          cp dist/packages/arabic-transliteration/index.js arabic-transliteration.js
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
+            dist/lucid-lyrics.js
             lucid-lyrics-${{ env.VERSION }}.zip
             lucid-lyrics-packages-${{ env.VERSION }}.zip
-            dist/lucid-lyrics.js
-            dist/packages/armenian-transliteration/*
-            dist/packages/arabic-transliteration/*
+            armenian-transliteration.js
+            arabic-transliteration.js
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
           generate_release_notes: true
