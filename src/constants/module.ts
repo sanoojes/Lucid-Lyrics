@@ -7,7 +7,6 @@ const JSDELIVR_PACKAGE_REPO = `${JSDELIVR_TO_REPO}/packages`;
 const PINYIN = "pinyin";
 const CYRILLIC_ROMANIZATION = "cyrillic-romanization";
 const GREEK_TRANSLITERATION = "greek-transliteration";
-const FRANC = "franc";
 const KUROSHIRO = "kuroshiro";
 const KUROMOJI = "kuromoji";
 const ARABIC_TRANSLITERATION = "arabic-transliteration";
@@ -33,11 +32,6 @@ export const MODULE_METADATA = {
     name: GREEK_TRANSLITERATION,
     version: "2.0.0",
     url: `${JSDELIVR_PACKAGE_REPO}/${GREEK_TRANSLITERATION}.mjs`,
-  },
-  [FRANC]: {
-    name: FRANC,
-    version: "6.2.0",
-    url: `${JSDELIVR_PACKAGE_REPO}/${FRANC}.mjs`,
   },
   [KUROSHIRO]: {
     name: KUROSHIRO,

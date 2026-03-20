@@ -1,5 +1,6 @@
-import { detectLanguage, isRTL, containsRTL } from "@/language";
-import { Romanizers } from "@/language/romanizers/index.ts";
+import { detectLanguage, isRTL, containsRTL } from "@/language/utils";
+import type { SupportedLanguage } from "@/language";
+import { Romanizers } from "@/language/romanizers";
 import { createLogger } from "@/utils/logger";
 import type { Lyrics } from "@/lib/api/types";
 import { toast } from "@/lib/sonner";
@@ -9,10 +10,15 @@ const log = createLogger("language:processor");
 
 export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
   if (!lyric?.Type) return lyric;
-  let usedFranc = false;
-  let failCount = 0;
-  let successCount = 0;
   const startTime = performance.now();
+
+  const localLangCache = new Map<string, SupportedLanguage | "unknown">();
+  const getCachedLang = (text: string): SupportedLanguage | "unknown" => {
+    if (localLangCache.has(text)) return localLangCache.get(text)!;
+    const lang = detectLanguage(text);
+    localLangCache.set(text, lang);
+    return lang;
+  };
 
   try {
     log.debug("start", { type: lyric.Type });
@@ -21,116 +27,147 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
     lyric.NeedsRomanization = false;
     lyric.IsRTL = false;
 
-    let detectedLang: ReturnType<typeof detectLanguage>["language"] = "unknown";
+    await addRomanizationToLyrics(lyric, getCachedLang, async (textToRomanize, detectedLang) => {
+      if (!detectedLang || detectedLang === "unknown") return null;
 
-    await addRomanizationToLyrics(lyric, async (txt, contextTxt) => {
-      try {
-        const { language: lang, usedFranc: francUsed } = detectLanguage(contextTxt);
-        usedFranc = usedFranc || francUsed;
+      if (!lyric.IsRTL && isRTL(detectedLang)) lyric.IsRTL = true;
 
-        if (!detectedLang || detectedLang === "unknown") {
-          detectedLang = lang;
-          lyric.IsRTL = isRTL(lang);
+      const romanizer = Romanizers[detectedLang];
+      if (romanizer) {
+        lyric.NeedsRomanization = true;
+        try {
+          const romanizedResult = await romanizer(textToRomanize);
+          if (romanizedResult) lyric.HasRomanizedText = true;
+          return romanizedResult;
+        } catch (err) {
+          log.error(`Romanizer failed for language: ${detectedLang}`, err);
+          return null;
         }
-
-        if (lang && lang !== "unknown" && Romanizers[lang]) {
-          lyric.NeedsRomanization = true;
-          const romanizedResult = await Romanizers[lang](txt);
-
-          if (romanizedResult) {
-            successCount++;
-            lyric.HasRomanizedText = true;
-            return romanizedResult;
-          }
-        }
-        return null;
-      } catch (err) {
-        log.error("Romanization step failed for segment", { txt, err });
-        failCount++;
-        return null;
       }
+      return null;
     });
-
-    lyric.UsedFranc = usedFranc;
-
-    if (failCount > 0) {
-      if (successCount === 0) {
-        toast.error(t("language.romanizeFailedEntirely"));
-      } else {
-        toast.warning(t("language.romanizePartialFail", { count: failCount }));
-      }
-    }
 
     log.debug("success", {
       durationMs: performance.now() - startTime,
       hasRomanized: lyric.HasRomanizedText,
-      successCount,
-      failCount,
     });
 
     return lyric;
   } catch (e) {
-    toast.error(t("language.romanizeCriticalError"));
-    log.error("critical failure", e);
+    lyric.HasRomanizedText = false;
+    toast.error(t("language.romanizeError"));
+    log.error("failed", e);
     return lyric;
   }
 }
 
 async function addRomanizationToLyrics(
   lyric: Lyrics,
-  converter: (txt: string, contextTxt: string) => Promise<string | null>,
+  getCachedLang: (text: string) => SupportedLanguage | "unknown",
+  converter: (txt: string, lang: SupportedLanguage | "unknown") => Promise<string | null>,
 ) {
+  const processSyllableGroup = async (
+    syllables: { Text: string; RomanizedText?: string | null }[],
+  ) => {
+    if (!syllables || syllables.length === 0) return false;
+
+    const fullText = syllables.map((s) => s.Text).join("");
+    const lang = getCachedLang(fullText);
+    const isTextRTL = containsRTL(fullText);
+
+    const [fullRomaji, ...isolatedRomajis] = await Promise.all([
+      converter(fullText, lang),
+      ...syllables.map((s) => converter(s.Text, lang)),
+    ]);
+
+    reconcileRomanizations(syllables, isolatedRomajis, fullRomaji);
+    return isTextRTL;
+  };
+
   switch (lyric.Type) {
     case "Line":
-      await Promise.all(
-        lyric.Content.map(async (content) => {
-          content.RomanizedText = await converter(content.Text, content.Text);
-          content.IsRTL = containsRTL(content.Text);
-        }),
-      );
-      break;
+    case "Static": {
+      const lines = lyric.Type === "Line" ? lyric.Content : lyric.Lines;
 
-    case "Static":
-      await Promise.all(
-        lyric.Lines.map(async (line) => {
-          line.RomanizedText = await converter(line.Text, line.Text);
+      const linePromises = lines.map(async (line) => {
+        try {
+          const lineLang = getCachedLang(line.Text);
+          line.RomanizedText = await converter(line.Text, lineLang);
           line.IsRTL = containsRTL(line.Text);
-        }),
-      );
-      break;
+        } catch {
+          log.warn("Failed to romanize line");
+        }
+      });
 
+      await Promise.all(linePromises);
+      break;
+    }
     case "Syllable": {
-      const tasks: Promise<void>[] = [];
+      const linePromises: Promise<void>[] = [];
 
       for (const content of lyric.Content) {
-        const leadText = content.Lead.Syllables.map((s) => s.Text).join("");
-        content.IsRTL = containsRTL(leadText);
+        linePromises.push(
+          (async () => {
+            content.IsRTL = await processSyllableGroup(content.Lead.Syllables);
 
-        for (const syllable of content.Lead.Syllables) {
-          tasks.push(
-            (async () => {
-              syllable.RomanizedText = await converter(syllable.Text, leadText);
-            })(),
-          );
-        }
-
-        if (content.Background) {
-          for (const bg of content.Background) {
-            const bgText = bg.Syllables.map((s) => s.Text).join("");
-            if (!content.IsRTL) content.IsRTL = containsRTL(bgText);
-
-            for (const syllable of bg.Syllables) {
-              tasks.push(
-                (async () => {
-                  syllable.RomanizedText = await converter(syllable.Text, bgText);
-                })(),
+            if (content.Background) {
+              await Promise.all(
+                content.Background.map(async (bg) => {
+                  const isBgRTL = await processSyllableGroup(bg.Syllables);
+                  if (isBgRTL && !content.IsRTL) content.IsRTL = true;
+                }),
               );
             }
-          }
-        }
+          })(),
+        );
       }
-      await Promise.all(tasks);
+
+      await Promise.all(linePromises);
       break;
     }
   }
+}
+
+function reconcileRomanizations(
+  syllables: { Text: string; RomanizedText?: string | null }[],
+  isolatedRoms: (string | null)[],
+  fullRomaji: string | null,
+) {
+  if (!fullRomaji) {
+    syllables.forEach((s, i) => (s.RomanizedText = isolatedRoms[i]));
+    return;
+  }
+
+  const fullClean = fullRomaji.replace(/\s+/g, "").toLowerCase();
+  const isoClean = isolatedRoms
+    .map((r) => r || "")
+    .join("")
+    .replace(/\s+/g, "")
+    .toLowerCase();
+
+  if (fullClean === isoClean) {
+    syllables.forEach((s, i) => (s.RomanizedText = isolatedRoms[i]));
+    return;
+  }
+
+  let cursor = 0;
+  const fullChars = fullRomaji.replace(/\s+/g, "").split("");
+
+  const totalPhoneticLength = isolatedRoms.reduce((sum, r) => sum + (r ? r.length : 1), 0);
+
+  syllables.forEach((syllable, i) => {
+    if (i === syllables.length - 1) {
+      syllable.RomanizedText = fullChars.slice(cursor).join("");
+      return;
+    }
+
+    const isolatedLength = isolatedRoms[i] ? isolatedRoms[i]!.length : 1;
+    const weight = isolatedLength / totalPhoneticLength;
+
+    let charsToConsume = Math.round(weight * fullChars.length);
+    if (charsToConsume === 0) charsToConsume = 1;
+
+    syllable.RomanizedText = fullChars.slice(cursor, cursor + charsToConsume).join("");
+    cursor += charsToConsume;
+  });
 }

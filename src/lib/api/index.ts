@@ -3,7 +3,6 @@ import { compressToUTF16, decompressFromUTF16 } from "lz-string";
 import { createLogger } from "@/utils/logger";
 import type { FetchOptions, Lyrics, LyricsHandler, APIResponse } from "@/lib/api/types";
 import { processLyrics } from "@/language/processor";
-import { getModule } from "@/lib/dom/load";
 import { $providers } from "@/stores";
 import { lyricsStore } from "@/stores/idb";
 import { setStorageStats } from "@/stores/storage";
@@ -141,12 +140,10 @@ export class LyricsAPI {
             if (lyricsData) {
               const needsRomanization =
                 lyricsData.NeedsRomanization && !lyricsData.HasRomanizedText;
-              const missingLang = !lyricsData.UsedFranc;
 
-              if (!isOffline && (needsRomanization || missingLang)) {
+              if (!isOffline && needsRomanization) {
                 try {
-                  const franc = missingLang ? await getModule("franc").catch(() => null) : null;
-                  if (needsRomanization || (missingLang && franc)) {
+                  if (needsRomanization) {
                     const reProcessed = await processLyrics(lyricsData);
                     await this._saveToCache(cacheKey, reProcessed);
                     return { status: "success", data: reProcessed };

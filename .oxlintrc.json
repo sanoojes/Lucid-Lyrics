@@ -35,7 +35,6 @@
   "ignorePatterns": [
     "dist/**",
     "packages/pinyin.mjs",
-    "packages/franc.mjs",
     "packages/kuromoji/**",
     "packages/kuroshiro.mjs",
     "packages/greek-transliteration.mjs",

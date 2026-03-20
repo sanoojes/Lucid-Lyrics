@@ -10,7 +10,6 @@ type ModuleMeta = {
 };
 
 const JSDELIVR = "https://cdn.jsdelivr.net";
-const ESM_SH = "https://esm.sh";
 
 const DOWNLOAD_MODULES: ModuleMeta[] = [
   { name: "pinyin", version: "4.0.0", url: `${JSDELIVR}/npm/pinyin@4.0.0/+esm` },
@@ -24,7 +23,6 @@ const DOWNLOAD_MODULES: ModuleMeta[] = [
     version: "2.0.0",
     url: `${JSDELIVR}/npm/greek-transliteration@2.0.0/+esm`,
   },
-  { name: "franc", version: "6.2.0", url: `${ESM_SH}/franc@6.2.0/es2022/franc.bundle.mjs` },
   { name: "kuroshiro", version: "1.2.0", url: `${JSDELIVR}/npm/kuroshiro@1.2.0/+esm` },
 ];
 

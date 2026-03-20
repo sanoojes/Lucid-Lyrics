@@ -9,7 +9,6 @@ This directory contains third-party modules used by this project.
 | pinyin                | 4.0.0   | [npm](https://www.npmjs.com/package/pinyin)                |
 | cyrillic-romanization | 1.1.8   | [npm](https://www.npmjs.com/package/cyrillic-romanization) |
 | greek-transliteration | 2.0.0   | [npm](https://www.npmjs.com/package/greek-transliteration) |
-| franc                 | 6.2.0   | [npm](https://www.npmjs.com/package/franc)                 |
 | kuroshiro             | 1.2.0   | [npm](https://www.npmjs.com/package/kuroshiro)             |
 
 ## License & Copyright

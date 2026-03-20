@@ -54,7 +54,6 @@ type RomanizedText = {
 type CommonStates = {
   HasRomanizedText: boolean;
   NeedsRomanization: boolean;
-  UsedFranc: boolean;
   IsRTL: boolean;
   Provider: LyricsProviders;
 };
