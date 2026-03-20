@@ -15,32 +15,23 @@ function createLazyModuleLoader<K extends ModuleName, T>(
 
   const load = async (): Promise<T> => {
     const mod = await getModule(name);
-    cached = await initializer(mod);
-    return cached;
+    const result = await initializer(mod);
+    cached = result;
+    return result;
   };
-
-  initPromise = load().catch((err) => {
-    initPromise = null;
-    throw err;
-  });
 
   return {
     get: async (): Promise<T> => {
-      if (cached !== null) {
-        return cached;
-      }
+      if (cached !== null) return cached;
+      if (initPromise) return initPromise;
+      initPromise = load().catch((err) => {
+        initPromise = null;
+        throw err;
+      });
 
-      if (!initPromise) {
-        initPromise = load().catch((err) => {
-          initPromise = null;
-          throw err;
-        });
-      }
-
-      return await initPromise;
+      return initPromise;
     },
   };
 }
-
 export { createLazyModuleLoader };
 export type { LazyModule, ModuleName };
