@@ -17,6 +17,7 @@ type Task = {
 };
 
 async function App() {
+  if (preventDuplicate()) return;
   try {
     const tasks: Task[] = [
       { name: "expose", fn: exposeGlobals },
@@ -77,3 +78,13 @@ async function App() {
 }
 
 App();
+function preventDuplicate() {
+  if (window.__lucid_lyrics_loaded) {
+    const msg = "Another instance of Lucid Lyrics is already running.";
+    toast.error(msg);
+    logger.warn(msg);
+    return true;
+  }
+  window.__lucid_lyrics_loaded = true;
+  return false;
+}
