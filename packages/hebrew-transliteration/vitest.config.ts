@@ -1,10 +1,10 @@
 import { defineConfig } from "vitest/config";
-import path from "path";
+import { resolve } from "node:path";
 
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": resolve(__dirname, "src"),
     },
   },
 });
