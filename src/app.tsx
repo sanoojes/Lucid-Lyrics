@@ -41,8 +41,7 @@ async function App() {
       },
       {
         name: "preload",
-        fn: () =>
-          preloadModules(["pinyin", "kuromoji", "kuroshiro", "cyrillic-romanization"]),
+        fn: () => preloadModules(["pinyin", "kuromoji", "kuroshiro", "cyrillic-romanization"]),
       },
     ];
 
