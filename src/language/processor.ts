@@ -66,21 +66,62 @@ async function addRomanizationToLyrics(
   getCachedLang: (text: string) => SupportedLanguage | "unknown",
   converter: (txt: string, lang: SupportedLanguage | "unknown") => Promise<string | null>,
 ) {
+  const resolveContextLang = (
+    token: string,
+    primaryLang: SupportedLanguage | "unknown",
+  ): SupportedLanguage | "unknown" => {
+    const cleanText = token.trim();
+    if (!cleanText) return "unknown";
+
+    const lang = getCachedLang(cleanText);
+    if (lang === "chinese" && primaryLang === "japanese") return "japanese";
+    if (lang === "chinese" && primaryLang === "korean") return "korean";
+    return lang;
+  };
+
   const processSyllableGroup = async (
     syllables: { Text: string; RomanizedText?: string | null }[],
   ) => {
     if (!syllables || syllables.length === 0) return false;
 
     const fullText = syllables.map((s) => s.Text).join("");
-    const lang = getCachedLang(fullText);
-    const isTextRTL = containsRTL(fullText);
+    const primaryLang = getCachedLang(fullText);
+    let isTextRTL = containsRTL(fullText);
 
-    const [fullRomaji, ...isolatedRomajis] = await Promise.all([
-      converter(fullText, lang),
-      ...syllables.map((s) => converter(s.Text, lang)),
-    ]);
+    const chunks: { lang: SupportedLanguage | "unknown"; syllables: typeof syllables }[] = [];
 
-    reconcileRomanizations(syllables, isolatedRomajis, fullRomaji);
+    for (const syllable of syllables) {
+      let lang = resolveContextLang(syllable.Text, primaryLang);
+
+      const isSpaceOrPunctuation = /^[\s\p{P}]+$/u.test(syllable.Text);
+      if (lang === "unknown" && isSpaceOrPunctuation && chunks.length > 0) {
+        lang = chunks[chunks.length - 1].lang;
+      }
+
+      if (chunks.length > 0 && chunks[chunks.length - 1].lang === lang) {
+        chunks[chunks.length - 1].syllables.push(syllable);
+      } else {
+        chunks.push({ lang, syllables: [syllable] });
+      }
+    }
+
+    const chunkPromises = chunks.map(async (chunk) => {
+      if (chunk.lang === "unknown") {
+        chunk.syllables.forEach((s) => (s.RomanizedText = null));
+        return;
+      }
+
+      const chunkText = chunk.syllables.map((s) => s.Text).join("");
+      const [fullRomaji, ...isolatedRomajis] = await Promise.all([
+        converter(chunkText, chunk.lang),
+        ...chunk.syllables.map((s) => converter(s.Text, chunk.lang)),
+      ]);
+
+      reconcileRomanizations(chunk.syllables, isolatedRomajis, fullRomaji);
+    });
+
+    await Promise.all(chunkPromises);
+
     return isTextRTL;
   };
 
@@ -91,9 +132,39 @@ async function addRomanizationToLyrics(
 
       const linePromises = lines.map(async (line) => {
         try {
-          const lineLang = getCachedLang(line.Text);
-          line.RomanizedText = await converter(line.Text, lineLang);
           line.IsRTL = containsRTL(line.Text);
+          const primaryLang = getCachedLang(line.Text);
+
+          const tokens = line.Text.split(/([\s\p{P}]+)/u).filter(Boolean);
+          const chunks: { text: string; lang: SupportedLanguage | "unknown" }[] = [];
+
+          for (const token of tokens) {
+            let lang = resolveContextLang(token, primaryLang);
+            const isSpaceOrPunctuation = /^[\s\p{P}]+$/u.test(token);
+
+            if (lang === "unknown" && isSpaceOrPunctuation && chunks.length > 0) {
+              lang = chunks[chunks.length - 1].lang;
+            }
+
+            if (chunks.length > 0 && chunks[chunks.length - 1].lang === lang) {
+              chunks[chunks.length - 1].text += token;
+            } else {
+              chunks.push({ text: token, lang });
+            }
+          }
+
+          const romanizedParts = await Promise.all(
+            chunks.map(async (chunk) => {
+              if (chunk.lang === "unknown") return chunk.text;
+              const rom = await converter(chunk.text, chunk.lang);
+              return rom;
+            }),
+          );
+
+          const finalRomanized = romanizedParts.join("");
+          if (finalRomanized !== line.Text) {
+            line.RomanizedText = finalRomanized;
+          }
         } catch {
           log.warn("Failed to romanize line");
         }
