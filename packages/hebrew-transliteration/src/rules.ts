@@ -241,7 +241,7 @@ const mapChars = (schema: Schema) => (input: string) => {
 };
 
 const materFeatures = (syl: Syllable, schema: Schema) => {
-  const mater = syl.clusters.filter((c) => c.isMater)[0];
+  const mater = syl.clusters.find((c) => c.isMater);
   const prev = mater.prev instanceof Cluster ? mater.prev : null;
   const materText = mater.text;
   const prevText = (prev?.text || "").replace(taamim, "");
