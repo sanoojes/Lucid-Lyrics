@@ -199,7 +199,7 @@ export const tiberian: Schema = {
         const alveolars = /[דזצתטסלנ]|שׂ/;
 
         // find cluster containing resh
-        const cluster = syllable.clusters.filter((c) => c.text.includes("ר"))[0];
+        const cluster = syllable.clusters.find((c) => c.text.includes("ר"));
         const prevCluster = cluster.prev?.value;
         const currentSyllable = cluster?.syllable;
         const [onset, _, coda] = currentSyllable ? currentSyllable.structure(true) : ["", "", ""];
