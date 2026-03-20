@@ -49,6 +49,8 @@ async function App() {
             "kuroshiro",
             "cyrillic-romanization",
             "greek-transliteration",
+            "arabic-transliteration",
+            "hebrew-transliteration",
             "armenian-transliteration",
           ]),
       },

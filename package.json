@@ -6,7 +6,8 @@
   "author": "Sanooj E Sanish <mail@sanooj.uk>",
   "workspaces": [
     "packages/arabic-transliteration",
-    "packages/armenian-transliteration"
+    "packages/armenian-transliteration",
+    "packages/hebrew-transliteration"
   ],
   "type": "module",
   "scripts": {
@@ -34,6 +35,7 @@
     "esbuild-plugin-solid": "^0.6.0",
     "fast-xml-parser": "^5.4.1",
     "gsap": "^3.14.2",
+    "hebrew-transliteration": "workspace:*",
     "idb-keyval": "^6.2.2",
     "kuromoji": "^0.1.2",
     "lenis": "^1.3.17",

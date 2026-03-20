@@ -1,0 +1,29 @@
+{
+  "name": "hebrew-transliteration",
+  "version": "0.0.1",
+  "author": "Sanooj E Sanish <mail@sanooj.uk>",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "havarotjs": "^0.25.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "rolldown": "^1.0.0-rc.10",
+    "unplugin-isolated-decl": "^0.15.7",
+    "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
