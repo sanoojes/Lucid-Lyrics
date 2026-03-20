@@ -10,6 +10,9 @@ import { setupSettingsMenu } from "@/menu";
 import { GITHUB_ISSUES_LINK } from "@/constants";
 import { dictResource, t } from "@/i18n";
 import { setupNPV } from "@/npv";
+import { setupFullscreen } from "@/fullscreen";
+
+App();
 
 type Task = {
   name: string;
@@ -38,6 +41,12 @@ async function App() {
         fn: async () => {
           renderModalRoot();
           await setupSettingsMenu();
+        },
+      },
+      {
+        name: "cinema/fullscreen",
+        fn: async () => {
+          setupFullscreen();
         },
       },
       {
@@ -77,7 +86,6 @@ async function App() {
   }
 }
 
-App();
 function preventDuplicate() {
   if (window.__lucid_lyrics_loaded) {
     const msg = "Another instance of Lucid Lyrics is already running.";

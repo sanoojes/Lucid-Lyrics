@@ -317,8 +317,7 @@ $floating-transition:
   }
 
   &:hover,
-  #lucid-page:hover &,
-  .lucid-contents > .floating-hover-target:hover + & {
+  .lucid-contents:hover & {
     opacity: 1;
     transform: translate3d(-50%, 0, 0);
     pointer-events: all;
@@ -331,8 +330,7 @@ $floating-transition:
     transform: translate3d(-50%, -20px, 0);
 
     &:hover,
-    #lucid-page:hover &,
-    .lucid-contents > .floating-hover-target:hover + & {
+    .lucid-contents:hover & {
       transform: translate3d(-50%, 0, 0);
     }
   }
@@ -369,8 +367,7 @@ $floating-transition:
     transform: translate3d(100%, -50%, 0);
 
     &:hover,
-    #lucid-page:hover &,
-    .lucid-contents > .floating-hover-target:hover + & {
+    .lucid-contents:hover & {
       transform: translate3d(-#{v.$space-lg}, -50%, 0);
     }
   }
@@ -379,8 +376,7 @@ $floating-transition:
     right: unset;
     transform: translate3d(-100%, -50%, 0);
     &:hover,
-    #lucid-page:hover &,
-    .lucid-contents > .floating-hover-target:hover + & {
+    .lucid-contents:hover & {
       transform: translate3d(#{v.$space-lg}, -50%, 0);
     }
   }

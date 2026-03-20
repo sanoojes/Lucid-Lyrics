@@ -32,6 +32,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  container-type: inline-size;
+  container-name: lucid-widget;
   transition-property: background, color, box-shadow, border, width;
   transition-duration: v.$ease-base;
   transition-timing-function: ease;
@@ -77,14 +79,14 @@
   }
 
   &__title {
-    font-size: v.$fs-lg;
+    font-size: clamp(v.$fs-lg, 5cqi, v.$fs-xl);
     font-weight: v.$fw-bold;
     line-height: 1.2;
     color: inherit;
   }
 
   &__artist {
-    font-size: v.$fs-base;
+    font-size: clamp(v.$fs-base, 2.7cqi, v.$fs-lg);
     color: inherit;
   }
 

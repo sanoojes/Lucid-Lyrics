@@ -1,6 +1,6 @@
 import { persistentJSON } from "@nanostores/persistent";
 import { getName } from "@/stores/persist";
-import { computed } from "nanostores";
+import { atom, computed } from "nanostores";
 import { DEFAULT_PAGE_STATE } from "@/constants";
 
 export type Positions = "top" | "bottom" | "left" | "right";
@@ -13,6 +13,15 @@ export type PageState = {
   showControls: boolean;
   floatingPosition: Positions;
 };
+
+export type PageMode = "page" | "cinema" | "fullscreen";
+
+export const $page_mode = atom<PageMode>("page");
+
+export function setPageMode(mode: PageMode) {
+  $page_mode.set(mode);
+}
+
 export const $page_state = persistentJSON<PageState>(getName("page-state"), DEFAULT_PAGE_STATE);
 export function resetPageState() {
   $page_state.set(DEFAULT_PAGE_STATE);

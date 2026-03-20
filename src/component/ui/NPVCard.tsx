@@ -1,4 +1,4 @@
-import { $npv_state, $page_state, setShowLyrics, toggleShowLyrics } from "@/stores";
+import { $npv_state, $page_mode, $page_state, setShowLyrics, toggleShowLyrics } from "@/stores";
 import { useStore } from "@nanostores/solid";
 import { ChevronDown, SquareArrowOutUpLeft } from "lucide-solid";
 import { Show } from "solid-js";
@@ -14,6 +14,7 @@ const NPVCard = () => {
   const npvState = useStore($npv_state);
   const pageState = useStore($page_state);
   const isAtLyricsPage = useStore($in_lyrics_page);
+    const pageMode = useStore($page_mode);
   const isOpen = () => npvState().showLyrics;
   const handleGoToPage = async () => {
     await router.navigate("/");
@@ -66,7 +67,7 @@ const NPVCard = () => {
             </Button>
           </div>
         </section>
-        <Show when={isOpen()}>
+        <Show when={isOpen() && pageMode() ==="page"}>
           <section
             class="npv-lyrics-root"
             style={{
