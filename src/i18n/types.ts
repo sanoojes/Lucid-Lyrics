@@ -85,6 +85,9 @@ export type Dict = {
   "player.buttonsError": string;
   "player.addButtons": string;
   "language.romanizeError": string;
+  "language.romanizeFailedEntirely": string;
+  "language.romanizePartialFail": string;
+  "language.romanizeCriticalError": string;
   "player.pause": string;
   "player.play": string;
   "player.shuffleOff": string;
