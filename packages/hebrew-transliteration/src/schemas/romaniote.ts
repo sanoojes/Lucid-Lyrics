@@ -68,13 +68,13 @@ export const romaniote: Schema = {
     {
       FEATURE: "cluster",
       HEBREW: "זּ",
-      TRANSLITERATION: "τζ"
+      TRANSLITERATION: "τζ",
     },
     {
       FEATURE: "cluster",
       // final shin or samekh
       HEBREW: /(\u{05E9}\u{05C2}|\u{05E9}|\u{05E1})$/u,
-      TRANSLITERATION: "ς"
+      TRANSLITERATION: "ς",
     },
     {
       FEATURE: "syllable",
@@ -85,7 +85,7 @@ export const romaniote: Schema = {
           return syllable.text.replace(hebrew, "σς");
         }
         return syllable.text;
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -102,13 +102,13 @@ export const romaniote: Schema = {
         const { patachYod } = groups;
 
         return syllable.text.replace(patachYod, "αη");
-      }
+      },
     },
     {
       FEATURE: "cluster",
       // consonantal yod with hiriq as vowel
       HEBREW: /(\u{05D9}\u{05B4})/u,
-      TRANSLITERATION: "γι"
+      TRANSLITERATION: "γι",
     },
     {
       FEATURE: "syllable",
@@ -128,7 +128,7 @@ export const romaniote: Schema = {
           return syllable.text.replace(tsereYod, "αι\u{301}");
         }
         return syllable.text.replace(tsereYod, "ε");
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -148,8 +148,10 @@ export const romaniote: Schema = {
           const finalHiriqYod = syllable.isAccented ? "ή" : "η";
           return syllable.text.replace(hiriqYod, finalHiriqYod);
         }
-        return syllable.isAccented ? syllable.text.replace(hiriqYod, "ί") : syllable.text.replace(hiriqYod, "ι");
-      }
+        return syllable.isAccented
+          ? syllable.text.replace(hiriqYod, "ί")
+          : syllable.text.replace(hiriqYod, "ι");
+      },
     },
     {
       FEATURE: "syllable",
@@ -157,13 +159,13 @@ export const romaniote: Schema = {
       HEBREW: /(\u{05B4}[\u{0590}-\u{05AF}\u{05BD}\u{05BF}]?\u{05D9}\u{05DD})/u,
       TRANSLITERATION: (syllable, hebrew) => {
         return syllable.text.replace(hebrew, "ει\u{301}μ");
-      }
-    }
+      },
+    },
   ],
   STRESS_MARKER: {
     mark: "\u{301}",
     location: "after-vowel",
-    exclude: "single"
+    exclude: "single",
   },
   longVowels: true,
   shevaAfterMeteg: true,
@@ -173,5 +175,5 @@ export const romaniote: Schema = {
   article: true,
   allowNoNiqqud: true,
   strict: false,
-  holemHaser: "remove"
+  holemHaser: "remove",
 };

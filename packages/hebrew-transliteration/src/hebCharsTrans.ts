@@ -51,7 +51,7 @@ export const transliterateMap: map = {
   ק: "QOF", // HEBREW LETTER QOF (U+05E7)
   ר: "RESH", // HEBREW LETTER RESH (U+05E8)
   ש: "SHIN", // HEBREW LETTER SHIN (U+05E9)
-  ת: "TAV" // HEBREW LETTER TAV (U+05EA)
+  ת: "TAV", // HEBREW LETTER TAV (U+05EA)
   // "\u{05EF}": "", // HEBREW YOD TRIANGLE (U+05EF)
   // װ: "", // HEBREW LIGATURE YIDDISH DOUBLE VAV (U+05F0)
   // ױ: "", // HEBREW LIGATURE YIDDISH VAV YOD (U+05F1)

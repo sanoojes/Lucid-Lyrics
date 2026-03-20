@@ -72,5 +72,5 @@ export const brillSimple: Schema = {
   article: true,
   allowNoNiqqud: true,
   strict: false,
-  holemHaser: "remove"
+  holemHaser: "remove",
 };

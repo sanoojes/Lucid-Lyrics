@@ -76,8 +76,8 @@ export const jss: Schema = {
           return syllable.text.replace("\u{05C7}", "\u{05B8}");
         }
         return syllable.text;
-      }
-    }
+      },
+    },
   ],
   longVowels: true,
   qametsQatan: true,
@@ -87,5 +87,5 @@ export const jss: Schema = {
   allowNoNiqqud: true,
   strict: false,
   holemHaser: "remove",
-  shevaAfterMeteg: true
+  shevaAfterMeteg: true,
 };

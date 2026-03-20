@@ -147,7 +147,11 @@ export interface WordFeature extends HebrewFeature, PassThrough {
  * @param hebrew the `HEBREW` property
  * @param schema the `Schema` being used
  */
-export type SyllableCallback = (syllable: Syllable, hebrew: string | RegExp, schema: Schema) => string;
+export type SyllableCallback = (
+  syllable: Syllable,
+  hebrew: string | RegExp,
+  schema: Schema,
+) => string;
 
 export interface SyllableFeature extends HebrewFeature, PassThrough {
   /**
@@ -2194,7 +2198,7 @@ export class SBL extends Schema {
       allowNoNiqqud: schema.allowNoNiqqud ?? true,
       strict: schema.strict ?? false,
       holemHaser: schema.holemHaser || "remove",
-      ketivQeres: schema.ketivQeres || undefined
+      ketivQeres: schema.ketivQeres || undefined,
     });
 
     this.VOCAL_SHEVA = schema.VOCAL_SHEVA ?? "ə";
@@ -2271,12 +2275,14 @@ export class SBL extends Schema {
           const hasMater = syllable.clusters.some((cluster) => cluster.isMater);
           if (syllable.isAccented && !hasMater) {
             const macron = "\u0304";
-            const output = syllable.hasVowelName("HIRIQ") ? schema["HIRIQ"] + macron : schema["QUBUTS"] + macron;
+            const output = syllable.hasVowelName("HIRIQ")
+              ? schema["HIRIQ"] + macron
+              : schema["QUBUTS"] + macron;
             return syllable.text.replace(heb, output.normalize("NFC"));
           }
           return syllable.text;
-        }
-      }
+        },
+      },
     ];
     this.STRESS_MARKER = schema.STRESS_MARKER ?? undefined;
     this.longVowels = schema.longVowels ?? true;

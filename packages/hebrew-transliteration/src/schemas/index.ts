@@ -15,5 +15,5 @@ export {
   michiganClaremont,
   romaniote,
   jss,
-  tiberian
+  tiberian,
 };

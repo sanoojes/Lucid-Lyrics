@@ -65,13 +65,13 @@ export const sblSimple: Schema = {
     {
       FEATURE: "cluster",
       HEBREW: "\u{05E9}\u{05C1}\u{05BC}",
-      TRANSLITERATION: "sh"
+      TRANSLITERATION: "sh",
     },
     {
       FEATURE: "cluster",
       HEBREW: "\u{05E6}\u{05BC}",
-      TRANSLITERATION: "ts"
-    }
+      TRANSLITERATION: "ts",
+    },
   ],
   longVowels: true,
   shevaAfterMeteg: true,
@@ -81,5 +81,5 @@ export const sblSimple: Schema = {
   article: true,
   allowNoNiqqud: true,
   strict: false,
-  holemHaser: "remove"
+  holemHaser: "remove",
 };

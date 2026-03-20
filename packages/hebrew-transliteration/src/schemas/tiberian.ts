@@ -73,7 +73,7 @@ export const tiberian: Schema = {
       HEBREW: "\u{05D9}\u{05BC}",
       TRANSLITERATION: (cluster, hebrew) => {
         return cluster.text.replace(hebrew, "ɟɟ");
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -97,7 +97,7 @@ export const tiberian: Schema = {
         // or it will be doubled in rules.ts as "tʰtʰ"
         const noAspiration = schema["TAV_DAGESH"]?.replace("ʰ", "") ?? "";
         return cluster.text.replace("תּ", `${noAspiration + schema["TAV_DAGESH"]}`);
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -115,7 +115,7 @@ export const tiberian: Schema = {
 
         const noAspiration = schema["PE_DAGESH"]?.replace("ʰ", "") ?? "";
         return cluster.text.replace("פּ", `${noAspiration + schema["PE_DAGESH"]}`);
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -133,7 +133,7 @@ export const tiberian: Schema = {
 
         const noPharyngealization = schema["TET"]?.replace("ˁ", "") ?? "";
         return cluster.text.replace("ט", `${noPharyngealization + schema["TET"]}`);
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -151,7 +151,7 @@ export const tiberian: Schema = {
 
         const noPharyngealization = schema["TSADI"]?.replace("ˁ", "") ?? "";
         return cluster.text.replace("צ", `${noPharyngealization + schema["TSADI"]}`);
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -169,7 +169,7 @@ export const tiberian: Schema = {
 
         const noAspiration = schema["KAF_DAGESH"]?.replace("ʰ", "") ?? "";
         return cluster.text.replace(/כּ|ךּ/u, `${noAspiration + schema["KAF_DAGESH"]}`);
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -181,7 +181,7 @@ export const tiberian: Schema = {
         }
 
         return "";
-      }
+      },
     },
     {
       FEATURE: "cluster",
@@ -189,7 +189,7 @@ export const tiberian: Schema = {
       TRANSLITERATION: (cluster) => {
         // remove the dagesh
         return cluster.text.replace("\u{05BC}", "");
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -228,7 +228,7 @@ export const tiberian: Schema = {
 
         // default
         return syllable.text;
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -248,7 +248,7 @@ export const tiberian: Schema = {
         }
 
         return syllable.text;
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -267,7 +267,7 @@ export const tiberian: Schema = {
         }
 
         return syllable.text;
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -286,7 +286,7 @@ export const tiberian: Schema = {
         }
 
         return syllable.text;
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -309,7 +309,7 @@ export const tiberian: Schema = {
         }
 
         return syllable.text;
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -324,13 +324,17 @@ export const tiberian: Schema = {
         }
 
         if (vowelName === "SHEVA") {
-          throw new Error(`Syllable ${syllable.text} has a sheva as vowel, should not have matched`);
+          throw new Error(
+            `Syllable ${syllable.text} has a sheva as vowel, should not have matched`,
+          );
         }
 
         // half vowels do not have length; exit early
         const hasHalfVowel = syllable.clusters.map((c) => c.hasHalfVowel).includes(true);
         if (hasHalfVowel) {
-          throw new Error(`Syllable ${syllable.text} has a hataf as vowel, should not have matched`);
+          throw new Error(
+            `Syllable ${syllable.text} has a hataf as vowel, should not have matched`,
+          );
         }
 
         const [onset, _nuclues, coda] = syllable.structure(true);
@@ -388,7 +392,10 @@ export const tiberian: Schema = {
           const firstConsonant = noMaterText[0];
           return noMaterText
             .replace(firstConsonant, `ˌ${firstConsonant}`)
-            .replace(vowel, `${determinePatachRealization(vowel)}${hasLongVowel ? lengthMarker : halfLengthMarker}`);
+            .replace(
+              vowel,
+              `${determinePatachRealization(vowel)}${hasLongVowel ? lengthMarker : halfLengthMarker}`,
+            );
         }
 
         const isClosed = syllable.isClosed;
@@ -403,7 +410,7 @@ export const tiberian: Schema = {
           const vowelRealization = determinePatachRealization(vowel);
           return noMaterText.replace(
             vowel,
-            `${vowelRealization + lengthMarker + syllableSeparator + vowelRealization}`
+            `${vowelRealization + lengthMarker + syllableSeparator + vowelRealization}`,
           );
         }
 
@@ -414,7 +421,7 @@ export const tiberian: Schema = {
           const vowelRealization = determinePatachRealization(vowel);
           return noMaterText.replace(
             vowel,
-            `${vowelRealization + lengthMarker + syllableSeparator + vowelRealization}`
+            `${vowelRealization + lengthMarker + syllableSeparator + vowelRealization}`,
           );
         }
 
@@ -430,7 +437,7 @@ export const tiberian: Schema = {
         }
 
         return syllable.text.replace(vowel, `${determinePatachRealization(vowel)}`);
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -445,12 +452,18 @@ export const tiberian: Schema = {
         }
 
         if (vowelName === "SHEVA") {
-          throw new Error(`Syllable ${syllable.text} has a sheva as vowel, should not have matched`);
+          throw new Error(
+            `Syllable ${syllable.text} has a sheva as vowel, should not have matched`,
+          );
         }
 
-        const hasNonHalfVowels = syllable.clusters.map((c) => c.hasShortVowel || c.hasLongVowel).includes(true);
+        const hasNonHalfVowels = syllable.clusters
+          .map((c) => c.hasShortVowel || c.hasLongVowel)
+          .includes(true);
         if (hasNonHalfVowels) {
-          throw new Error(`Syllable ${syllable.text} does not have a hataf vowel, should not have matched`);
+          throw new Error(
+            `Syllable ${syllable.text} does not have a hataf vowel, should not have matched`,
+          );
         }
 
         const [onset, _nuclues, coda] = syllable.structure(true);
@@ -493,7 +506,7 @@ export const tiberian: Schema = {
         }
 
         return syllable.text.replace(vowel, `${determinePatachRealization(vowel)}`);
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -547,18 +560,18 @@ export const tiberian: Schema = {
         const nextVowel = nextSyllable.vowelNames[0];
         if (!nextVowel) {
           throw new Error(
-            `Syllable ${syllable.text} has a sheva as a vowel, but the next syllable ${nextSylFirstCluster} does not have a vowel`
+            `Syllable ${syllable.text} has a sheva as a vowel, but the next syllable ${nextSylFirstCluster} does not have a vowel`,
           );
         }
 
         if (nextVowel === "SHEVA") {
           throw new Error(
-            `Syllable ${syllable.text} has a sheva as a vowel, but the next syllable ${nextSylFirstCluster} also has a sheva as a vowel`
+            `Syllable ${syllable.text} has a sheva as a vowel, but the next syllable ${nextSylFirstCluster} also has a sheva as a vowel`,
           );
         }
 
         return transliterateShevaAsVowel(schema[nextVowel]);
-      }
+      },
     },
     {
       FEATURE: "syllable",
@@ -581,7 +594,7 @@ export const tiberian: Schema = {
 
         // update this syllable to match the later spelling of Jerusalem
         return syl.text.replace(heb, `${schema["YOD"]}${schema["HIRIQ"]}${schema["FINAL_MEM"]}`);
-      }
+      },
     },
     {
       FEATURE: "word",
@@ -595,8 +608,8 @@ export const tiberian: Schema = {
         const vav = match && match[1] ? match[1] : "";
         const issachar = "jissɔːˈχɔːɔʀ̟";
         return `${vav}${issachar}`;
-      }
-    }
+      },
+    },
   ],
   allowNoNiqqud: false,
   article: false,
@@ -606,8 +619,8 @@ export const tiberian: Schema = {
       input: /הִוא/,
       output: (heb, input) => heb.replace(input, "הִיא"),
       captureTaamim: true,
-      ignoreTaamim: true
-    }
+      ignoreTaamim: true,
+    },
   ],
   longVowels: false,
   qametsQatan: true,
@@ -615,5 +628,5 @@ export const tiberian: Schema = {
   shevaWithMeteg: true,
   sqnmlvy: false,
   strict: true,
-  wawShureq: false
+  wawShureq: false,
 };
