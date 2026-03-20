@@ -90,6 +90,7 @@ jobs:
         run: |
           cp dist/packages/armenian-transliteration/index.js armenian-transliteration.js
           cp dist/packages/arabic-transliteration/index.js arabic-transliteration.js
+          cp dist/packages/hebrew-transliteration/index.js hebrew-transliteration.js
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -100,6 +101,7 @@ jobs:
             lucid-lyrics-full-${{ env.VERSION }}.zip
             lucid-lyrics-packages-${{ env.VERSION }}.zip
             armenian-transliteration.js
+            hebrew-transliteration.js
             arabic-transliteration.js
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
