@@ -48,7 +48,7 @@ export const DEFAULT_PAGE_STATE = {
   romanize: false,
   showCredits: true,
   hideScrollbar: false,
-  showControls: true,
+  showControls: false,
   floatingPosition: "bottom",
 } satisfies PageState;
 
