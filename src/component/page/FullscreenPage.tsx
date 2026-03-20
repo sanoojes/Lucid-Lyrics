@@ -14,13 +14,13 @@ import RomanizeButton from "@/component/ui/button/RomanizeButton";
 import LocalTTMLButton from "@/component/ui/button/LocalTTMLButton";
 import FullscreenButton from "@/component/ui/button/FullscreenButton";
 
-import { $page_state, setPageMode, toggleWidget } from "@/stores";
+import { $fullscreen_state, setPageMode, toggleFullscreenWidget } from "@/stores";
 import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
 import { $installed_theme } from "@/stores/theme";
 import { LyricsRendererProvider } from "@/context/LyricsRenderer";
 
 function FullscreenPage() {
-  const pageState = useStore($page_state);
+  const pageState = useStore($fullscreen_state);
   const installedTheme = useStore($installed_theme);
   const isHidden = () => pageState().widget === "hidden";
   const themeClassname = () => (installedTheme() ? ` has-${installedTheme()}-theme` : "");
@@ -46,7 +46,7 @@ function FullscreenPage() {
             <div class="separator" />
           </Show>
           <div class="controls">
-            <Button variant="ghost" size="icon" onClick={toggleWidget}>
+            <Button variant="ghost" size="icon" onClick={toggleFullscreenWidget}>
               <ListMusic size={20} />
             </Button>
             <RomanizeButton />

@@ -9,12 +9,14 @@ import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyri
 import { LyricsRendererProvider } from "@/context/LyricsRenderer";
 import RomanizeButton from "@/component/ui/button/RomanizeButton";
 import router, { $in_lyrics_page } from "@/router";
+import FullscreenButton from "@/component/ui/button/FullscreenButton";
+import CinemaButton from "@/component/ui/button/CinemaButton";
 
 const NPVCard = () => {
   const npvState = useStore($npv_state);
   const pageState = useStore($page_state);
   const isAtLyricsPage = useStore($in_lyrics_page);
-    const pageMode = useStore($page_mode);
+  const pageMode = useStore($page_mode);
   const isOpen = () => npvState().showLyrics;
   const handleGoToPage = async () => {
     await router.navigate("/");
@@ -42,6 +44,7 @@ const NPVCard = () => {
             <div class="main-nowPlayingView-sectionHeaderText">{t("npv.lyrics")}</div>
           </h2>
           <div class="section-btn-wrapper">
+            <CinemaButton />
             <Show when={isOpen()}>
               <ScrollToActiveLyricsButton isSmall />
               <RomanizeButton isSmall />
@@ -67,7 +70,7 @@ const NPVCard = () => {
             </Button>
           </div>
         </section>
-        <Show when={isOpen() && pageMode() ==="page"}>
+        <Show when={isOpen() && pageMode() === "page"}>
           <section
             class="npv-lyrics-root"
             style={{

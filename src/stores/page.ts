@@ -1,11 +1,20 @@
 import { persistentJSON } from "@nanostores/persistent";
 import { getName } from "@/stores/persist";
 import { atom, computed } from "nanostores";
-import { DEFAULT_PAGE_STATE } from "@/constants";
+import { DEFAULT_PAGE_STATE, DEFAULT_FULLSCREEN_STATE } from "@/constants";
 
 export type Positions = "top" | "bottom" | "left" | "right";
 
 export type PageState = {
+  widget: "hidden" | "show";
+  romanize: boolean;
+  showCredits: boolean;
+  hideScrollbar: boolean;
+  showControls: boolean;
+  floatingPosition: Positions;
+};
+
+export type FullscreenState = {
   widget: "hidden" | "show";
   romanize: boolean;
   showCredits: boolean;
@@ -56,6 +65,46 @@ export function setFloatingPosition(floatingPosition: Positions) {
 
 export function toggleWidget() {
   updatePageState((state) => ({
+    ...state,
+    widget: state.widget === "hidden" ? "show" : "hidden",
+  }));
+}
+
+export const $fullscreen_state = persistentJSON<FullscreenState>(
+  getName("fullscreen-state"),
+  DEFAULT_FULLSCREEN_STATE,
+);
+
+export function resetFullscreenState() {
+  $fullscreen_state.set(DEFAULT_FULLSCREEN_STATE);
+}
+
+export function updateFullscreenState(updater: (state: FullscreenState) => FullscreenState) {
+  $fullscreen_state.set(updater($fullscreen_state.get()));
+}
+
+export function toggleFullscreenRomanize() {
+  updateFullscreenState((state) => ({ ...state, romanize: !state.romanize }));
+}
+
+export function setFullscreenShowCredits(showCredits: boolean) {
+  updateFullscreenState((state) => ({ ...state, showCredits }));
+}
+
+export function setFullscreenHideScrollbar(hideScrollbar: boolean) {
+  updateFullscreenState((state) => ({ ...state, hideScrollbar }));
+}
+
+export function setFullscreenShowControls(showControls: boolean) {
+  updateFullscreenState((state) => ({ ...state, showControls }));
+}
+
+export function setFullscreenFloatingPosition(floatingPosition: Positions) {
+  updateFullscreenState((state) => ({ ...state, floatingPosition }));
+}
+
+export function toggleFullscreenWidget() {
+  updateFullscreenState((state) => ({
     ...state,
     widget: state.widget === "hidden" ? "show" : "hidden",
   }));

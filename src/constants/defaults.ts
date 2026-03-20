@@ -1,5 +1,11 @@
 import type { LyricsProviders } from "@/constants";
-import type { BackgroundState, NpvSettingsState, PageState, WidgetState } from "@/stores";
+import type {
+  BackgroundState,
+  FullscreenState,
+  NpvSettingsState,
+  PageState,
+  WidgetState,
+} from "@/stores";
 import type { CacheSettings } from "@/stores/dev";
 
 const customUrl = "https://picsum.photos/1920/1080";
@@ -51,6 +57,15 @@ export const DEFAULT_PAGE_STATE = {
   showControls: false,
   floatingPosition: "bottom",
 } satisfies PageState;
+
+export const DEFAULT_FULLSCREEN_STATE = {
+  widget: "show",
+  romanize: false,
+  showCredits: true,
+  hideScrollbar: false,
+  showControls: true,
+  floatingPosition: "bottom",
+} satisfies FullscreenState;
 
 export const DEFAULT_WIDGET_STATE = {
   variant: "glass",

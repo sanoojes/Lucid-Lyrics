@@ -169,7 +169,7 @@ $floating-transition:
           pointer-events: all;
 
           .controls .l-btn {
-            --btn-height: clamp(32px, 8cqw, 48px);
+            --btn-size: clamp(32px, 10cqi, 48px);
           }
         }
       }

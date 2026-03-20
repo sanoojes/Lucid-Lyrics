@@ -9,6 +9,8 @@ import WidgetSettings from "@/component/settings/section/Widget";
 import NowPlayingViewSettings from "@/component/settings/section/NowPlayingView";
 import BackgroundSettings from "@/component/settings/section/Background";
 import LyricsSettings from "@/component/settings/section/Lyrics";
+import PageSettings from "@/component/settings/section/Page";
+import FullscreenSettings from "@/component/settings/section/Fullscreen";
 import LanguageSettings from "@/component/settings/section/Language";
 import ResetSettings from "@/component/settings/section/Reset";
 import AdvancedSettings from "@/component/settings/section/Advanced";
@@ -76,8 +78,10 @@ export function SettingsModal() {
             <MainList searchQuery={searchQuery()}>
               <LanguageSettings />
               <WidgetSettings />
-              <NowPlayingViewSettings />
               <BackgroundSettings />
+              <NowPlayingViewSettings />
+              <PageSettings />
+              <FullscreenSettings />
               <LyricsSettings />
               <AdvancedSettings />
               <ResetSettings />

@@ -12,7 +12,7 @@ function Fullscreen() {
     on(
       () => pageMode(),
       async (mode) => {
-       if (mode === "fullscreen") {
+        if (mode === "fullscreen") {
           try {
             if (portalRef && document.fullscreenElement !== portalRef) {
               await portalRef.requestFullscreen();
@@ -20,8 +20,7 @@ function Fullscreen() {
           } catch (err) {
             console.warn("Fullscreen request denied:", err);
           }
-        } 
-        else if (document.fullscreenElement) {
+        } else if (document.fullscreenElement) {
           await document.exitFullscreen().catch(() => {});
         }
       },

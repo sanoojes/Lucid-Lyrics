@@ -109,11 +109,12 @@
     z-index: 2;
 
     .controls .l-btn {
-      --btn-height: clamp(2rem, 5cqw, 6rem);
+      --btn-size: clamp(32px, 15cqi, 64px);
+      $svg-size: clamp(20px, 3.4cqw, 3rem);
       border-radius: 10rem;
       .lucide {
-        height: clamp(1rem, 2cqw, 2rem);
-        width: clamp(1rem, 2cqw, 2rem);
+        height: $svg-size;
+        width: $svg-size;
       }
     }
   }
