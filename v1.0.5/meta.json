@@ -44204,7 +44204,7 @@
       "format": "esm"
     },
     "src/styles/page.scss": {
-      "bytes": 10576,
+      "bytes": 10831,
       "imports": [
         {
           "path": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
@@ -47890,7 +47890,7 @@
       "format": "esm"
     },
     "src/styles/component/widget.scss": {
-      "bytes": 7425,
+      "bytes": 7673,
       "imports": [
         {
           "path": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
@@ -48037,7 +48037,7 @@
       "format": "esm"
     },
     "src/component/ui/PlayingWidget.tsx": {
-      "bytes": 19432,
+      "bytes": 21226,
       "imports": [
         {
           "path": "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js",
@@ -48098,11 +48098,6 @@
           "path": "src/component/ui/Marquee.tsx",
           "kind": "import-statement",
           "original": "@/component/ui/Marquee"
-        },
-        {
-          "path": "src/component/ui/player/Controls.tsx",
-          "kind": "import-statement",
-          "original": "@/component/ui/player/Controls"
         },
         {
           "path": "src/component/ui/player/LikeButton.tsx",
@@ -48486,7 +48481,7 @@
       "format": "esm"
     },
     "src/component/page/LyricsPage.tsx": {
-      "bytes": 12827,
+      "bytes": 13140,
       "imports": [
         {
           "path": "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js",
@@ -50240,7 +50235,7 @@
       "imports": []
     },
     "src/component/page/FullscreenPage.tsx": {
-      "bytes": 12803,
+      "bytes": 18990,
       "imports": [
         {
           "path": "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js",
@@ -51145,7 +51140,7 @@
           "bytesInOutput": 182
         },
         "src/component/ui/PlayingWidget.tsx": {
-          "bytesInOutput": 2415
+          "bytesInOutput": 2700
         },
         "src/component/ui/button/CinemaButton.tsx": {
           "bytesInOutput": 235
@@ -51178,7 +51173,7 @@
           "bytesInOutput": 378
         },
         "src/component/page/LyricsPage.tsx": {
-          "bytesInOutput": 1145
+          "bytesInOutput": 1191
         },
         "src/styles/modal/settings.scss": {
           "bytesInOutput": 0
@@ -51307,7 +51302,7 @@
           "bytesInOutput": 0
         },
         "src/component/page/FullscreenPage.tsx": {
-          "bytesInOutput": 1128
+          "bytesInOutput": 1829
         },
         "src/component/fullscreen/Fullscreen.tsx": {
           "bytesInOutput": 1041
@@ -51319,7 +51314,7 @@
           "bytesInOutput": 886
         }
       },
-      "bytes": 346650
+      "bytes": 347682
     },
     "dist/app.css": {
       "imports": [
@@ -51340,7 +51335,7 @@
           "bytesInOutput": 2183
         },
         "src/styles/page.scss": {
-          "bytesInOutput": 9929
+          "bytesInOutput": 10184
         },
         "src/styles/lenis.css": {
           "bytesInOutput": 1350
@@ -51367,7 +51362,7 @@
           "bytesInOutput": 515
         },
         "src/styles/component/widget.scss": {
-          "bytesInOutput": 6989
+          "bytesInOutput": 7233
         },
         "src/styles/component/marquee.scss": {
           "bytesInOutput": 1165
@@ -51409,7 +51404,7 @@
           "bytesInOutput": 182
         }
       },
-      "bytes": 48614
+      "bytes": 49113
     }
   }
 }
