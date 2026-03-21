@@ -59,6 +59,7 @@ const AnimatedLayer = () => {
         uOpacity: { value: 1.0 },
         uTime: { value: 0.0 },
         uResolution: { value: [containerRef.clientWidth, containerRef.clientHeight] },
+        uScale: { value: options().scale / 100 },
       },
       transparent: true,
       depthTest: false,
@@ -113,7 +114,6 @@ const AnimatedLayer = () => {
           const response = await fetch(uri);
           const blob = await response.blob();
           const bitmap = await createImageBitmap(blob, {
-            imageOrientation: "flipY",
             premultiplyAlpha: "none",
             colorSpaceConversion: "none",
           });
@@ -140,11 +140,13 @@ const AnimatedLayer = () => {
     });
 
     createEffect(() => {
-      const filter = options().filter;
+      const opt = options();
+      const filter = opt.filter;
       program.uniforms.uBrightness.value = filter.brightness / 100;
       program.uniforms.uSaturation.value = filter.saturation / 100;
       program.uniforms.uContrast.value = filter.contrast / 100;
       program.uniforms.uOpacity.value = filter.opacity / 100;
+      program.uniforms.uScale.value = opt.scale / 100;
     });
 
     const unsubscribe = Tempus.add((_time: number, deltaTime: number) => {
@@ -173,7 +175,6 @@ const AnimatedLayer = () => {
           position: "absolute",
           inset: 0,
           filter: `blur(${options().filter.blur}px)`,
-          transform: `scale(${options().scale / 100})`,
           "pointer-events": "none",
         }}
       />

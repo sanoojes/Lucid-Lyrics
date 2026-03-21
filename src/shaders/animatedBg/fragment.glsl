@@ -8,8 +8,9 @@ uniform float uFade;
 uniform float uBrightness;
 uniform float uSaturation;
 uniform float uContrast;
-uniform float uOpacity; 
+uniform float uOpacity;
 uniform vec2 uResolution;
+uniform float uScale;
 
 const vec2 CENTER = vec2(0.5, 0.5);
 
@@ -65,10 +66,14 @@ vec4 over(vec4 src, vec4 dst) {
 }
 
 void main() {
-  vec2 fc = gl_FragCoord.xy;
   vec2 center = uResolution * 0.5;
   float minDim = min(uResolution.x, uResolution.y);
-  float aspect = uResolution.x / uResolution.y;
+
+  float s = (uScale > 0.001) ? uScale : 1.0;
+  float padding = 0.2;
+  float scaleFactor = s * (1.0 + padding);
+
+  vec2 fc = center + (gl_FragCoord.xy - center) / scaleFactor;
 
   vec4 finalColor = vec4(0.0);
   {
@@ -141,13 +146,6 @@ void main() {
       col.a *= mask * 0.5;
       finalColor = over(col, finalColor);
     }
-  }
-
-  {
-    vec2 uv = fc / uResolution;
-    float vign = uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y);
-    vign = pow(vign * 16.0, 0.35);
-    finalColor.rgb *= mix(0.60, 1.0, vign);
   }
 
   finalColor.rgb *= uBrightness;
