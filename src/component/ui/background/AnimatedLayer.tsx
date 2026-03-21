@@ -58,7 +58,7 @@ const AnimatedLayer = () => {
         uContrast: { value: 1.0 },
         uOpacity: { value: 1.0 },
         uTime: { value: 0.0 },
-        uResolution: { value: [containerRef.clientWidth, containerRef.clientHeight] },
+        uResolution: { value: [gl.canvas.width, gl.canvas.height] },
         uScale: { value: options().scale / 100 },
       },
       transparent: true,
@@ -72,7 +72,10 @@ const AnimatedLayer = () => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
         renderer.setSize(width, height);
-        program.uniforms.uResolution.value = [width, height];
+
+        program.uniforms.uResolution.value[0] = gl.canvas.width;
+        program.uniforms.uResolution.value[1] = gl.canvas.height;
+
         renderer.render({ scene: mesh });
       }
     });

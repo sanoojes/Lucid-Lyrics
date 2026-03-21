@@ -1,11 +1,20 @@
 import { useStore } from "@nanostores/solid";
-import { For } from "solid-js";
+import { For, Index, Show } from "solid-js";
 import { SettingsRow } from "@/component/settings/Row";
-import { $providers } from "@/stores/lyrics";
+import {
+  $providers,
+  $blurmap_mode,
+  $custom_blurmap,
+  setBlurmapMode,
+  setCustomBlurmap,
+  type BlurmapMode,
+} from "@/stores/lyrics";
 import { SettingsSection } from "@/component/settings/Section";
 import { GripVertical } from "lucide-solid";
 import { t } from "@/i18n";
 import type { LyricsProviders } from "@/constants";
+import { Select } from "@/component/ui/Select";
+import { Slider } from "@/component/ui/Slider";
 
 const providerLabels: Record<LyricsProviders, string> = {
   user: "User (TTML)",
@@ -13,8 +22,18 @@ const providerLabels: Record<LyricsProviders, string> = {
   spicy: "Spicy",
 } as const;
 
+const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
+  { label: t("lyrics.blurmapMode.default"), value: "default" },
+  { label: t("lyrics.blurmapMode.minimal"), value: "minimal" },
+  { label: t("lyrics.blurmapMode.smooth"), value: "smooth" },
+  { label: t("lyrics.blurmapMode.heavy"), value: "heavy" },
+  { label: t("lyrics.blurmapMode.custom"), value: "custom" },
+];
+
 function LyricsSettings() {
   const providerList = useStore($providers);
+  const blurmapMode = useStore($blurmap_mode);
+  const customBlurmap = useStore($custom_blurmap);
 
   const reorderableProviders = () => providerList().slice(1);
 
@@ -58,6 +77,44 @@ function LyricsSettings() {
 
   return (
     <SettingsSection title={t("lyrics.title")}>
+      <SettingsRow label={t("lyrics.blurmapMode")} description={t("lyrics.blurmapModeDesc")}>
+        <Select
+          value={blurmapMode()}
+          onChange={(v) => setBlurmapMode(v as BlurmapMode)}
+          options={BLURMAP_OPTIONS}
+        />
+      </SettingsRow>
+
+      <Show when={blurmapMode() === "custom"}>
+        <SettingsRow
+          label={t("lyrics.customBlurmap")}
+          description={t("lyrics.customBlurmapDesc")}
+          column
+        >
+          <div class="blurmap-sliders">
+            <Index each={customBlurmap()}>
+              {(value, index) => (
+                <div class="blurmap-slider-row">
+                  <span class="blurmap-slider-label">{`Distance ${index} and -${index}`}</span>
+                  <Slider
+                    value={value()}
+                    onChange={(v) => {
+                      const newBlurmap = [...customBlurmap()];
+                      newBlurmap[index] = v;
+                      setCustomBlurmap(newBlurmap);
+                    }}
+                    min={0}
+                    max={5}
+                    step={0.5}
+                    suffix="px"
+                  />
+                </div>
+              )}
+            </Index>
+          </div>
+        </SettingsRow>
+      </Show>
+
       <SettingsRow
         label={t("lyrics.providerOrder")}
         description={t("lyrics.providerOrderDesc")}

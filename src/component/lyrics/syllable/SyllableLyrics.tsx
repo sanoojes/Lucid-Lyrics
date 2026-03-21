@@ -11,13 +11,11 @@ import {
 } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $romanize } from "@/stores";
+import { $current_position, $romanize, getBlurmap } from "@/stores";
 import { useRenderer } from "@/context/LyricsRenderer";
 import { SPACE_REGEX, splitGraphemes } from "@/lib/string";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
-
-const BLUR_MAP = [0, 1, 2, 3, 4, 5];
 
 export type SyllableLyricsProps = {
   lyrics: SyllableData;
@@ -525,6 +523,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   const getBlurAmount = (index: number, reset = false): string => {
     if (reset) return "0px";
 
+    const blurmap = getBlurmap();
     const active = activeIndices();
     let distance = Math.abs(index - firstActiveIndex());
 
@@ -533,7 +532,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       if (d < distance) distance = d;
     }
 
-    const blur = distance >= BLUR_MAP.length ? BLUR_MAP[BLUR_MAP.length - 1] : BLUR_MAP[distance];
+    const blur = distance >= blurmap.length ? blurmap[blurmap.length - 1] : blurmap[distance];
     return `${blur}px`;
   };
 

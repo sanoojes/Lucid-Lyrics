@@ -143,6 +143,15 @@ export type Dict = {
   "lyrics.showControlsDesc": string;
   "lyrics.floatingPosition": string;
   "lyrics.floatingPositionDesc": string;
+  "lyrics.blurmapMode": string;
+  "lyrics.blurmapModeDesc": string;
+  "lyrics.blurmapMode.default": string;
+  "lyrics.blurmapMode.minimal": string;
+  "lyrics.blurmapMode.smooth": string;
+  "lyrics.blurmapMode.heavy": string;
+  "lyrics.blurmapMode.custom": string;
+  "lyrics.customBlurmap": string;
+  "lyrics.customBlurmapDesc": string;
   "position.top": string;
   "position.bottom": string;
   "position.left": string;

@@ -2,7 +2,7 @@ import type { LineData } from "@/lib/api/types";
 import { createEffect, createMemo, createSignal, For, on, onCleanup, onMount } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $romanize } from "@/stores";
+import { $current_position, $romanize, getBlurmap } from "@/stores";
 import { useRenderer } from "@/context/LyricsRenderer";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
@@ -328,8 +328,10 @@ export default function LineLyrics(props: LineLyricsProps) {
 
           const blurStyle = createMemo(() => {
             if (isUserScroll()) return "0px";
+            const blurmap = getBlurmap();
             const d = Math.abs(entry.index - activeIndex());
-            return d >= 5 ? "5px" : `${d}px`;
+            const blur = d >= blurmap.length ? blurmap[blurmap.length - 1] : blurmap[d];
+            return `${blur}px`;
           });
 
           const isLineRTL = () => {
