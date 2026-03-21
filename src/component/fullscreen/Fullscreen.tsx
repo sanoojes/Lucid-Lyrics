@@ -1,7 +1,8 @@
 import "@/styles/fullscreen.scss";
-import { createEffect, on, onMount, onCleanup, Show } from "solid-js";
+import { logger } from "@/utils/logger";
 import { useStore } from "@nanostores/solid";
 import { $page_mode, setPageMode } from "@/stores/page";
+import { createEffect, on, onMount, onCleanup, Show } from "solid-js";
 import FullscreenPage from "@/component/page/FullscreenPage";
 
 function Fullscreen() {
@@ -11,27 +12,20 @@ function Fullscreen() {
   createEffect(
     on(
       () => pageMode(),
-      async (mode) => {
+      (mode) => {
         if (mode === "fullscreen") {
-          try {
-            if (portalRef && document.fullscreenElement !== portalRef) {
-              await portalRef.requestFullscreen();
-            }
-          } catch (err) {
-            console.warn("Fullscreen request denied:", err);
+          if (portalRef ) {
+            portalRef.requestFullscreen().catch((err) => {
+              logger.error("Fullscreen request denied:", err);
+            setPageMode("cinema"); 
+            });
           }
         } else if (document.fullscreenElement) {
-          await document.exitFullscreen().catch(() => {});
+          document.exitFullscreen().catch(() => {});
         }
-      },
-    ),
+      }
+    )
   );
-
-  const handleFullscreenChange = () => {
-    if (!document.fullscreenElement && pageMode() === "fullscreen") {
-      setPageMode("page");
-    }
-  };
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
@@ -40,24 +34,37 @@ function Fullscreen() {
 
     if (pageMode() === "cinema") {
       if (e.key === "Escape") {
+        e.preventDefault();
         setPageMode("page");
       } else if (key === "f") {
-        setPageMode("fullscreen");
+        e.preventDefault();
+        if (portalRef && !document.fullscreenElement) {
+          portalRef.requestFullscreen().then(() => {
+            setPageMode("fullscreen");
+          }).catch(err => console.warn(err));
+        } else {
+          setPageMode("fullscreen");
+        }
       }
     } else if (pageMode() === "fullscreen") {
       if (key === "f") {
-        setPageMode("cinema");
+        e.preventDefault();
+        if (document.fullscreenElement) {
+          document.exitFullscreen().then(() => {
+            setPageMode("cinema");
+          }).catch(() => {});
+        } else {
+          setPageMode("cinema");
+        }
       }
     }
   };
 
   onMount(() => {
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("keydown", handleKeyDown);
   });
 
   onCleanup(() => {
-    document.removeEventListener("fullscreenchange", handleFullscreenChange);
     document.removeEventListener("keydown", handleKeyDown);
   });
 
