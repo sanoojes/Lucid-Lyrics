@@ -11,7 +11,7 @@ export type PlayerWidgetVariants = "simple" | "light" | "dark" | "glass" | "over
 type PlayerWidgetProps = {
   topControls?: JSXElement;
   controls?: JSXElement;
-  showLikeBtn?: JSXElement
+  showLikeBtn?: JSXElement;
 };
 
 const PlayerWidget = (props: PlayerWidgetProps) => {

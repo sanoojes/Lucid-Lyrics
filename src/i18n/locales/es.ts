@@ -154,7 +154,8 @@ export const dict: Dict = {
   "lyrics.blurmapMode.heavy": "Intenso",
   "lyrics.blurmapMode.custom": "Personalizado",
   "lyrics.customBlurmap": "Niveles de Desenfoque Personalizados",
-  "lyrics.customBlurmapDesc": "Establece la cantidad de desenfoque para cada nivel de distancia (0-5). Los niveles más altos pueden afectar el rendimiento",
+  "lyrics.customBlurmapDesc":
+    "Establece la cantidad de desenfoque para cada nivel de distancia (0-5). Los niveles más altos pueden afectar el rendimiento",
   "position.top": "Arriba",
   "position.bottom": "Abajo",
   "position.left": "Izquierda",

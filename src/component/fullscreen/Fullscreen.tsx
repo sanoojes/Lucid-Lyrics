@@ -14,17 +14,17 @@ function Fullscreen() {
       () => pageMode(),
       (mode) => {
         if (mode === "fullscreen") {
-          if (portalRef ) {
+          if (portalRef) {
             portalRef.requestFullscreen().catch((err) => {
               logger.error("Fullscreen request denied:", err);
-            setPageMode("cinema"); 
+              setPageMode("cinema");
             });
           }
         } else if (document.fullscreenElement) {
           document.exitFullscreen().catch(() => {});
         }
-      }
-    )
+      },
+    ),
   );
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -39,9 +39,12 @@ function Fullscreen() {
       } else if (key === "f") {
         e.preventDefault();
         if (portalRef && !document.fullscreenElement) {
-          portalRef.requestFullscreen().then(() => {
-            setPageMode("fullscreen");
-          }).catch(err => console.warn(err));
+          portalRef
+            .requestFullscreen()
+            .then(() => {
+              setPageMode("fullscreen");
+            })
+            .catch((err) => console.warn(err));
         } else {
           setPageMode("fullscreen");
         }
@@ -50,9 +53,12 @@ function Fullscreen() {
       if (key === "f") {
         e.preventDefault();
         if (document.fullscreenElement) {
-          document.exitFullscreen().then(() => {
-            setPageMode("cinema");
-          }).catch(() => {});
+          document
+            .exitFullscreen()
+            .then(() => {
+              setPageMode("cinema");
+            })
+            .catch(() => {});
         } else {
           setPageMode("cinema");
         }

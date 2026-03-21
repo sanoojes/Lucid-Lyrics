@@ -154,7 +154,8 @@ export const dict: Dict = {
   "lyrics.blurmapMode.heavy": "Heavy",
   "lyrics.blurmapMode.custom": "Custom",
   "lyrics.customBlurmap": "Custom Blur Levels",
-  "lyrics.customBlurmapDesc": "Set blur amount for each distance level (0-5). Higher levels may impact performance",
+  "lyrics.customBlurmapDesc":
+    "Set blur amount for each distance level (0-5). Higher levels may impact performance",
   "position.top": "Top",
   "position.bottom": "Bottom",
   "position.left": "Left",

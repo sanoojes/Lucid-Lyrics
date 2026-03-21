@@ -5,15 +5,15 @@ import { TvMinimalPlay } from "lucide-solid";
 import { $page_mode, setPageMode } from "@/stores/page";
 
 type CinemaButtonProps = {
-  glass?: boolean
-}
+  glass?: boolean;
+};
 
 const CinemaButton = (props: CinemaButtonProps) => {
   const pageMode = useStore($page_mode);
   return (
     <Show when={pageMode() !== "cinema"}>
       <Button
-        variant={props.glass?"glass":"ghost"}
+        variant={props.glass ? "glass" : "ghost"}
         size="icon"
         shape="rounded"
         title="Cinema Mode"

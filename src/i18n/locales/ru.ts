@@ -154,7 +154,8 @@ export const dict: Dict = {
   "lyrics.blurmapMode.heavy": "Сильное",
   "lyrics.blurmapMode.custom": "Своё",
   "lyrics.customBlurmap": "Свои Уровни Размытия",
-  "lyrics.customBlurmapDesc": "Установите уровень размытия для каждой дистанции (0-5). Более высокие значения могут повлиять на производительность",
+  "lyrics.customBlurmapDesc":
+    "Установите уровень размытия для каждой дистанции (0-5). Более высокие значения могут повлиять на производительность",
   "position.top": "Сверху",
   "position.bottom": "Снизу",
   "position.left": "Слева",

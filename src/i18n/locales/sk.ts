@@ -156,7 +156,8 @@ export const dict: Dict = {
   "lyrics.blurmapMode.heavy": "Intenzívne",
   "lyrics.blurmapMode.custom": "Vlastné",
   "lyrics.customBlurmap": "Vlastné Úrovne Rozmazania",
-  "lyrics.customBlurmapDesc": "Nastavte množstvo rozmazania pre každú úroveň vzdialenosti (0-5). Vyššie úrovne môžu ovplyvniť výkon",
+  "lyrics.customBlurmapDesc":
+    "Nastavte množstvo rozmazania pre každú úroveň vzdialenosti (0-5). Vyššie úrovne môžu ovplyvniť výkon",
   "position.top": "Hore",
   "position.bottom": "Dole",
   "position.left": "Vľavo",
