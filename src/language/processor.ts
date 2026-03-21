@@ -20,6 +20,8 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
     return lang;
   };
 
+  const romanizationErrors: Error[] = [];
+
   try {
     log.debug("start", { type: lyric.Type });
 
@@ -27,36 +29,53 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
     lyric.NeedsRomanization = false;
     lyric.IsRTL = false;
 
-    await addRomanizationToLyrics(lyric, getCachedLang, async (textToRomanize, detectedLang) => {
-      if (!detectedLang || detectedLang === "unknown") return null;
+    await addRomanizationToLyrics(
+      lyric,
+      getCachedLang,
+      romanizationErrors,
+      async (textToRomanize, detectedLang) => {
+        if (!detectedLang || detectedLang === "unknown") return null;
 
-      if (!lyric.IsRTL && isRTL(detectedLang)) lyric.IsRTL = true;
+        if (!lyric.IsRTL && isRTL(detectedLang)) lyric.IsRTL = true;
 
-      const romanizer = Romanizers[detectedLang];
-      if (romanizer) {
-        lyric.NeedsRomanization = true;
-        try {
-          const romanizedResult = await romanizer(textToRomanize);
-          if (romanizedResult) lyric.HasRomanizedText = true;
-          return romanizedResult;
-        } catch (err) {
-          log.error(`Romanizer failed for language: ${detectedLang}`, err);
-          return null;
+        const romanizer = Romanizers[detectedLang];
+        if (romanizer) {
+          lyric.NeedsRomanization = true;
+          try {
+            const romanizedResult = await romanizer(textToRomanize);
+            if (romanizedResult) lyric.HasRomanizedText = true;
+            return romanizedResult;
+          } catch (err) {
+            log.error(`Romanizer failed for language: ${detectedLang}`, err);
+            romanizationErrors.push(err instanceof Error ? err : new Error(String(err)));
+            return null;
+          }
         }
+        return null;
+      },
+    );
+
+    if (romanizationErrors.length > 0) {
+      log.warn(`Completed with ${romanizationErrors.length} romanization errors.`);
+
+      if (lyric.HasRomanizedText) {
+        toast.error(t("language.romanizePartialFail", { count: romanizationErrors.length }));
+      } else {
+        toast.error(t("language.romanizeFailedEntirely"));
       }
-      return null;
-    });
+    }
 
     log.debug("success", {
       durationMs: performance.now() - startTime,
       hasRomanized: lyric.HasRomanizedText,
+      errorCount: romanizationErrors.length,
     });
 
     return lyric;
   } catch (e) {
     lyric.HasRomanizedText = false;
-    toast.error(t("language.romanizeError"));
-    log.error("failed", e);
+    toast.error(t("language.romanizeCriticalError"));
+    log.error("Fatal failure in processLyrics", e);
     return lyric;
   }
 }
@@ -64,6 +83,7 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
 async function addRomanizationToLyrics(
   lyric: Lyrics,
   getCachedLang: (text: string) => SupportedLanguage | "unknown",
+  errorTracker: Error[],
   converter: (txt: string, lang: SupportedLanguage | "unknown") => Promise<string | null>,
 ) {
   const resolveContextLang = (
@@ -156,8 +176,7 @@ async function addRomanizationToLyrics(
           const romanizedParts = await Promise.all(
             chunks.map(async (chunk) => {
               if (chunk.lang === "unknown") return chunk.text;
-              const rom = await converter(chunk.text, chunk.lang);
-              return rom;
+              return await converter(chunk.text, chunk.lang);
             }),
           );
 
@@ -165,8 +184,9 @@ async function addRomanizationToLyrics(
           if (finalRomanized !== line.Text) {
             line.RomanizedText = finalRomanized;
           }
-        } catch {
-          log.warn("Failed to romanize line");
+        } catch (err) {
+          log.error("Failed to process line for romanization", err);
+          errorTracker.push(err instanceof Error ? err : new Error(String(err)));
         }
       });
 
@@ -179,15 +199,20 @@ async function addRomanizationToLyrics(
       for (const content of lyric.Content) {
         linePromises.push(
           (async () => {
-            content.IsRTL = await processSyllableGroup(content.Lead.Syllables);
+            try {
+              content.IsRTL = await processSyllableGroup(content.Lead.Syllables);
 
-            if (content.Background) {
-              await Promise.all(
-                content.Background.map(async (bg) => {
-                  const isBgRTL = await processSyllableGroup(bg.Syllables);
-                  if (isBgRTL && !content.IsRTL) content.IsRTL = true;
-                }),
-              );
+              if (content.Background) {
+                await Promise.all(
+                  content.Background.map(async (bg) => {
+                    const isBgRTL = await processSyllableGroup(bg.Syllables);
+                    if (isBgRTL && !content.IsRTL) content.IsRTL = true;
+                  }),
+                );
+              }
+            } catch (err) {
+              log.error("Failed to process syllable group", err);
+              errorTracker.push(err instanceof Error ? err : new Error(String(err)));
             }
           })(),
         );
