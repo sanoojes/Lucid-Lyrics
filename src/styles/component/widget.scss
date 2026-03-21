@@ -121,7 +121,7 @@
   }
 
   &__top-controls {
-    top: v.$space-md;
+    top: max(v.$space-md, 6cqi);
     bottom: unset;
   }
 

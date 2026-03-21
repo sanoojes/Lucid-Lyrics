@@ -4,13 +4,18 @@ import { Button } from "@/component/ui/Button";
 import { Maximize } from "lucide-solid";
 import { $page_mode, setPageMode } from "@/stores/page";
 
-const FullscreenButton = () => {
+type FullscreenButtonProps = {
+  glass?: boolean;
+};
+
+const FullscreenButton = (props: FullscreenButtonProps) => {
   const pageMode = useStore($page_mode);
   return (
     <Show when={pageMode() !== "fullscreen"}>
       <Button
-        variant="ghost"
+        variant={props.glass ? "glass" : "ghost"}
         size="icon"
+        shape="rounded"
         title="Fullscreen Lyrics"
         onClick={() => setPageMode("fullscreen")}
         class="l-btn"

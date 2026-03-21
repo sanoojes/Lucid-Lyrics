@@ -40,3 +40,23 @@
     }
   }
 }
+
+.top-controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: v.$space-sm;
+  justify-content: center;
+  align-items: center;
+
+  .l-btn {
+    --btn-size: clamp(32px, 12cqi, 48px);
+    --icon-padding: #{v.$space-sm};
+    $svg-size: clamp(20px, 3.4cqw, 3rem);
+    border-radius: 10rem;
+    .lucide {
+      height: $svg-size;
+      width: $svg-size;
+    }
+  }
+}

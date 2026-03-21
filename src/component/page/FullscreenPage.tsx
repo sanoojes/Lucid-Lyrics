@@ -67,13 +67,13 @@ function FullscreenPage() {
         <div class="widget-area" classList={{ "widget-area--hidden": isHidden() }}>
           <PlayerWidget
             topControls={
-              <>
-                {/* <CinemaButton />
-                <FullscreenButton /> */}
+              <div class="top-controls">
+                <CinemaButton glass />
+                <FullscreenButton glass />
                 <Button variant="glass" size="icon" shape="rounded" onClick={handleClose}>
                   <X />
                 </Button>
-              </>
+              </div>
             }
             controls={<Controls />}
             showLikeBtn
