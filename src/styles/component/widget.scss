@@ -95,6 +95,7 @@
     color: inherit;
   }
 
+  &__top-controls,
   &__controls {
     position: absolute;
     opacity: 0;
@@ -119,6 +120,11 @@
     }
   }
 
+  &__top-controls {
+    top: v.$space-md;
+    bottom: unset;
+  }
+
   &__like-btn {
     --like-btn-size: 50%;
     position: absolute;
@@ -131,6 +137,7 @@
 
   &:hover {
     .player-widget__like-btn,
+    .player-widget__top-controls,
     .player-widget__controls {
       opacity: 1;
     }

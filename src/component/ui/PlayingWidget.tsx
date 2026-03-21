@@ -1,15 +1,20 @@
 import "@/styles/component/widget.scss";
 import { $current_track_image, $player_data, $widget } from "@/stores";
 import { useStore } from "@nanostores/solid";
-import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { For, Show, createEffect, createSignal, onCleanup, type JSXElement } from "solid-js";
 import Marquee from "@/component/ui/Marquee";
-import Controls from "@/component/ui/player/Controls";
 import LikeButton from "@/component/ui/player/LikeButton";
 import Link from "@/component/ui/Link";
 
 export type PlayerWidgetVariants = "simple" | "light" | "dark" | "glass" | "overlay";
 
-const PlayerWidget = () => {
+type PlayerWidgetProps = {
+  topControls?: JSXElement;
+  controls?: JSXElement;
+  showLikeBtn?: JSXElement
+};
+
+const PlayerWidget = (props: PlayerWidgetProps) => {
   const widget = useStore($widget);
   const playerData = useStore($player_data);
   const currentTrackImage = useStore($current_track_image);
@@ -60,11 +65,17 @@ const PlayerWidget = () => {
         >
           <img class="player-widget__image" src={currentTrackImage()} alt="cover" />
         </Show>
-        <div class="player-widget__like-btn">
-          <LikeButton />
-        </div>
+        <Show when={props.topControls}>
+          <div class="player-widget__top-controls">{props.topControls}</div>
+        </Show>
+
+        <Show when={props.showLikeBtn}>
+          <div class="player-widget__like-btn">
+            <LikeButton />
+          </div>
+        </Show>
         <div class="player-widget__controls">
-          <Controls />
+          <Show when={props.controls}>{props.controls}</Show>
         </div>
       </div>
 

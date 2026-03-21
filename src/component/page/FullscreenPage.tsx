@@ -1,7 +1,7 @@
 import "@/styles/page.scss";
 import "@/styles/lenis.css";
 import { useStore } from "@nanostores/solid";
-import { Show } from "solid-js";
+import { Show, createSignal, onMount, onCleanup } from "solid-js";
 import { ListMusic, X } from "lucide-solid";
 
 import { Button } from "@/component/ui/Button";
@@ -28,19 +28,71 @@ function FullscreenPage() {
     setPageMode("page");
   };
 
+  const [isFloatingVisible, setIsFloatingVisible] = createSignal(true);
+  const [isHovered, setIsHovered] = createSignal(false);
+  let timeoutId: number | undefined;
+
+  const resetTimeout = () => {
+    setIsFloatingVisible(true);
+    clearTimeout(timeoutId);
+
+    if (!isHovered()) {
+      timeoutId = setTimeout(() => {
+        setIsFloatingVisible(false);
+      }, 1500);
+    }
+  };
+
+  onMount(() => {
+    window.addEventListener("mousemove", resetTimeout);
+    window.addEventListener("touchstart", resetTimeout);
+    resetTimeout();
+  });
+
+  onCleanup(() => {
+    window.removeEventListener("mousemove", resetTimeout);
+    window.removeEventListener("touchstart", resetTimeout);
+    clearTimeout(timeoutId);
+  });
+
   return (
     <LyricsRendererProvider>
       <div
         class={`lucid-contents${themeClassname()}`}
         classList={{
           "hide-scrollbars": pageState().hideScrollbar,
+          "hide-cursor": !isFloatingVisible(),
         }}
       >
         <div class="widget-area" classList={{ "widget-area--hidden": isHidden() }}>
-          <PlayerWidget />
+          <PlayerWidget
+            topControls={
+              <>
+                {/* <CinemaButton />
+                <FullscreenButton /> */}
+                <Button variant="glass" size="icon" shape="rounded" onClick={handleClose}>
+                  <X />
+                </Button>
+              </>
+            }
+            controls={<Controls />}
+            showLikeBtn
+          />
         </div>
         <Lyrics widgetHidden={isHidden()} showCredits={pageState().showCredits} />
-        <div class={`floating-area on-${pageState().floatingPosition}`}>
+
+        <div
+          class={`floating-area on-${pageState().floatingPosition}`}
+          classList={{ "floating-area--hidden": !isFloatingVisible() }}
+          onMouseEnter={() => {
+            setIsHovered(true);
+            resetTimeout();
+          }}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            resetTimeout();
+          }}
+        >
           <Show when={pageState().showControls}>
             <Controls />
             <div class="separator" />

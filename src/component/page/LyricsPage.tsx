@@ -35,7 +35,7 @@ const LyricsPage = () => {
         }}
       >
         <div class="widget-area" classList={{ "widget-area--hidden": isHidden() }}>
-          <PlayerWidget />
+          <PlayerWidget controls={<Controls />} showLikeBtn />
         </div>
         <Show when={pageMode() === "page"}>
           <Lyrics widgetHidden={isHidden()} showCredits={pageState().showCredits} />
