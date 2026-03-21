@@ -51161,7 +51161,7 @@
       "format": "esm"
     },
     "src/styles/fullscreen.scss": {
-      "bytes": 205,
+      "bytes": 202,
       "imports": []
     },
     "src/component/page/FullscreenPage.tsx": {
@@ -52336,10 +52336,10 @@
           "bytesInOutput": 6575
         },
         "src/styles/fullscreen.scss": {
-          "bytesInOutput": 182
+          "bytesInOutput": 178
         }
       },
-      "bytes": 49786
+      "bytes": 49782
     }
   }
 }
