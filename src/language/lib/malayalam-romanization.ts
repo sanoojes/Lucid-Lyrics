@@ -89,6 +89,14 @@ const MALAYALAM_MAP: Record<string, string> = {
   "ം": "m",
   "ഃ": "h",
   "്": "",
+
+  ന്റ: "nt",
+  ൻ്റ: "nt",
+  റ്റ: "tt",
+  മ്പ: "mb",
+  ങ്ങ: "ng",
+  ഞ്ച: "nch",
+  ഞ്ജ: "nj",
 };
 
 const CONSONANTS = new Set([
@@ -128,39 +136,54 @@ const CONSONANTS = new Set([
   "ള",
   "ഴ",
   "റ",
+  "ന്റ",
+  "ൻ്റ",
+  "റ്റ",
+  "മ്പ",
+  "ങ്ങ",
+  "ഞ്ച",
+  "ഞ്ജ",
 ]);
 
 const VOWEL_SIGNS = new Set(["ാ", "ി", "ീ", "ു", "ൂ", "ൃ", "െ", "േ", "ൈ", "ൊ", "ോ", "ൗ", "ം", "ഃ"]);
+
+const MAP_KEYS = Object.keys(MALAYALAM_MAP).sort((a, b) => b.length - a.length);
 
 function _malayalamToRoman(text: string): string {
   let result = "";
   let i = 0;
 
   while (i < text.length) {
-    const currentChar = text[i];
-    const nextChar = text[i + 1] || "";
+    let matchFound = false;
 
-    const mappedChar = MALAYALAM_MAP[currentChar];
+    for (const key of MAP_KEYS) {
+      if (text.startsWith(key, i)) {
+        const mappedChar = MALAYALAM_MAP[key];
+        const nextChar = text[i + key.length] || "";
+        const isConsonant = CONSONANTS.has(key);
+        const isFollowedByVowel = VOWEL_SIGNS.has(nextChar);
+        const isFollowedByHalant = nextChar === "്";
 
-    if (mappedChar !== undefined) {
-      const isConsonant = CONSONANTS.has(currentChar);
-      const isFollowedByVowel = VOWEL_SIGNS.has(nextChar);
-      const isFollowedByHalant = nextChar === "്";
-
-      if (isConsonant) {
-        if (!isFollowedByVowel && !isFollowedByHalant) {
-          result += `${mappedChar}a`;
+        if (isConsonant) {
+          if (!isFollowedByVowel && !isFollowedByHalant) {
+            result += `${mappedChar}a`;
+          } else {
+            result += mappedChar;
+          }
         } else {
           result += mappedChar;
         }
-      } else {
-        result += mappedChar;
+
+        i += key.length;
+        matchFound = true;
+        break;
       }
-    } else {
-      result += currentChar;
     }
 
-    i++;
+    if (!matchFound) {
+      result += text[i];
+      i++;
+    }
   }
 
   return result;
