@@ -45,7 +45,6 @@ const COMMON_STYLES_LINE_LEAD = (
   oppAligned: boolean = false,
   hasBg: boolean,
   isBg = false,
-  isRTL = false,
   paddingLeft?: number | string,
   paddingRight?: number | string,
 ) =>
@@ -55,7 +54,7 @@ const COMMON_STYLES_LINE_LEAD = (
     cursor: "pointer",
     "content-visibility": "auto",
     "backface-visibility": "hidden",
-    "text-align": isRTL ? (oppAligned ? "left" : "right") : oppAligned ? "right" : "left",
+    "text-align": oppAligned ? "end" : "start",
     "margin-bottom": hasBg && !isBg ? "4px" : undefined,
     "padding-left": paddingLeft !== undefined ? String(paddingLeft) : undefined,
     "padding-right": paddingRight !== undefined ? String(paddingRight) : undefined,
@@ -135,7 +134,6 @@ function LeadRenderer(props: LeadRendererProps) {
         props.oppAligned,
         !!props.hasBg,
         props.background,
-        props.isRTL,
         paddingLeft(),
         paddingRight(),
       )}
