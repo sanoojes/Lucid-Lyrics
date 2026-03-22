@@ -60,12 +60,12 @@ export const MODULE_METADATA = {
   },
   [LOCALE]: {
     name: LOCALE,
-    version: "1.0.3",
+    version: "1.0.4",
     baseUrl: `${JSDELIVR_TO_REPO}/locales/`,
     localeVersions: {
-      es: "1.0.3",
-      ru: "1.0.3",
-      sk: "1.0.3",
+      es: "1.0.4",
+      ru: "1.0.4",
+      sk: "1.0.4",
     },
   },
 } as const;
