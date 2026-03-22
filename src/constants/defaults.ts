@@ -34,13 +34,13 @@ export const DEFAULT_BACKGROUND_STATE = {
     },
     animated: {
       mode: "player",
-      scale: 130,
       customUrl,
+      scale: 100,
       filter: {
-        blur: 48,
-        saturation: 200,
-        contrast: 110,
-        brightness: 70,
+        blur: 42,
+        saturation: 250,
+        contrast: 115,
+        brightness: 60,
         opacity: 100,
       },
     },

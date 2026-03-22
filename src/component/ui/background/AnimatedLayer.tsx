@@ -8,6 +8,90 @@ import Tempus from "@darkroom.engineering/tempus";
 import vertex from "@/shaders/animatedBg/vertex.glsl";
 import fragment from "@/shaders/animatedBg/fragment.glsl";
 
+export type ShaderUniforms = {
+  Time: { value: number };
+  BlurredCoverArt: { value: Texture };
+  PreviousCoverArt: { value: Texture };
+
+  BackgroundCircleOrigin: { value: number[] };
+  BackgroundCircleRadius: { value: number };
+
+  CenterCircleOrigin: { value: number[] };
+  CenterCircleRadius: { value: number };
+
+  LeftCircleOrigin: { value: number[] };
+  LeftCircleRadius: { value: number };
+
+  RightCircleOrigin: { value: number[] };
+  RightCircleRadius: { value: number };
+
+  uBrightness: { value: number };
+  uSaturation: { value: number };
+  uContrast: { value: number };
+  uOpacity: { value: number };
+  uTransition: { value: number };
+  uScale: { value: number };
+};
+
+const createImageBitmapOptions = {
+  premultiplyAlpha: "none" as const,
+  colorSpaceConversion: "none" as const,
+};
+
+const generateBlurredCoverArt = async (
+  imageSource: ImageBitmapSource,
+  blurAmount: number,
+): Promise<OffscreenCanvas | null> => {
+  try {
+    const bitmap = await createImageBitmap(imageSource, createImageBitmapOptions);
+
+    const originalSize = Math.min(bitmap.width, bitmap.height);
+    const blurExtent = Math.ceil(3 * blurAmount);
+
+    const circleCanvas = new OffscreenCanvas(originalSize, originalSize);
+    const circleCtx = circleCanvas.getContext("2d")!;
+
+    circleCtx.beginPath();
+    circleCtx.arc(originalSize / 2, originalSize / 2, originalSize / 2, 0, Math.PI * 2);
+    circleCtx.closePath();
+    circleCtx.clip();
+
+    circleCtx.drawImage(
+      bitmap,
+      (bitmap.width - originalSize) / 2,
+      (bitmap.height - originalSize) / 2,
+      originalSize,
+      originalSize,
+      0,
+      0,
+      originalSize,
+      originalSize,
+    );
+
+    bitmap.close();
+
+    const padding = blurExtent * 1.5;
+    const expandedSize = originalSize + padding;
+    const blurredCanvas = new OffscreenCanvas(expandedSize, expandedSize);
+    const blurredCtx = blurredCanvas.getContext("2d")!;
+
+    blurredCtx.filter = `blur(${blurAmount}px)`;
+    blurredCtx.drawImage(circleCanvas, padding / 2, padding / 2);
+
+    return blurredCanvas;
+  } catch {
+    return null;
+  }
+};
+
+const createBlackOffscreenCanvas = (): OffscreenCanvas => {
+  const canvas = new OffscreenCanvas(1, 1);
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, 1, 1);
+  return canvas;
+};
+
 const AnimatedLayer = () => {
   let canvasRef!: HTMLCanvasElement;
   let containerRef!: HTMLDivElement;
@@ -40,27 +124,41 @@ const AnimatedLayer = () => {
       minFilter: gl.LINEAR,
       magFilter: gl.LINEAR,
     });
-    const prevTexture = new Texture(gl, {
+
+    const previousTexture = new Texture(gl, {
       generateMipmaps: false,
       minFilter: gl.LINEAR,
       magFilter: gl.LINEAR,
     });
 
+    const blackCanvas = createBlackOffscreenCanvas();
+    texture.image = blackCanvas as unknown as HTMLCanvasElement;
+    texture.needsUpdate = true;
+    previousTexture.image = blackCanvas as unknown as HTMLCanvasElement;
+    previousTexture.needsUpdate = true;
+
     const program = new Program(gl, {
       vertex,
       fragment,
       uniforms: {
-        tMap: { value: texture },
-        tPrevMap: { value: prevTexture },
-        uFade: { value: 1.0 },
+        Time: { value: 0.0 },
+        BlurredCoverArt: { value: texture },
+        PreviousCoverArt: { value: previousTexture },
+        BackgroundCircleOrigin: { value: [0, 0] },
+        BackgroundCircleRadius: { value: 0 },
+        CenterCircleOrigin: { value: [0, 0] },
+        CenterCircleRadius: { value: 0 },
+        LeftCircleOrigin: { value: [0, 0] },
+        LeftCircleRadius: { value: 0 },
+        RightCircleOrigin: { value: [0, 0] },
+        RightCircleRadius: { value: 0 },
         uBrightness: { value: 1.0 },
         uSaturation: { value: 1.0 },
         uContrast: { value: 1.0 },
         uOpacity: { value: 1.0 },
-        uTime: { value: 0.0 },
-        uResolution: { value: [gl.canvas.width, gl.canvas.height] },
-        uScale: { value: options().scale / 100 },
-      },
+        uTransition: { value: 1.0 },
+        uScale: { value: 1.0 },
+      } as ShaderUniforms,
       transparent: true,
       depthTest: false,
       depthWrite: false,
@@ -68,96 +166,145 @@ const AnimatedLayer = () => {
 
     const mesh = new Mesh(gl, { geometry, program });
 
+    let currentUri = "";
+    let currentBlur = 0;
+
+    const updateCircleUniforms = (width: number, height: number) => {
+      const scaledWidth = width * window.devicePixelRatio;
+      const scaledHeight = height * window.devicePixelRatio;
+      const cx = scaledWidth / 2;
+      const cy = scaledHeight / 2;
+
+      const largestAxis = scaledWidth > scaledHeight ? "X" : "Y";
+      const largestAxisSize = Math.max(scaledWidth, scaledHeight);
+
+      program.uniforms.BackgroundCircleOrigin.value = [cx, cy];
+      program.uniforms.BackgroundCircleRadius.value = largestAxisSize * 1.5;
+
+      program.uniforms.CenterCircleOrigin.value = [cx, cy];
+      program.uniforms.CenterCircleRadius.value =
+        largestAxisSize * (largestAxis === "X" ? 1 : 0.75);
+
+      program.uniforms.LeftCircleOrigin.value = [0, scaledHeight];
+      program.uniforms.LeftCircleRadius.value = largestAxisSize * 0.75;
+
+      program.uniforms.RightCircleOrigin.value = [scaledWidth, 0];
+      program.uniforms.RightCircleRadius.value =
+        largestAxisSize * (largestAxis === "X" ? 0.65 : 0.5);
+    };
+
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
         renderer.setSize(width, height);
-
-        program.uniforms.uResolution.value[0] = gl.canvas.width;
-        program.uniforms.uResolution.value[1] = gl.canvas.height;
-
+        updateCircleUniforms(width, height);
         renderer.render({ scene: mesh });
       }
     });
     ro.observe(containerRef);
 
-    let currentUri = "";
+    let transitionProgress = 1.0;
+    const TRANSITION_DURATION = 0.5;
 
-    const createBlackImage = (): HTMLCanvasElement => {
-      const canvas = document.createElement("canvas");
-      canvas.width = 1;
-      canvas.height = 1;
-      const ctx = canvas.getContext("2d")!;
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, 1, 1);
-      return canvas;
-    };
+    const updateTexture = (blurredCanvas: OffscreenCanvas) => {
+      const currentImage = texture.image;
+      previousTexture.image = currentImage as unknown as HTMLCanvasElement;
+      previousTexture.needsUpdate = true;
 
-    const applyImage = (image: TexImageSource) => {
-      prevTexture.image = (texture.image || image) as any;
-      prevTexture.needsUpdate = true;
-      texture.image = image as any;
+      texture.image = blurredCanvas as unknown as HTMLCanvasElement;
       texture.needsUpdate = true;
-      program.uniforms.uFade.value = 0.0;
+
+      transitionProgress = 0.0;
+      program.uniforms.uTransition.value = 0.0;
     };
 
-    const loadImage = async (uri: string) => {
-      if (uri === currentUri) return;
+    const loadImage = async (uri: string, blurAmount: number) => {
+      if (uri === currentUri && blurAmount === currentBlur) return;
       currentUri = uri;
-      const canFetch = !uri.startsWith("spotify:");
+      currentBlur = blurAmount;
 
-      const applyIfCurrent = (image: TexImageSource) => {
-        if (uri === currentUri) {
-          applyImage(image);
+      const isBlob = uri.startsWith("blob:");
+      const isSpotify = uri.startsWith("spotify:");
+      const canFetch = !isSpotify && !isBlob;
+
+      if (isBlob) {
+        try {
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          const blurred = await generateBlurredCoverArt(blob, blurAmount);
+          if (uri === currentUri) {
+            updateTexture(blurred ?? createBlackOffscreenCanvas());
+          }
+          return;
+        } catch {
+          updateTexture(createBlackOffscreenCanvas());
+          return;
         }
-      };
+      }
 
       if (canFetch) {
         try {
           const response = await fetch(uri);
           const blob = await response.blob();
-          const bitmap = await createImageBitmap(blob, {
-            premultiplyAlpha: "none",
-            colorSpaceConversion: "none",
-          });
-          applyIfCurrent(bitmap);
+          const blurred = await generateBlurredCoverArt(blob, blurAmount);
+          if (uri === currentUri) {
+            updateTexture(blurred ?? createBlackOffscreenCanvas());
+          }
           return;
-        } catch {}
+        } catch {
+          updateTexture(createBlackOffscreenCanvas());
+          return;
+        }
       }
 
       const img = new Image();
-      img.crossOrigin = canFetch ? "anonymous" : null;
+      img.crossOrigin = uri.startsWith("spotify:") || uri.startsWith("blob:") ? null : "anonymous";
       img.src = uri;
-      img.onload = () => applyIfCurrent(img);
-      img.onerror = () => applyIfCurrent(createBlackImage());
+      img.decode?.().then(() => {
+        if (uri !== currentUri) return;
+        const blurred = generateBlurredCoverArt(img, blurAmount);
+        blurred.then((result) => {
+          if (uri === currentUri) {
+            updateTexture(result ?? createBlackOffscreenCanvas());
+          }
+        });
+      }).catch(() => {
+        if (uri === currentUri) {
+          updateTexture(createBlackOffscreenCanvas());
+        }
+      });
     };
 
     createEffect(() => {
       const uri = activeUrl();
+      const blur = options().filter.blur;
       if (uri) {
-        loadImage(uri);
+        loadImage(uri, blur);
       } else {
         currentUri = "";
-        applyImage(createBlackImage());
+        updateTexture(createBlackOffscreenCanvas());
       }
     });
 
     createEffect(() => {
-      const opt = options();
-      const filter = opt.filter;
+      const filter = options().filter;
       program.uniforms.uBrightness.value = filter.brightness / 100;
       program.uniforms.uSaturation.value = filter.saturation / 100;
       program.uniforms.uContrast.value = filter.contrast / 100;
       program.uniforms.uOpacity.value = filter.opacity / 100;
-      program.uniforms.uScale.value = opt.scale / 100;
+    });
+
+    createEffect(() => {
+      program.uniforms.uScale.value = options().scale / 100;
     });
 
     const unsubscribe = Tempus.add((_time: number, deltaTime: number) => {
       const dt = deltaTime / 1000;
-      program.uniforms.uTime.value += dt * 0.5;
+      program.uniforms.Time.value += dt;
 
-      if (program.uniforms.uFade.value < 1.0) {
-        program.uniforms.uFade.value = Math.min(1.0, program.uniforms.uFade.value + dt * 1.6);
+      if (transitionProgress < 1.0) {
+        transitionProgress = Math.min(1.0, transitionProgress + dt / TRANSITION_DURATION);
+        program.uniforms.uTransition.value = transitionProgress;
       }
 
       renderer.render({ scene: mesh });
@@ -177,7 +324,6 @@ const AnimatedLayer = () => {
         style={{
           position: "absolute",
           inset: 0,
-          filter: `blur(${options().filter.blur}px)`,
           "pointer-events": "none",
         }}
       />
