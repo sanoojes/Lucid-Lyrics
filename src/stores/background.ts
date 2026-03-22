@@ -133,6 +133,8 @@ export type BackgroundState = {
       scale: number;
       customUrl?: string;
       filter: CSSFilter;
+      transitionDuration: number;
+      rotationSpeed: number;
     };
   };
 };

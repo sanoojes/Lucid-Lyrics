@@ -43,6 +43,8 @@ export const DEFAULT_BACKGROUND_STATE = {
         brightness: 60,
         opacity: 100,
       },
+      transitionDuration: 0.5,
+      rotationSpeed: 0.8,
     },
   },
 } satisfies BackgroundState;

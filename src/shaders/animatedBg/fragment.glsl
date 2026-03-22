@@ -23,6 +23,7 @@ uniform float uOpacity;
 
 uniform float uTransition;
 uniform float uScale;
+uniform float uRotationSpeed;
 
 const vec2 rotateCenter = vec2(0.5, 0.5);
 vec2 RotateAroundCenter(vec2 point, float angle) {
@@ -43,66 +44,78 @@ vec4 sampleWithTransition(sampler2D tex, vec2 uv, float transition) {
 	return mix(prevColor, newColor, transition);
 }
 
+float softEdge(float dist, float radius, float softness) {
+	return 1.0 - smoothstep(radius - softness, radius, dist);
+}
+
 const vec4 DefaultColor = vec4(0.0, 0.0, 0.0, 0.0);
 void main() {
 	gl_FragColor = DefaultColor;
 
 	vec2 BackgroundCircleOffset = (gl_FragCoord.xy - BackgroundCircleOrigin);
-	if (length(BackgroundCircleOffset) <= BackgroundCircleRadius) {
+	float bgDist = length(BackgroundCircleOffset);
+	if (bgDist <= BackgroundCircleRadius) {
 		gl_FragColor = sampleWithTransition(
 			BlurredCoverArt,
 			RotateAroundCenter(
 				(((BackgroundCircleOffset / BackgroundCircleRadius) + 1.0) * 0.5),
-				(Time * -0.25)
+				(Time * -0.25 * uRotationSpeed)
 			),
 			uTransition
 		);
-		gl_FragColor.a = 1.0;
+		float edgeFade = softEdge(bgDist, BackgroundCircleRadius, BackgroundCircleRadius * 0.1);
+		gl_FragColor.a = edgeFade;
 	}
 
 	vec2 CenterCircleOffset = (gl_FragCoord.xy - CenterCircleOrigin);
-	if (length(CenterCircleOffset) <= CenterCircleRadius) {
+	float centerDist = length(CenterCircleOffset);
+	if (centerDist <= CenterCircleRadius) {
 		vec4 newColor = sampleWithTransition(
 			BlurredCoverArt,
 			RotateAroundCenter(
 				(((CenterCircleOffset / CenterCircleRadius) + 1.0) * 0.5),
-				(Time * 0.5)
+				(Time * 0.5 * uRotationSpeed)
 			),
 			uTransition
 		);
-		newColor.a *= 0.75;
+		float edgeFade = softEdge(centerDist, CenterCircleRadius, CenterCircleRadius * 0.1);
+		newColor.a *= 0.75 * edgeFade;
 
 		gl_FragColor.rgb = ((newColor.rgb * newColor.a) + (gl_FragColor.rgb * (1.0 - newColor.a)));
 		gl_FragColor.a = (newColor.a + (gl_FragColor.a * (1.0 - newColor.a)));
 	}
 
 	vec2 LeftCircleOffset = (gl_FragCoord.xy - LeftCircleOrigin);
-	if (length(LeftCircleOffset) <= LeftCircleRadius) {
+	float leftDist = length(LeftCircleOffset);
+	if (leftDist <= LeftCircleRadius) {
 		vec4 newColor = sampleWithTransition(
 			BlurredCoverArt,
 			RotateAroundCenter(
 				(((LeftCircleOffset / LeftCircleRadius) + 1.0) * 0.5),
-				(Time * 1.0)
+				(Time * 1.0 * uRotationSpeed)
 			),
 			uTransition
 		);
-		newColor.a *= 0.5;
+		float edgeFade = softEdge(leftDist, LeftCircleRadius, LeftCircleRadius * 0.1);
+		newColor.a *= 0.5 * edgeFade;
 
 		gl_FragColor.rgb = ((newColor.rgb * newColor.a) + (gl_FragColor.rgb * (1.0 - newColor.a)));
 		gl_FragColor.a = (newColor.a + (gl_FragColor.a * (1.0 - newColor.a)));
 	}
 
 	vec2 RightCircleOffset = (gl_FragCoord.xy - RightCircleOrigin);
-	if (length(RightCircleOffset) <= RightCircleRadius) {
+	float rightDist = length(RightCircleOffset);
+	if (rightDist <= RightCircleRadius) {
 		vec4 newColor = sampleWithTransition(
 			BlurredCoverArt,
 			RotateAroundCenter(
 				(((RightCircleOffset / RightCircleRadius) + 1.0) * 0.5),
-				(Time * -0.75)
+				(Time * -0.75 * uRotationSpeed)
 			),
 			uTransition
 		);
-		newColor.a *= 0.5;
+		float edgeFade = softEdge(rightDist, RightCircleRadius, RightCircleRadius * 0.1);
+		newColor.a *= 0.5 * edgeFade;
 
 		gl_FragColor.rgb = ((newColor.rgb * newColor.a) + (gl_FragColor.rgb * (1.0 - newColor.a)));
 		gl_FragColor.a = (newColor.a + (gl_FragColor.a * (1.0 - newColor.a)));

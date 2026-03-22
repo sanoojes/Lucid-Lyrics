@@ -191,6 +191,28 @@ function BackgroundSettings() {
             </SettingsRow>
           )}
         </For>
+
+        <SettingsRow label={t("bg.transitionDuration")} description={t("bg.transitionDurationDesc")}>
+          <Slider
+            value={bg().options.animated.transitionDuration}
+            onChange={(v) => updateAnimatedOptions({ transitionDuration: v })}
+            min={0.1}
+            max={2}
+            step={0.1}
+            suffix="s"
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.rotationSpeed")} description={t("bg.rotationSpeedDesc")}>
+          <Slider
+            value={bg().options.animated.rotationSpeed}
+            onChange={(v) => updateAnimatedOptions({ rotationSpeed: v })}
+            min={0}
+            max={3}
+            step={0.1}
+            suffix="x"
+          />
+        </SettingsRow>
       </Show>
     </SettingsSection>
   );

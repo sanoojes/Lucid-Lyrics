@@ -31,6 +31,7 @@ export type ShaderUniforms = {
   uOpacity: { value: number };
   uTransition: { value: number };
   uScale: { value: number };
+  uRotationSpeed: { value: number };
 };
 
 const createImageBitmapOptions = {
@@ -158,6 +159,7 @@ const AnimatedLayer = () => {
         uOpacity: { value: 1.0 },
         uTransition: { value: 1.0 },
         uScale: { value: 1.0 },
+        uRotationSpeed: { value: 1.0 },
       } as ShaderUniforms,
       transparent: true,
       depthTest: false,
@@ -204,7 +206,6 @@ const AnimatedLayer = () => {
     ro.observe(containerRef);
 
     let transitionProgress = 1.0;
-    const TRANSITION_DURATION = 0.5;
 
     const updateTexture = (blurredCanvas: OffscreenCanvas) => {
       const currentImage = texture.image;
@@ -298,12 +299,17 @@ const AnimatedLayer = () => {
       program.uniforms.uScale.value = options().scale / 100;
     });
 
+    createEffect(() => {
+      program.uniforms.uRotationSpeed.value = options().rotationSpeed;
+    });
+
     const unsubscribe = Tempus.add((_time: number, deltaTime: number) => {
       const dt = deltaTime / 1000;
       program.uniforms.Time.value += dt;
 
       if (transitionProgress < 1.0) {
-        transitionProgress = Math.min(1.0, transitionProgress + dt / TRANSITION_DURATION);
+        const transitionDuration = options().transitionDuration;
+        transitionProgress = Math.min(1.0, transitionProgress + dt / transitionDuration);
         program.uniforms.uTransition.value = transitionProgress;
       }
 

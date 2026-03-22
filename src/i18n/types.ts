@@ -51,6 +51,10 @@ export type Dict = {
   "bg.deleteAllConfirm": string;
   "bg.noLocalImages": string;
   "bg.selected": string;
+  "bg.transitionDuration": string;
+  "bg.transitionDurationDesc": string;
+  "bg.rotationSpeed": string;
+  "bg.rotationSpeedDesc": string;
   "lyrics.title": string;
   "lyrics.provider": string;
   "lyrics.provider.spicy": string;
