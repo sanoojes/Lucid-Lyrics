@@ -51,11 +51,29 @@ type RomanizedText = {
   RomanizedText?: string | null;
 };
 
+/**
+ * Is Subject to change
+ */
+type TTMLUser = {
+  id: string;
+  username: string;
+  avatar: string;
+  hasProfileBanner: boolean;
+};
+
 type CommonStates = {
   HasRomanizedText: boolean;
   NeedsRomanization: boolean;
   IsRTL: boolean;
   Provider: LyricsProviders;
+
+  /**
+   * Is Subject to change, from Spicy Lyrics (only used to show credits)
+   */
+  TTMLUploadMetadata: Partial<{
+    Uploader: Partial<TTMLUser>;
+    Maker: Partial<TTMLUser>;
+  }>;
 };
 
 export type TimeRange = {

@@ -452,14 +452,15 @@ $floating-transition:
     --line-progress-2: 0%;
     --shadow-blur: 0px;
     --shadow-alpha: 0;
+    --lyrics-text-color: 255, 255, 255;
 
     position: relative;
     display: inline-block;
-    text-shadow: 0px 0px var(--shadow-blur) rgba(255, 255, 255, var(--shadow-alpha));
+    text-shadow: 0px 0px var(--shadow-blur) rgba(var(--lyrics-text-color), var(--shadow-alpha));
     background-image: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.9) var(--line-progress),
-      rgba(255, 255, 255, 0.4) var(--line-progress-2)
+      rgba(var(--lyrics-text-color), 0.9) var(--line-progress),
+      rgba(var(--lyrics-text-color), 0.4) var(--line-progress-2)
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -468,21 +469,55 @@ $floating-transition:
 }
 
 .static-lyrics {
+  --lyrics-text-color: 255, 255, 255;
+  --lead-font-weight: 700;
+  --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
+
+  font-size: var(--lead-font-size);
+  font-weight: var(--lead-font-weight);
+
   .line-wrapper {
-    --opacity: 1;
+    color: rgba(var(--lyrics-text-color), 0.9);
+    margin-bottom: v.$space-md;
   }
 }
 
 .lyrics-credits {
   color: #fff;
-  font-size: 14px;
+  font-size: v.$fs-base;
   font-weight: 600;
-  margin: 1rem 0 0;
+  margin: 16px 0 0;
   opacity: 0.6;
   scale: 1;
 
   .credit-item {
-    margin-bottom: 2px;
+    margin-bottom: v.$space-xs;
+
+    &.ttml-user {
+      font-size: v.$fs-sm;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .ttml-user-wrapper {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .ttml-user-avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    &.provider {
+      font-size: v.$fs-sm;
+    }
   }
 }
 
