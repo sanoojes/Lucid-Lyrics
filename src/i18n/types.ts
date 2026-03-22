@@ -202,6 +202,8 @@ export type Dict = {
   "page.showCreditsDesc": string;
   "page.hideScrollbar": string;
   "page.hideScrollbarDesc": string;
+  "page.hideStatus": string;
+  "page.hideStatusDesc": string;
   "page.showControls": string;
   "page.showControlsDesc": string;
   "page.floatingPosition": string;
@@ -211,6 +213,8 @@ export type Dict = {
   "fullscreen.showCreditsDesc": string;
   "fullscreen.hideScrollbar": string;
   "fullscreen.hideScrollbarDesc": string;
+  "fullscreen.hideStatus": string;
+  "fullscreen.hideStatusDesc": string;
   "fullscreen.showControls": string;
   "fullscreen.showControlsDesc": string;
   "fullscreen.floatingPosition": string;

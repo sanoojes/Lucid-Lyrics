@@ -1,4 +1,4 @@
-import { type FetchOptions } from "@/lib/api/types";
+import { type APIStatus, type FetchOptions } from "@/lib/api/types";
 import { $player_data } from "@/stores/player";
 import { persistentJSON } from "@nanostores/persistent";
 import { atom, computed } from "nanostores";
@@ -54,6 +54,7 @@ export const $lyrics_query = computed($player_data, (player) => {
 });
 
 export const $has_romanized = atom<boolean>(false);
+export const $lyrics_status = atom<APIStatus | "loading" | undefined>();
 
 export const $providers = persistentJSON<LyricsProviders[]>(
   getName("providers"),

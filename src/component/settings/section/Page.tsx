@@ -2,6 +2,7 @@ import { useStore } from "@nanostores/solid";
 import {
   $page_state,
   setHideScrollbar,
+  setHideStatus,
   setShowCredits,
   setShowControls,
   setFloatingPosition,
@@ -23,6 +24,9 @@ function PageSettings() {
       </SettingsRow>
       <SettingsRow label={t("page.hideScrollbar")} description={t("page.hideScrollbarDesc")}>
         <Toggle checked={pageState().hideScrollbar} onChange={setHideScrollbar} />
+      </SettingsRow>
+      <SettingsRow label={t("page.hideStatus")} description={t("page.hideStatusDesc")}>
+        <Toggle checked={pageState().hideStatus} onChange={setHideStatus} />
       </SettingsRow>
       <SettingsRow label={t("page.showControls")} description={t("page.showControlsDesc")}>
         <Toggle checked={pageState().showControls} onChange={setShowControls} />

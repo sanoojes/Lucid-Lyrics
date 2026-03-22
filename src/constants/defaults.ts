@@ -57,6 +57,7 @@ export const DEFAULT_PAGE_STATE = {
   showCredits: true,
   hideScrollbar: false,
   showControls: false,
+  hideStatus: false,
   floatingPosition: "bottom",
 } satisfies PageState;
 
@@ -66,6 +67,7 @@ export const DEFAULT_FULLSCREEN_STATE = {
   showCredits: true,
   hideScrollbar: false,
   showControls: true,
+  hideStatus: true,
   floatingPosition: "bottom",
 } satisfies FullscreenState;
 

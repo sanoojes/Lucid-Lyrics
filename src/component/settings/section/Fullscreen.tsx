@@ -2,6 +2,7 @@ import { useStore } from "@nanostores/solid";
 import {
   $fullscreen_state,
   setFullscreenHideScrollbar,
+  setFullscreenHideStatus,
   setFullscreenShowCredits,
   setFullscreenShowControls,
   setFullscreenFloatingPosition,
@@ -29,6 +30,12 @@ function FullscreenSettings() {
         description={t("fullscreen.hideScrollbarDesc")}
       >
         <Toggle checked={fullscreenState().hideScrollbar} onChange={setFullscreenHideScrollbar} />
+      </SettingsRow>
+      <SettingsRow
+        label={t("fullscreen.hideStatus")}
+        description={t("fullscreen.hideStatusDesc")}
+      >
+        <Toggle checked={fullscreenState().hideStatus} onChange={setFullscreenHideStatus} />
       </SettingsRow>
       <SettingsRow
         label={t("fullscreen.showControls")}

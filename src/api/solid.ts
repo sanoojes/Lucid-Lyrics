@@ -1,5 +1,5 @@
 import API from "@/api";
-import { $has_romanized, $lyrics_query } from "@/stores";
+import { $has_romanized, $lyrics_query, $lyrics_status } from "@/stores";
 import { createLogger } from "@/utils/logger";
 import { useStore } from "@nanostores/solid";
 import { createEffect, createResource, createRoot, onCleanup } from "solid-js";
@@ -17,6 +17,8 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
     },
     async (source) => {
       log.debug("request", source);
+      $lyrics_status.set("loading");
+
       try {
         const result = await API.fetch(source);
         log.debug("result", result);
@@ -29,6 +31,7 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
   );
   createEffect(() => {
     const data = lyricsResource();
+    $lyrics_status.set(data?.status);
     $has_romanized.set(!!data?.data?.HasRomanizedText);
   });
 

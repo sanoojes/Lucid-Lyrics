@@ -12,6 +12,7 @@ export type PageState = {
   hideScrollbar: boolean;
   showControls: boolean;
   floatingPosition: Positions;
+  hideStatus: boolean;
 };
 
 export type FullscreenState = {
@@ -21,6 +22,7 @@ export type FullscreenState = {
   hideScrollbar: boolean;
   showControls: boolean;
   floatingPosition: Positions;
+  hideStatus: boolean;
 };
 
 export type PageMode = "page" | "cinema" | "fullscreen";
@@ -40,7 +42,6 @@ export function updatePageState(updater: (state: PageState) => PageState) {
   $page_state.set(updater($page_state.get()));
 }
 
-export const $show_widget = computed($page_state, (s) => s.widget);
 export const $romanize = computed($page_state, (s) => s.romanize);
 
 export function toggleRomanize() {
@@ -61,6 +62,10 @@ export function setShowControls(showControls: boolean) {
 
 export function setFloatingPosition(floatingPosition: Positions) {
   updatePageState((state) => ({ ...state, floatingPosition }));
+}
+
+export function setHideStatus(hideStatus: boolean) {
+  updatePageState((state) => ({ ...state, hideStatus }));
 }
 
 export function toggleWidget() {
@@ -101,6 +106,10 @@ export function setFullscreenShowControls(showControls: boolean) {
 
 export function setFullscreenFloatingPosition(floatingPosition: Positions) {
   updateFullscreenState((state) => ({ ...state, floatingPosition }));
+}
+
+export function setFullscreenHideStatus(hideStatus: boolean) {
+  updateFullscreenState((state) => ({ ...state, hideStatus }));
 }
 
 export function toggleFullscreenWidget() {

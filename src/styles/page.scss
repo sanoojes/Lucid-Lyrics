@@ -37,20 +37,33 @@ $floating-transition:
   border-radius: inherit;
   transition: $primary-transition;
 
+  &.hide-cursor {
+    cursor: none;
+  }
+
   .widget-area {
-    flex: 0 0 40%;
-    display: flex;
-    width: min(100%, 70cqh);
-    will-change: transform, opacity;
-    animation: l-page-entry 0.8s $primary-transition both;
-    transition: $layout-transition;
+    position: absolute;
+    top: 50%;
+    left: 6cqw;
+    transform: translate3d(0, -50%, 0);
+    filter: none;
+
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, left, top, opacity, filter;
+
+    transition-property: transform, left, top, opacity, filter, box-shadow;
+    transition-duration: 0.4s;
+    transition-timing-function: ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+    z-index: 2;
 
     &--hidden {
-      flex: 0 0 0;
       margin: 0;
       opacity: 0;
-      transform: translate3d(-40px, 0, 0) scale(0.9);
-      filter: blur(15px);
+      transform: translate3d(-120%, -50%, 0) scale(0.85);
+      filter: blur(12px);
       pointer-events: none;
       white-space: nowrap;
       overflow: hidden;
@@ -58,12 +71,39 @@ $floating-transition:
 
     .player-widget {
       width: 40cqw;
-      transition: max-width 0.5s ease;
-      margin: 0 0 0 6cqw;
+      transition-property: flex-direction;
+      transition-duration: 0.4s;
+      transition-timing-function: ease;
+      transform-style: preserve-3d;
+      will-change: transform;
 
       &__image-wrapper {
-        animation: imagePop 0.6s v.$ease-bounce 0.1s both;
+        animation: imagePop 0.8s v.$ease-spring 0.15s both;
       }
+    }
+
+    &.hide-lyrics-status {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      z-index: 5;
+
+      .player-widget {
+        width: min(70cqw, 70cqh);
+        margin: auto auto;
+
+        filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.3));
+      }
+    }
+  }
+
+  .lyrics-area {
+    margin-left: 30cqw + 6cqw + 12cqw;
+    margin-top: 0;
+    &.widget-hidden {
+      margin-top: 0;
+      margin-left: 0;
     }
   }
 
@@ -71,31 +111,33 @@ $floating-transition:
     flex-direction: column;
     gap: 0;
 
-    .widget-area {
-      flex: 0 0 18cqh;
+    .widget-area:not(.hide-lyrics-status) {
       width: 100%;
       max-width: 100%;
+      left: 0;
+      top: 0;
       justify-content: center;
-      animation-name: l-page-entry;
       isolation: isolate;
+      padding: v.$space-lg v.$space-lg;
+      transform: translate3d(0, 0, 0);
 
-      &--hidden {
-        flex: 0 0 0;
-        transform: translate3d(0, -40px, 0) scale(0.8);
+      &.widget-area--hidden {
+        transform: translate3d(0, -40px, 0) scale(0.92);
+        filter: blur(8px);
       }
 
       .player-widget {
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 90cqw;
+        width: calc(100cqw - (v.$space-lg * 2));
+        margin: 0;
         max-width: 30rem;
-        height: fit-content;
+        height: max(14cqh, 9rem);
+        max-height: 10rem;
         padding: v.$space-lg;
         gap: v.$space-lg;
-        margin: 1rem 0;
         text-align: left;
-        animation: l-page-entry 0.4s ease-out both;
 
         &__title-placeholder,
         &__artist-placeholder,
@@ -130,6 +172,7 @@ $floating-transition:
           width: 120px;
           height: 120px;
           border-radius: v.$r-md;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         &__info {
@@ -153,7 +196,7 @@ $floating-transition:
 
             &__info {
               pointer-events: none;
-              opacity: 0;
+              opacity: 0.2;
             }
           }
         }
@@ -176,7 +219,13 @@ $floating-transition:
     }
 
     .lyrics-area {
-      animation: l-page-entry 0.5s ease-out 0.2s both;
+      margin-left: 0;
+      margin-top: calc(max(14cqh, 9rem) + (v.$space-lg * 1.7));
+
+      &.widget-hidden {
+        margin-top: 0;
+        margin-left: 0;
+      }
     }
   }
 }
@@ -336,7 +385,6 @@ $floating-transition:
     top: 50%;
     flex-direction: column;
     width: 100%;
-    min-width: fit-content;
     max-width: fit-content;
     padding: v.$space-md;
 

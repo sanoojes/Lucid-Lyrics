@@ -8,10 +8,13 @@
   container-type: inline-size;
   container-name: lucid-fullscreen;
   background-color: black;
+  pointer-events: all;
 }
-// .LucidFullscreenPortal {
-//   &::backdrop {
-//     display: none;
-//     background: transparent;
-//   }
-// }
+.LucidFullscreenPortal {
+  pointer-events: none;
+
+  &::backdrop {
+    display: none;
+    background: transparent;
+  }
+}
