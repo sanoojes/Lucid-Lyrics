@@ -7,15 +7,15 @@ import FullscreenPage from "@/component/page/FullscreenPage";
 
 function Fullscreen() {
   const pageMode = useStore($page_mode);
-  let portalRef: HTMLDivElement | undefined;
+  let contentRef: HTMLDivElement | undefined;
 
   createEffect(
     on(
       () => pageMode(),
       (mode) => {
         if (mode === "fullscreen") {
-          if (portalRef) {
-            portalRef.requestFullscreen().catch((err) => {
+          if (contentRef) {
+            contentRef.requestFullscreen().catch((err) => {
               logger.error("Fullscreen request denied:", err);
               setPageMode("cinema");
             });
@@ -38,8 +38,8 @@ function Fullscreen() {
         setPageMode("page");
       } else if (key === "f") {
         e.preventDefault();
-        if (portalRef && !document.fullscreenElement) {
-          portalRef
+        if (contentRef && !document.fullscreenElement) {
+          contentRef
             .requestFullscreen()
             .then(() => {
               setPageMode("fullscreen");
@@ -75,9 +75,9 @@ function Fullscreen() {
   });
 
   return (
-    <div ref={portalRef} class="LucidFullscreenPortal">
+    <div class="LucidFullscreenPortal">
       <Show when={pageMode() !== "page"}>
-        <div class="fullscreen-content">
+        <div ref={contentRef} class="fullscreen-content">
           <FullscreenPage />
         </div>
       </Show>
