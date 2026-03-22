@@ -14,13 +14,13 @@ const semverRegex =
     const newVer = (await response.text()).trim();
     if (semverRegex.test(newVer)) {
       version = newVer;
-      log.info("updated_to", newVer);
+      log.info("update:", newVer);
     } else {
       throw new Error(`Invalid SemVer: "${version}"`);
     }
   } catch (error) {
     version = SPICY_APP_VERSION;
-    log.error(`failed_to_fetch`, error);
+    log.error(error);
   }
 })();
 
