@@ -11,6 +11,7 @@ const kuroshiroLoader = createLazyModuleLoader("kuroshiro", async (mod) => {
 });
 
 export async function romanizeJapanese(text: string) {
+  if (!text) return text;
   const kuroshiro = await kuroshiroLoader.get();
   return kuroshiro.convert(text, KUROSHIRO_OPTS);
 }
