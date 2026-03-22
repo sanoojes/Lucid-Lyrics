@@ -79,6 +79,7 @@ const BENGALI_MAP: Record<string, string> = {
   "ঃ": "h", // Visarga
   "ঁ": "n", // Chandrabindu
   "্": "", // Hasanta
+  "়": "", // Nukta
 };
 
 const BENGALI_CONSONANTS = new Set([
@@ -117,40 +118,54 @@ const BENGALI_CONSONANTS = new Set([
   "ড়",
   "ঢ়",
   "য়",
+  "য়",
+  "ড়",
+  "ঢ়",
 ]);
 
 const BENGALI_VOWEL_SIGNS = new Set(["া", "ি", "ী", "ু", "ূ", "ৃ", "ে", "ৈ", "ো", "ৌ", "ং", "ঃ", "ঁ"]);
+
+const MAP_KEYS = Object.keys(BENGALI_MAP).sort((a, b) => b.length - a.length);
 
 function _bengaliToRoman(text: string): string {
   let result = "";
   let i = 0;
 
   while (i < text.length) {
-    const currentChar = text[i];
-    const nextChar = text[i + 1] || "";
+    let matchFound = false;
 
-    const mappedChar = BENGALI_MAP[currentChar];
+    for (const key of MAP_KEYS) {
+      if (text.startsWith(key, i)) {
+        const mappedChar = BENGALI_MAP[key];
+        const nextChar = text[i + key.length] || "";
 
-    if (mappedChar !== undefined) {
-      const isConsonant = BENGALI_CONSONANTS.has(currentChar);
-      const isFollowedByVowel = BENGALI_VOWEL_SIGNS.has(nextChar);
-      const isFollowedByHasanta = nextChar === "্";
+        const isConsonant = BENGALI_CONSONANTS.has(key);
+        const isFollowedByVowel = BENGALI_VOWEL_SIGNS.has(nextChar);
+        const isFollowedByHasanta = nextChar === "্";
+        const isFollowedByNukta = nextChar === "়";
 
-      if (isConsonant) {
-        const isEndOfWord = nextChar === "" || /[\s.,?!'"]/.test(nextChar);
+        if (isConsonant) {
+          const isEndOfWord = nextChar === "" || /[\s.,?!'"]/.test(nextChar);
 
-        if (!isFollowedByVowel && !isFollowedByHasanta && !isEndOfWord) {
-          result += `${mappedChar}a`;
+          if (!isFollowedByVowel && !isFollowedByHasanta && !isEndOfWord && !isFollowedByNukta) {
+            result += `${mappedChar}a`;
+          } else {
+            result += mappedChar;
+          }
         } else {
           result += mappedChar;
         }
-      } else {
-        result += mappedChar;
+
+        i += key.length;
+        matchFound = true;
+        break;
       }
-    } else {
-      result += currentChar;
     }
-    i++;
+
+    if (!matchFound) {
+      result += text[i];
+      i++;
+    }
   }
   return result;
 }
