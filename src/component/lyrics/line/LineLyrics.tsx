@@ -420,6 +420,7 @@ export default function LineLyrics(props: LineLyricsProps) {
               }}
             >
               <span
+                class="line"
                 onClick={() => seekTo(entry.content.StartTime * 1000)}
                 role="button"
                 tabIndex={0}
@@ -428,14 +429,7 @@ export default function LineLyrics(props: LineLyricsProps) {
                   "--line-progress-2": `${progress() > 0 ? progress() + 20 : 0}%`,
                   "--shadow-blur": `${progress() * 0.06}px`,
                   "--shadow-alpha": (progress() / 200) * 0.85,
-                  position: "relative",
-                  display: "inline-block",
                   "text-align": entry.content.OppositeAligned ? "end" : "start",
-                  "text-shadow": "0px 0px var(--shadow-blur) rgba(255,255,255,var(--shadow-alpha))",
-                  "background-image": `linear-gradient(180deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))`,
-                  "-webkit-background-clip": "text",
-                  "-webkit-text-fill-color": "transparent",
-                  "background-clip": "text",
                 }}
               >
                 {displayText()}
