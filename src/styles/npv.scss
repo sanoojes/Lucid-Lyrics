@@ -29,6 +29,8 @@
   }
   .lyrics-npv-card {
     order: 2;
+    overflow: hidden;
+    position: relative;
     padding: v.$space-md v.$space-lg;
 
     &.is-open {
@@ -60,9 +62,19 @@
 
   .npv-card-header {
     &.auto-hide {
-      transform: translate3d(-100%, 0, 0);
+      position: absolute;
+      inset: 0;
+      transform: translate3d(0, -100%, 0);
       opacity: 0;
       visibility: hidden;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: v.$space-md v.$space-lg;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: v.$r-md;
+      height: 4rem;
+      margin: v.$space-md;
+      backdrop-filter: blur(12px);
+      z-index: 2;
 
       transition:
         transform 0.3s ease,
@@ -70,12 +82,15 @@
         visibility 0.3s allow-discrete;
 
       @starting-style {
-        transform: translate3d(-100%, 0, 0);
+        transform: translate3d(0, -100%, 0);
         opacity: 0;
         visibility: hidden;
       }
-
-      .lyrics-npv-card:hover & {
+    }
+  }
+  .lyrics-npv-card:hover {
+    .npv-card-header {
+      &.auto-hide {
         transform: translate3d(0, 0, 0);
         opacity: 1;
         visibility: visible;
