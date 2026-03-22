@@ -12,7 +12,7 @@
   "type": "module",
   "scripts": {
     "sc": "bun --bun run spicetify-creator",
-    "dev": "bun --bun run spicetify-creator dev",
+    "dev": "bun run build:packages && bun --bun run spicetify-creator dev",
     "build": "bun run build:packages && bun --bun run spicetify-creator build",
     "fmt": "oxfmt",
     "lint": "oxlint",
