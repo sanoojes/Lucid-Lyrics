@@ -430,13 +430,7 @@ export default function LineLyrics(props: LineLyricsProps) {
                   "--shadow-alpha": (progress() / 200) * 0.85,
                   position: "relative",
                   display: "inline-block",
-                  "text-align": isLineRTL()
-                    ? entry.content.OppositeAligned
-                      ? "left"
-                      : "right"
-                    : entry.content.OppositeAligned
-                      ? "right"
-                      : "left",
+                  "text-align": entry.content.OppositeAligned ? "end" : "start",
                   "text-shadow": "0px 0px var(--shadow-blur) rgba(255,255,255,var(--shadow-alpha))",
                   "background-image": `linear-gradient(180deg,rgba(255,255,255,0.9) var(--line-progress),rgba(255,255,255,0.4) var(--line-progress-2))`,
                   "-webkit-background-clip": "text",
