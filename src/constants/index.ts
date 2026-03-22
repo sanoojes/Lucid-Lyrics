@@ -5,6 +5,8 @@ export * from "@/constants/providers";
 
 export const GITHUB_LINK = "https://github.com/sanoojes/lucid-lyrics";
 export const GITHUB_ISSUES_LINK = `${GITHUB_LINK}/issues`;
+export const WEBSITE_LINK = "https://projects.sanooj.uk/spicetify/lucid-lyrics";
+export const DISCORD_LINK = "https://discord.gg/NZDpQCPBJN";
 
 export const BASE_ROUTE = "/lucid-lyrics";
 export const PAGE_PATH = "/";

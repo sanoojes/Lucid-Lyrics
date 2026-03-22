@@ -95,10 +95,10 @@
 }
 
 .settings-section {
-  margin-bottom: v.$space-xl;
+  margin-bottom: v.$space-2xl;
 
-  &:last-child {
-    margin-bottom: v.$space-lg;
+  &:last-of-type {
+    margin-bottom: v.$space-sm;
   }
 
   .section-title {
@@ -115,7 +115,8 @@
     &::after {
       content: "";
       flex: 1;
-      height: 1px;
+      height: 2px;
+      min-height: 2px;
       background: linear-gradient(90deg, rgba(29, 185, 84, 0.3) 0%, transparent 100%);
     }
   }
@@ -124,5 +125,42 @@
     display: flex;
     flex-direction: column;
     gap: v.$space-md;
+  }
+}
+
+.app-info {
+  display: flex;
+  gap: v.$space-md;
+  padding: v.$space-sm v.$space-sm v.$space-sm v.$space-md;
+  margin-top: v.$space-xl;
+  border-radius: v.$r-md;
+  background: linear-gradient(135deg, rgba(29, 185, 84, 0.05) 0%, rgba(29, 185, 84, 0.02) 100%);
+  border: 1px solid rgba(29, 185, 84, 0.15);
+  justify-content: space-between;
+  align-items: center;
+
+  &--wrapper {
+    display: inline-flex;
+    gap: v.$space-base;
+    align-items: center;
+  }
+
+  .app-name {
+    font-weight: v.$fw-bold;
+    font-size: v.$fs-md;
+    background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-version {
+    font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-normal;
+    color: v.$color-muted;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
   }
 }

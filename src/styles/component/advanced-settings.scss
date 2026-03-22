@@ -30,8 +30,9 @@
       border: 1px solid v.$border-color;
 
       .stat-label {
-        font-size: v.$fs-xs;
         color: v.$color;
+        font-size: v.$fs-xs;
+        font-weight: v.$fw-bold;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }

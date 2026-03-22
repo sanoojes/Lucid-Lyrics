@@ -1,8 +1,11 @@
 import "@/styles/modal/settings.scss";
+
+import { t } from "@/i18n";
 import { useDialog } from "@/lib/modal/component/Dialog";
 import { showModal } from "@/lib/modal";
 import { X, Search } from "lucide-solid";
 import { Button } from "@/component/ui/Button";
+import { SocialButtons } from "@/component/ui/button/SocialButtons";
 import { createEffect, createSignal, on, Show } from "solid-js";
 import { SettingsContext } from "@/component/settings/context";
 import WidgetSettings from "@/component/settings/section/Widget";
@@ -15,8 +18,8 @@ import LanguageSettings from "@/component/settings/section/Language";
 import ResetSettings from "@/component/settings/section/Reset";
 import AdvancedSettings from "@/component/settings/section/Advanced";
 import MainList from "@/component/settings/MainList";
-import { t } from "@/i18n";
 import SolidLenis from "@/component/ui/Lenis";
+import { APP_NAME, APP_VERSION } from "@/constants";
 
 export function SettingsModal() {
   let inputRef!: HTMLInputElement;
@@ -41,6 +44,7 @@ export function SettingsModal() {
       <header>
         <h2 class="title">{t("settings.title")}</h2>
         <div class="actions">
+          <SocialButtons />
           <Button onClick={close} variant="ghost" size="icon" shape="rounded">
             <X size={20} />
           </Button>
@@ -86,6 +90,17 @@ export function SettingsModal() {
               <AdvancedSettings />
               <ResetSettings />
             </MainList>
+            <Show when={searchQuery().trim() === ""}>
+              <div class="app-info">
+                <div class="app-info--wrapper">
+                  <span class="app-name">{APP_NAME}</span>
+                  <span class="app-version">v{APP_VERSION}</span>
+                </div>
+                <div class="app-info--wrapper">
+                  <SocialButtons variant="glass" size="sm" shape="default" showWebsite />
+                </div>
+              </div>
+            </Show>
           </SettingsContext.Provider>
         </main>
       </SolidLenis>
