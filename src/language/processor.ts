@@ -94,8 +94,15 @@ async function addRomanizationToLyrics(
     if (!cleanText) return "unknown";
 
     const lang = getCachedLang(cleanText);
-    if (lang === "chinese" && primaryLang === "japanese") return "japanese";
-    if (lang === "chinese" && primaryLang === "korean") return "korean";
+    if (lang === "chinese") {
+      if (primaryLang === "japanese") return "japanese";
+      if (primaryLang === "korean") return "korean";
+    }
+
+    if (lang === "arabic") {
+      if (primaryLang === "urdu") return "urdu";
+      if (primaryLang === "persian") return "persian";
+    }
     return lang;
   };
 

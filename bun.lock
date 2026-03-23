@@ -49,6 +49,7 @@
         "oxlint": "^1.56.0",
         "persian-transliteration": "workspace:*",
         "pinyin": "^4.0.0",
+        "urdu-transliteration": "workspace:*",
         "vitest": "^4.1.0",
       },
       "peerDependencies": {
@@ -108,6 +109,19 @@
     },
     "packages/persian-transliteration": {
       "name": "persian-transliteration",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@types/bun": "latest",
+        "rolldown": "^1.0.0-rc.10",
+        "unplugin-isolated-decl": "^0.15.7",
+        "vitest": "^4.1.0",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/urdu-transliteration": {
+      "name": "urdu-transliteration",
       "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "latest",
@@ -1184,6 +1198,8 @@
     "unrun": ["unrun@0.2.32", "", { "dependencies": { "rolldown": "1.0.0-rc.9" }, "peerDependencies": { "synckit": "^0.11.11" }, "optionalPeers": ["synckit"], "bin": { "unrun": "dist/cli.mjs" } }, "sha512-opd3z6791rf281JdByf0RdRQrpcc7WyzqittqIXodM/5meNWdTwrVxeyzbaCp4/Rgls/um14oUaif1gomO8YGg=="],
 
     "update-browserslist-db": ["update-browserslist-db@1.2.3", "", { "dependencies": { "escalade": "^3.2.0", "picocolors": "^1.1.1" }, "peerDependencies": { "browserslist": ">= 4.21.0" }, "bin": { "update-browserslist-db": "cli.js" } }, "sha512-Js0m9cx+qOgDxo0eMiFGEueWztz+d4+M3rGlmKPT+T4IS/jP4ylw3Nwpu6cpTTP8R1MAC1kF4VbdLt3ARf209w=="],
+
+    "urdu-transliteration": ["urdu-transliteration@workspace:packages/urdu-transliteration"],
 
     "util-deprecate": ["util-deprecate@1.0.2", "", {}, "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="],
 

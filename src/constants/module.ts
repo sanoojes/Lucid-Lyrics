@@ -14,6 +14,7 @@ const ARMENIAN_TRANSLITERATION = "armenian-transliteration";
 const HEBREW_TRANSLITERATION = "hebrew-transliteration";
 const GOTHIC_TRANSLITERATION = "gothic-transliteration";
 const PERSIAN_TRANSLITERATION = "persian-transliteration";
+const URDU_TRANSLITERATION = "urdu-transliteration";
 const LOCALE = "locale";
 
 const KUROMOJI_PATH = `${JSDELIVR_PACKAGE_REPO}/${KUROMOJI}`;
@@ -69,6 +70,11 @@ export const MODULE_METADATA = {
     name: PERSIAN_TRANSLITERATION,
     version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${PERSIAN_TRANSLITERATION}/index.js`,
+  },
+  [URDU_TRANSLITERATION]: {
+    name: URDU_TRANSLITERATION,
+    version: "0.0.1",
+    url: `${JSDELIVR_PACKAGE_REPO}/${URDU_TRANSLITERATION}/index.js`,
   },
   [LOCALE]: {
     name: LOCALE,

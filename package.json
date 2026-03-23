@@ -9,7 +9,8 @@
     "packages/armenian-transliteration",
     "packages/hebrew-transliteration",
     "packages/gothic-transliteration",
-    "packages/persian-transliteration"
+    "packages/persian-transliteration",
+    "packages/urdu-transliteration"
   ],
   "type": "module",
   "scripts": {
@@ -72,6 +73,7 @@
     "oxlint": "^1.56.0",
     "persian-transliteration": "workspace:*",
     "pinyin": "^4.0.0",
+    "urdu-transliteration": "workspace:*",
     "vitest": "^4.1.0"
   },
   "peerDependencies": {

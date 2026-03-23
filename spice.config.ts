@@ -38,6 +38,7 @@ export default defineConfig({
           "hebrew-transliteration",
           "gothic-transliteration",
           "persian-transliteration",
+          "urdu-transliteration",
         ],
         ignore: ["**/node_modules/**", "internal-scripts/**", ".DS_Store"],
       }),
