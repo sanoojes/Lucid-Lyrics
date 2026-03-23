@@ -37,9 +37,16 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
 
     if (lyrics.syncType === "LINE_SYNCED") {
       const content: LineContent[] = lines.map((line: any, index: number) => {
-        const startTime = Number(line.startTimeMs) || 0;
-        const endTime =
-          index < lines.length - 1 ? Number(lines[index + 1].startTimeMs) : startTime + 5000;
+        const startTimeMs = Number(line.startTimeMs) || 0;
+        let endTimeMs = Number(line.endTimeMs) || 0;
+
+        if (endTimeMs === 0) {
+          endTimeMs =
+            index < lines.length - 1 ? Number(lines[index + 1].startTimeMs) : startTimeMs + 5000;
+        }
+
+        const startTime = startTimeMs / 1000;
+        const endTime = endTimeMs / 1000;
 
         if (line.words === "♪") {
           return {
