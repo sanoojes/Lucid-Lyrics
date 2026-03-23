@@ -93,6 +93,7 @@ jobs:
           cp dist/packages/hebrew-transliteration/index.js hebrew-transliteration.js
           cp dist/packages/gothic-transliteration/index.js gothic-transliteration.js
           cp dist/packages/persian-transliteration/index.js persian-transliteration.js
+          cp dist/packages/urdu-transliteration/index.js urdu-transliteration.js
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -106,6 +107,7 @@ jobs:
             hebrew-transliteration.js
             arabic-transliteration.js
             gothic-transliteration.js
+            urdu-transliteration.js
             persian-transliteration.js
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
