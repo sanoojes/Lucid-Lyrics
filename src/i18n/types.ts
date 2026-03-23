@@ -219,4 +219,15 @@ export type Dict = {
   "fullscreen.showControlsDesc": string;
   "fullscreen.floatingPosition": string;
   "fullscreen.floatingPositionDesc": string;
+  "lyricsPage.toggleWidget": string;
+  "lyricsPage.showWidget": string;
+  "lyricsPage.hideWidget": string;
+  "cinema.enter": string;
+  "fullscreen.enter": string;
+  "ttml.upload": string;
+  "fullscreenPage.toggleWidget": string;
+  "fullscreenPage.showWidget": string;
+  "fullscreenPage.hideWidget": string;
+  "fullscreenPage.exitFull": string;
+  "fullscreenPage.exitCinema": string;
 };

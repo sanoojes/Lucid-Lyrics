@@ -3,6 +3,7 @@ import { Show } from "solid-js";
 import { Button } from "@/component/ui/Button";
 import { TvMinimalPlay } from "lucide-solid";
 import { $page_mode, setPageMode } from "@/stores/page";
+import { t } from "@/i18n";
 
 type CinemaButtonProps = {
   glass?: boolean;
@@ -16,7 +17,7 @@ const CinemaButton = (props: CinemaButtonProps) => {
         variant={props.glass ? "glass" : "ghost"}
         size="icon"
         shape="rounded"
-        title="Cinema Mode"
+        title={t("cinema.enter")}
         onClick={() => setPageMode("cinema")}
         class="l-btn"
       >

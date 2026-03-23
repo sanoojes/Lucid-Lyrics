@@ -192,7 +192,10 @@ function BackgroundSettings() {
           )}
         </For>
 
-        <SettingsRow label={t("bg.transitionDuration")} description={t("bg.transitionDurationDesc")}>
+        <SettingsRow
+          label={t("bg.transitionDuration")}
+          description={t("bg.transitionDurationDesc")}
+        >
           <Slider
             value={bg().options.animated.transitionDuration}
             onChange={(v) => updateAnimatedOptions({ transitionDuration: v })}

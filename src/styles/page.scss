@@ -50,9 +50,9 @@ $floating-transition:
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    will-change: transform, left, top, opacity, filter;
+    will-change: transform, opacity, filter;
 
-    transition-property: transform, left, top, opacity, filter, box-shadow;
+    transition-property: transform, opacity, filter, box-shadow;
     transition-duration: 0.4s;
     transition-timing-function: ease;
     transform-style: preserve-3d;

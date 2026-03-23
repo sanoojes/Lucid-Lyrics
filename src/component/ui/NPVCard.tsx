@@ -9,7 +9,6 @@ import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyri
 import { LyricsRendererProvider } from "@/context/LyricsRenderer";
 import RomanizeButton from "@/component/ui/button/RomanizeButton";
 import router, { $in_lyrics_page } from "@/router";
-import FullscreenButton from "@/component/ui/button/FullscreenButton";
 import CinemaButton from "@/component/ui/button/CinemaButton";
 
 const NPVCard = () => {
@@ -34,11 +33,11 @@ const NPVCard = () => {
         <section
           class="main-nowPlayingView-sectionHeader npv-card-header"
           classList={{
-            "auto-hide": npvState().autoHideCardHeader,
+            "auto-hide": npvState().autoHideCardHeader && isOpen(),
           }}
         >
           <h2
-            class="e-9890-text encore-text-body-medium-bold encore-internal-color-text-base"
+            class="encore-text-body-medium-bold encore-internal-color-text-base"
             data-encore-id="text"
           >
             <div class="main-nowPlayingView-sectionHeaderText">{t("npv.lyrics")}</div>
@@ -55,6 +54,7 @@ const NPVCard = () => {
                 title={t("npv.goToLyricsPage")}
                 variant="ghost"
                 size="icon-sm"
+                shape="rounded"
               >
                 <SquareArrowOutUpLeft />
               </Button>
@@ -65,6 +65,7 @@ const NPVCard = () => {
               title={isOpen() ? t("npv.closeLyrics") : t("npv.openLyrics")}
               variant="ghost"
               size="icon-sm"
+              shape="rounded"
             >
               <ChevronDown classList={{ "rotate-icon": isOpen() }} />
             </Button>
@@ -79,7 +80,7 @@ const NPVCard = () => {
               "min-height": `${npvState().cardMinHeight ?? 400}px`,
             }}
           >
-            <Lyrics widgetHidden showCredits={pageState().showCredits} />
+            <Lyrics widgetHidden showCredits={pageState().showCredits} hideStatus={false} />
           </section>
         </Show>
       </LyricsRendererProvider>

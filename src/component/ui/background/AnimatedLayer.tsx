@@ -261,19 +261,22 @@ const AnimatedLayer = () => {
       const img = new Image();
       img.crossOrigin = uri.startsWith("spotify:") || uri.startsWith("blob:") ? null : "anonymous";
       img.src = uri;
-      img.decode?.().then(() => {
-        if (uri !== currentUri) return;
-        const blurred = generateBlurredCoverArt(img, blurAmount);
-        blurred.then((result) => {
+      img
+        .decode?.()
+        .then(() => {
+          if (uri !== currentUri) return;
+          const blurred = generateBlurredCoverArt(img, blurAmount);
+          blurred.then((result) => {
+            if (uri === currentUri) {
+              updateTexture(result ?? createBlackOffscreenCanvas());
+            }
+          });
+        })
+        .catch(() => {
           if (uri === currentUri) {
-            updateTexture(result ?? createBlackOffscreenCanvas());
+            updateTexture(createBlackOffscreenCanvas());
           }
         });
-      }).catch(() => {
-        if (uri === currentUri) {
-          updateTexture(createBlackOffscreenCanvas());
-        }
-      });
     };
 
     createEffect(() => {

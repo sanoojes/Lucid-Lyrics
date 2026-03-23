@@ -31,10 +31,7 @@ function FullscreenSettings() {
       >
         <Toggle checked={fullscreenState().hideScrollbar} onChange={setFullscreenHideScrollbar} />
       </SettingsRow>
-      <SettingsRow
-        label={t("fullscreen.hideStatus")}
-        description={t("fullscreen.hideStatusDesc")}
-      >
+      <SettingsRow label={t("fullscreen.hideStatus")} description={t("fullscreen.hideStatusDesc")}>
         <Toggle checked={fullscreenState().hideStatus} onChange={setFullscreenHideStatus} />
       </SettingsRow>
       <SettingsRow

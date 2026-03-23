@@ -2,7 +2,8 @@ import "@/styles/page.scss";
 import "@/styles/lenis.css";
 import { useStore } from "@nanostores/solid";
 import { Show, createSignal, onMount, onCleanup } from "solid-js";
-import { ListMusic, X } from "lucide-solid";
+import { X } from "lucide-solid";
+import { t } from "@/i18n";
 
 import { Button } from "@/component/ui/Button";
 import { Background } from "@/component/ui/Background";
@@ -13,14 +14,16 @@ import CinemaButton from "@/component/ui/button/CinemaButton";
 import RomanizeButton from "@/component/ui/button/RomanizeButton";
 import LocalTTMLButton from "@/component/ui/button/LocalTTMLButton";
 import FullscreenButton from "@/component/ui/button/FullscreenButton";
+import ToggleFullscreenWidgetButton from "@/component/ui/button/ToggleFullscreenWidgetButton";
 
-import { $fullscreen_state, $lyrics_status, setPageMode, toggleFullscreenWidget } from "@/stores";
+import { $fullscreen_state, $lyrics_status, $page_mode, setPageMode } from "@/stores";
 import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
 import { $installed_theme } from "@/stores/theme";
 import { LyricsRendererProvider } from "@/context/LyricsRenderer";
 
 function FullscreenPage() {
   const pageState = useStore($fullscreen_state);
+  const pageMode = useStore($page_mode);
   const installedTheme = useStore($installed_theme);
   const lyricsStatus = useStore($lyrics_status);
   const isStatusHidable = () => !["success", "loading"].includes(lyricsStatus() ?? "loading");
@@ -83,7 +86,17 @@ function FullscreenPage() {
               <div class="top-controls">
                 <CinemaButton glass />
                 <FullscreenButton glass />
-                <Button variant="glass" size="icon" shape="rounded" onClick={handleClose}>
+                <Button
+                  variant="glass"
+                  size="icon"
+                  shape="rounded"
+                  onClick={handleClose}
+                  title={
+                    pageMode() === "cinema"
+                      ? t("fullscreenPage.exitCinema")
+                      : t("fullscreenPage.exitFull")
+                  }
+                >
                   <X />
                 </Button>
               </div>
@@ -116,9 +129,7 @@ function FullscreenPage() {
           </Show>
           <div class="controls">
             <Show when={!hideStatus()}>
-              <Button variant="ghost" size="icon" onClick={toggleFullscreenWidget}>
-                <ListMusic size={20} />
-              </Button>
+              <ToggleFullscreenWidgetButton />
             </Show>
             <RomanizeButton />
             <ScrollToActiveLyricsButton />

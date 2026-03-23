@@ -91,28 +91,42 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const lineEntries = createMemo(() => buildLineEntries(props.lyrics));
 
-  const activeIndex = createMemo(() => {
-    const pos = currentPos();
-    const entries = lineEntries();
-    if (entries.length === 0) return 0;
-
-    for (let i = 0; i < entries.length; i++) {
-      const e = entries[i];
-      const start = e.type === "interlude" ? e.start : e.content.StartTime * 1000;
-      const end = e.type === "interlude" ? e.end : e.content.EndTime * 1000;
-      if (pos >= start && pos <= end) return e.index;
-    }
-
-    if (pos > 0) {
-      const nextIdx = entries.findIndex((e) => {
-        const start = e.type === "interlude" ? e.start : e.content.StartTime * 1000;
-        return start > pos;
-      });
-      return nextIdx === -1 ? entries[entries.length - 1].index : Math.max(0, nextIdx - 1);
-    }
-
-    return 0;
+  const allBounds = createMemo(() => {
+    return lineEntries().map((entry) => {
+      if (entry.type === "interlude") {
+        return { start: entry.start, end: entry.end };
+      }
+      return { start: entry.content.StartTime * 1000, end: entry.content.EndTime * 1000 };
+    });
   });
+
+  const activeIndices = createMemo(
+    () => {
+      const pos = currentPos();
+      const bounds = allBounds();
+      if (bounds.length === 0) return [0];
+
+      const indices: number[] = [];
+      for (let i = 0; i < bounds.length; i++) {
+        if (pos >= bounds[i].start && pos <= bounds[i].end) {
+          indices.push(i);
+        }
+      }
+
+      if (indices.length === 0 && pos > 0) {
+        const nextIdx = bounds.findIndex((b) => b.start > pos);
+        return [nextIdx === -1 ? bounds.length - 1 : Math.max(0, nextIdx - 1)];
+      }
+
+      return indices.length > 0 ? indices : [0];
+    },
+    [],
+    {
+      equals: (a, b) => a.length === b.length && a.every((val, i) => val === b[i]),
+    },
+  );
+
+  const firstActiveIndex = createMemo(() => activeIndices()[0] ?? 0);
 
   const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
 
@@ -125,13 +139,16 @@ export default function LineLyrics(props: LineLyricsProps) {
     if (!lenis?.rootElement) return;
 
     const height = lenis.rootElement.clientHeight;
-    const off = -(isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7);
+    const baseOffset = isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7;
+    const activeCount = activeIndices().length;
+    const lineOffset = activeCount > 1 ? (activeCount - 1) * 20 : 0;
+    const off = -(baseOffset + lineOffset);
     setScrollOffset(off);
   }
 
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = activeIndex();
+    const idx = firstActiveIndex();
     const targetRef = itemRefs.get(idx);
 
     if (!lenis || !targetRef) return;
@@ -164,7 +181,7 @@ export default function LineLyrics(props: LineLyricsProps) {
   );
 
   createEffect(() => {
-    const idx = activeIndex();
+    const idx = firstActiveIndex();
 
     if (!isUserScroll() && idx !== -1 && itemRefs.has(idx)) {
       requestAnimationFrame(() => {
@@ -200,7 +217,7 @@ export default function LineLyrics(props: LineLyricsProps) {
   };
 
   createEffect(() => {
-    const activeVisible = visibleElements().has(activeIndex());
+    const activeVisible = visibleElements().has(firstActiveIndex());
     setIsActiveVisible(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
@@ -316,21 +333,30 @@ export default function LineLyrics(props: LineLyricsProps) {
       <For each={lineEntries()}>
         {(entry) => {
           const isActive = createMemo(() => {
-            const isTargetIndex = entry.index === activeIndex();
+            const isTarget = activeIndices().includes(entry.index);
 
-            if (isTargetIndex && entry.index === lineEntries().length - 1) {
+            if (isTarget && entry.index === lineEntries().length - 1) {
               const endTime = entry.type === "interlude" ? entry.end : entry.content.EndTime * 1000;
+
               return currentPos() <= endTime;
             }
 
-            return isTargetIndex;
+            return isTarget;
           });
 
           const blurStyle = createMemo(() => {
             if (isUserScroll()) return "0px";
             const blurmap = getBlurmap();
-            const d = Math.abs(entry.index - activeIndex());
-            const blur = d >= blurmap.length ? blurmap[blurmap.length - 1] : blurmap[d];
+            const active = activeIndices();
+            let distance = Math.abs(entry.index - firstActiveIndex());
+
+            for (const a of active) {
+              const d = Math.abs(entry.index - a);
+              if (d < distance) distance = d;
+            }
+
+            const blur =
+              distance >= blurmap.length ? blurmap[blurmap.length - 1] : blurmap[distance];
             return `${blur}px`;
           });
 

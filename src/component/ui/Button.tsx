@@ -1,5 +1,6 @@
 import { splitProps, type ComponentProps } from "solid-js";
 import "@/styles/component/button.scss";
+import { Tippy } from "@/component/ui/Tippy";
 
 type Variant =
   | "default"
@@ -21,10 +22,11 @@ type ButtonProps = ComponentProps<"button"> & {
   shape?: Shape;
   iconSize?: number;
   active?: boolean;
+  title?: string;
 };
 
 export function Button(props: ButtonProps) {
-  const [local, others] = splitProps(props, ["variant", "size", "shape", "class"]);
+  const [local, others] = splitProps(props, ["variant", "size", "shape", "class", "title"]);
 
   const variant = () => local.variant ?? "default";
   const size = () => local.size ?? "default";
@@ -41,6 +43,14 @@ export function Button(props: ButtonProps) {
     ]
       .filter(Boolean)
       .join(" ");
+
+  if (local.title) {
+    return (
+      <Tippy title={local.title}>
+        <button class={classes()} {...others} />
+      </Tippy>
+    );
+  }
 
   return <button class={classes()} {...others} />;
 }
