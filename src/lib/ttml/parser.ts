@@ -145,6 +145,16 @@ function toArray<T>(value: T | T[] | undefined): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
+function checkIsWordBoundary(rawText: string, nextRawText: string | null): boolean {
+  if (nextRawText === null) return true; // The last syllable is always a word boundary
+  // Check if current text ends with whitespace or word-breaking punctuation
+  if (/[ \t\n\r,.!?;:—]+$/.test(rawText)) return true;
+  // Check if the next text starts with whitespace or word-breaking punctuation
+  if (/^[ \t\n\r,.!?;:—]+/.test(nextRawText)) return true;
+
+  return false;
+}
+
 function extractSongwriters(metadata: TTMLMetadata | undefined): string[] {
   if (!metadata?.iTunesMetadata?.songwriters?.songwriter) {
     return [];
@@ -191,10 +201,7 @@ function extractMetaData(metadata: TTMLMetadata | undefined): {
 function isOppositeAligned(agentId: string | undefined, agents: Map<string, string>): boolean {
   if (!agentId) return false;
   const type = agents.get(agentId);
-  if (!type) return false;
-
-  if (type === "group") return false;
-
+  if (!type || type === "group") return false;
   const match = agentId.match(/^v(\d+)$/);
   if (!match) return false;
 
@@ -229,12 +236,18 @@ function parseSyllableLine(
         const bgSpan = bgSpans[j];
         const start = parseTime(bgSpan.begin) - timeOffset;
         const end = parseTime(bgSpan.end) - timeOffset;
+        const rawText = bgSpan["#text"] || "";
+
+        const nextRawText = j < bgSpans.length - 1 ? bgSpans[j + 1]["#text"] || "" : null;
+        const isPartOfWord = !checkIsWordBoundary(rawText, nextRawText);
+
         bgSyllables.push({
-          Text: bgSpan["#text"] || "",
-          IsPartOfWord: false,
+          Text: rawText.trim(),
+          IsPartOfWord: isPartOfWord,
           StartTime: start,
           EndTime: end,
         });
+
         if (start < bgStart) bgStart = start;
         if (end > bgEnd) bgEnd = end;
       }
@@ -247,9 +260,21 @@ function parseSyllableLine(
         });
       }
     } else if (span["#text"] !== undefined) {
+      const rawText = span["#text"] || "";
+
+      let nextLeadText: string | null = null;
+      for (let k = i + 1; k < spans.length; k++) {
+        if (spans[k]["ttm:role"] !== "x-bg" && spans[k]["#text"] !== undefined) {
+          nextLeadText = spans[k]["#text"] || "";
+          break;
+        }
+      }
+
+      const isPartOfWord = !checkIsWordBoundary(rawText, nextLeadText);
+
       leadSyllables.push({
-        Text: span["#text"] || "",
-        IsPartOfWord: false,
+        Text: rawText.trim(),
+        IsPartOfWord: isPartOfWord,
         StartTime: parseTime(span.begin) - timeOffset,
         EndTime: parseTime(span.end) - timeOffset,
       });
@@ -313,10 +338,8 @@ function parseLine(ttml: TTMLRoot): LineData {
     }
   }
 
-  const id = spotifyId || "unknown";
-
   return {
-    Id: id,
+    Id: spotifyId || "unknown",
     Type: "Line",
     SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
@@ -348,10 +371,8 @@ function parseStatic(ttml: TTMLRoot): StaticData {
     }
   }
 
-  const id = spotifyId || "unknown";
-
   return {
-    Id: id,
+    Id: spotifyId || "unknown",
     Type: "Static",
     SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
@@ -382,22 +403,15 @@ function parseSyllable(ttml: TTMLRoot): SyllableData {
 
     for (let j = 0; j < ps.length; j++) {
       const p = ps[j];
-      const pBegin = parseTime(p.begin) - timeOffset;
-      const pEnd = parseTime(p.end) - timeOffset;
-
-      if (content.length === 0) {
-        startTime = pBegin;
-      }
-      endTime = pEnd;
+      if (content.length === 0) startTime = parseTime(p.begin) - timeOffset;
+      endTime = parseTime(p.end) - timeOffset;
 
       content.push(parseSyllableLine(p, agents, divAgentId, timeOffset));
     }
   }
 
-  const id = spotifyId || "unknown";
-
   return {
-    Id: id,
+    Id: spotifyId || "unknown",
     Type: "Syllable",
     SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
