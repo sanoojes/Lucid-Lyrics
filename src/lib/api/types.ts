@@ -64,7 +64,7 @@ type TTMLUser = {
 type CommonStates = {
   HasRomanizedText: boolean;
   NeedsRomanization: boolean;
-  IsRTL: boolean;
+  IsRTL?: boolean;
   Provider: LyricsProviders;
 
   /**
@@ -95,7 +95,7 @@ export type VocalPart = {
 
 export type AlignedContent = {
   OppositeAligned: boolean;
-  IsRTL: boolean;
+  IsRTL?: boolean;
 };
 
 /* Syllable lyrics */
@@ -140,7 +140,7 @@ export type LineData = {
 /* Static lyrics */
 export type StaticLine = {
   Text: string;
-  IsRTL: boolean;
+  IsRTL?: boolean;
 } & RomanizedText;
 
 export type StaticData = {
