@@ -23,8 +23,6 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
       try {
         const result = await API.fetch(source);
         log.debug("result", result);
-        console.log("ttml!!!!!!");
-        console.log(build(result.data));
         return result;
       } catch (error) {
         log.error("rejected", source, error);
