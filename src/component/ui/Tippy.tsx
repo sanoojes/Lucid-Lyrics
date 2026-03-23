@@ -111,7 +111,6 @@ export function Tippy(props: TippyProps) {
       ref={triggerRef}
       onMouseEnter={handleShow}
       onMouseLeave={handleHide}
-      onFocusIn={handleShow}
       class="tippy-trigger"
       {...others}
     >
