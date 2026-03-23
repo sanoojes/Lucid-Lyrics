@@ -276,7 +276,6 @@
   .l-btn {
     &--glass,
     &--ghost:hover {
-      -webkit-backdrop-filter: none;
       backdrop-filter: none;
     }
   }

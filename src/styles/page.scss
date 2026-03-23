@@ -90,7 +90,7 @@ $floating-transition:
       z-index: 5;
 
       .player-widget {
-        width: min(70cqw, 70cqh);
+        width: min(70cqw, 65cqh);
         margin: auto auto;
 
         filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.3));
@@ -131,7 +131,7 @@ $floating-transition:
         flex-direction: row;
         align-items: center;
         width: calc(100cqw - (v.$space-lg * 2));
-        margin: 0;
+        margin: 0 auto;
         max-width: 30rem;
         height: max(14cqh, 9rem);
         max-height: 10rem;
@@ -244,7 +244,6 @@ $floating-transition:
     #000 calc(100% - var(--bottom-mask-size, 48px)),
     transparent 100%
   );
-  -webkit-mask-image: $mask-image;
   mask-image: $mask-image;
 
   animation: l-page-entry 0.5s v.$ease-bounce 0.15s both;
@@ -510,7 +509,7 @@ $floating-transition:
       rgba(var(--lyrics-text-color), 0.9) var(--line-progress),
       rgba(var(--lyrics-text-color), 0.4) var(--line-progress-2)
     );
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }

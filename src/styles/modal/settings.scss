@@ -149,7 +149,7 @@
     font-weight: v.$fw-bold;
     font-size: v.$fs-md;
     background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }

@@ -1,9 +1,9 @@
 @use "../variables" as v;
 
 .lyrics-loading {
-  --top-pad: clamp(16px, 8vh, 80px);
-  --shimmer-base: rgba(255, 255, 255, 0.4);
-  --shimmer-highlight: rgba(255, 255, 255, 0.1);
+  --top-pad: calc(50cqh - 12rem);
+  --shimmer-base: rgba(255, 255, 255, 0.1);
+  --shimmer-highlight: rgba(255, 255, 255, 0.4);
 
   height: calc(100% - var(--top-pad));
   width: 100%;
@@ -13,22 +13,23 @@
   z-index: 99;
   margin-top: auto;
   border-radius: 0.5cqw;
+  transform: scaleX(1.09);
 
-  -webkit-mask-position: left top;
-  mask-position: left top;
-  -webkit-mask-repeat: repeat-y;
-  mask-repeat: repeat-y;
-  -webkit-mask-size: contain;
-  mask-size: contain;
+  .loading-svg {
+    color: rgba(255, 255, 255, 0.8);
+    mask-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 1) 25%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 1) 75%
+    );
+    mask-size: 200% 100%;
+    animation: lucid-shimmer 2s infinite linear;
+  }
 
-  background: linear-gradient(
-    90deg,
-    var(--shimmer-base) 25%,
-    var(--shimmer-highlight) 50%,
-    var(--shimmer-base) 75%
-  );
-  background-size: 200% 100%;
-  animation: lucid-shimmer 2s infinite linear;
+  .npv-lyrics-root & {
+    --top-pad: #{v.$space-md};
+  }
 
   @container lucid-page (max-width: #{v.$mobile-breakpoint}) {
     --top-pad: 2rem;
@@ -37,9 +38,9 @@
 
 @keyframes lucid-shimmer {
   from {
-    background-position: 200% 0;
+    mask-position: 150% 0;
   }
   to {
-    background-position: -200% 0;
+    mask-position: -50% 0;
   }
 }

@@ -197,7 +197,6 @@ function LeadRenderer(props: LeadRendererProps) {
                               position: "relative",
                               display: "inline-block",
                               "background-image": `linear-gradient(${props.isRTL ? 270 : 90}deg, rgba(255, 255, 255, 0.85) var(--char-progress), rgba(255, 255, 255, 0.4) var(--char-progress-2))`,
-                              "-webkit-background-clip": "text",
                               "-webkit-text-fill-color": "transparent",
                               "background-clip": "text",
                             }}

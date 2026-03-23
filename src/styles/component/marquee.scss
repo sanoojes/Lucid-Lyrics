@@ -27,7 +27,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    -webkit-mask-image: none;
     mask-image: none;
 
     &--wrapper {
