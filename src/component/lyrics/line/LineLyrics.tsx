@@ -378,9 +378,9 @@ export default function LineLyrics(props: LineLyricsProps) {
                   itemRefs.set(entry.index, el);
                 }}
                 style={{
-                  "--blur": blurStyle(),
-                  "--scale": isActive() ? 1.01 : 1,
-                  "--opacity": isActive() ? 1 : 0.6,
+                  "--l-blur": blurStyle(),
+                  "--l-scale": isActive() ? 1.01 : 1,
+                  "--l-opacity": isActive() ? 1 : 0.6,
                   "margin-bottom": 0,
                 }}
               >
@@ -395,7 +395,7 @@ export default function LineLyrics(props: LineLyricsProps) {
             );
           }
 
-          const padding = hasOppAligned() ? "5rem" : undefined;
+          const padding = hasOppAligned() ? "var(--lyrics-line-default-padding)" : undefined;
 
           const paddingRight = () => {
             if (!padding) return undefined;
@@ -437,9 +437,9 @@ export default function LineLyrics(props: LineLyricsProps) {
                 itemRefs.set(entry.index, el);
               }}
               style={{
-                "--blur": blurStyle(),
-                "--scale": isActive() ? 1.01 : 1,
-                "--opacity": isActive() ? 1 : 0.6,
+                "--l-blur": blurStyle(),
+                "--l-scale": isActive() ? 1.01 : 1,
+                "--l-opacity": isActive() ? 1 : 0.6,
                 "margin-bottom": "12px",
                 "padding-right": paddingRight(),
                 "padding-left": paddingLeft(),

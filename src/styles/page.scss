@@ -448,6 +448,7 @@ $floating-transition:
 .syllable-lyrics {
   --lead-font-weight: 700;
   --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
+  --lyrics-line-default-padding: 10cqw;
 
   --bg-font-weight: 600;
   --bg-font-size: calc(var(--lead-font-size) * 0.75);
@@ -460,13 +461,13 @@ $floating-transition:
   font-weight: var(--lead-font-weight);
 
   .line-wrapper {
-    --blur: 0;
-    --scale: 1;
-    --opacity: 0.6;
+    --l-blur: 0;
+    --l-scale: 1;
+    --l-opacity: 0.6;
 
-    filter: blur(var(--blur));
-    transform: scale(var(--scale));
-    opacity: var(--opacity);
+    filter: blur(var(--l-blur));
+    transform: scale(var(--l-scale));
+    opacity: var(--l-opacity);
     border-radius: 12px;
 
     transition-duration: 0.3s;
@@ -651,4 +652,69 @@ $floating-transition:
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 1;
   }
+}
+
+@property --lead-font-weight {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 700;
+}
+
+@property --lead-font-size {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 2rem;
+}
+
+@property --bg-font-weight {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 600;
+}
+
+@property --bg-font-size {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 1.5rem;
+}
+
+@property --interlude-height {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 32px;
+}
+
+@property --interlude-dots-gap {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 16px;
+}
+
+@property --interlude-size {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 10px;
+}
+
+@property --l-blur {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --l-scale {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --l-opacity {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0.6;
+}
+@property --lyrics-line-default-padding {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 10cqw;
 }

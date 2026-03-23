@@ -109,6 +109,13 @@
     height: calc(var(--npv-height) * var(--npv-height-percent));
     width: 100%;
     max-height: 100vh;
+
+    .line-lyrics,
+    .syllable-lyrics,
+    .static-lyrics {
+      --lead-font-size: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.9);
+      --lyrics-line-default-padding: 12cqw;
+    }
   }
 }
 

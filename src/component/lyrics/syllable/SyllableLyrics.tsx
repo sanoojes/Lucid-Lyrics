@@ -45,8 +45,8 @@ const COMMON_STYLES_LINE_LEAD = (
   oppAligned: boolean = false,
   hasBg: boolean,
   isBg = false,
-  paddingLeft?: number | string,
-  paddingRight?: number | string,
+  paddingLeft?: string,
+  paddingRight?: string,
 ) =>
   ({
     position: "relative",
@@ -56,8 +56,8 @@ const COMMON_STYLES_LINE_LEAD = (
     "backface-visibility": "hidden",
     "text-align": oppAligned ? "end" : "start",
     "margin-bottom": hasBg && !isBg ? "4px" : undefined,
-    "padding-left": paddingLeft !== undefined ? String(paddingLeft) : undefined,
-    "padding-right": paddingRight !== undefined ? String(paddingRight) : undefined,
+    "padding-left": paddingLeft !== undefined ? (paddingLeft) : undefined,
+    "padding-right": paddingRight !== undefined ? (paddingRight) : undefined,
     ...(isBg
       ? {
           "font-size": "var(--bg-font-size)",
@@ -94,7 +94,7 @@ type LeadRendererProps = {
   romanize: boolean;
   currentPos: number;
   isRTL?: boolean;
-  globalPadding: number | string;
+  globalPadding: string;
 };
 
 function LeadRenderer(props: LeadRendererProps) {
@@ -119,8 +119,8 @@ function LeadRenderer(props: LeadRendererProps) {
 
   const handleClick = () => seekTo(props.vocalPart.StartTime * 1000);
 
-  const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : 0);
-  const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : 0);
+  const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : '0');
+  const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : '0');
 
   const fullText = createMemo(() => {
     return props.vocalPart.Syllables.map((syllable) =>
@@ -537,7 +537,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     <div class="syllable-lyrics" ref={containerRef}>
       <For each={lineEntries()}>
         {(entry) => {
-          const padding = () => (hasOppAligned() ? "5rem" : 0);
+          const padding = () => (hasOppAligned() ? "var(--lyrics-line-default-padding)" : '0');
           const blur = createMemo(() => getBlurAmount(entry.index, isUserScroll()));
           const isActive = createMemo(() => {
             const isTarget = activeIndices().includes(entry.index);
@@ -569,9 +569,9 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                 itemRefs.set(entry.index, el);
               }}
               style={{
-                "--blur": blur(),
-                "--scale": isActive() ? 1.01 : 1,
-                "--opacity": isActive() ? 1 : 0.6,
+                "--l-blur": blur(),
+                "--l-scale": isActive() ? 1.01 : 1,
+                "--l-opacity": isActive() ? 1 : 0.6,
                 "margin-bottom": entry.type === "interlude" ? 0 : "12px",
               }}
             >
