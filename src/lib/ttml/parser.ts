@@ -148,9 +148,9 @@ function toArray<T>(value: T | T[] | undefined): T[] {
 function checkIsWordBoundary(rawText: string, nextRawText: string | null): boolean {
   if (nextRawText === null) return true; // The last syllable is always a word boundary
   // Check if current text ends with whitespace or word-breaking punctuation
-  if (/[ \t\n\r,.!?;:—]+$/.test(rawText)) return true;
+  if (/[\s,.!?;:—]+$/.test(rawText)) return true;
   // Check if the next text starts with whitespace or word-breaking punctuation
-  if (/^[ \t\n\r,.!?;:—]+/.test(nextRawText)) return true;
+  if (/^[\s,.!?;:—]+/.test(nextRawText)) return true;
 
   return false;
 }
