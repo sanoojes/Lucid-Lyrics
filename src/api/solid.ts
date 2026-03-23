@@ -1,4 +1,5 @@
 import API from "@/api";
+import { build } from "@/lib/ttml/builder";
 import { $has_romanized, $lyrics_query, $lyrics_status } from "@/stores";
 import { createLogger } from "@/utils/logger";
 import { useStore } from "@nanostores/solid";
@@ -22,6 +23,8 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
       try {
         const result = await API.fetch(source);
         log.debug("result", result);
+        console.log("ttml!!!!!!");
+        console.log(build(result.data));
         return result;
       } catch (error) {
         log.error("rejected", source, error);

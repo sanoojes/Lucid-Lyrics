@@ -31,7 +31,7 @@ const config = {
 } as const;
 
 const step = config.lineHeight + config.gap;
-const interludeSquares = [0, 1, 2] as const; 
+const interludeSquares = [0, 1, 2] as const;
 
 const LyricsLoader: Component = () => {
   let currentY = 0;
@@ -46,22 +46,22 @@ const LyricsLoader: Component = () => {
     if (isInterlude) {
       blockHeight = config.interludeSize;
     } else {
-      const lineCount = (Math.random() * 3 | 0) + 2; 
+      const lineCount = ((Math.random() * 3) | 0) + 2;
 
       for (let l = 0; l < lineCount; l++) {
-        const numSegments = (Math.random() * 2 | 0) + 1;
+        const numSegments = ((Math.random() * 2) | 0) + 1;
         const segments: Segment[] = [];
         let currentX = 0;
 
         for (let s = 0; s < numSegments; s++) {
           const remainingSpace = config.maxLineWidth - currentX;
-          
+
           if (remainingSpace < config.minSegmentWidth) break;
 
           const maxAllowed = Math.min(config.maxSegmentWidth, remainingSpace);
           const minAllowed = Math.min(config.minSegmentWidth, maxAllowed);
-          
-          const width = (Math.random() * (maxAllowed - minAllowed + 1) | 0) + minAllowed;
+
+          const width = ((Math.random() * (maxAllowed - minAllowed + 1)) | 0) + minAllowed;
 
           segments.push({ x: currentX, width });
           currentX += width + config.segmentGapPct;

@@ -56,8 +56,8 @@ const COMMON_STYLES_LINE_LEAD = (
     "backface-visibility": "hidden",
     "text-align": oppAligned ? "end" : "start",
     "margin-bottom": hasBg && !isBg ? "4px" : undefined,
-    "padding-left": paddingLeft !== undefined ? (paddingLeft) : undefined,
-    "padding-right": paddingRight !== undefined ? (paddingRight) : undefined,
+    "padding-left": paddingLeft !== undefined ? paddingLeft : undefined,
+    "padding-right": paddingRight !== undefined ? paddingRight : undefined,
     ...(isBg
       ? {
           "font-size": "var(--bg-font-size)",
@@ -119,8 +119,8 @@ function LeadRenderer(props: LeadRendererProps) {
 
   const handleClick = () => seekTo(props.vocalPart.StartTime * 1000);
 
-  const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : '0');
-  const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : '0');
+  const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : "0");
+  const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : "0");
 
   const fullText = createMemo(() => {
     return props.vocalPart.Syllables.map((syllable) =>
@@ -226,6 +226,11 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   const [isInteracting, setIsInteracting] = createSignal(false);
   const [visibleElements, setVisibleElements] = createSignal<Set<number>>(new Set());
 
+  const cachedLayout = {
+    isMobile: 0,
+    isNPV: 0,
+  };
+
   const currentPos = useStore($current_position);
   const romanize = useStore($romanize);
   const { setIsActiveVisible, setJumpToActive } = useRenderer();
@@ -318,15 +323,23 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
   const [scrollOffset, setScrollOffset] = createSignal(0);
 
-  function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
+  function updateCachedLayout() {
     if (!containerRef) return;
     const style = getComputedStyle(containerRef);
-    const isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0");
-    const isNPV = Number.parseInt(style.getPropertyValue("--is-npv") || "0");
+    cachedLayout.isMobile = Number.parseInt(style.getPropertyValue("--is-mobile") || "0");
+    cachedLayout.isNPV = Number.parseInt(style.getPropertyValue("--is-npv") || "0");
+  }
+
+  function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
+    if (cachedLayout.isMobile === 0 && cachedLayout.isNPV === 0) {
+      updateCachedLayout();
+    }
     const lenis = getLenis();
     if (!lenis?.rootElement) return;
 
     const height = lenis.rootElement.clientHeight;
+    const isMobile = cachedLayout.isMobile;
+    const isNPV = cachedLayout.isNPV;
     const baseOffset = isNPV ? 16 : isMobile && !isWidgetHidden ? 48 : height / 2.7;
     const activeCount = activeIndices().length;
     const lineOffset = activeCount > 1 ? (activeCount - 1) * 20 : 0;
@@ -482,6 +495,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       lenis.resize();
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
+          updateCachedLayout();
           updateOffset();
           performScroll(true, true);
         });
@@ -498,6 +512,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        updateCachedLayout();
         updateOffset();
         lenis?.resize();
         performScroll(true, true);
@@ -537,7 +552,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     <div class="syllable-lyrics" ref={containerRef}>
       <For each={lineEntries()}>
         {(entry) => {
-          const padding = () => (hasOppAligned() ? "var(--lyrics-line-default-padding)" : '0');
+          const padding = () => (hasOppAligned() ? "var(--lyrics-line-default-padding)" : "0");
           const blur = createMemo(() => getBlurAmount(entry.index, isUserScroll()));
           const isActive = createMemo(() => {
             const isTarget = activeIndices().includes(entry.index);

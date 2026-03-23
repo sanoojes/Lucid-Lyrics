@@ -1,4 +1,7 @@
-export const GOTHIC_ROMANIZATION_MAP: Record<string, string> = {
+export const GOTHIC_PHONETIC_MAP: Record<string, string> = {
+  𐌲𐌲: "ng",
+  𐌲𐌺: "nk",
+  𐌲𐌵: "nq",
   𐌰: "a",
   𐌱: "b",
   𐌲: "g",
@@ -7,7 +10,7 @@ export const GOTHIC_ROMANIZATION_MAP: Record<string, string> = {
   𐌵: "q",
   𐌶: "z",
   𐌷: "h",
-  𐌸: "th",
+  𐌸: "þ",
   𐌹: "i",
   𐌺: "k",
   𐌻: "l",
@@ -22,18 +25,16 @@ export const GOTHIC_ROMANIZATION_MAP: Record<string, string> = {
   𐍅: "w",
   𐍆: "f",
   𐍇: "x",
-  𐍈: "hw",
+  𐍈: "ƕ",
   𐍉: "o",
   𐍁: "",
   𐍊: "",
 };
 
+const GOTHIC_REGEX = /𐌲𐌲|𐌲𐌺|𐌲𐌵|./gu;
+
 export function romanizeGothic(text: string): string {
-  let result = "";
-  for (const char of text) {
-    result += GOTHIC_ROMANIZATION_MAP[char] ?? char;
-  }
-  return result;
+  return text.replace(GOTHIC_REGEX, (match) => GOTHIC_PHONETIC_MAP[match] ?? match);
 }
 
 export default romanizeGothic;
