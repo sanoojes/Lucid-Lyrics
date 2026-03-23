@@ -1,22 +1,19 @@
-# Hebrew Transliteration
+# Persian Transliteration
 
-A TypeScript library for transliterating Hebrew text to Latin characters.
+A TypeScript library for transliterating Persian text to Latin characters.
 
 ## Features
 
-- Transliterate Hebrew words and text to Latin characters
-- Syllable separation options
+- Transliterate Persian words and text to Latin characters
+- Handles Persian diacritics (fatha, kasra, damma, sukun)
+- Preserves spaces, punctuation, and non-Persian characters
 
 ## Usage
 
 ```typescript
-import transliterate from "hebrew-transliteration";
+import romanizePersian from "persian-transliteration";
 
-transliterate("ישראל"); // "Yisrāʾēl"
-transliterate("ירושלים"); // "Yerushalayim"
-transliterate("תּוֹרָה"); // "ṯōrâ"
+romanizePersian("سلام"); // "salām"
+romanizePersian("ایران"); // "Irān"
+romanizePersian("کتاب"); // "ketāb"
 ```
-
-## Acknowledgements
-
-Based on [havarotjs](https://github.com/hebrew-transliteration/havarotjs/)

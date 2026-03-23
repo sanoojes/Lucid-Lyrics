@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { romanizeGothic } from "@/index";
+import { romanizePersian } from "@/index";
 
 interface Inputs {
   description: string;
@@ -7,43 +7,68 @@ interface Inputs {
   expected: string;
 }
 
-describe("romanizeGothic", () => {
-  describe("basic letters and digraphs", () => {
+describe("romanizePersian", () => {
+  describe("basic letters", () => {
     test.each`
-      description             | text                      | expected
-      ${"first four letters"} | ${"𐌰𐌱𐌲𐌳"}                 | ${"abgd"}
-      ${"thorn digraph"}      | ${"𐌸"}                    | ${"th"}
-      ${"hwair digraph"}      | ${"𐍈"}                    | ${"hw"}
-      ${"all vowels"}         | ${"𐌰𐌴𐌹𐍉𐌿"}                | ${"aeiou"}
-      ${"all consonants"}     | ${"𐌱𐌲𐌳𐌵𐌶𐌷𐌸𐌺𐌻𐌼𐌽𐌾𐍀𐍂𐍃𐍄𐍅𐍆𐍇𐍈"} | ${"bgdqzhthklmnjprstwfxhw"}
+      description                     | text        | expected
+      ${"alef"}                       | ${"ا"}      | ${"a"}
+      ${"beh"}                        | ${"ب"}      | ${"b"}
+      ${"peh"}                        | ${"پ"}      | ${"p"}
+      ${"teh"}                        | ${"ت"}      | ${"t"}
+      ${"jeem"}                       | ${"ج"}      | ${"j"}
+      ${"cheh"}                       | ${"چ"}      | ${"ch"}
+      ${"heh"}                        | ${"ح"}      | ${"h"}
+      ${"kheh"}                       | ${"خ"}      | ${"kh"}
+      ${"dal"}                        | ${"د"}      | ${"d"}
+      ${"zal"}                        | ${"ذ"}      | ${"z"}
+      ${"reh"}                        | ${"ر"}      | ${"r"}
+      ${"zeh"}                        | ${"ز"}      | ${"z"}
+      ${"zheh"}                       | ${"ژ"}      | ${"zh"}
+      ${"seen"}                       | ${"س"}      | ${"s"}
+      ${"sheen"}                      | ${"ش"}      | ${"sh"}
+      ${"sad"}                        | ${"ص"}      | ${"s"}
+      ${"zad"}                        | ${"ض"}      | ${"z"}
+      ${"tah"}                        | ${"ط"}      | ${"t"}
+      ${"zah"}                        | ${"ظ"}      | ${"z"}
+      ${"ayn"}                        | ${"ع"}      | ${""}
+      ${"ghayn"}                      | ${"غ"}      | ${"gh"}
+      ${"feh"}                        | ${"ف"}      | ${"f"}
+      ${"qaf"}                        | ${"ق"}      | ${"gh"}
+      ${"kaf"}                        | ${"ک"}      | ${"k"}
+      ${"gaf"}                        | ${"گ"}      | ${"g"}
+      ${"lam"}                        | ${"ل"}      | ${"l"}
+      ${"meem"}                       | ${"م"}      | ${"m"}
+      ${"noon"}                       | ${"ن"}      | ${"n"}
+      ${"vav"}                        | ${"و"}      | ${"v"}
+      ${"yeh"}                        | ${"ی"}      | ${"y"}
     `("$description", ({ text, expected }: Inputs) => {
-      expect(romanizeGothic(text)).toBe(expected);
+      expect(romanizePersian(text)).toBe(expected);
     });
   });
 
-  describe("numeric and edge cases", () => {
+  describe("words and phrases", () => {
     test.each`
-      description                  | text             | expected
-      ${"drop number 90 (koppa)"}  | ${"𐍁"}           | ${""}
-      ${"drop number 900 (sampi)"} | ${"𐍊"}           | ${""}
-      ${"mixed letters and nums"}  | ${"𐌰𐍁𐌱𐍊𐌲"}       | ${"abg"}
-      ${"preserves spaces"}        | ${"𐌰 𐌱 𐌲"}       | ${"a b g"}
-      ${"preserves punctuation"}   | ${"𐌰𐍄𐍄𐌰!"}       | ${"atta!"}
-      ${"preserves Latin letters"} | ${"v1. 𐌰𐍄𐍄𐌰"}    | ${"v1. atta"}
-      ${"preserves line breaks"}   | ${"𐌰𐍄𐍄𐌰\n𐌿𐌽𐍃𐌰𐍂"} | ${"atta\nunsar"}
-      ${"empty string"}            | ${""}            | ${""}
+      description           | text        | expected
+      ${"hello"}           | ${"سلام"}   | ${"salam"}
+      ${"Iran"}            | ${"ایران"}  | ${"airan"}
+      ${"book"}            | ${"کتاب"}  | ${"katab"}
+      ${"Persia"}          | ${"ایران"}  | ${"airan"}
+      ${"Tehran"}          | ${"تهران"}  | ${"tahran"}
     `("$description", ({ text, expected }: Inputs) => {
-      expect(romanizeGothic(text)).toBe(expected);
+      expect(romanizePersian(text)).toBe(expected);
     });
   });
 
-  describe("full phrases", () => {
+  describe("edge cases", () => {
     test.each`
-      description             | text                           | expected
-      ${"Lord's Prayer"}      | ${"𐌰𐍄𐍄𐌰 𐌿𐌽𐍃𐌰𐍂, 𐌸𐌿 𐌹𐌽 𐌷𐌹𐌼𐌹𐌽𐌰𐌼"} | ${"atta unsar, thu in himinam"}
-      ${"Gospel of John 1:1"} | ${"𐌹𐌽 𐍆𐍂𐌿𐌼𐌹𐍃𐍄𐌾𐌰 𐍅𐌰𐍃 𐍅𐌰𐌿𐍂𐌳"}    | ${"in frumistja was waurd"}
+      description              | text       | expected
+      ${"preserves spaces"}    | ${"ا ب پ"} | ${"a b p"}
+      ${"preserves punctuation"}| ${"سلام!"} | ${"salam!"}
+      ${"preserves Latin letters"}| ${"Hello سلام"} | ${"Hello salam"}
+      ${"preserves line breaks"}| ${"سلام\nخوبی"} | ${"salam\nkhobi"}
+      ${"empty string"}         | ${""}      | ${""}
     `("$description", ({ text, expected }: Inputs) => {
-      expect(romanizeGothic(text)).toBe(expected);
+      expect(romanizePersian(text)).toBe(expected);
     });
   });
 });
