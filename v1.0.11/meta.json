@@ -47985,7 +47985,7 @@
       "format": "esm"
     },
     "src/api/spotify.ts": {
-      "bytes": 2616,
+      "bytes": 2804,
       "imports": [
         {
           "path": "src/lib/dom/wait.ts",
@@ -48026,19 +48026,8 @@
       ],
       "format": "esm"
     },
-    "src/lib/ttml/builder.ts": {
-      "bytes": 5352,
-      "imports": [
-        {
-          "path": "node_modules/.bun/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/fxp.js",
-          "kind": "import-statement",
-          "original": "fast-xml-parser"
-        }
-      ],
-      "format": "esm"
-    },
     "src/api/solid.ts": {
-      "bytes": 1763,
+      "bytes": 1687,
       "imports": [
         {
           "path": "src/api/index.ts",
@@ -48046,9 +48035,9 @@
           "original": "@/api"
         },
         {
-          "path": "src/lib/ttml/builder.ts",
+          "path": "@/lib/ttml/builder",
           "kind": "import-statement",
-          "original": "@/lib/ttml/builder"
+          "external": true
         },
         {
           "path": "src/stores/index.ts",
@@ -49345,6 +49334,17 @@
           "external": true
         }
       ]
+    },
+    "src/lib/ttml/builder.ts": {
+      "bytes": 5352,
+      "imports": [
+        {
+          "path": "node_modules/.bun/fast-xml-parser@5.5.8/node_modules/fast-xml-parser/src/fxp.js",
+          "kind": "import-statement",
+          "original": "fast-xml-parser"
+        }
+      ],
+      "format": "esm"
     },
     "src/component/ttml/LocalTTMLModal.tsx": {
       "bytes": 59161,
@@ -52428,16 +52428,13 @@
           "bytesInOutput": 746
         },
         "src/api/spotify.ts": {
-          "bytesInOutput": 1118
+          "bytesInOutput": 1172
         },
         "src/api/index.ts": {
           "bytesInOutput": 188
         },
-        "src/lib/ttml/builder.ts": {
-          "bytesInOutput": 2513
-        },
         "src/api/solid.ts": {
-          "bytesInOutput": 741
+          "bytesInOutput": 691
         },
         "src/styles/component/lyrics-loading.scss": {
           "bytesInOutput": 0
@@ -52540,6 +52537,9 @@
         },
         "src/styles/modal/ttml-modal.scss": {
           "bytesInOutput": 0
+        },
+        "src/lib/ttml/builder.ts": {
+          "bytesInOutput": 2513
         },
         "src/component/ttml/LocalTTMLModal.tsx": {
           "bytesInOutput": 7023
@@ -52716,7 +52716,7 @@
           "bytesInOutput": 886
         }
       },
-      "bytes": 377907
+      "bytes": 377911
     },
     "dist/app.css": {
       "imports": [
