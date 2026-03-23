@@ -14,13 +14,21 @@ import {
 import { useStore } from "@nanostores/solid";
 import { $player_data } from "@/stores/player";
 import { t } from "@/i18n";
+import type { LyricsProviders } from "@/constants";
 import { toast } from "@/lib/sonner";
 import SolidLenis from "@/component/ui/Lenis";
-import { refetchLyrics } from "@/api/solid";
+import { lyricsResource, refetchLyrics } from "@/api/solid";
+import { build } from "@/lib/ttml/builder";
 import Marquee from "@/component/ui/Marquee";
 
 const isValidTTMLFile = (file: File) =>
   file.name.endsWith(".ttml") || file.type === "application/ttml+xml" || file.type === "text/xml";
+
+const providerLabels: Record<LyricsProviders, string> = {
+  user: "User (TTML)",
+  spotify: "Spotify",
+  spicy: "Spicy",
+} as const;
 
 const getTTMLFileName = (songName: string, artistNames: string) =>
   `${songName} by ${artistNames}.ttml`;
@@ -54,6 +62,78 @@ function LocalTTMLModal() {
     if (!songId) return null;
     return ttmlFiles()?.find((f) => f.songId === songId);
   });
+
+  const currentLyrics = createMemo(() => lyricsResource()?.data);
+  const isLocalTTMLLyrics = createMemo(
+    () => currentLyrics()?.Provider === "user",
+  );
+  const canDownloadLyrics = createMemo(
+    () => currentLyrics() && !currentSongTTML() && !isLocalTTMLLyrics(),
+  );
+
+  const handleDownloadCurrentLyrics = () => {
+    try {
+      const lyrics = currentLyrics();
+      if (!lyrics) return;
+      const ttmlStr = build(lyrics);
+      const fileName = getTTMLFileName(currentSongName(), currentArtistNames());
+      const blob = new Blob([ttmlStr], { type: "application/ttml+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success(t("ttml.downloadSuccess", { fileName }));
+    } catch {
+      toast.error(t("ttml.downloadError"));
+    }
+  };
+
+  const handleCopyCurrentLyrics = () => {
+    try {
+      const lyrics = currentLyrics();
+      if (!lyrics) return;
+      const ttmlStr = build(lyrics);
+      copyToClipboard(ttmlStr);
+    } catch {
+      toast.error(t("ttml.copyError"));
+    }
+  };
+
+  const renderSongInfo = (
+    icon: any,
+    label: string,
+    songName: string,
+    artistNames: string,
+    albumName: string,
+    buttons: any,
+    providerLabel?: string,
+  ) => (
+    <div class="current-song-ttml">
+      <div class="current-song-header">
+        {icon}
+        <span class="label">{label}</span>
+        <Show when={providerLabel}>
+          <span class="provider-badge">{providerLabel}</span>
+        </Show>
+      </div>
+      <div class="song-info">
+        <div class="song-name">
+          <Marquee>{songName}</Marquee>
+        </div>
+        <div class="song-artist">
+          <Marquee>{artistNames}</Marquee>
+        </div>
+        <div class="song-album">
+          <Marquee>{albumName}</Marquee>
+        </div>
+      </div>
+      <div class="song-buttons">{buttons}</div>
+    </div>
+  );
 
   const handleSave = async (file: File): Promise<SaveTTMLResult | null> => {
     if (!currentSongId()) return null;
@@ -252,25 +332,37 @@ function LocalTTMLModal() {
               </label>
             </div>
 
+            <Show when={canDownloadLyrics()}>
+              {renderSongInfo(
+                <Music size={20} class="icon" />,
+                t("ttml.currentLyrics"),
+                currentSongName(),
+                currentArtistNames(),
+                currentAlbumName(),
+                <>
+                  <Button variant="default" onClick={handleDownloadCurrentLyrics}>
+                    <Download size={16} />
+                    <span>{t("ttml.downloadTTML")}</span>
+                  </Button>
+                  <Button variant="default" onClick={handleCopyCurrentLyrics}>
+                    <Copy size={16} />
+                    <span>{t("ttml.copyTTML")}</span>
+                  </Button>
+                </>,
+                providerLabels[currentLyrics()!.Provider as LyricsProviders] ||
+                  currentLyrics()!.Provider,
+              )}
+            </Show>
+
             <Show when={currentSongTTML()}>
-              {(ttml) => (
-                <div class="current-song-ttml">
-                  <div class="current-song-header">
-                    <FileText size={20} class="icon" />
-                    <span class="label">{t("ttml.currentSongTTML")}</span>
-                  </div>
-                  <div class="song-info">
-                    <div class="song-name">
-                      <Marquee>{ttml().songName}</Marquee>
-                    </div>
-                    <div class="song-artist">
-                      <Marquee>{ttml().artistNames}</Marquee>
-                    </div>
-                    <div class="song-album">
-                      <Marquee>{ttml().albumName}</Marquee>
-                    </div>
-                  </div>
-                  <div class="song-buttons">
+              {(ttml) =>
+                renderSongInfo(
+                  <FileText size={20} class="icon" />,
+                  t("ttml.currentSongTTML"),
+                  ttml().songName,
+                  ttml().artistNames,
+                  ttml().albumName,
+                  <>
                     <Button variant="default" onClick={() => handleDownload(ttml())}>
                       <Download size={16} />
                       <span>{t("ttml.downloadTTML")}</span>
@@ -283,9 +375,9 @@ function LocalTTMLModal() {
                       <Trash2 size={16} />
                       <span>{t("ttml.delete")}</span>
                     </Button>
-                  </div>
-                </div>
-              )}
+                  </>,
+                )
+              }
             </Show>
           </Show>
 

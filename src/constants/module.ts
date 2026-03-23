@@ -16,6 +16,7 @@ const GOTHIC_TRANSLITERATION = "gothic-transliteration";
 const PERSIAN_TRANSLITERATION = "persian-transliteration";
 const URDU_TRANSLITERATION = "urdu-transliteration";
 const LOCALE = "locale";
+const LOCALE_VERSION = "1.0.5";
 
 const KUROMOJI_PATH = `${JSDELIVR_PACKAGE_REPO}/${KUROMOJI}`;
 export const KUROMOJI_DICT_PATH = `${KUROMOJI_PATH}/dict`;
@@ -78,12 +79,12 @@ export const MODULE_METADATA = {
   },
   [LOCALE]: {
     name: LOCALE,
-    version: "1.0.4",
+    version: LOCALE_VERSION,
     baseUrl: `${JSDELIVR_TO_REPO}/locales/`,
     localeVersions: {
-      es: "1.0.4",
-      ru: "1.0.4",
-      sk: "1.0.4",
+      es: LOCALE_VERSION,
+      ru: LOCALE_VERSION,
+      sk: LOCALE_VERSION,
     },
   },
 } as const;

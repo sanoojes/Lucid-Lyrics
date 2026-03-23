@@ -187,6 +187,9 @@ export const dict: Dict = {
   "ttml.applyConfirm":
     'Применить TTML для "{{songName}}" исполнителя {{artistName}} к текущей песне?',
   "ttml.applySuccess": "TTML успешно применён",
+  "ttml.currentLyrics": "Текущие тексты песен",
+  "ttml.downloadError": "Ошибка при создании TTML",
+  "ttml.copyError": "Ошибка при копировании TTML",
   "npv.title": "Текущее Воспроизведение",
   "npv.hideBackground": "Скрыть Фон",
   "npv.hideBackgroundDesc": "Скрыть фон в режиме текущего воспроизведения",

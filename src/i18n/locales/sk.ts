@@ -189,6 +189,9 @@ export const dict: Dict = {
   "ttml.applyConfirm":
     'Použiť TTML pre skladbu "{{songName}}" od {{artistName}} na aktuálnu skladbu?',
   "ttml.applySuccess": "TTML sa úspešne aplikoval",
+  "ttml.currentLyrics": "Aktuálne texty",
+  "ttml.downloadError": "Chyba pri vytváraní TTML",
+  "ttml.copyError": "Chyba pri kopírovaní TTML",
   "npv.title": "Panel Práve sa prehráva",
   "npv.hideBackground": "Skryť pozadie",
   "npv.hideBackgroundDesc": "Skryť pozadie v paneli Práve sa prehráva",

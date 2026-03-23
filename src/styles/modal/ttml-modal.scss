@@ -112,6 +112,17 @@
     padding: v.$space-md;
     border: 1px solid v.$glass-bd;
 
+    .provider-badge {
+      color: v.$color;
+      background: v.$glass-bg;
+      border-radius: v.$r-md;
+      padding: v.$space-xs v.$space-base;
+      font-size: v.$fs-sm;
+      font-weight: v.$fw-bold;
+      border: 1px solid v.$glass-bd;
+      margin-left: auto;
+    }
+
     .current-song-header {
       display: flex;
       align-items: center;

@@ -182,6 +182,9 @@ export type Dict = {
   "ttml.applyTTML": string;
   "ttml.applyConfirm": string;
   "ttml.applySuccess": string;
+  "ttml.currentLyrics": string;
+  "ttml.downloadError": string;
+  "ttml.copyError": string;
   "npv.title": string;
   "npv.hideBackground": string;
   "npv.hideBackgroundDesc": string;
