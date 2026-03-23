@@ -16,7 +16,8 @@ export type SupportedLanguage =
   | "hebrew"
   | "persian"
   | "urdu"
-  | "armenian";
+  | "armenian"
+  | "gothic";
 
 export const RTL_LANGUAGES: SupportedLanguage[] = ["arabic", "hebrew", "persian", "urdu"];
 
@@ -46,6 +47,7 @@ export function detectLanguage(text: string): SupportedLanguage | "unknown" {
   if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "greek";
   if (/[\u0530-\u058F]/.test(text)) return "armenian";
   if (/[\u10A0-\u10FF]/.test(text)) return "georgian";
+  if (/[\u{10330}-\u{1034F}]/u.test(text)) return "gothic";
 
   return "unknown";
 }

@@ -10,6 +10,7 @@ type ModuleRegistry = {
   "cyrillic-romanization": typeof import("cyrillic-romanization");
   "greek-transliteration": typeof import("greek-transliteration");
   "hebrew-transliteration": typeof import("hebrew-transliteration");
+  "gothic-transliteration": typeof import("gothic-transliteration");
   kuromoji: any;
   kuroshiro: { default: any };
   locale: { dict: Record<string, string> };

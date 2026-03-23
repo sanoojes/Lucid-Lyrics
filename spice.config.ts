@@ -32,7 +32,12 @@ export default defineConfig({
     plugins: [
       copyPackagesPlugin({
         inputDir: packagesInputDir,
-        build: ["arabic-transliteration", "armenian-transliteration", "hebrew-transliteration"],
+        build: [
+          "arabic-transliteration",
+          "armenian-transliteration",
+          "hebrew-transliteration",
+          "gothic-transliteration",
+        ],
         ignore: ["**/node_modules/**", "internal-scripts/**", ".DS_Store"],
       }),
       localePlugin({

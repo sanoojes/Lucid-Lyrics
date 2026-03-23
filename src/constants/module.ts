@@ -12,6 +12,7 @@ const KUROMOJI = "kuromoji";
 const ARABIC_TRANSLITERATION = "arabic-transliteration";
 const ARMENIAN_TRANSLITERATION = "armenian-transliteration";
 const HEBREW_TRANSLITERATION = "hebrew-transliteration";
+const GOTHIC_TRANSLITERATION = "gothic-transliteration";
 const LOCALE = "locale";
 
 const KUROMOJI_PATH = `${JSDELIVR_PACKAGE_REPO}/${KUROMOJI}`;
@@ -57,6 +58,11 @@ export const MODULE_METADATA = {
     name: HEBREW_TRANSLITERATION,
     version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${HEBREW_TRANSLITERATION}/index.js`,
+  },
+  [GOTHIC_TRANSLITERATION]: {
+    name: GOTHIC_TRANSLITERATION,
+    version: "0.0.1",
+    url: `${JSDELIVR_PACKAGE_REPO}/${GOTHIC_TRANSLITERATION}/index.js`,
   },
   [LOCALE]: {
     name: LOCALE,

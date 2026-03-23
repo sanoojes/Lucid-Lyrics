@@ -10,17 +10,14 @@
         "@nanostores/query": "^0.3.4",
         "@nanostores/solid": "^1.1.1",
         "@solid-primitives/i18n": "^2.2.1",
-        "arabic-transliteration": "workspace:*",
-        "armenian-transliteration": "workspace:*",
         "aromanize": "^0.1.5",
         "esbuild-plugin-glsl": "^1.4.1",
         "esbuild-plugin-solid": "^0.6.0",
         "fast-xml-parser": "^5.5.8",
         "gsap": "^3.14.2",
-        "hebrew-transliteration": "workspace:*",
         "idb-keyval": "^6.2.2",
         "kuromoji": "^0.1.2",
-        "lenis": "^1.3.19",
+        "lenis": "^1.3.20",
         "lucide-solid": "^0.577.0",
         "lz-string": "^1.5.0",
         "nanostores": "^1.2.0",
@@ -39,10 +36,14 @@
         "@types/kuromoji": "^0.1.3",
         "@types/react": "^18.3.28",
         "@types/react-dom": "^18.3.7",
+        "arabic-transliteration": "workspace:*",
+        "armenian-transliteration": "workspace:*",
         "cyrillic-romanization": "^1.1.8",
         "esbuild": "^0.27.4",
+        "gothic-transliteration": "workspace:*",
         "greek-transliteration": "^2.0.0",
         "happy-dom": "^20.8.4",
+        "hebrew-transliteration": "workspace:*",
         "kuroshiro": "^1.2.0",
         "oxfmt": "^0.28.0",
         "oxlint": "^1.56.0",
@@ -70,6 +71,19 @@
       "devDependencies": {
         "@types/bun": "latest",
         "tsdown": "^0.21.4",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/gothic-transliteration": {
+      "name": "gothic-transliteration",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@types/bun": "latest",
+        "rolldown": "^1.0.0-rc.10",
+        "unplugin-isolated-decl": "^0.15.7",
+        "vitest": "^4.1.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -778,6 +792,8 @@
     "glob": ["glob@7.2.3", "", { "dependencies": { "fs.realpath": "^1.0.0", "inflight": "^1.0.4", "inherits": "2", "minimatch": "^3.1.1", "once": "^1.3.0", "path-is-absolute": "^1.0.0" } }, "sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q=="],
 
     "glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
+
+    "gothic-transliteration": ["gothic-transliteration@workspace:packages/gothic-transliteration"],
 
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
 
