@@ -15,6 +15,7 @@ import { romanizeArmenian } from "@/language/romanizers/armenian";
 import { romanizeArabic } from "@/language/romanizers/arabic";
 import { romanizeHebrew } from "@/language/romanizers/hebrew";
 import { romanizeGothic } from "@/language/romanizers/gothic";
+import { romanizePersian } from "@/language/romanizers/persian";
 import type { SupportedLanguage } from "@/language";
 
 export const Romanizers: Record<SupportedLanguage, (text: string) => Promise<string> | string> = {
@@ -35,4 +36,5 @@ export const Romanizers: Record<SupportedLanguage, (text: string) => Promise<str
   arabic: romanizeArabic,
   hebrew: romanizeHebrew,
   gothic: romanizeGothic,
+  persian: romanizePersian,
 };

@@ -47,6 +47,7 @@
         "kuroshiro": "^1.2.0",
         "oxfmt": "^0.28.0",
         "oxlint": "^1.56.0",
+        "persian-transliteration": "workspace:*",
         "pinyin": "^4.0.0",
         "vitest": "^4.1.0",
       },
@@ -95,6 +96,19 @@
       "dependencies": {
         "havarotjs": "^0.25.4",
       },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "rolldown": "^1.0.0-rc.10",
+        "unplugin-isolated-decl": "^0.15.7",
+        "vitest": "^4.1.0",
+      },
+      "peerDependencies": {
+        "typescript": "^5",
+      },
+    },
+    "packages/persian-transliteration": {
+      "name": "persian-transliteration",
+      "version": "0.0.1",
       "devDependencies": {
         "@types/bun": "latest",
         "rolldown": "^1.0.0-rc.10",
@@ -948,6 +962,8 @@
     "pathe": ["pathe@2.0.3", "", {}, "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w=="],
 
     "perfect-debounce": ["perfect-debounce@2.1.0", "", {}, "sha512-LjgdTytVFXeUgtHZr9WYViYSM/g8MkcTPYDlPa3cDqMirHjKiSZPYd6DoL7pK8AJQr+uWkQvCjHNdiMqsrJs+g=="],
+
+    "persian-transliteration": ["persian-transliteration@workspace:packages/persian-transliteration"],
 
     "picocolors": ["picocolors@1.1.1", "", {}, "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="],
 

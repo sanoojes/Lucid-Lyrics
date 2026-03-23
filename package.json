@@ -8,7 +8,8 @@
     "packages/arabic-transliteration",
     "packages/armenian-transliteration",
     "packages/hebrew-transliteration",
-    "packages/gothic-transliteration"
+    "packages/gothic-transliteration",
+    "packages/persian-transliteration"
   ],
   "type": "module",
   "scripts": {
@@ -69,6 +70,7 @@
     "kuroshiro": "^1.2.0",
     "oxfmt": "^0.28.0",
     "oxlint": "^1.56.0",
+    "persian-transliteration": "workspace:*",
     "pinyin": "^4.0.0",
     "vitest": "^4.1.0"
   },
