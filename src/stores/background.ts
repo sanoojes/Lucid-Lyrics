@@ -104,13 +104,24 @@ export function updateAnimatedFilter(key: keyof CSSFilter, value: number) {
   }));
 }
 
+export function updateKawarpOptions(partial: Partial<BackgroundState["options"]["kawarp"]>) {
+  updateBackground((state) => ({
+    ...state,
+    options: {
+      ...state.options,
+      kawarp: { ...state.options.kawarp, ...partial },
+    },
+  }));
+}
+
 export const $bg_mode = computed($background, (v) => v.mode);
 export const $image_options = computed($background, (v) => v.options.image);
 export const $color_options = computed($background, (v) => v.options.color);
 export const $animated_options = computed($background, (v) => v.options.animated);
+export const $kawarp_options = computed($background, (v) => v.options.kawarp);
 
 export type ImageTypes = "custom" | "player" | "local";
-export type BGTypes = "color" | "image" | "animated";
+export type BGTypes = "color" | "image" | "animated" | "kawarp";
 export type BackgroundState = {
   mode: BGTypes;
   options: {
@@ -135,6 +146,19 @@ export type BackgroundState = {
       filter: CSSFilter;
       transitionDuration: number;
       rotationSpeed: number;
+    };
+    kawarp: {
+      mode: ImageTypes;
+      customUrl?: string;
+      scale: number;
+      dithering: number;
+      saturation: number;
+      warpIntensity: number;
+      animationSpeed: number;
+      blurPasses: number;
+      tintIntensity: number;
+      tintColor: [number, number, number];
+      transitionDuration: number;
     };
   };
 };

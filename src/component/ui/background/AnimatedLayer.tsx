@@ -2,7 +2,7 @@ import { Renderer, Geometry, Program, Mesh, Texture } from "ogl";
 import { useStore } from "@nanostores/solid";
 import { $animated_options, $current_track_image } from "@/stores";
 import { createMemo, createEffect, onMount, onCleanup } from "solid-js";
-import { useLocalImage } from "@/component/ui/background/hooks";
+import { useLocalBlob } from "@/component/ui/background/hooks";
 import Tempus from "@darkroom.engineering/tempus";
 
 import vertex from "@/shaders/animatedBg/vertex.glsl";
@@ -99,12 +99,13 @@ const AnimatedLayer = () => {
 
   const options = useStore($animated_options);
   const currentTrackImage = useStore($current_track_image);
-  const { localUrl } = useLocalImage();
 
-  const activeUrl = createMemo(() => {
+  const { localBlob } = useLocalBlob(() => options().mode);
+
+  const activeSource = createMemo(() => {
     const opt = options();
     if (opt.mode === "custom") return opt.customUrl;
-    if (opt.mode === "local") return localUrl() ?? currentTrackImage();
+    if (opt.mode === "local") return localBlob() ?? currentTrackImage();
     return currentTrackImage();
   });
 
@@ -168,7 +169,7 @@ const AnimatedLayer = () => {
 
     const mesh = new Mesh(gl, { geometry, program });
 
-    let currentUri = "";
+    let currentSource: string | Blob = "";
     let currentBlur = 0;
 
     const updateCircleUniforms = (width: number, height: number) => {
@@ -219,73 +220,73 @@ const AnimatedLayer = () => {
       program.uniforms.uTransition.value = 0.0;
     };
 
-    const loadImage = async (uri: string, blurAmount: number) => {
-      if (uri === currentUri && blurAmount === currentBlur) return;
-      currentUri = uri;
+    const loadImage = async (source: string | Blob, blurAmount: number) => {
+      if (source === currentSource && blurAmount === currentBlur) return;
+      currentSource = source;
       currentBlur = blurAmount;
-
-      const isBlob = uri.startsWith("blob:");
-      const isSpotify = uri.startsWith("spotify:");
-      const canFetch = !isSpotify && !isBlob;
-
-      if (isBlob) {
+      if (source instanceof Blob) {
         try {
-          const response = await fetch(uri);
-          const blob = await response.blob();
-          const blurred = await generateBlurredCoverArt(blob, blurAmount);
-          if (uri === currentUri) {
+          const blurred = await generateBlurredCoverArt(source, blurAmount);
+          if (source === currentSource) {
             updateTexture(blurred ?? createBlackOffscreenCanvas());
           }
-          return;
         } catch {
-          updateTexture(createBlackOffscreenCanvas());
-          return;
+          if (source === currentSource) {
+            updateTexture(createBlackOffscreenCanvas());
+          }
         }
+        return;
       }
+
+      const uri = source;
+      const isSpotify = uri.startsWith("spotify:");
+      const isData = uri.startsWith("data:");
+      const canFetch = !isSpotify && !isData;
 
       if (canFetch) {
         try {
           const response = await fetch(uri);
           const blob = await response.blob();
           const blurred = await generateBlurredCoverArt(blob, blurAmount);
-          if (uri === currentUri) {
+          if (uri === currentSource) {
             updateTexture(blurred ?? createBlackOffscreenCanvas());
           }
           return;
         } catch {
-          updateTexture(createBlackOffscreenCanvas());
+          if (uri === currentSource) {
+            updateTexture(createBlackOffscreenCanvas());
+          }
           return;
         }
       }
 
       const img = new Image();
-      img.crossOrigin = uri.startsWith("spotify:") || uri.startsWith("blob:") ? null : "anonymous";
+      img.crossOrigin = isSpotify || isData ? null : "anonymous";
       img.src = uri;
       img
         .decode?.()
         .then(() => {
-          if (uri !== currentUri) return;
-          const blurred = generateBlurredCoverArt(img, blurAmount);
-          blurred.then((result) => {
-            if (uri === currentUri) {
+          if (uri !== currentSource) return;
+          generateBlurredCoverArt(img, blurAmount).then((result) => {
+            if (uri === currentSource) {
               updateTexture(result ?? createBlackOffscreenCanvas());
             }
           });
         })
         .catch(() => {
-          if (uri === currentUri) {
+          if (uri === currentSource) {
             updateTexture(createBlackOffscreenCanvas());
           }
         });
     };
 
     createEffect(() => {
-      const uri = activeUrl();
+      const source = activeSource();
       const blur = options().filter.blur;
-      if (uri) {
-        loadImage(uri, blur);
+      if (source) {
+        loadImage(source, blur);
       } else {
-        currentUri = "";
+        currentSource = "";
         updateTexture(createBlackOffscreenCanvas());
       }
     });

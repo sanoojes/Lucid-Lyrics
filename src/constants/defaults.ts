@@ -10,7 +10,7 @@ import type { CacheSettings } from "@/stores/dev";
 
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
-  mode: "animated",
+  mode: "kawarp",
   options: {
     color: "#000000",
     image: {
@@ -45,6 +45,19 @@ export const DEFAULT_BACKGROUND_STATE = {
       },
       transitionDuration: 0.5,
       rotationSpeed: 0.8,
+    },
+    kawarp: {
+      mode: "player",
+      customUrl,
+      scale: 1.0,
+      saturation: 1.5,
+      animationSpeed: 1.0,
+      blurPasses: 12,
+      warpIntensity: 1.0,
+      dithering: 0.008,
+      tintIntensity: 0.15,
+      tintColor: [0.157, 0.157, 0.235],
+      transitionDuration: 1000,
     },
   },
 } satisfies BackgroundState;

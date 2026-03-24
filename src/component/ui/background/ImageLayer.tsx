@@ -1,52 +1,81 @@
 import { useStore } from "@nanostores/solid";
 import { $current_track_image, $image_options } from "@/stores";
 import { createMemo, createEffect, Show, createSignal, onCleanup } from "solid-js";
-import { useLocalImage } from "@/component/ui/background/hooks";
+import { useLocalBlob } from "@/component/ui/background/hooks";
 
 const ImageLayer = () => {
   const options = useStore($image_options);
   const currentTrackImage = useStore($current_track_image);
-  const { localUrl } = useLocalImage();
+
+  const { localBlob } = useLocalBlob(() => options().mode);
 
   const [currentUrl, setCurrentUrl] = createSignal<string | null>(null);
   const [prevUrl, setPrevUrl] = createSignal<string | null>(null);
   const [isTransitioning, setIsTransitioning] = createSignal(false);
+  const activeBlobUrls = new Set<string>();
+
+  const revokeSafe = (url: string | null) => {
+    if (url && url.startsWith("blob:")) {
+      URL.revokeObjectURL(url);
+      activeBlobUrls.delete(url);
+    }
+  };
 
   const filter = createMemo(() => {
     const f = options().filter;
     return `saturate(${f.saturation}%) contrast(${f.contrast}%) brightness(${f.brightness}%) opacity(${f.opacity}%) blur(${f.blur}px)`;
   });
 
-  const activeUrl = createMemo(() => {
+  const activeSource = createMemo(() => {
     const opt = options();
     switch (opt.mode) {
       case "custom":
         return opt.customUrl;
       case "local":
-        return localUrl() ?? currentTrackImage();
+        return localBlob() ?? currentTrackImage();
       default:
         return currentTrackImage();
     }
   });
 
   createEffect(() => {
-    const targetUrl = activeUrl();
-    if (!targetUrl) return;
+    const source = activeSource();
+    if (!source) return;
+
+    let targetUrl: string;
+
+    if (source instanceof Blob) {
+      targetUrl = URL.createObjectURL(source);
+      activeBlobUrls.add(targetUrl);
+    } else {
+      targetUrl = source;
+    }
 
     let isCancelled = false;
     const img = new Image();
 
     img.onload = () => {
       if (isCancelled) return;
-      setPrevUrl(currentUrl());
+
+      const previous = currentUrl();
+      setPrevUrl(previous);
       setCurrentUrl(targetUrl);
       setIsTransitioning(true);
+
       setTimeout(() => {
         if (!isCancelled) {
           setPrevUrl(null);
           setIsTransitioning(false);
+
+          if (previous !== currentUrl()) {
+            revokeSafe(previous);
+          }
         }
       }, 1200);
+    };
+
+    img.onerror = () => {
+      revokeSafe(targetUrl);
     };
 
     img.src = targetUrl;
@@ -54,7 +83,17 @@ const ImageLayer = () => {
     onCleanup(() => {
       isCancelled = true;
       img.onload = null;
+      img.onerror = null;
+
+      if (targetUrl !== currentUrl()) {
+        revokeSafe(targetUrl);
+      }
     });
+  });
+
+  onCleanup(() => {
+    activeBlobUrls.forEach((url) => URL.revokeObjectURL(url));
+    activeBlobUrls.clear();
   });
 
   return (

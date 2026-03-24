@@ -9,8 +9,6 @@ import {
 } from "solid-js";
 import {
   getLocalImage,
-  createBlobUrl,
-  revokeBlobUrl,
   getRandomLocalImage,
   getAdjacentLocalImage,
 } from "@/stores/idb/images";
@@ -20,18 +18,19 @@ import {
   updateLocalSelectedId,
   updateSlideshowElapsed,
   updateSlideshowStart,
+  type ImageTypes,
 } from "@/stores";
 import { useStore } from "@nanostores/solid";
 
-interface LocalImageInstance {
-  localUrl: Accessor<string | undefined>;
+interface LocalBlobInstance {
+  localBlob: Accessor<Blob | undefined>;
   isLoaded: Accessor<boolean>;
   setIsLoaded: Setter<boolean>;
 }
 
-let instance: LocalImageInstance | undefined;
+let instance: LocalBlobInstance | undefined;
 
-export function useLocalImage(): LocalImageInstance {
+export function useLocalBlob(mode: Accessor<ImageTypes>): LocalBlobInstance {
   if (!instance) {
     instance = createRoot(() => {
       const options = useStore($image_options);
@@ -39,18 +38,11 @@ export function useLocalImage(): LocalImageInstance {
       const local = () => options().local;
 
       const targetId = createMemo(() =>
-        options().mode === "local" ? local().selectedId : undefined,
+        mode() === "local" ? local().selectedId : undefined,
       );
 
-      const [localUrl, setLocalUrl] = createSignal<string | undefined>(undefined);
+      const [localBlob, setLocalBlob] = createSignal<Blob | undefined>(undefined);
       const [isLoaded, setIsLoaded] = createSignal(false);
-
-      const cleanupLocalUrl = (url: string | undefined) => {
-        if (!url) return;
-        setTimeout(() => {
-          revokeBlobUrl(url);
-        }, 500);
-      };
 
       createEffect(() => {
         const id = targetId();
@@ -62,25 +54,11 @@ export function useLocalImage(): LocalImageInstance {
         if (id) {
           getLocalImage(id).then((imageData) => {
             if (isCancelled) return;
-
-            if (imageData?.blob) {
-              const url = createBlobUrl(imageData.blob);
-              setLocalUrl((prevUrl) => {
-                cleanupLocalUrl(prevUrl);
-                return url;
-              });
-            } else {
-              setLocalUrl((prevUrl) => {
-                cleanupLocalUrl(prevUrl);
-                return undefined;
-              });
-            }
+            
+            setLocalBlob(imageData?.blob || undefined);
           });
         } else {
-          setLocalUrl((prevUrl) => {
-            cleanupLocalUrl(prevUrl);
-            return undefined;
-          });
+          setLocalBlob(undefined);
         }
 
         onCleanup(() => {
@@ -88,11 +66,7 @@ export function useLocalImage(): LocalImageInstance {
         });
       });
 
-      onCleanup(() => {
-        cleanupLocalUrl(localUrl());
-      });
-
-      async function changeUrl() {
+      async function changeImage() {
         try {
           const id = targetId();
 
@@ -125,18 +99,20 @@ export function useLocalImage(): LocalImageInstance {
         const check = () => {
           const elapsed = Date.now() - $slideshow.get().startTime;
           if (elapsed >= slideTime * 1000) {
-            changeUrl();
+            changeImage();
             updateSlideshowStart(Date.now());
           }
           updateSlideshowElapsed(elapsed);
         };
+        
         check();
         const interval = setInterval(check, 1000);
         onCleanup(() => clearInterval(interval));
       });
 
-      return { localUrl, isLoaded, setIsLoaded };
+      return { localBlob, isLoaded, setIsLoaded };
     });
   }
+  
   return instance;
 }

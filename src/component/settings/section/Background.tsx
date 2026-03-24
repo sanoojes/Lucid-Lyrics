@@ -11,13 +11,15 @@ import { SettingsSection } from "@/component/settings/Section";
 import {
   $background,
   $bg_mode,
+  $kawarp_options,
   updateBackground,
   updateColorOption,
   updateImageOptions,
-  updateAnimatedOptions,
   updateImageFilter,
+  updateAnimatedOptions,
   updateAnimatedFilter,
   updateLocalImageOptions,
+  updateKawarpOptions,
 } from "@/stores/background";
 import type { BGTypes, ImageTypes, BackgroundState } from "@/stores/background";
 import Input from "@/component/ui/Input";
@@ -30,6 +32,7 @@ const BG_MODE_OPTIONS = (): { label: string; value: BGTypes }[] => [
   { label: t("bg.mode.color"), value: "color" },
   { label: t("bg.mode.image"), value: "image" },
   { label: t("bg.mode.animated"), value: "animated" },
+  { label: t("bg.mode.kawarp"), value: "kawarp" },
 ];
 
 const IMG_MODE_OPTIONS = (): { label: string; value: ImageTypes }[] => [
@@ -71,6 +74,7 @@ function BackgroundSettings() {
   const bg = useStore($background);
   const mode = useStore($bg_mode);
   const imageMode = () => bg().options.image.mode;
+  const kawarpOptions = useStore($kawarp_options);
 
   return (
     <SettingsSection title={t("bg.title")}>
@@ -212,6 +216,126 @@ function BackgroundSettings() {
             onChange={(v) => updateAnimatedOptions({ rotationSpeed: v })}
             min={0}
             max={3}
+            step={0.1}
+            suffix="x"
+          />
+        </SettingsRow>
+      </Show>
+
+      <Show when={mode() === "kawarp"}>
+        <SettingsRow label={t("bg.source")}>
+          <Select
+            value={kawarpOptions().mode}
+            onChange={(v) => updateKawarpOptions({ mode: v as ImageTypes })}
+            options={IMG_MODE_OPTIONS()}
+          />
+        </SettingsRow>
+
+        <Show when={kawarpOptions().mode === "custom"}>
+          <SettingsRow label={t("bg.customUrl")}>
+            <Input
+              value={kawarpOptions().customUrl ?? ""}
+              onChange={(v) => updateKawarpOptions({ customUrl: v })}
+              placeholder="https://example.com/image.jpg"
+              validateUrl
+            />
+          </SettingsRow>
+        </Show>
+
+        <Show when={kawarpOptions().mode === "local"}>
+          <LocalImagesSettings local={bg().options.image.local} />
+        </Show>
+
+        <SettingsRow label={t("bg.kawarp.warpIntensity")} description={t("bg.kawarp.warpIntensityDesc")}>
+          <Slider
+            value={kawarpOptions().warpIntensity}
+            onChange={(v) => updateKawarpOptions({ warpIntensity: v })}
+            min={0}
+            max={2}
+            step={0.1}
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.blurPasses")} description={t("bg.kawarp.blurPassesDesc")}>
+          <Slider
+            value={kawarpOptions().blurPasses}
+            onChange={(v) => updateKawarpOptions({ blurPasses: Math.floor(v) })}
+            min={1}
+            max={40}
+            step={1}
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.animationSpeed")} description={t("bg.kawarp.animationSpeedDesc")}>
+          <Slider
+            value={kawarpOptions().animationSpeed}
+            onChange={(v) => updateKawarpOptions({ animationSpeed: v })}
+            min={0.1}
+            max={5}
+            step={0.1}
+            suffix="x"
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.transitionDuration")} description={t("bg.kawarp.transitionDurationDesc")}>
+          <Slider
+            value={kawarpOptions().transitionDuration}
+            onChange={(v) => updateKawarpOptions({ transitionDuration: v })}
+            min={100}
+            max={5000}
+            step={100}
+            suffix="ms"
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.saturation")} description={t("bg.kawarp.saturationDesc")}>
+          <Slider
+            value={kawarpOptions().saturation}
+            onChange={(v) => updateKawarpOptions({ saturation: v })}
+            min={0}
+            max={3}
+            step={0.1}
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.tintIntensity")} description={t("bg.kawarp.tintIntensityDesc")}>
+          <Slider
+            value={kawarpOptions().tintIntensity}
+            onChange={(v) => updateKawarpOptions({ tintIntensity: v })}
+            min={0}
+            max={1}
+            step={0.05}
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.tintColor")} description={t("bg.kawarp.tintColorDesc")}>
+          <Color
+            value={`#${kawarpOptions().tintColor.map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("")}`}
+            onChange={(v) => {
+              const r = parseInt(v.slice(1, 3), 16) / 255;
+              const g = parseInt(v.slice(3, 5), 16) / 255;
+              const b = parseInt(v.slice(5, 7), 16) / 255;
+              updateKawarpOptions({ tintColor: [r, g, b] });
+            }}
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.kawarp.dithering")} description={t("bg.kawarp.ditheringDesc")}>
+          <Slider
+            value={kawarpOptions().dithering}
+            onChange={(v) => updateKawarpOptions({ dithering: v })}
+            min={0}
+            max={0.05}
+            step={0.001}
+          />
+        </SettingsRow>
+
+        <SettingsRow label={t("bg.scale")} description={t("bg.scaleOf")}>
+          <Slider
+            value={kawarpOptions().scale}
+            onChange={(v) => updateKawarpOptions({ scale: v })}
+            min={1}
+            max={2}
             step={0.1}
             suffix="x"
           />
