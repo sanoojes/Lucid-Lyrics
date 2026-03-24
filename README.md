@@ -10,5 +10,4 @@ precise timing adjustments – all while listening to your favorite tracks.
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) — feel free to modify
-and distribute it according to the terms.
+This project is licensed under the [GNU AGPLv3 License](LICENSE).
