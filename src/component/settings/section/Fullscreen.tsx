@@ -6,7 +6,9 @@ import {
   setFullscreenShowCredits,
   setFullscreenShowControls,
   setFullscreenFloatingPosition,
+  setFullscreenRomanizePosition,
   type Positions,
+  type RomanizePosition,
 } from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
 import { SettingsRow } from "@/component/settings/Row";
@@ -52,6 +54,20 @@ function FullscreenSettings() {
             { label: t("position.top"), value: "top" },
             { label: t("position.left"), value: "left" },
             { label: t("position.right"), value: "right" },
+          ]}
+        />
+      </SettingsRow>
+      <SettingsRow
+        label={t("fullscreen.romanizePosition")}
+        description={t("fullscreen.romanizePositionDesc")}
+      >
+        <Select
+          value={fullscreenState().romanize_position}
+          onChange={(v) => setFullscreenRomanizePosition(v as RomanizePosition)}
+          options={[
+            { label: t("position.bottom"), value: "bottom" },
+            { label: t("position.top"), value: "top" },
+            { label: t("position.replace"), value: "replace" },
           ]}
         />
       </SettingsRow>

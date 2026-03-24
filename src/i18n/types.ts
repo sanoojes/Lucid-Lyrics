@@ -230,6 +230,9 @@ export type Dict = {
   "page.showControlsDesc": string;
   "page.floatingPosition": string;
   "page.floatingPositionDesc": string;
+  "page.romanizePosition": string;
+  "page.romanizePositionDesc": string;
+  "position.replace": string;
   "fullscreen.title": string;
   "fullscreen.showCredits": string;
   "fullscreen.showCreditsDesc": string;
@@ -241,6 +244,8 @@ export type Dict = {
   "fullscreen.showControlsDesc": string;
   "fullscreen.floatingPosition": string;
   "fullscreen.floatingPositionDesc": string;
+  "fullscreen.romanizePosition": string;
+  "fullscreen.romanizePositionDesc": string;
   "lyricsPage.toggleWidget": string;
   "lyricsPage.showWidget": string;
   "lyricsPage.hideWidget": string;

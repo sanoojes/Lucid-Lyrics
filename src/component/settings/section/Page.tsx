@@ -6,7 +6,9 @@ import {
   setShowCredits,
   setShowControls,
   setFloatingPosition,
+  setRomanizePosition,
   type Positions,
+  type RomanizePosition,
 } from "@/stores/page";
 import { SettingsSection } from "@/component/settings/Section";
 import { SettingsRow } from "@/component/settings/Row";
@@ -40,6 +42,17 @@ function PageSettings() {
             { label: t("position.top"), value: "top" },
             { label: t("position.left"), value: "left" },
             { label: t("position.right"), value: "right" },
+          ]}
+        />
+      </SettingsRow>
+      <SettingsRow label={t("page.romanizePosition")} description={t("page.romanizePositionDesc")}>
+        <Select
+          value={pageState().romanize_position}
+          onChange={(v) => setRomanizePosition(v as RomanizePosition)}
+          options={[
+            { label: t("position.bottom"), value: "bottom" },
+            { label: t("position.top"), value: "top" },
+            { label: t("position.replace"), value: "replace" },
           ]}
         />
       </SettingsRow>

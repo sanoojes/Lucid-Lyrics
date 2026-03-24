@@ -5,9 +5,12 @@ import { DEFAULT_PAGE_STATE, DEFAULT_FULLSCREEN_STATE } from "@/constants";
 
 export type Positions = "top" | "bottom" | "left" | "right";
 
+export type RomanizePosition = "top" | "bottom" | "replace";
+
 export type PageState = {
   widget: "hidden" | "show";
   romanize: boolean;
+  romanize_position: RomanizePosition;
   showCredits: boolean;
   hideScrollbar: boolean;
   showControls: boolean;
@@ -18,6 +21,7 @@ export type PageState = {
 export type FullscreenState = {
   widget: "hidden" | "show";
   romanize: boolean;
+  romanize_position: RomanizePosition;
   showCredits: boolean;
   hideScrollbar: boolean;
   showControls: boolean;
@@ -43,9 +47,14 @@ export function updatePageState(updater: (state: PageState) => PageState) {
 }
 
 export const $romanize = computed($page_state, (s) => s.romanize);
+export const $romanize_position = computed($page_state, (s) => s.romanize_position);
 
 export function toggleRomanize() {
   updatePageState((state) => ({ ...state, romanize: !state.romanize }));
+}
+
+export function setRomanizePosition(position: RomanizePosition) {
+  updatePageState((state) => ({ ...state, romanize_position: position }));
 }
 
 export function setShowCredits(showCredits: boolean) {
@@ -90,6 +99,10 @@ export function updateFullscreenState(updater: (state: FullscreenState) => Fulls
 
 export function toggleFullscreenRomanize() {
   updateFullscreenState((state) => ({ ...state, romanize: !state.romanize }));
+}
+
+export function setFullscreenRomanizePosition(position: RomanizePosition) {
+  updateFullscreenState((state) => ({ ...state, romanize_position: position }));
 }
 
 export function setFullscreenShowCredits(showCredits: boolean) {

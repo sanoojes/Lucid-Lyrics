@@ -1,8 +1,8 @@
 import type { LineData } from "@/lib/api/types";
-import { createEffect, createMemo, createSignal, For, on, onCleanup, onMount } from "solid-js";
+import { createEffect, createMemo, createSignal, For, on, onCleanup, onMount, Show } from "solid-js";
 import { useLenis, useLenisContent } from "@/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $romanize, getBlurmap } from "@/stores";
+import { $current_position, $romanize, $romanize_position, getBlurmap } from "@/stores";
 import { useRenderer } from "@/context/LyricsRenderer";
 import { seekTo } from "@/lib/spotify/player";
 import { Interlude } from "@/component/lyrics/Interlude";
@@ -85,6 +85,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const currentPos = useStore($current_position);
   const romanize = useStore($romanize);
+  const romanize_position = useStore($romanize_position);
   const { setJumpToActive, setIsActiveVisible } = useRenderer();
   const getLenis = useLenis();
   const getContentRef = useLenisContent();
@@ -192,7 +193,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   createEffect(
     on(
-      romanize,
+      [romanize, romanize_position],
       () => {
         const lenis = getLenis();
 
@@ -295,6 +296,7 @@ export default function LineLyrics(props: LineLyricsProps) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           updateOffset();
+          setVisibleElements(new Set<number>());
           performScroll(true, true);
         });
       });
@@ -362,7 +364,8 @@ export default function LineLyrics(props: LineLyricsProps) {
 
           const isLineRTL = () => {
             if (entry.type === "interlude") return entry.isRTL && !romanize();
-            return entry.content.IsRTL && !romanize();
+            const shouldUseRomanizedReplace = romanize() && romanize_position() === "replace";
+            return entry.content.IsRTL && !shouldUseRomanizedReplace;
           };
 
           if (entry.type === "interlude") {
@@ -411,8 +414,20 @@ export default function LineLyrics(props: LineLyricsProps) {
             return isRtl !== isOpposite ? padding : undefined;
           };
 
+          const showTop = () => romanize() && romanize_position() === "top";
+          const showBottom = () => romanize() && romanize_position() === "bottom";
+          const useReplace = () => romanize() && romanize_position() === "replace";
+
           const displayText = createMemo(() =>
-            romanize() ? entry.content.RomanizedText || entry.content.Text : entry.content.Text,
+            useReplace() ? entry.content.RomanizedText || entry.content.Text : entry.content.Text,
+          );
+
+          const hasRomanized = createMemo(() => 
+            !!entry.content.RomanizedText && romanize()
+          );
+
+          const needsExtraSpace = createMemo(() => 
+            hasRomanized() && (romanize_position() === "top" || romanize_position() === "bottom")
           );
 
           const progress = createMemo(() => {
@@ -440,26 +455,58 @@ export default function LineLyrics(props: LineLyricsProps) {
                 "--l-blur": blurStyle(),
                 "--l-scale": isActive() ? 1.01 : 1,
                 "--l-opacity": isActive() ? 1 : 0.6,
-                "margin-bottom": "12px",
+                "margin-bottom": needsExtraSpace() ? "24px" : "12px",
                 "padding-right": paddingRight(),
                 "padding-left": paddingLeft(),
               }}
             >
-              <span
-                class="line"
-                onClick={() => seekTo(entry.content.StartTime * 1000)}
-                role="button"
-                tabIndex={0}
-                style={{
-                  "--line-progress": `${progress()}%`,
-                  "--line-progress-2": `${progress() > 0 ? progress() + 20 : 0}%`,
-                  "--shadow-blur": `${progress() * 0.06}px`,
-                  "--shadow-alpha": (progress() / 200) * 0.85,
-                  "text-align": entry.content.OppositeAligned ? "end" : "start",
-                }}
-              >
-                {displayText()}
-              </span>
+            <div
+              class="line"
+              classList={{
+                "has-romanized-top": showTop() && hasRomanized(),
+                "has-romanized-bottom": showBottom() && hasRomanized(),
+              }}
+              onClick={() => seekTo(entry.content.StartTime * 1000)}
+              role="button"
+              tabIndex={0}
+              style={{
+                "--line-progress": `${progress()}%`,
+                "--line-progress-2": `${progress() > 0 ? progress() + 20 : 0}%`,
+                "--shadow-blur": `${progress() * 0.06}px`,
+                "--shadow-alpha": (progress() / 200) * 0.85,
+                "text-align": entry.content.OppositeAligned ? "end" : "start",
+              }}
+            >
+              <Show when={showTop() && hasRomanized()}>
+                <span
+                  class="romanized-text romanized-top"
+                  style={{
+                    "font-size": "var(--romanized-font-size, 0.6em)",
+                    "line-height": "1.2",
+                    "margin-bottom": "2px",
+                    direction: "ltr",
+                    "unicode-bidi": "embed",
+                  }}
+                >
+                  {entry.content.RomanizedText}
+                </span>
+              </Show>
+              {displayText()}
+              <Show when={showBottom() && hasRomanized()}>
+                <span
+                  class="romanized-text romanized-bottom"
+                  style={{
+                    "font-size": "var(--romanized-font-size, 0.6em)",
+                    "line-height": "1.2",
+                    "margin-top": "2px",
+                    direction: "ltr",
+                    "unicode-bidi": "embed",
+                  }}
+                >
+                  {entry.content.RomanizedText}
+                </span>
+              </Show>
+            </div>
             </div>
           );
         }}

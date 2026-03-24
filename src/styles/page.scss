@@ -196,7 +196,7 @@ $floating-transition:
 
             &__info {
               pointer-events: none;
-              opacity: 0.2;
+              opacity: 0;
             }
           }
         }
@@ -447,7 +447,7 @@ $floating-transition:
 .line-lyrics,
 .syllable-lyrics {
   --lead-font-weight: 700;
-  --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
+  --lead-font-size: clamp(1.8rem, 4cqw, 3.4rem);
   --lyrics-line-default-padding: 10cqw;
 
   --bg-font-weight: 600;
@@ -492,6 +492,28 @@ $floating-transition:
       margin-right: 0.3ch;
     }
   }
+
+  .syllable {
+    &.has-romanized-top,
+    &.has-romanized-bottom {
+      min-width: 0.5ch;
+    }
+  }
+
+  .romanized-text {
+    color: var(--romanized-color, rgba(255, 255, 255, 0.5));
+    font-weight: var(--romanized-font-weight, v.$fw-bold);
+    direction: ltr;
+    unicode-bidi: embed;
+    display: block;
+  }
+
+  .romanized-top,
+  .romanized-bottom {
+    --romanized-font-size: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.6);
+    min-height: calc(var(--romanized-font-size) * 1.2);
+    font-size: var(--romanized-font-size);
+  }
 }
 
 .line-lyrics {
@@ -503,7 +525,7 @@ $floating-transition:
     --lyrics-text-color: 255, 255, 255;
 
     position: relative;
-    display: inline-block;
+    display: block;
     text-shadow: 0px 0px var(--shadow-blur) rgba(var(--lyrics-text-color), var(--shadow-alpha));
     background-image: linear-gradient(
       180deg,
@@ -513,6 +535,11 @@ $floating-transition:
     background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+
+    &.has-romanized-top,
+    &.has-romanized-bottom {
+      min-width: 1ch;
+    }
   }
 }
 

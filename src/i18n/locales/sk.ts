@@ -237,6 +237,9 @@ export const dict: Dict = {
   "page.showControlsDesc": "Zobraziť ovládacie prvky prehrávača v plávajúcej oblasti",
   "page.floatingPosition": "Poloha plávajúcich ovládacích prvkov",
   "page.floatingPositionDesc": "Poloha oblasti plávajúcich ovládacích prvkov",
+  "page.romanizePosition": "Poloha romanizovaného textu",
+  "page.romanizePositionDesc": "Poloha romanizovaného textu vzhľadom na originál",
+  "position.replace": "Nahradiť",
   "fullscreen.title": "Celá obrazovka",
   "fullscreen.showCredits": "Zobraziť kredity",
   "fullscreen.showCreditsDesc":
@@ -249,6 +252,8 @@ export const dict: Dict = {
   "fullscreen.showControlsDesc": "Zobraziť ovládacie prvky prehrávača v plávajúcej oblasti",
   "fullscreen.floatingPosition": "Poloha plávajúcich ovládacích prvkov",
   "fullscreen.floatingPositionDesc": "Poloha oblasti plávajúcich ovládacích prvkov",
+  "fullscreen.romanizePosition": "Pozícia romanizácie",
+  "fullscreen.romanizePositionDesc": "Pozicia romanizovaného textu",
   "lyricsPage.toggleWidget": "Prepnúť widget",
   "lyricsPage.showWidget": "Zobraziť widget",
   "lyricsPage.hideWidget": "Skryť widget",

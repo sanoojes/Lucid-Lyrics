@@ -68,6 +68,7 @@ export const DEFAULT_PROVIDER_ORDER = ["user", "spicy", "spotify"] satisfies Lyr
 export const DEFAULT_PAGE_STATE = {
   widget: "show",
   romanize: false,
+  romanize_position: "bottom",
   showCredits: true,
   hideScrollbar: false,
   showControls: false,
@@ -78,6 +79,7 @@ export const DEFAULT_PAGE_STATE = {
 export const DEFAULT_FULLSCREEN_STATE = {
   widget: "show",
   romanize: false,
+  romanize_position: "bottom",
   showCredits: true,
   hideScrollbar: false,
   showControls: true,
