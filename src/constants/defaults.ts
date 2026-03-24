@@ -51,6 +51,7 @@ export const DEFAULT_BACKGROUND_STATE = {
       customUrl,
       scale: 1.0,
       saturation: 1.5,
+      brightness: 0.8,
       animationSpeed: 1.0,
       blurPasses: 12,
       warpIntensity: 1.0,

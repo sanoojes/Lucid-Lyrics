@@ -21,6 +21,8 @@ export const dict: Dict = {
   "bg.kawarp.transitionDurationDesc": "Duration of crossfade between images",
   "bg.kawarp.saturation": "Saturation",
   "bg.kawarp.saturationDesc": "Color saturation of the output",
+  "bg.kawarp.brightness": "Brightness",
+  "bg.kawarp.brightnessDesc": "Brightness of the background",
   "bg.kawarp.tintIntensity": "Tint Intensity",
   "bg.kawarp.tintIntensityDesc": "How much to blend dark areas with tint color",
   "bg.kawarp.tintColor": "Tint Color",

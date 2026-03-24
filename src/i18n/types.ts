@@ -27,6 +27,8 @@ export type Dict = {
   "bg.kawarp.transitionDurationDesc": string;
   "bg.kawarp.saturation": string;
   "bg.kawarp.saturationDesc": string;
+  "bg.kawarp.brightness": string;
+  "bg.kawarp.brightnessDesc": string;
   "bg.kawarp.tintIntensity": string;
   "bg.kawarp.tintIntensityDesc": string;
   "bg.kawarp.tintColor": string;

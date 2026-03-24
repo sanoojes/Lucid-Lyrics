@@ -5,6 +5,7 @@ uniform float u_dithering;
 uniform float u_time;
 uniform float u_scale;
 uniform vec2 u_resolution;
+uniform float u_brightness;
 varying vec2 v_texCoord;
 
 highp float hash(highp vec3 p) {
@@ -29,6 +30,8 @@ void main() {
   highp vec2 pixelPos = floor(v_texCoord * u_resolution);
   highp float noise = hash(vec3(pixelPos, floor(u_time * 60.0)));
   color.rgb += (noise - 0.5) * u_dithering;
+
+  color.rgb *= u_brightness;
 
   gl_FragColor = color;
 }

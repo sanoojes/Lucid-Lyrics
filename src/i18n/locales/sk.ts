@@ -21,6 +21,8 @@ export const dict: Dict = {
   "bg.kawarp.transitionDurationDesc": "Trvanie prelínania medzi obrázkami",
   "bg.kawarp.saturation": "Sýtosť",
   "bg.kawarp.saturationDesc": "Farebná sýtosť výstupu",
+  "bg.kawarp.brightness": "Jas",
+  "bg.kawarp.brightnessDesc": "Jas pozadia",
   "bg.kawarp.tintIntensity": "Intenzita odtieňa",
   "bg.kawarp.tintIntensityDesc": "Koľko zmiešať tmavé oblasti s farbou odtieňa",
   "bg.kawarp.tintColor": "Farba odtieňa",

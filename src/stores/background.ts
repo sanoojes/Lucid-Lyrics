@@ -153,6 +153,7 @@ export type BackgroundState = {
       scale: number;
       dithering: number;
       saturation: number;
+      brightness: number;
       warpIntensity: number;
       animationSpeed: number;
       blurPasses: number;

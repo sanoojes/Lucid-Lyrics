@@ -308,6 +308,16 @@ function BackgroundSettings() {
           />
         </SettingsRow>
 
+        <SettingsRow label={t("bg.kawarp.brightness")} description={t("bg.kawarp.brightnessDesc")}>
+          <Slider
+            value={kawarpOptions().brightness}
+            onChange={(v) => updateKawarpOptions({ brightness: v })}
+            min={0}
+            max={2}
+            step={0.1}
+          />
+        </SettingsRow>
+
         <SettingsRow label={t("bg.kawarp.tintColor")} description={t("bg.kawarp.tintColorDesc")}>
           <Color
             value={`#${kawarpOptions().tintColor.map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("")}`}

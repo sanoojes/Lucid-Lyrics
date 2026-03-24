@@ -21,6 +21,8 @@ export const dict: Dict = {
   "bg.kawarp.transitionDurationDesc": "Duración del fundido cruzado entre imágenes",
   "bg.kawarp.saturation": "Saturación",
   "bg.kawarp.saturationDesc": "Saturación de color de la salida",
+  "bg.kawarp.brightness": "Brillo",
+  "bg.kawarp.brightnessDesc": "Brillo del fondo",
   "bg.kawarp.tintIntensity": "Intensidad de Tinte",
   "bg.kawarp.tintIntensityDesc": "Cuánto mezclar áreas oscuras con color de tinte",
   "bg.kawarp.tintColor": "Color de Tinte",

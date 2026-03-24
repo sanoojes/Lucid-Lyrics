@@ -28,6 +28,7 @@ export interface KawarpOptions {
   tintIntensity?: number;
   dithering?: number;
   scale?: number;
+  brightness?: number;
 }
 
 interface Framebuffer {
@@ -90,6 +91,7 @@ export class Kawarp {
   private _tintIntensity: number;
   private _dithering: number;
   private _scale: number;
+  private _brightness: number;
   private hasImage = false;
 
   // Cached attribute locations
@@ -127,6 +129,7 @@ export class Kawarp {
       time: WebGLUniformLocation;
       scale: WebGLUniformLocation;
       resolution: WebGLUniformLocation;
+      brightness: WebGLUniformLocation;
     };
   };
 
@@ -150,6 +153,7 @@ export class Kawarp {
     this._tintIntensity = options.tintIntensity ?? 0.15;
     this._dithering = options.dithering ?? 0.008;
     this._scale = options.scale ?? 1.0;
+    this._brightness = options.brightness ?? 1.0;
 
     // Create shader programs
     this.blurProgram = this.createProgram(vertexShader, kawaseBlurShader);
@@ -193,6 +197,7 @@ export class Kawarp {
         time: gl.getUniformLocation(this.outputProgram, "u_time")!,
         scale: gl.getUniformLocation(this.outputProgram, "u_scale")!,
         resolution: gl.getUniformLocation(this.outputProgram, "u_resolution")!,
+        brightness: gl.getUniformLocation(this.outputProgram, "u_brightness")!,
       },
     };
 
@@ -303,6 +308,13 @@ export class Kawarp {
     this._scale = Math.max(0.01, Math.min(4, value));
   }
 
+  get brightness(): number {
+    return this._brightness;
+  }
+  set brightness(value: number) {
+    this._brightness = Math.max(0, Math.min(3, value));
+  }
+
   setOptions(options: Partial<KawarpOptions>): void {
     if (options.warpIntensity !== undefined) this.warpIntensity = options.warpIntensity;
     if (options.blurPasses !== undefined) this.blurPasses = options.blurPasses;
@@ -314,6 +326,7 @@ export class Kawarp {
     if (options.tintIntensity !== undefined) this.tintIntensity = options.tintIntensity;
     if (options.dithering !== undefined) this.dithering = options.dithering;
     if (options.scale !== undefined) this.scale = options.scale;
+    if (options.brightness !== undefined) this.brightness = options.brightness;
   }
 
   getOptions(): Required<KawarpOptions> {
@@ -327,6 +340,7 @@ export class Kawarp {
       tintIntensity: this._tintIntensity,
       dithering: this._dithering,
       scale: this._scale,
+      brightness: this._brightness,
     };
   }
 
@@ -631,6 +645,7 @@ export class Kawarp {
       gl.uniform1f(this.uniforms.output.time, time);
       gl.uniform1f(this.uniforms.output.scale, this._scale);
       gl.uniform2f(this.uniforms.output.resolution, width, height);
+      gl.uniform1f(this.uniforms.output.brightness, this._brightness);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     } else {
       // No transition - just warp the current album directly
@@ -657,6 +672,7 @@ export class Kawarp {
       gl.uniform1f(this.uniforms.output.time, time);
       gl.uniform1f(this.uniforms.output.scale, this._scale);
       gl.uniform2f(this.uniforms.output.resolution, width, height);
+      gl.uniform1f(this.uniforms.output.brightness, this._brightness);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
   }
