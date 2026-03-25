@@ -199,7 +199,7 @@ export const dict: Dict = {
   "ttml.copyTTML": "Copy",
   "ttml.copySuccess": "TTML copied to clipboard",
   "ttml.delete": "Delete",
-  "ttml.deleteConfirm": 'Delete "{{songName}}"?',
+  "ttml.deleteConfirm": 'Delete TTML for "{{songName}}"?',
   "ttml.deleteDescription": "This action cannot be undone.",
   "ttml.currentSongTTML": "Current Song TTML",
   "ttml.noLocalTTML": "No local TTML files",
