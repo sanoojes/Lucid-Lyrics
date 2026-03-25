@@ -1,4 +1,3 @@
-import { Renderer, Geometry, Program, Mesh, Texture } from "ogl";
 import { useStore } from "@nanostores/solid";
 import { $animated_options, $current_track_image } from "@/stores";
 import { createMemo, createEffect, onMount, onCleanup } from "solid-js";
@@ -7,32 +6,6 @@ import Tempus from "@darkroom.engineering/tempus";
 
 import vertex from "@/shaders/animatedBg/vertex.glsl";
 import fragment from "@/shaders/animatedBg/fragment.glsl";
-
-export type ShaderUniforms = {
-  Time: { value: number };
-  BlurredCoverArt: { value: Texture };
-  PreviousCoverArt: { value: Texture };
-
-  BackgroundCircleOrigin: { value: number[] };
-  BackgroundCircleRadius: { value: number };
-
-  CenterCircleOrigin: { value: number[] };
-  CenterCircleRadius: { value: number };
-
-  LeftCircleOrigin: { value: number[] };
-  LeftCircleRadius: { value: number };
-
-  RightCircleOrigin: { value: number[] };
-  RightCircleRadius: { value: number };
-
-  uBrightness: { value: number };
-  uSaturation: { value: number };
-  uContrast: { value: number };
-  uOpacity: { value: number };
-  uTransition: { value: number };
-  uScale: { value: number };
-  uRotationSpeed: { value: number };
-};
 
 const createImageBitmapOptions = {
   premultiplyAlpha: "none" as const,
@@ -93,6 +66,28 @@ const createBlackOffscreenCanvas = (): OffscreenCanvas => {
   return canvas;
 };
 
+interface Uniforms {
+  t: WebGLUniformLocation | null;
+  bca: WebGLUniformLocation | null;
+  pca: WebGLUniformLocation | null;
+  bco: WebGLUniformLocation | null;
+  bcr: WebGLUniformLocation | null;
+  cco: WebGLUniformLocation | null;
+  ccr: WebGLUniformLocation | null;
+  lco: WebGLUniformLocation | null;
+  lcr: WebGLUniformLocation | null;
+  rco: WebGLUniformLocation | null;
+  rcr: WebGLUniformLocation | null;
+  br: WebGLUniformLocation | null;
+  sa: WebGLUniformLocation | null;
+  co: WebGLUniformLocation | null;
+  op: WebGLUniformLocation | null;
+  tr: WebGLUniformLocation | null;
+  sc: WebGLUniformLocation | null;
+  rs: WebGLUniformLocation | null;
+  di: WebGLUniformLocation | null;
+}
+
 const AnimatedLayer = () => {
   let canvasRef!: HTMLCanvasElement;
   let containerRef!: HTMLDivElement;
@@ -110,67 +105,121 @@ const AnimatedLayer = () => {
   });
 
   onMount(() => {
-    const renderer = new Renderer({
-      canvas: canvasRef,
-      dpr: Math.min(window.devicePixelRatio, 2),
+    const gl = canvasRef.getContext("webgl", {
       alpha: true,
-    });
-    const gl = renderer.gl;
-
-    const geometry = new Geometry(gl, {
-      position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
+      premultipliedAlpha: false,
+      preserveDrawingBuffer: false,
     });
 
-    const texture = new Texture(gl, {
-      generateMipmaps: false,
-      minFilter: gl.LINEAR,
-      magFilter: gl.LINEAR,
-    });
+    if (!gl) {
+      console.error("WebGL not supported");
+      return;
+    }
 
-    const previousTexture = new Texture(gl, {
-      generateMipmaps: false,
-      minFilter: gl.LINEAR,
-      magFilter: gl.LINEAR,
-    });
+    const createShader = (type: number, source: string) => {
+      const shader = gl.createShader(type);
+      if (!shader) throw new Error("Failed to create shader");
+
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        const error = gl.getShaderInfoLog(shader);
+        gl.deleteShader(shader);
+        throw new Error(`Shader compile error: ${error}`);
+      }
+      return shader;
+    };
+
+    const createProgram = (vertexSource: string, fragmentSource: string) => {
+      const vertexShader = createShader(gl.VERTEX_SHADER, vertexSource);
+      const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentSource);
+
+      const program = gl.createProgram();
+      if (!program) throw new Error("Failed to create program");
+
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+      gl.linkProgram(program);
+
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        const error = gl.getProgramInfoLog(program);
+        gl.deleteProgram(program);
+        throw new Error(`Program link error: ${error}`);
+      }
+
+      gl.deleteShader(vertexShader);
+      gl.deleteShader(fragmentShader);
+      return program;
+    };
+
+    const program = createProgram(vertex, fragment);
+    gl.useProgram(program);
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+    const positionLocation = gl.getAttribLocation(program, "position");
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const uniforms: Uniforms = {
+      t: gl.getUniformLocation(program, "t"),
+      bca: gl.getUniformLocation(program, "bca"),
+      pca: gl.getUniformLocation(program, "pca"),
+      bco: gl.getUniformLocation(program, "bco"),
+      bcr: gl.getUniformLocation(program, "bcr"),
+      cco: gl.getUniformLocation(program, "cco"),
+      ccr: gl.getUniformLocation(program, "ccr"),
+      lco: gl.getUniformLocation(program, "lco"),
+      lcr: gl.getUniformLocation(program, "lcr"),
+      rco: gl.getUniformLocation(program, "rco"),
+      rcr: gl.getUniformLocation(program, "rcr"),
+      br: gl.getUniformLocation(program, "br"),
+      sa: gl.getUniformLocation(program, "sa"),
+      co: gl.getUniformLocation(program, "co"),
+      op: gl.getUniformLocation(program, "op"),
+      tr: gl.getUniformLocation(program, "tr"),
+      sc: gl.getUniformLocation(program, "sc"),
+      rs: gl.getUniformLocation(program, "rs"),
+      di: gl.getUniformLocation(program, "di"),
+    };
+
+    const createTexture = () => {
+      const texture = gl.createTexture();
+      if (!texture) throw new Error("Failed to create texture");
+
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      return texture;
+    };
+
+    const updateTexture = (texture: WebGLTexture, canvas: OffscreenCanvas) => {
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+    };
+
+    const texture = createTexture();
+    const previousTexture = createTexture();
 
     const blackCanvas = createBlackOffscreenCanvas();
-    texture.image = blackCanvas as unknown as HTMLCanvasElement;
-    texture.needsUpdate = true;
-    previousTexture.image = blackCanvas as unknown as HTMLCanvasElement;
-    previousTexture.needsUpdate = true;
+    updateTexture(texture, blackCanvas);
+    updateTexture(previousTexture, blackCanvas);
 
-    const program = new Program(gl, {
-      vertex,
-      fragment,
-      uniforms: {
-        Time: { value: 0.0 },
-        BlurredCoverArt: { value: texture },
-        PreviousCoverArt: { value: previousTexture },
-        BackgroundCircleOrigin: { value: [0, 0] },
-        BackgroundCircleRadius: { value: 0 },
-        CenterCircleOrigin: { value: [0, 0] },
-        CenterCircleRadius: { value: 0 },
-        LeftCircleOrigin: { value: [0, 0] },
-        LeftCircleRadius: { value: 0 },
-        RightCircleOrigin: { value: [0, 0] },
-        RightCircleRadius: { value: 0 },
-        uBrightness: { value: 1.0 },
-        uSaturation: { value: 1.0 },
-        uContrast: { value: 1.0 },
-        uOpacity: { value: 1.0 },
-        uTransition: { value: 1.0 },
-        uScale: { value: 1.0 },
-        uRotationSpeed: { value: 1.0 },
-      } as ShaderUniforms,
-      transparent: true,
-      depthTest: false,
-      depthWrite: false,
-    });
+    let currentCanvas = blackCanvas;
 
-    const mesh = new Mesh(gl, { geometry, program });
-
-    let currentSource: string | Blob = "";
-    let currentBlur = 0;
+    const setSize = (width: number, height: number) => {
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      canvasRef.width = width * dpr;
+      canvasRef.height = height * dpr;
+      canvasRef.style.width = `${width}px`;
+      canvasRef.style.height = `${height}px`;
+      gl.viewport(0, 0, canvasRef.width, canvasRef.height);
+    };
 
     const updateCircleUniforms = (width: number, height: number) => {
       const scaledWidth = width * window.devicePixelRatio;
@@ -181,44 +230,53 @@ const AnimatedLayer = () => {
       const largestAxis = scaledWidth > scaledHeight ? "X" : "Y";
       const largestAxisSize = Math.max(scaledWidth, scaledHeight);
 
-      program.uniforms.BackgroundCircleOrigin.value = [cx, cy];
-      program.uniforms.BackgroundCircleRadius.value = largestAxisSize * 1.5;
+      gl.uniform2f(uniforms.bco, cx, cy);
+      gl.uniform1f(uniforms.bcr, largestAxisSize * 1.5);
 
-      program.uniforms.CenterCircleOrigin.value = [cx, cy];
-      program.uniforms.CenterCircleRadius.value =
-        largestAxisSize * (largestAxis === "X" ? 1 : 0.75);
+      gl.uniform2f(uniforms.cco, cx, cy);
+      gl.uniform1f(uniforms.ccr, largestAxisSize * (largestAxis === "X" ? 1 : 0.75));
 
-      program.uniforms.LeftCircleOrigin.value = [0, scaledHeight];
-      program.uniforms.LeftCircleRadius.value = largestAxisSize * 0.75;
+      gl.uniform2f(uniforms.lco, 0, scaledHeight);
+      gl.uniform1f(uniforms.lcr, largestAxisSize * 0.75);
 
-      program.uniforms.RightCircleOrigin.value = [scaledWidth, 0];
-      program.uniforms.RightCircleRadius.value =
-        largestAxisSize * (largestAxis === "X" ? 0.65 : 0.5);
+      gl.uniform2f(uniforms.rco, scaledWidth, 0);
+      gl.uniform1f(uniforms.rcr, largestAxisSize * (largestAxis === "X" ? 0.65 : 0.5));
     };
 
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
-        renderer.setSize(width, height);
+        setSize(width, height);
         updateCircleUniforms(width, height);
-        renderer.render({ scene: mesh });
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
       }
     });
     ro.observe(containerRef);
 
     let transitionProgress = 1.0;
+    let time = 0;
 
-    const updateTexture = (blurredCanvas: OffscreenCanvas) => {
-      const currentImage = texture.image;
-      previousTexture.image = currentImage as unknown as HTMLCanvasElement;
-      previousTexture.needsUpdate = true;
+    const updateTextureUniforms = () => {
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.uniform1i(uniforms.bca, 0);
 
-      texture.image = blurredCanvas as unknown as HTMLCanvasElement;
-      texture.needsUpdate = true;
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, previousTexture);
+      gl.uniform1i(uniforms.pca, 1);
+    };
+
+    const updateTextureFromCanvas = (newCanvas: OffscreenCanvas) => {
+      updateTexture(previousTexture, currentCanvas);
+      updateTexture(texture, newCanvas);
+      currentCanvas = newCanvas;
 
       transitionProgress = 0.0;
-      program.uniforms.uTransition.value = 0.0;
+      gl.uniform1f(uniforms.tr, 0.0);
     };
+
+    let currentSource: string | Blob = "";
+    let currentBlur = 0;
 
     const loadImage = async (source: string | Blob, blurAmount: number) => {
       if (source === currentSource && blurAmount === currentBlur) return;
@@ -228,11 +286,11 @@ const AnimatedLayer = () => {
         try {
           const blurred = await generateBlurredCoverArt(source, blurAmount);
           if (source === currentSource) {
-            updateTexture(blurred ?? createBlackOffscreenCanvas());
+            updateTextureFromCanvas(blurred ?? createBlackOffscreenCanvas());
           }
         } catch {
           if (source === currentSource) {
-            updateTexture(createBlackOffscreenCanvas());
+            updateTextureFromCanvas(createBlackOffscreenCanvas());
           }
         }
         return;
@@ -249,12 +307,12 @@ const AnimatedLayer = () => {
           const blob = await response.blob();
           const blurred = await generateBlurredCoverArt(blob, blurAmount);
           if (uri === currentSource) {
-            updateTexture(blurred ?? createBlackOffscreenCanvas());
+            updateTextureFromCanvas(blurred ?? createBlackOffscreenCanvas());
           }
           return;
         } catch {
           if (uri === currentSource) {
-            updateTexture(createBlackOffscreenCanvas());
+            updateTextureFromCanvas(createBlackOffscreenCanvas());
           }
           return;
         }
@@ -269,13 +327,13 @@ const AnimatedLayer = () => {
           if (uri !== currentSource) return;
           generateBlurredCoverArt(img, blurAmount).then((result) => {
             if (uri === currentSource) {
-              updateTexture(result ?? createBlackOffscreenCanvas());
+              updateTextureFromCanvas(result ?? createBlackOffscreenCanvas());
             }
           });
         })
         .catch(() => {
           if (uri === currentSource) {
-            updateTexture(createBlackOffscreenCanvas());
+            updateTextureFromCanvas(createBlackOffscreenCanvas());
           }
         });
     };
@@ -287,43 +345,55 @@ const AnimatedLayer = () => {
         loadImage(source, blur);
       } else {
         currentSource = "";
-        updateTexture(createBlackOffscreenCanvas());
+        updateTextureFromCanvas(createBlackOffscreenCanvas());
       }
     });
 
     createEffect(() => {
       const filter = options().filter;
-      program.uniforms.uBrightness.value = filter.brightness / 100;
-      program.uniforms.uSaturation.value = filter.saturation / 100;
-      program.uniforms.uContrast.value = filter.contrast / 100;
-      program.uniforms.uOpacity.value = filter.opacity / 100;
+      gl.uniform1f(uniforms.br, filter.brightness / 100);
+      gl.uniform1f(uniforms.sa, filter.saturation / 100);
+      gl.uniform1f(uniforms.co, filter.contrast / 100);
+      gl.uniform1f(uniforms.op, filter.opacity / 100);
     });
 
     createEffect(() => {
-      program.uniforms.uScale.value = options().scale / 100;
+      gl.uniform1f(uniforms.sc, options().scale / 100);
     });
 
     createEffect(() => {
-      program.uniforms.uRotationSpeed.value = options().rotationSpeed;
+      gl.uniform1f(uniforms.rs, options().rotationSpeed);
     });
+
+    updateTextureUniforms();
+    gl.uniform1f(uniforms.t, 0.0);
+    gl.uniform1f(uniforms.tr, 1.0);
+    gl.uniform1f(uniforms.sc, 1.0);
+    gl.uniform1f(uniforms.rs, 1.0);
+    gl.uniform1f(uniforms.di, 0.008);
 
     const unsubscribe = Tempus.add((_time: number, deltaTime: number) => {
       const dt = deltaTime / 1000;
-      program.uniforms.Time.value += dt;
+      time += dt;
+      gl.uniform1f(uniforms.t, time);
 
       if (transitionProgress < 1.0) {
         const transitionDuration = options().transitionDuration;
         transitionProgress = Math.min(1.0, transitionProgress + dt / transitionDuration);
-        program.uniforms.uTransition.value = transitionProgress;
+        gl.uniform1f(uniforms.tr, transitionProgress);
       }
 
-      renderer.render({ scene: mesh });
+      updateTextureUniforms();
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
     }, 1);
 
     onCleanup(() => {
       ro.disconnect();
       unsubscribe();
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      gl.deleteProgram(program);
+      gl.deleteBuffer(positionBuffer);
+      gl.deleteTexture(texture);
+      gl.deleteTexture(previousTexture);
     });
   });
 

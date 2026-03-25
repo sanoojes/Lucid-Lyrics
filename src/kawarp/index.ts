@@ -11,12 +11,12 @@
  * - Per-frame work is minimal: just blend + warp + output
  */
 
-import vertexShader from "@/kawarp/shaders/vertex.glsl";
-import kawaseBlurShader from "@/kawarp/shaders/kawase_blur.glsl";
-import blendShader from "@/kawarp/shaders/blend.glsl";
-import tintShader from "@/kawarp/shaders/tint.glsl";
-import domainWarpShader from "@/kawarp/shaders/domain_warp.glsl";
-import outputShader from "@/kawarp/shaders/output.glsl";
+import vertexShader from "@/shaders/kawarp/vertex.glsl";
+import kawaseBlurShader from "@/shaders/kawarp/kawase_blur.glsl";
+import blendShader from "@/shaders/kawarp/blend.glsl";
+import tintShader from "@/shaders/kawarp/tint.glsl";
+import domainWarpShader from "@/shaders/kawarp/domain_warp.glsl";
+import outputShader from "@/shaders/kawarp/output.glsl";
 
 export interface KawarpOptions {
   warpIntensity?: number;
