@@ -13,7 +13,7 @@ const ScrollToActiveLyricsButton = (props: ScrollToActiveLyricsButtonProps) => {
 
   const updateVisibility = debounce((visible: boolean) => {
     setDebouncedVisible(visible);
-  }, 150);
+  }, 200);
 
   createMemo(() => {
     updateVisibility(isActiveVisible());
