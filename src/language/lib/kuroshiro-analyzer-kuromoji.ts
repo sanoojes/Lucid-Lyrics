@@ -67,6 +67,11 @@ const PRE_PROCESS_MAP: Readonly<Record<string, string>> = Object.freeze({
   已に: "すでに",
   已む: "やむ",
   已: "すで",
+  今際: "いまわ",
+  際際: "きわきわ",
+  廻遊: "かいゆう",
+  氣裸: "ぎら",
+  其: "その",
 });
 
 const getReplacer = () => {
