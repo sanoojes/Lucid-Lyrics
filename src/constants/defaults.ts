@@ -73,7 +73,7 @@ export const DEFAULT_PROVIDER_ORDER = [
 export const DEFAULT_PAGE_STATE = {
   widget: "show",
   romanize: false,
-  romanize_position: "bottom",
+  romanize_position: "replace",
   showCredits: true,
   hideScrollbar: false,
   showControls: false,
@@ -84,7 +84,7 @@ export const DEFAULT_PAGE_STATE = {
 export const DEFAULT_FULLSCREEN_STATE = {
   widget: "show",
   romanize: false,
-  romanize_position: "bottom",
+  romanize_position: "replace",
   showCredits: true,
   hideScrollbar: false,
   showControls: true,
