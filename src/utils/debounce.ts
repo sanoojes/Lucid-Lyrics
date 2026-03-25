@@ -1,72 +1,43 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
-export type DebouncedFunction<T extends Array<unknown>> = {
-  (...args: T): void;
-  clear(): void;
-  flush(): void;
-  readonly pending: boolean;
-};
+import { onCleanup } from "solid-js";
+import { getOwner } from "solid-js/web";
+
+export type ScheduleCallback = <Args extends unknown[]>(
+  callback: (...args: Args) => void,
+  wait?: number,
+) => Scheduled<Args>;
+
+export interface Scheduled<Args extends unknown[]> {
+  (...args: Args): void;
+  clear: VoidFunction;
+}
 
 /**
- * Creates a debounced function that delays the given `func`
- * by a given `wait` time in milliseconds. If the method is called
- * again before the timeout expires, the previous call will be
- * aborted.
+ * Creates a callback that is debounced and cancellable. The debounced callback is called on **trailing** edge.
  *
- * @example Usage
- * ```ts ignore
- * import { debounce } from "@std/async/debounce";
+ * The timeout will be automatically cleared on root dispose.
  *
- * const log = debounce(
- *   (event: Deno.FsEvent) =>
- *     console.log("[%s] %s", event.kind, event.paths[0]),
- *   200,
- * );
+ * @param callback The callback to debounce
+ * @param wait The duration to debounce in milliseconds
+ * @returns The debounced function
  *
- * for await (const event of Deno.watchFs("./")) {
- *   log(event);
- * }
- * // wait 200ms ...
- * // output: Function debounced after 200ms with baz
+ * @see https://github.com/solidjs-community/solid-primitives/tree/main/packages/scheduled#debounce
+ *
+ * @example
+ * ```ts
+ * const fn = debounce((message: string) => console.log(message), 250);
+ * fn('Hello!');
+ * fn.clear() // clears a timeout in progress
  * ```
- *
- * @typeParam T The arguments of the provided function.
- * @param fn The function to debounce.
- * @param wait The time in milliseconds to delay the function.
- * @returns The debounced function.
  */
-function debounce<T extends Array<any>>(
-  fn: (this: DebouncedFunction<T>, ...args: T) => void,
-  wait: number = 300,
-): DebouncedFunction<T> {
-  let timeout: number | null = null;
-  let flush: (() => void) | null = null;
-
-  const debounced: DebouncedFunction<T> = ((...args: T) => {
-    debounced.clear();
-    flush = () => {
-      debounced.clear();
-      fn.call(debounced, ...args);
-    };
-    timeout = setTimeout(flush, wait);
-  }) as DebouncedFunction<T>;
-
-  debounced.clear = () => {
-    if (typeof timeout === "number") {
-      clearTimeout(timeout);
-      timeout = null;
-      flush = null;
-    }
+export const debounce: ScheduleCallback = (callback, wait) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const clear = () => clearTimeout(timeoutId);
+  if (getOwner()) onCleanup(clear);
+  const debounced: typeof callback = (...args) => {
+    if (timeoutId !== undefined) clear();
+    timeoutId = setTimeout(() => callback(...args), wait);
   };
-
-  debounced.flush = () => {
-    flush?.();
-  };
-
-  Object.defineProperty(debounced, "pending", {
-    get: () => typeof timeout === "number",
-  });
-
-  return debounced;
-}
+  return Object.assign(debounced, { clear });
+};
 
 export default debounce;
