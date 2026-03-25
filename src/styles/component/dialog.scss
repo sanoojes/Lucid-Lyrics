@@ -1,57 +1,64 @@
 @use "../variables" as v;
 
 .LucidModalPortal {
-  display: block !important;
+  position: relative;
+  z-index: 9999;
 
-  dialog {
-    padding: 0;
-    border: none;
-    border-radius: 28px;
-    corner-shape: squircle;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    border: 1px solid v.$border-color;
-    background-color: rgba(0, 0, 0, 0.3);
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    max-block-size: inherit !important;
-    max-inline-size: inherit !important;
+  .dialog-overlay {
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.3);
+
+    display: none;
+    opacity: 0;
 
     transition:
-      opacity 0.4s v.$ease-out,
-      transform 0.4s v.$ease-out,
-      overlay 0.4s allow-discrete,
-      display 0.4s allow-discrete;
+      opacity 0.3s cubic-bezier(0.8, 0, 0.2, 1),
+      backdrop-filter 0.3s cubic-bezier(0.8, 0, 0.2, 1),
+      display 0.3s allow-discrete;
 
-    &:not([open]) {
-      opacity: 0;
-      transform: translateY(v.$space-lg) scale(0.96);
-    }
-
-    @starting-style {
-      &[open] {
-        opacity: 0;
-        transform: translateY(v.$space-lg) scale(0.96);
-      }
-    }
-
-    &::backdrop {
-      background: rgba(0, 0, 0, 0.5);
+    &.is-open {
+      display: flex;
       opacity: 1;
-      transition:
-        opacity 0.4s v.$ease-out,
-        overlay 0.4s allow-discrete,
-        display 0.4s allow-discrete;
-    }
 
-    &:not([open])::backdrop {
-      opacity: 0;
-    }
+      transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 
-    @starting-style {
-      &[open]::backdrop {
+      @starting-style {
         opacity: 0;
       }
+    }
+  }
+
+  .dialog-content {
+    padding: 0;
+    border-radius: 28px;
+    border: 1px solid v.$border-color;
+    background-color: rgba(22, 22, 22, 0.85);
+
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+    backdrop-filter: blur(v.$blur-modal);
+    transition:
+      transform 0.3s cubic-bezier(0.8, 0, 0.2, 1),
+      opacity 0.25s ease-in;
+  }
+  .dialog-overlay.is-open .dialog-content {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.4s ease-out;
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(30px) scale(0.9);
     }
   }
 }

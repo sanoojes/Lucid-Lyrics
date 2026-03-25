@@ -1,12 +1,9 @@
 import {
   createContext,
   useContext,
-  createEffect,
   splitProps,
-  onCleanup,
   type ComponentProps,
 } from "solid-js";
-import { Portal } from "solid-js/web";
 import "@/styles/component/dialog.scss";
 
 type DialogContextType = {
@@ -14,7 +11,7 @@ type DialogContextType = {
   isOpen: boolean;
 };
 
-export type DialogProps = ComponentProps<"dialog"> & {
+export type DialogProps = ComponentProps<"div"> & {
   isOpen: boolean;
   onClose: () => void;
 };
@@ -30,39 +27,17 @@ export function useDialog(): DialogContextType {
 }
 
 export function Dialog(props: DialogProps) {
-  let dialogRef!: HTMLDialogElement;
-
   const [local, others] = splitProps(props, ["isOpen", "onClose", "children", "class"]);
-
-  createEffect(() => {
-    const el = dialogRef;
-    if (!el) return;
-
-    if (local.isOpen) {
-      el.showModal();
-    } else {
-      el.close();
-    }
-  });
 
   const handleClose = () => {
     if (local.onClose) local.onClose();
   };
 
-  const handleCancel = (e: Event) => {
-    e.preventDefault();
-    handleClose();
-  };
-
   const handleBackdropClick = (e: MouseEvent) => {
-    if (e.target === dialogRef) {
+    if (e.target === e.currentTarget) {
       handleClose();
     }
   };
-
-  onCleanup(() => {
-    if (dialogRef && dialogRef.open) dialogRef.close();
-  });
 
   return (
     <DialogContext.Provider
@@ -73,30 +48,20 @@ export function Dialog(props: DialogProps) {
         },
       }}
     >
-      <Portal mount={getPortalMount()}>
-        <dialog
-          ref={dialogRef}
-          onCancel={handleCancel}
-          onClick={handleBackdropClick}
-          class={`dialog ${local.class ?? ""}`.trim()}
+      <div
+        class="dialog-overlay"
+        classList={{ "is-open": local.isOpen }}
+        onClick={handleBackdropClick}
+      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          class={`dialog-content ${local.class ?? ""}`.trim()}
           {...others}
         >
           {local.children}
-        </dialog>
-      </Portal>
+        </div>
+      </div>
     </DialogContext.Provider>
   );
-}
-
-function getPortalMount() {
-  const portalId = "LucidModalPortal";
-  let elem = document.getElementById(portalId);
-  if (!elem) {
-    elem = document.createElement("div");
-    elem.id = portalId;
-    elem.className = portalId;
-    document.body.appendChild(elem);
-  }
-
-  return elem;
 }

@@ -1,5 +1,5 @@
 import "@/styles/modal/alert.scss";
-import { For, type JSXElement } from "solid-js";
+import { For, Show, type JSXElement } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Dialog, useDialog } from "@/lib/modal/component/Dialog";
 import { render } from "solid-js/web";
@@ -7,6 +7,7 @@ import { logger } from "@/utils/logger";
 import { Button } from "@/component/ui/Button";
 import { t } from "@/i18n";
 import { BadgeAlert, CircleAlert, ShieldAlert } from "lucide-solid";
+
 export { useDialog };
 
 type ModalItem = {
@@ -17,21 +18,27 @@ type ModalItem = {
 
 const [modals, setModals] = createStore<ModalItem[]>([]);
 
-export function showModal(render: () => JSXElement) {
+export function showModal(renderFunc: () => JSXElement) {
   const id = crypto.randomUUID();
 
-  setModals((prev) => [...prev, { id, render, isOpen: true }]);
+  // Push to the end of the array to maintain proper DOM stacking order
+  setModals((prev) => [...prev, { id, render: renderFunc, isOpen: true }]);
 
   return {
+    id,
     close: () => handleClose(id),
   };
 }
 
 export function handleClose(id: string) {
+  // 1. Trigger the exit animation by setting isOpen to false
   setModals((m) => m.id === id, "isOpen", false);
+  
+  // 2. Remove from DOM after animation completes (matched to 0.4s SCSS transition)
   setTimeout(() => {
-    setModals((prev) => prev.filter((m) => m.id === id));
-  }, 300);
+    // FIXED: Use !== to keep the other modals and remove the closed one
+    setModals((prev) => prev.filter((m) => m.id !== id));
+  }, 400); 
 }
 
 export function closeAllModals() {
@@ -75,19 +82,20 @@ export function showAlert(options: AlertOptions) {
     const { close } = useDialog();
 
     const handleConfirm = (e: MouseEvent) => {
-      e.preventDefault();
       e.stopPropagation();
       if (onConfirm) onConfirm();
       close();
     };
 
-    const handleSecondary = () => {
-      if (secondaryAction?.onClick) secondaryAction.onClick();
+    const handleSecondary = (e: MouseEvent) => {
+      e.stopPropagation();
+      if (secondaryAction?.onClick) {
+        secondaryAction.onClick();
+      }
       close();
     };
 
     const handleCloseClick = (e: MouseEvent) => {
-      e.preventDefault();
       e.stopPropagation();
       close();
     };
@@ -101,11 +109,13 @@ export function showAlert(options: AlertOptions) {
           <Button variant="glass" shape="rounded" size="lg" onClick={handleCloseClick}>
             {t("common.cancel")}
           </Button>
-          {secondaryAction && (
-            <Button variant="default" shape="rounded" size="lg" onClick={handleSecondary}>
-              {secondaryAction.label}
-            </Button>
-          )}
+          <Show when={secondaryAction}>
+            {(secondaryAction) => (
+              <Button variant="default" shape="rounded" size="lg" onClick={handleSecondary}>
+                {secondaryAction().label}
+              </Button>
+            )}
+          </Show>
           <Button
             variant={variant === "warning" ? "default" : variant}
             shape="rounded"
@@ -132,13 +142,19 @@ export function showLinkAlert(url: string, onOpen?: () => void) {
 
 export function ModalRoot() {
   return (
-    <For each={modals}>
-      {(modal) => (
-        <Dialog isOpen={modal.isOpen} onClose={() => handleClose(modal.id)}>
-          {modal.render()}
-        </Dialog>
-      )}
-    </For>
+    <div id="LucidModalPortal" class="LucidModalPortal">
+      <For each={modals}>
+        {(modal) => (
+          <Dialog 
+            isOpen={modal.isOpen} 
+            onClose={() => handleClose(modal.id)}
+            data-modal-id={modal.id} 
+          >
+            {modal.render()}
+          </Dialog>
+        )}
+      </For>
+    </div>
   );
 }
 
