@@ -1,6 +1,7 @@
 import { get, set, del, clear, keys } from "idb-keyval";
 import { ttmlStore, lyricsStore } from "@/stores/idb";
 import { parse, type ParseResult } from "@/lib/ttml/parser";
+import type { TTMLMode } from "@/stores/ttml";
 
 export interface LocalTTML {
   id: string;
@@ -10,6 +11,7 @@ export interface LocalTTML {
   albumName: string;
   rawTTML: string;
   parsedTTML: ParseResult;
+  type: TTMLMode;
   createdAt: number;
   updatedAt: number;
 }
@@ -35,6 +37,7 @@ export async function saveLocalTTML(
   artistNames: string,
   albumName: string,
   file: File,
+  type: TTMLMode = "apple",
 ): Promise<SaveTTMLResult> {
   const existingManifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
   const existingEntry = existingManifest.find((e) => e.songId === songId);
@@ -42,7 +45,8 @@ export async function saveLocalTTML(
   const id = existingEntry?.id ?? crypto.randomUUID();
   const createdAt = existingEntry?.createdAt ?? Date.now();
   const text = await file.text();
-  const parsedTTML = parse(text);
+  const parsedTTML = parse(text, { mode: type });
+  console.log(type, parsedTTML);
 
   let parseError: string | null = null;
   if (!parsedTTML.success) {
@@ -57,6 +61,7 @@ export async function saveLocalTTML(
     albumName,
     rawTTML: text,
     parsedTTML,
+    type,
     createdAt,
     updatedAt: Date.now(),
   };
@@ -124,7 +129,9 @@ export async function migrateTTMLFromLyricsStore(): Promise<{
   migratedCount: number;
 }> {
   const allKeys = await keys(lyricsStore);
-  const ttmlKeys = allKeys.filter((key): key is string => typeof key === "string" && key.startsWith(TTML_KEY_PREFIX));
+  const ttmlKeys = allKeys.filter(
+    (key): key is string => typeof key === "string" && key.startsWith(TTML_KEY_PREFIX),
+  );
 
   if (ttmlKeys.length === 0) {
     return { migratedCount: 0 };

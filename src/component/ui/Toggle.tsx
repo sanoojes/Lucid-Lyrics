@@ -10,6 +10,7 @@ export const Toggle: Component<ToggleProps> = (props) => {
   return (
     <label class="toggle">
       <input
+        id="l-toggle"
         type="checkbox"
         checked={props.checked}
         onChange={(e) => props.onChange(e.currentTarget.checked)}

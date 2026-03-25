@@ -13,6 +13,7 @@ import {
 } from "@/stores/idb/ttml";
 import { useStore } from "@nanostores/solid";
 import { $player_data } from "@/stores/player";
+import { $ttml_mode } from "@/stores/ttml";
 import { t } from "@/i18n";
 import { getProviderName, type LyricsProviders } from "@/constants";
 import { toast } from "@/lib/sonner";
@@ -20,6 +21,8 @@ import SolidLenis from "@/component/ui/Lenis";
 import { lyricsResource, refetchLyrics } from "@/api/solid";
 import { build } from "@/lib/ttml/builder";
 import Marquee from "@/component/ui/Marquee";
+
+import { Toggle } from "@/component/ui/Toggle";
 
 const isValidTTMLFile = (file: File) =>
   file.name.endsWith(".ttml") || file.type === "application/ttml+xml" || file.type === "text/xml";
@@ -30,6 +33,7 @@ const getTTMLFileName = (songName: string, artistNames: string) =>
 function LocalTTMLModal() {
   const { close } = useDialog();
   const playerData = useStore($player_data);
+  const ttmlMode = useStore($ttml_mode);
   const [ttmlFiles, { refetch: refetchTtmlFiles }] = createResource(getAllLocalTTML);
   const [isDragging, setIsDragging] = createSignal(false);
 
@@ -67,7 +71,7 @@ function LocalTTMLModal() {
     try {
       const lyrics = currentLyrics();
       if (!lyrics) return;
-      const ttmlStr = build(lyrics);
+      const ttmlStr = build(lyrics, { mode: ttmlMode() });
       const fileName = getTTMLFileName(currentSongName(), currentArtistNames());
       const blob = new Blob([ttmlStr], { type: "application/ttml+xml" });
       const url = URL.createObjectURL(blob);
@@ -88,7 +92,7 @@ function LocalTTMLModal() {
     try {
       const lyrics = currentLyrics();
       if (!lyrics) return;
-      const ttmlStr = build(lyrics);
+      const ttmlStr = build(lyrics, { mode: ttmlMode() });
       copyToClipboard(ttmlStr);
     } catch {
       toast.error(t("ttml.copyError"));
@@ -135,6 +139,7 @@ function LocalTTMLModal() {
       currentArtistNames(),
       currentAlbumName(),
       file,
+      ttmlMode(),
     );
 
     if (result.parseError) {
@@ -257,6 +262,7 @@ function LocalTTMLModal() {
           currentArtistNames(),
           currentAlbumName(),
           file,
+          ttmlMode(),
         );
         await refetchLyrics();
         await refetchTtmlFiles();
@@ -275,6 +281,7 @@ function LocalTTMLModal() {
           <div class="ttml-song-name">
             <Music size={16} />
             <Marquee>{ttml.songName}</Marquee>
+            <span class="type-pill">{ttml.type === "amll" ? "AMLL" : "Apple"}</span>
           </div>
           <div class="ttml-artist">
             <Marquee>{ttml.artistNames}</Marquee>
@@ -333,6 +340,17 @@ function LocalTTMLModal() {
                 <span>{currentSongTTML() ? t("ttml.overwriteTTML") : t("ttml.uploadTTML")}</span>
               </label>
             </div>
+
+            <label class="ttml-mode-toggle" for="l-toggle">
+              <span class="ttml-mode-label">{t("ttml.mode")}:</span>
+              <span class="ttml-mode-value">
+                {ttmlMode() === "amll" ? t("ttml.modeAmll") : t("ttml.modeApple")}
+              </span>
+              <Toggle
+                checked={ttmlMode() === "amll"}
+                onChange={(checked) => $ttml_mode.set(checked ? "amll" : "apple")}
+              />
+            </label>
 
             <Show when={canDownloadLyrics()}>
               {renderSongInfo(

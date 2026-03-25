@@ -216,6 +216,9 @@ export type Dict = {
   "ttml.currentLyrics": string;
   "ttml.downloadError": string;
   "ttml.copyError": string;
+  "ttml.mode": string;
+  "ttml.modeApple": string;
+  "ttml.modeAmll": string;
   "npv.title": string;
   "npv.hideBackground": string;
   "npv.hideBackgroundDesc": string;

@@ -36,6 +36,28 @@
     }
   }
 
+  .ttml-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: v.$space-base;
+    padding: v.$space-md;
+    background: v.$glass-bg;
+    border-radius: v.$r-md;
+    border: 1px solid v.$glass-bd;
+
+    .ttml-mode-label {
+      font-weight: v.$fw-bold;
+      color: v.$color;
+    }
+
+    .ttml-mode-value {
+      margin-right: auto;
+      font-size: v.$fs-sm;
+      color: v.$color-accent;
+      font-weight: v.$fw-bold;
+    }
+  }
+
   .message {
     display: flex;
     align-items: center;
@@ -216,8 +238,17 @@
         font-weight: v.$fw-bold;
         white-space: nowrap;
         overflow: hidden;
-        color: v.$color;
         text-overflow: ellipsis;
+      }
+      .type-pill {
+        font-size: v.$fs-xs;
+        font-weight: v.$fw-bold;
+        padding: 2px v.$space-sm;
+        border-radius: v.$r-sm;
+        background: v.$color-bg;
+        color: v.$color;
+        border: 1px solid rgba(v.$color, 0.1);
+        flex-shrink: 0;
       }
 
       .ttml-artist {
