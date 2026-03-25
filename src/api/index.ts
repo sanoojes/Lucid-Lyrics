@@ -1,4 +1,5 @@
 import { LyricsAPI } from "@/lib/api";
+import { fetchAMLL } from "@/api/amll";
 import { fetchUser } from "@/api/user";
 import { fetchSpicy } from "@/api/spicy";
 import { fetchSpotify } from "@/api/spotify";
@@ -13,6 +14,10 @@ const API = new LyricsAPI([
   {
     id: "spicy",
     fetch: fetchSpicy,
+  },
+  {
+    id: "amll",
+    fetch: fetchAMLL,
   },
   {
     id: "spotify",

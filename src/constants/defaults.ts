@@ -63,7 +63,12 @@ export const DEFAULT_BACKGROUND_STATE = {
   },
 } satisfies BackgroundState;
 
-export const DEFAULT_PROVIDER_ORDER = ["user", "spicy", "spotify"] satisfies LyricsProviders[];
+export const DEFAULT_PROVIDER_ORDER = [
+  "user",
+  "spicy",
+  "spotify",
+  "amll",
+] satisfies LyricsProviders[];
 
 export const DEFAULT_PAGE_STATE = {
   widget: "show",

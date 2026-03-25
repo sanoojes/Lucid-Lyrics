@@ -64,3 +64,18 @@ export const $providers = persistentJSON<LyricsProviders[]>(
 export function resetProviders() {
   $providers.set(DEFAULT_PROVIDER_ORDER);
 }
+
+(function migrate() {
+  const curr = $providers.get();
+  if (!curr || !Array.isArray(curr)) {
+    $providers.set(DEFAULT_PROVIDER_ORDER);
+    return;
+  }
+
+  if (!curr.includes("amll")) {
+    const nextState = [...curr];
+    const spicyIndex = nextState.indexOf("spicy");
+    nextState.splice(spicyIndex === -1 ? nextState.length : spicyIndex + 1, 0, "amll");
+    $providers.set(nextState);
+  }
+})();
