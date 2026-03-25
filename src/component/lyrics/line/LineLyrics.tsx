@@ -305,7 +305,6 @@ export default function LineLyrics(props: LineLyricsProps) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           updateOffset();
-          setVisibleElements(new Set<number>());
           performScroll(true, true);
         });
       });
