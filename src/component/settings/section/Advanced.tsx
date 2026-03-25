@@ -21,6 +21,7 @@ import { RotateCcw } from "lucide-solid";
 import { Show } from "solid-js";
 import { logger } from "@/utils/logger";
 import { toast } from "@/lib/sonner";
+import { showAlert } from "@/lib/modal";
 
 function AdvancedSettings() {
   const devMode = useStore($developer_mode);
@@ -36,7 +37,7 @@ function AdvancedSettings() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  const handleClearCache = async () => {
+  const clearCache = async () => {
     try {
       await API.clearAllCache();
       lyricsResourceAction.refetch();
@@ -45,6 +46,16 @@ function AdvancedSettings() {
       toast.error(t("advanced.clearCacheError"));
       logger.error("Failed to clear cache: ", error);
     }
+  };
+
+  const handleClearCache = () => {
+    showAlert({
+      title: t("advanced.clearCacheConfirm"),
+      description: t("advanced.clearCacheConfirmDesc"),
+      onConfirm: () => clearCache(),
+      variant: "destructive",
+      confirmLabel: t("advanced.clearCacheButton"),
+    });
   };
 
   return (

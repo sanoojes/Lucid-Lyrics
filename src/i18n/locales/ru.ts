@@ -156,6 +156,8 @@ export const dict: Dict = {
   "advanced.entries": "Записей",
   "advanced.clearCacheSuccess": "Кэш текстов очищен",
   "advanced.clearCacheError": "Не удалось очистить кэш текстов",
+  "advanced.clearCacheConfirm": "Очистить кэш текстов?",
+  "advanced.clearCacheConfirmDesc": "Это удалит все кэшированные тексты песен. Песни будут загружать тексты заново.",
   "advanced.cacheTTL": "Длительность кэша",
   "advanced.cacheTTLDesc": "Как долго хранить тексты в кэше (в днях)",
   "player.scrollToActive": "Синхронизировать",

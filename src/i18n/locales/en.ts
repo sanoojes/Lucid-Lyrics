@@ -156,6 +156,8 @@ export const dict: Dict = {
   "advanced.entries": "Entries",
   "advanced.clearCacheSuccess": "Cleared Lyrics Cache",
   "advanced.clearCacheError": "Failed to clear lyrics cache",
+  "advanced.clearCacheConfirm": "Clear lyrics cache?",
+  "advanced.clearCacheConfirmDesc": "This will remove all cached lyrics. Songs will need to fetch lyrics again.",
   "advanced.cacheTTL": "Cache Duration",
   "advanced.cacheTTLDesc": "How long to keep lyrics cached (in days)",
   "player.scrollToActive": "Sync",

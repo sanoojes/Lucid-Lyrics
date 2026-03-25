@@ -156,6 +156,8 @@ export const dict: Dict = {
   "advanced.entries": "Entradas",
   "advanced.clearCacheSuccess": "Caché de letras borrada",
   "advanced.clearCacheError": "Error al borrar la caché de letras",
+  "advanced.clearCacheConfirm": "¿Borrar la caché de letras?",
+  "advanced.clearCacheConfirmDesc": "Esto eliminará todas las letras almacenadas en caché. Las canciones deberán obtener las letras nuevamente.",
   "advanced.cacheTTL": "Duración de la Caché",
   "advanced.cacheTTLDesc": "Cuánto tiempo mantener las letras en caché (en días)",
   "player.scrollToActive": "Sincronizar",

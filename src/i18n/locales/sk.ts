@@ -158,6 +158,8 @@ export const dict: Dict = {
   "advanced.entries": "Záznamy",
   "advanced.clearCacheSuccess": "Vymazaná vyrovnávacia pamäť textov piesní",
   "advanced.clearCacheError": "Nepodarilo sa vymazať vyrovnávaciu pamäť textov piesní",
+  "advanced.clearCacheConfirm": "Vymazať vyrovnávaciu pamäť textov?",
+  "advanced.clearCacheConfirmDesc": "Tým sa odstránia všetky texty piesní uložené vo vyrovnávacej pamäti. Skladby budú musieť znova získať texty.",
   "advanced.cacheTTL": "Trvanie vyrovnávacej pamäte",
   "advanced.cacheTTLDesc": "Ako dlho uchovávať texty piesní vo vyrovnávacej pamäti (v dňoch)",
   "player.scrollToActive": "Synchronizovať",
