@@ -460,6 +460,9 @@ $floating-transition:
   --interlude-dots-gap: max(calc(var(--interlude-height) * 0.3), 16px);
   --interlude-size: max(calc(var(--interlude-height) * 0.3), 10px);
 
+  word-break: break-word;
+  overflow-wrap: break-word;
+
   font-size: var(--lead-font-size);
   font-weight: var(--lead-font-weight);
 
@@ -631,6 +634,9 @@ $floating-transition:
   --lyrics-text-color: 255, 255, 255;
   --lead-font-weight: 700;
   --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
+
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   font-size: var(--lead-font-size);
   font-weight: var(--lead-font-weight);
