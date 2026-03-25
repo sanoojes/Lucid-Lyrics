@@ -70,7 +70,7 @@ $floating-transition:
     }
 
     .player-widget {
-      width: 40cqw;
+      width: min(40cqw, 64cqh);
       transition-property: flex-direction;
       transition-duration: 0.4s;
       transition-timing-function: ease;
@@ -99,7 +99,7 @@ $floating-transition:
   }
 
   .lyrics-area {
-    margin-left: 30cqw + 6cqw + 12cqw;
+    margin-left: calc(min(40cqw, 64cqh) + 8cqw);
     margin-top: 0;
 
     &.widget-hidden {
@@ -457,39 +457,11 @@ $floating-transition:
   --bg-font-size: calc(var(--lead-font-size) * 0.75);
 
   --interlude-height: max(calc(var(--lead-font-size) * 1.2), 32px);
-  --interlude-dots-gap: max(calc(var(--interlude-height) * 0.35), 16px);
+  --interlude-dots-gap: max(calc(var(--interlude-height) * 0.3), 16px);
   --interlude-size: max(calc(var(--interlude-height) * 0.3), 10px);
 
   font-size: var(--lead-font-size);
   font-weight: var(--lead-font-weight);
-
-  .line-wrapper {
-    --l-blur: 0px;
-    --l-scale: 1;
-    --l-opacity: 0.6;
-
-    filter: blur(var(--l-blur));
-    transform: scale(var(--l-scale));
-    opacity: var(--l-opacity);
-    border-radius: 12px;
-    transform-origin: center left;
-
-    transition-duration: 0.3s;
-    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
-    transition-property: filter, transform, opacity;
-    will-change: filter, transform, opacity;
-
-    &:hover {
-      filter: blur(0px);
-      opacity: 0.8;
-    }
-
-    &.rtl {
-      direction: rtl;
-      text-align: right;
-      transform-origin: center right;
-    }
-  }
 
   .romanized-text {
     --romanized-font-size: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.6);
@@ -500,6 +472,41 @@ $floating-transition:
     unicode-bidi: embed;
   }
 
+  .line-wrapper {
+    --l-blur: 0px;
+    --l-scale: 1;
+    --l-opacity: 0.6;
+
+    filter: blur(var(--l-blur));
+    transform: scale(var(--l-scale));
+    opacity: var(--l-opacity);
+    transform-origin: center left;
+
+    margin-bottom: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.5);
+
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+    transition-property: filter, transform, opacity;
+    will-change: filter, transform, opacity;
+
+    &:hover {
+      filter: blur(0px);
+      opacity: 0.8;
+    }
+    &.interlude-wrapper {
+      margin-bottom: v.$space-xs;
+    }
+
+    &.rtl {
+      direction: rtl;
+      transform-origin: center right;
+
+      .romanized-text {
+        text-align: right;
+      }
+    }
+  }
+
   .trailing-whitespace:after {
     content: "";
     margin-right: 0.3ch;
@@ -507,18 +514,55 @@ $floating-transition:
 }
 
 .syllable-lyrics {
+  .word {
+    display: inline-block;
+    position: relative;
+  }
+
+  .syllable-line {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    content-visibility: auto;
+    backface-visibility: hidden;
+
+    &.has-bg-line {
+      margin-bottom: v.$space-xs;
+    }
+
+    &.background-line {
+      font-size: var(--bg-font-size);
+      font-weight: var(--bg-font-weight);
+
+      &.has-bg-line {
+        margin-bottom: 0;
+      }
+
+      .romanized-text {
+        --romanized-font-size: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.5);
+      }
+    }
+  }
+
+  .line-wrapper {
+    &.has-romanized {
+      &.roman-top,
+      &.roman-bottom {
+        margin-bottom: v.$space-2xl;
+      }
+    }
+  }
+
   .syllable {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     position: relative;
     vertical-align: bottom;
 
-    &.has-romanized-top,
+    &.has-romanized-top {
+      margin-top: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.5);
+    }
     &.has-romanized-bottom {
-      min-width: 0.5ch;
-      margin-top: v.$space-md;
+      margin-bottom: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.5);
     }
   }
 
@@ -566,12 +610,6 @@ $floating-transition:
     &.at-bottom {
       order: 1;
       margin-top: 2px;
-    }
-  }
-
-  .background-line {
-    .romanized-text {
-      --romanized-font-size: calc(clamp(1.8rem, 4cqw, 3.6rem) * 0.5);
     }
   }
 }
@@ -771,24 +809,6 @@ $floating-transition:
   syntax: "<length>";
   inherits: false;
   initial-value: 1.5rem;
-}
-
-@property --interlude-height {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 32px;
-}
-
-@property --interlude-dots-gap {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 16px;
-}
-
-@property --interlude-size {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 10px;
 }
 
 @property --l-blur {

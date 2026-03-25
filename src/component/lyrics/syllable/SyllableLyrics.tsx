@@ -4,7 +4,6 @@ import {
   createMemo,
   createSignal,
   For,
-  Index,
   on,
   onCleanup,
   onMount,
@@ -37,40 +36,10 @@ type LineEntry =
       end: number;
       oppAligned: boolean;
       isIntro: boolean;
-      isRTL: boolean;
+      isRTL?: boolean;
     };
 
 type Word = { Syllables: Syllable[] };
-
-const COMMON_STYLES_LINE_LEAD = (
-  oppAligned: boolean = false,
-  hasBg: boolean,
-  isBg = false,
-  paddingLeft?: string,
-  paddingRight?: string,
-) =>
-  ({
-    position: "relative",
-    display: "block",
-    cursor: "pointer",
-    "content-visibility": "auto",
-    "backface-visibility": "hidden",
-    "text-align": oppAligned ? "end" : "start",
-    "margin-bottom": hasBg && !isBg ? "4px" : undefined,
-    "padding-left": paddingLeft !== undefined ? paddingLeft : undefined,
-    "padding-right": paddingRight !== undefined ? paddingRight : undefined,
-    ...(isBg
-      ? {
-          "font-size": "var(--bg-font-size)",
-          "font-weight": "var(--bg-font-weight)",
-        }
-      : {}),
-  }) as const;
-
-const COMMON_STYLES_WORD = {
-  display: "inline-block",
-  position: "relative",
-} as const;
 
 function getVocalPartBounds(content: SyllableData["Content"][number]) {
   const lead = content.Lead.Syllables;
@@ -122,9 +91,6 @@ function LeadRenderer(props: LeadRendererProps) {
 
   const handleClick = () => seekTo(props.vocalPart.StartTime * 1000);
 
-  const paddingRight = () => (props.isRTL === props.oppAligned ? props.globalPadding : "0");
-  const paddingLeft = () => (props.isRTL !== props.oppAligned ? props.globalPadding : "0");
-
   const showTop = () => props.romanize && props.romanize_position === "top";
   const showBottom = () => props.romanize && props.romanize_position === "bottom";
   const useReplace = () => props.romanize && props.romanize_position === "replace";
@@ -137,16 +103,18 @@ function LeadRenderer(props: LeadRendererProps) {
 
   return (
     <span
+      class="syllable-line"
       classList={{
+        "has-bg-line": props.hasBg,
         "background-line": props.background,
+        "opp-aligned": props.oppAligned,
       }}
-      style={COMMON_STYLES_LINE_LEAD(
-        props.oppAligned,
-        !!props.hasBg,
-        props.background,
-        paddingLeft(),
-        paddingRight(),
-      )}
+      style={{
+        "text-align": props.oppAligned ? "end" : "start", // for some reason scss makes end => right and start => left
+        "padding-inline": props.oppAligned
+          ? "var(--lyrics-line-default-padding) 0"
+          : "0 var(--lyrics-line-default-padding)",
+      }}
       onClick={handleClick}
       role="button"
       tabIndex={0}
@@ -171,7 +139,6 @@ function LeadRenderer(props: LeadRendererProps) {
                 "has-romanized-top": showTop() && hasRomanizedInWord(),
                 "has-romanized-bottom": showBottom() && hasRomanizedInWord(),
               }}
-              style={COMMON_STYLES_WORD}
             >
               <For each={wordSyllables}>
                 {(syllable) => {
@@ -190,12 +157,12 @@ function LeadRenderer(props: LeadRendererProps) {
                   const RomanizedLyrics = (rProps: RomanizedProps) => (
                     <Show when={hasRomanizedForSyllable()}>
                       <span class={`romanized-text at-${rProps.position}`}>
-                        <Index each={romanizedSplit()}>
+                        <For each={romanizedSplit()}>
                           {(char, charIdx) => {
                             const charDuration =
                               (syllable.EndTime * 1000 - syllable.StartTime * 1000) /
                               romanizedSplit().length;
-                            const charStart = syllable.StartTime * 1000 + charIdx * charDuration;
+                            const charStart = syllable.StartTime * 1000 + charIdx() * charDuration;
                             const charEnd = charStart + charDuration;
 
                             const progress = createMemo(() => {
@@ -221,11 +188,11 @@ function LeadRenderer(props: LeadRendererProps) {
                                   "background-clip": "text",
                                 }}
                               >
-                                {char()}
+                                {char}
                               </span>
                             );
                           }}
-                        </Index>
+                        </For>
                       </span>
                     </Show>
                   );
@@ -237,62 +204,54 @@ function LeadRenderer(props: LeadRendererProps) {
                         "has-romanized-top": showTop() && hasRomanizedForSyllable(),
                         "has-romanized-bottom": showBottom() && hasRomanizedForSyllable(),
                       }}
-                      style={{
-                        display: "inline-block",
-                        position: "relative",
-                        "min-width":
-                          (showTop() || showBottom()) && hasRomanizedForSyllable()
-                            ? "1ch"
-                            : undefined,
-                      }}
                     >
                       <Show when={showTop()}>
                         <RomanizedLyrics position="top" />
                       </Show>
+                      <span>
+                        <For each={splitText()}>
+                          {(char, charIdx) => {
+                            if (SPACE_REGEX.test(char)) return " ";
 
-                      <Index each={splitText()}>
-                        {(char, charIdx) => {
-                          const c = char();
-                          if (SPACE_REGEX.test(c)) return " ";
+                            const charProgress = createMemo(() => {
+                              const status = props.lineStatus();
+                              if (status === "past") return 100;
+                              if (status === "upcoming") return 0;
 
-                          const charProgress = createMemo(() => {
-                            const status = props.lineStatus();
-                            if (status === "past") return 100;
-                            if (status === "upcoming") return 0;
+                              const start = syllable.StartTime * 1000;
+                              const end = syllable.EndTime * 1000;
+                              const pos = props.getCurrentPos();
 
-                            const start = syllable.StartTime * 1000;
-                            const end = syllable.EndTime * 1000;
-                            const pos = props.getCurrentPos();
+                              if (pos < start) return 0;
+                              if (pos >= end) return 100;
 
-                            if (pos < start) return 0;
-                            if (pos >= end) return 100;
+                              const charDuration = (end - start) / splitText().length;
+                              const charStart = start + charIdx() * charDuration;
+                              const charEnd = charStart + charDuration;
 
-                            const charDuration = (end - start) / splitText().length;
-                            const charStart = start + charIdx * charDuration;
-                            const charEnd = charStart + charDuration;
+                              if (pos < charStart) return 0;
+                              if (pos >= charEnd) return 100;
 
-                            if (pos < charStart) return 0;
-                            if (pos >= charEnd) return 100;
+                              return ((pos - charStart) / charDuration) * 100;
+                            });
 
-                            return ((pos - charStart) / charDuration) * 100;
-                          });
-
-                          return (
-                            <span
-                              class="char"
-                              style={{
-                                "--char-progress": `${charProgress()}%`,
-                                "--char-progress-2": `${charProgress() > 0 ? charProgress() + 20 : 0}%`,
-                                "--shadow-blur": `${charProgress() * 0.06}px`,
-                                "--shadow-alpha": (charProgress() / 200) * 0.85,
-                                "background-image": `linear-gradient(${props.isRTL ? 270 : 90}deg, rgba(255, 255, 255, 0.85) var(--char-progress), rgba(255, 255, 255, 0.4) var(--char-progress-2))`,
-                              }}
-                            >
-                              {c}
-                            </span>
-                          );
-                        }}
-                      </Index>
+                            return (
+                              <span
+                                class="char"
+                                style={{
+                                  "--char-progress": `${charProgress()}%`,
+                                  "--char-progress-2": `${charProgress() > 0 ? charProgress() + 20 : 0}%`,
+                                  "--shadow-blur": `${charProgress() * 0.06}px`,
+                                  "--shadow-alpha": (charProgress() / 200) * 0.85,
+                                  "background-image": `linear-gradient(${props.isRTL ? 270 : 90}deg, rgba(255, 255, 255, 0.85) var(--char-progress), rgba(255, 255, 255, 0.4) var(--char-progress-2))`,
+                                }}
+                              >
+                                {char}
+                              </span>
+                            );
+                          }}
+                        </For>
+                      </span>
 
                       <Show when={showBottom()}>
                         <RomanizedLyrics position="bottom" />
@@ -364,17 +323,19 @@ function SyllableLyrics(props: SyllableLyricsProps) {
       });
 
       if (i < content.length - 1) {
-        const nextBounds = getVocalPartBounds(content[i + 1]);
+        const nextLine = content[i + 1];
+        const nextBounds = getVocalPartBounds(nextLine);
         const gap = nextBounds.start - end;
+
         if (gap > 2000) {
           entries.push({
             type: "interlude",
             index: lineIdx++,
             start: Math.max(0, end - 100),
             end: Math.max(0, nextBounds.start - 100),
-            oppAligned: c.OppositeAligned,
+            oppAligned: nextLine.OppositeAligned,
             isIntro: false,
-            isRTL: c.IsRTL,
+            isRTL: nextLine.IsRTL,
           });
         }
       }
@@ -382,7 +343,6 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
     return entries;
   });
-
   const allBounds = createMemo(() => {
     return lineEntries().map((entry) => {
       if (entry.type === "interlude") {
@@ -618,21 +578,15 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
     const ro = new ResizeObserver(onResize);
 
+    onResize();
+    requestAnimationFrame(onResize);
+    requestAnimationFrame(() => requestAnimationFrame(onResize));
+
     if (contentRef) {
       ro.observe(contentRef);
       contentRef.addEventListener("wheel", handleUserInteraction, { passive: true });
       contentRef.addEventListener("touchmove", handleUserInteraction, { passive: true });
     }
-
-    requestAnimationFrame(() => {
-      updateLayoutVars();
-      if (lenis) {
-        updateOffset();
-        lenis.resize();
-        performScroll(true, true);
-      }
-    });
-
     onCleanup(() => {
       if (contentRef) {
         contentRef.removeEventListener("wheel", handleUserInteraction);
@@ -690,7 +644,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
           });
 
           const isLineRTL = () => {
-            if (entry.type === "interlude") return entry.isRTL && !romanize();
+            if (entry.type === "interlude")
+              return entry.isRTL && !(romanize() && romanize_position() === "replace");
             const shouldUseRomanizedReplace = romanize() && romanize_position() === "replace";
             return entry.content.IsRTL && !shouldUseRomanizedReplace;
           };
@@ -706,7 +661,11 @@ function SyllableLyrics(props: SyllableLyricsProps) {
               class="line-wrapper"
               classList={{
                 rtl: isLineRTL(),
+                "roman-top": romanize() && romanize_position() === "top",
+                "roman-replace": romanize() && romanize_position() === "replace",
+                "roman-bottom": romanize() && romanize_position() === "bottom",
                 "has-romanized": hasRomanizedText(),
+                "interlude-wrapper": entry.type === "interlude",
               }}
               ref={(el) => {
                 if (!el) return;
@@ -717,8 +676,6 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                 "--l-blur": blur(),
                 "--l-scale": isActive() ? 1.01 : 1,
                 "--l-opacity": isActive() ? 1 : 0.6,
-                "margin-bottom":
-                  entry.type === "interlude" ? 0 : hasRomanizedText() ? "24px" : "12px",
               }}
             >
               {entry.type === "interlude" ? (
@@ -726,7 +683,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                   start={entry.start}
                   end={entry.end}
                   currentPos={currentPos()}
-                  oppAligned={isLineRTL() ? !entry.oppAligned : entry.oppAligned}
+                  oppAligned={entry.oppAligned}
                   rtl={isLineRTL()}
                 />
               ) : (

@@ -1,6 +1,6 @@
 .interlude-indicator {
   display: flex;
-  gap: var(--interlude-dots-gap, 14px);
+  gap: var(--interlude-dots-gap, 16px);
   align-items: center;
   justify-content: flex-start;
   height: 0;
@@ -37,4 +37,22 @@
   height: var(--interlude-size, 10px);
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.9);
+}
+
+@property --interlude-height {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 32px;
+}
+
+@property --interlude-dots-gap {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 16px;
+}
+
+@property --interlude-size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 10px;
 }
