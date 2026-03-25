@@ -12,7 +12,7 @@ const KawarpLayer = () => {
 
   const options = useStore($kawarp_options);
   const currentTrackImage = useStore($current_track_image);
-  
+
   const { localBlob } = useLocalBlob(() => options().mode);
 
   const activeSource = createMemo(() => {
@@ -21,7 +21,6 @@ const KawarpLayer = () => {
     if (opt.mode === "local") return localBlob() ?? currentTrackImage();
     return currentTrackImage();
   });
-
 
   const loadImage = (source?: string | Blob) => {
     if (!kawarp || !source) return;
@@ -48,7 +47,7 @@ const KawarpLayer = () => {
           canvasRef.width = width;
           canvasRef.height = height;
           kawarp?.resize();
-          kawarp?.renderFrame()
+          kawarp?.renderFrame();
         }
       }
     });

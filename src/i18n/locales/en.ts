@@ -133,7 +133,8 @@ export const dict: Dict = {
   "settings.resetDesc": "Reset all settings to their default values",
   "settings.resetButton": "Reset All",
   "settings.resetConfirm": "Reset all settings?",
-  "settings.resetDescription": "This will restore all settings to their default values and delete your local lyrics and images.",
+  "settings.resetDescription":
+    "This will restore all settings to their default values and delete your local lyrics and images.",
   "settings.resetting": "Resetting...",
   "settings.resettingDesc": "Clearing cache and resetting settings",
   "settings.resetComplete": "Reset Success",
@@ -164,7 +165,8 @@ export const dict: Dict = {
   "advanced.clearCacheSuccess": "Cleared Lyrics Cache",
   "advanced.clearCacheError": "Failed to clear lyrics cache",
   "advanced.clearCacheConfirm": "Clear lyrics cache?",
-  "advanced.clearCacheConfirmDesc": "This will remove all cached lyrics. Songs will need to fetch lyrics again.",
+  "advanced.clearCacheConfirmDesc":
+    "This will remove all cached lyrics. Songs will need to fetch lyrics again.",
   "advanced.cacheTTL": "Cache Duration",
   "advanced.cacheTTLDesc": "How long to keep lyrics cached (in days)",
   "player.scrollToActive": "Sync",
@@ -279,6 +281,7 @@ export const dict: Dict = {
   "lyricsCredits.provider": "Provider",
   "lyricsCredits.goToGithubProfile": "Go to {{username}}'s Profile",
   "alerts.externalLink.title": "You're leaving Spotify",
-  "alerts.externalLink.description": "You're about to open {{url}}. This link will take you to an external website.",
+  "alerts.externalLink.description":
+    "You're about to open {{url}}. This link will take you to an external website.",
   "alerts.externalLink.open": "Open Link",
 } as const;

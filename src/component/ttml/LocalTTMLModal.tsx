@@ -24,7 +24,6 @@ import Marquee from "@/component/ui/Marquee";
 const isValidTTMLFile = (file: File) =>
   file.name.endsWith(".ttml") || file.type === "application/ttml+xml" || file.type === "text/xml";
 
-
 const getTTMLFileName = (songName: string, artistNames: string) =>
   `${songName} by ${artistNames}.ttml`;
 
@@ -59,9 +58,7 @@ function LocalTTMLModal() {
   });
 
   const currentLyrics = createMemo(() => lyricsResource()?.data);
-  const isLocalTTMLLyrics = createMemo(
-    () => currentLyrics()?.Provider === "user",
-  );
+  const isLocalTTMLLyrics = createMemo(() => currentLyrics()?.Provider === "user");
   const canDownloadLyrics = createMemo(
     () => currentLyrics() && !currentSongTTML() && !isLocalTTMLLyrics(),
   );
@@ -354,7 +351,7 @@ function LocalTTMLModal() {
                     <span>{t("ttml.copyTTML")}</span>
                   </Button>
                 </>,
-                getProviderName(currentLyrics()!.Provider as LyricsProviders)
+                getProviderName(currentLyrics()!.Provider as LyricsProviders),
               )}
             </Show>
 

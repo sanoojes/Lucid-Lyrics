@@ -138,7 +138,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const firstActiveIndex = createMemo(() => activeIndices()[0] ?? 0);
 
-  const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
+  // const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
 
   function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
     if (!containerRef) return;
@@ -278,10 +278,9 @@ export default function LineLyrics(props: LineLyricsProps) {
             return hasChanges ? nextSet : prev;
           });
         },
-        { threshold: 0.1 },
+        { threshold: 0.01 },
       );
     }
-
     observer.disconnect();
 
     queueMicrotask(() => {

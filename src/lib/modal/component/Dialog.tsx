@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  splitProps,
-  type ComponentProps,
-} from "solid-js";
+import { createContext, useContext, splitProps, type ComponentProps } from "solid-js";
 import "@/styles/component/dialog.scss";
 
 type DialogContextType = {

@@ -7,11 +7,7 @@ import {
   type Accessor,
   type Setter,
 } from "solid-js";
-import {
-  getLocalImage,
-  getRandomLocalImage,
-  getAdjacentLocalImage,
-} from "@/stores/idb/images";
+import { getLocalImage, getRandomLocalImage, getAdjacentLocalImage } from "@/stores/idb/images";
 import {
   $image_options,
   $slideshow,
@@ -37,9 +33,7 @@ export function useLocalBlob(mode: Accessor<ImageTypes>): LocalBlobInstance {
       const slideshow = useStore($slideshow);
       const local = () => options().local;
 
-      const targetId = createMemo(() =>
-        mode() === "local" ? local().selectedId : undefined,
-      );
+      const targetId = createMemo(() => (mode() === "local" ? local().selectedId : undefined));
 
       const [localBlob, setLocalBlob] = createSignal<Blob | undefined>(undefined);
       const [isLoaded, setIsLoaded] = createSignal(false);
@@ -54,7 +48,7 @@ export function useLocalBlob(mode: Accessor<ImageTypes>): LocalBlobInstance {
         if (id) {
           getLocalImage(id).then((imageData) => {
             if (isCancelled) return;
-            
+
             setLocalBlob(imageData?.blob || undefined);
           });
         } else {
@@ -104,7 +98,7 @@ export function useLocalBlob(mode: Accessor<ImageTypes>): LocalBlobInstance {
           }
           updateSlideshowElapsed(elapsed);
         };
-        
+
         check();
         const interval = setInterval(check, 1000);
         onCleanup(() => clearInterval(interval));
@@ -113,6 +107,6 @@ export function useLocalBlob(mode: Accessor<ImageTypes>): LocalBlobInstance {
       return { localBlob, isLoaded, setIsLoaded };
     });
   }
-  
+
   return instance;
 }

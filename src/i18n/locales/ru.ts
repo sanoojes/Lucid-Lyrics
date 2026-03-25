@@ -133,7 +133,8 @@ export const dict: Dict = {
   "settings.resetDesc": "Сбросить все настройки до значений по умолчанию",
   "settings.resetButton": "Сбросить Все",
   "settings.resetConfirm": "Вы уверены, что хотите сбросить все настройки?",
-  "settings.resetDescription": "Это восстановит все настройки до значений по умолчанию и удалит ваши локальные тексты и изображения.",
+  "settings.resetDescription":
+    "Это восстановит все настройки до значений по умолчанию и удалит ваши локальные тексты и изображения.",
   "settings.resetting": "Сброс...",
   "settings.resettingDesc": "Очистка кэша и сброс настроек",
   "settings.resetComplete": "Сброс выполнен успешно",
@@ -157,7 +158,8 @@ export const dict: Dict = {
   "advanced.clearCacheSuccess": "Кэш текстов очищен",
   "advanced.clearCacheError": "Не удалось очистить кэш текстов",
   "advanced.clearCacheConfirm": "Очистить кэш текстов?",
-  "advanced.clearCacheConfirmDesc": "Это удалит все кэшированные тексты песен. Песни будут загружать тексты заново.",
+  "advanced.clearCacheConfirmDesc":
+    "Это удалит все кэшированные тексты песен. Песни будут загружать тексты заново.",
   "advanced.cacheTTL": "Длительность кэша",
   "advanced.cacheTTLDesc": "Как долго хранить тексты в кэше (в днях)",
   "player.scrollToActive": "Синхронизировать",
@@ -273,6 +275,7 @@ export const dict: Dict = {
   "lyricsCredits.provider": "Поставщик",
   "lyricsCredits.goToGithubProfile": "Перейти к профилю {{username}}",
   "alerts.externalLink.title": "Вы покидаете Spotify",
-  "alerts.externalLink.description": "Вы собираетесь открыть {{url}}. Эта ссылка ведёт на внешний сайт.",
+  "alerts.externalLink.description":
+    "Вы собираетесь открыть {{url}}. Эта ссылка ведёт на внешний сайт.",
   "alerts.externalLink.open": "Открыть ссылку",
 } as const;

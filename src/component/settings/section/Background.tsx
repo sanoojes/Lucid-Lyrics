@@ -246,7 +246,10 @@ function BackgroundSettings() {
           <LocalImagesSettings local={bg().options.image.local} />
         </Show>
 
-        <SettingsRow label={t("bg.kawarp.warpIntensity")} description={t("bg.kawarp.warpIntensityDesc")}>
+        <SettingsRow
+          label={t("bg.kawarp.warpIntensity")}
+          description={t("bg.kawarp.warpIntensityDesc")}
+        >
           <Slider
             value={kawarpOptions().warpIntensity}
             onChange={(v) => updateKawarpOptions({ warpIntensity: v })}
@@ -266,7 +269,10 @@ function BackgroundSettings() {
           />
         </SettingsRow>
 
-        <SettingsRow label={t("bg.kawarp.animationSpeed")} description={t("bg.kawarp.animationSpeedDesc")}>
+        <SettingsRow
+          label={t("bg.kawarp.animationSpeed")}
+          description={t("bg.kawarp.animationSpeedDesc")}
+        >
           <Slider
             value={kawarpOptions().animationSpeed}
             onChange={(v) => updateKawarpOptions({ animationSpeed: v })}
@@ -277,7 +283,10 @@ function BackgroundSettings() {
           />
         </SettingsRow>
 
-        <SettingsRow label={t("bg.kawarp.transitionDuration")} description={t("bg.kawarp.transitionDurationDesc")}>
+        <SettingsRow
+          label={t("bg.kawarp.transitionDuration")}
+          description={t("bg.kawarp.transitionDurationDesc")}
+        >
           <Slider
             value={kawarpOptions().transitionDuration}
             onChange={(v) => updateKawarpOptions({ transitionDuration: v })}
@@ -298,7 +307,10 @@ function BackgroundSettings() {
           />
         </SettingsRow>
 
-        <SettingsRow label={t("bg.kawarp.tintIntensity")} description={t("bg.kawarp.tintIntensityDesc")}>
+        <SettingsRow
+          label={t("bg.kawarp.tintIntensity")}
+          description={t("bg.kawarp.tintIntensityDesc")}
+        >
           <Slider
             value={kawarpOptions().tintIntensity}
             onChange={(v) => updateKawarpOptions({ tintIntensity: v })}
@@ -320,7 +332,13 @@ function BackgroundSettings() {
 
         <SettingsRow label={t("bg.kawarp.tintColor")} description={t("bg.kawarp.tintColorDesc")}>
           <Color
-            value={`#${kawarpOptions().tintColor.map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("")}`}
+            value={`#${kawarpOptions()
+              .tintColor.map((v) =>
+                Math.round(v * 255)
+                  .toString(16)
+                  .padStart(2, "0"),
+              )
+              .join("")}`}
             onChange={(v) => {
               const r = parseInt(v.slice(1, 3), 16) / 255;
               const g = parseInt(v.slice(3, 5), 16) / 255;

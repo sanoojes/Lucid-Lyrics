@@ -133,7 +133,8 @@ export const dict: Dict = {
   "settings.resetDesc": "Restablecer todos los ajustes a sus valores predeterminados",
   "settings.resetButton": "Restablecer Todo",
   "settings.resetConfirm": "¿Estás seguro de que deseas restablecer todos los ajustes?",
-  "settings.resetDescription": "Esto restaurará todos los ajustes a sus valores predeterminados y eliminará tus letras locales e imágenes.",
+  "settings.resetDescription":
+    "Esto restaurará todos los ajustes a sus valores predeterminados y eliminará tus letras locales e imágenes.",
   "settings.resetting": "Restableciendo...",
   "settings.resettingDesc": "Borrando caché y restableciendo ajustes",
   "settings.resetComplete": "Restablecimiento exitoso",
@@ -157,7 +158,8 @@ export const dict: Dict = {
   "advanced.clearCacheSuccess": "Caché de letras borrada",
   "advanced.clearCacheError": "Error al borrar la caché de letras",
   "advanced.clearCacheConfirm": "¿Borrar la caché de letras?",
-  "advanced.clearCacheConfirmDesc": "Esto eliminará todas las letras almacenadas en caché. Las canciones deberán obtener las letras nuevamente.",
+  "advanced.clearCacheConfirmDesc":
+    "Esto eliminará todas las letras almacenadas en caché. Las canciones deberán obtener las letras nuevamente.",
   "advanced.cacheTTL": "Duración de la Caché",
   "advanced.cacheTTLDesc": "Cuánto tiempo mantener las letras en caché (en días)",
   "player.scrollToActive": "Sincronizar",
@@ -273,6 +275,7 @@ export const dict: Dict = {
   "lyricsCredits.provider": "Proveedor",
   "lyricsCredits.goToGithubProfile": "Ir al perfil de {{username}}",
   "alerts.externalLink.title": "Estás saliendo de Spotify",
-  "alerts.externalLink.description": "Estás a punto de abrir {{url}}. Este enlace te llevará a un sitio web externo.",
+  "alerts.externalLink.description":
+    "Estás a punto de abrir {{url}}. Este enlace te llevará a un sitio web externo.",
   "alerts.externalLink.open": "Abrir enlace",
 } as const;

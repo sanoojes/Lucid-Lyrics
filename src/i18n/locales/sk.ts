@@ -134,7 +134,8 @@ export const dict: Dict = {
   "settings.resetDesc": "Obnoviť všetky nastavenia na predvolené hodnoty",
   "settings.resetButton": "Obnoviť všetko",
   "settings.resetConfirm": "Naozaj chcete obnoviť všetky nastavenia?",
-  "settings.resetDescription": "Toto obnoví všetky nastavenia na predvolené hodnoty a odstráni vaše miestne texty a obrázky.",
+  "settings.resetDescription":
+    "Toto obnoví všetky nastavenia na predvolené hodnoty a odstráni vaše miestne texty a obrázky.",
   "settings.resetting": "Resetovanie...",
   "settings.resettingDesc": "Vymazanie vyrovnávacej pamäte a obnovenie nastavení",
   "settings.resetComplete": "Úspešné obnovenie",
@@ -159,7 +160,8 @@ export const dict: Dict = {
   "advanced.clearCacheSuccess": "Vymazaná vyrovnávacia pamäť textov piesní",
   "advanced.clearCacheError": "Nepodarilo sa vymazať vyrovnávaciu pamäť textov piesní",
   "advanced.clearCacheConfirm": "Vymazať vyrovnávaciu pamäť textov?",
-  "advanced.clearCacheConfirmDesc": "Tým sa odstránia všetky texty piesní uložené vo vyrovnávacej pamäti. Skladby budú musieť znova získať texty.",
+  "advanced.clearCacheConfirmDesc":
+    "Tým sa odstránia všetky texty piesní uložené vo vyrovnávacej pamäti. Skladby budú musieť znova získať texty.",
   "advanced.cacheTTL": "Trvanie vyrovnávacej pamäte",
   "advanced.cacheTTLDesc": "Ako dlho uchovávať texty piesní vo vyrovnávacej pamäti (v dňoch)",
   "player.scrollToActive": "Synchronizovať",
@@ -276,6 +278,7 @@ export const dict: Dict = {
   "lyricsCredits.provider": "Poskytovateľ",
   "lyricsCredits.goToGithubProfile": "Prejsť na profil {{username}}",
   "alerts.externalLink.title": "Opúšťate Spotify",
-  "alerts.externalLink.description": "Chystáte sa otvoriť {{url}}. Tento odkaz vás presmeruje na externú webovú stránku.",
+  "alerts.externalLink.description":
+    "Chystáte sa otvoriť {{url}}. Tento odkaz vás presmeruje na externú webovú stránku.",
   "alerts.externalLink.open": "Otvoriť odkaz",
 } as const;

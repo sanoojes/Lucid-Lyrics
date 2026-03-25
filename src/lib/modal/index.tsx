@@ -33,12 +33,12 @@ export function showModal(renderFunc: () => JSXElement) {
 export function handleClose(id: string) {
   // 1. Trigger the exit animation by setting isOpen to false
   setModals((m) => m.id === id, "isOpen", false);
-  
+
   // 2. Remove from DOM after animation completes (matched to 0.4s SCSS transition)
   setTimeout(() => {
     // FIXED: Use !== to keep the other modals and remove the closed one
     setModals((prev) => prev.filter((m) => m.id !== id));
-  }, 400); 
+  }, 400);
 }
 
 export function closeAllModals() {
@@ -145,10 +145,10 @@ export function ModalRoot() {
     <div id="LucidModalPortal" class="LucidModalPortal">
       <For each={modals}>
         {(modal) => (
-          <Dialog 
-            isOpen={modal.isOpen} 
+          <Dialog
+            isOpen={modal.isOpen}
             onClose={() => handleClose(modal.id)}
-            data-modal-id={modal.id} 
+            data-modal-id={modal.id}
           >
             {modal.render()}
           </Dialog>
