@@ -45255,1297 +45255,6 @@
       "bytes": 741,
       "imports": []
     },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec3Func.js": {
-      "bytes": 9673,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js": {
-      "bytes": 3617,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec3Func.js",
-          "kind": "import-statement",
-          "original": "./functions/Vec3Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js": {
-      "bytes": 10815,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js": {
-      "bytes": 12277,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Renderer.js": {
-      "bytes": 14512,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec4Func.js": {
-      "bytes": 2916,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/QuatFunc.js": {
-      "bytes": 10660,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec4Func.js",
-          "kind": "import-statement",
-          "original": "./Vec4Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Quat.js": {
-      "bytes": 3645,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/QuatFunc.js",
-          "kind": "import-statement",
-          "original": "./functions/QuatFunc.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Mat4Func.js": {
-      "bytes": 26642,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec3Func.js",
-          "kind": "import-statement",
-          "original": "./Vec3Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js": {
-      "bytes": 4532,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Mat4Func.js",
-          "kind": "import-statement",
-          "original": "./functions/Mat4Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/EulerFunc.js": {
-      "bytes": 2094,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Euler.js": {
-      "bytes": 2388,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/EulerFunc.js",
-          "kind": "import-statement",
-          "original": "./functions/EulerFunc.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "./Mat4.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js": {
-      "bytes": 2842,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Quat.js",
-          "kind": "import-statement",
-          "original": "../math/Quat.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Euler.js",
-          "kind": "import-statement",
-          "original": "../math/Euler.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Camera.js": {
-      "bytes": 4786,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js",
-          "kind": "import-statement",
-          "original": "./Transform.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Mat3Func.js": {
-      "bytes": 11097,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat3.js": {
-      "bytes": 1623,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Mat3Func.js",
-          "kind": "import-statement",
-          "original": "./functions/Mat3Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js": {
-      "bytes": 2733,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js",
-          "kind": "import-statement",
-          "original": "./Transform.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat3.js",
-          "kind": "import-statement",
-          "original": "../math/Mat3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js": {
-      "bytes": 8955,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/RenderTarget.js": {
-      "bytes": 6388,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "./Texture.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/ColorFunc.js": {
-      "bytes": 1202,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Color.js": {
-      "bytes": 1238,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/ColorFunc.js",
-          "kind": "import-statement",
-          "original": "./functions/ColorFunc.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec2Func.js": {
-      "bytes": 7575,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js": {
-      "bytes": 2809,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec2Func.js",
-          "kind": "import-statement",
-          "original": "./functions/Vec2Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec4.js": {
-      "bytes": 1314,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec4Func.js",
-          "kind": "import-statement",
-          "original": "./functions/Vec4Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Plane.js": {
-      "bytes": 2421,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Box.js": {
-      "bytes": 2235,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Plane.js",
-          "kind": "import-statement",
-          "original": "./Plane.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Sphere.js": {
-      "bytes": 3058,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Cylinder.js": {
-      "bytes": 4137,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Triangle.js": {
-      "bytes": 382,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Torus.js": {
-      "bytes": 2607,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Orbit.js": {
-      "bytes": 12470,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js",
-          "kind": "import-statement",
-          "original": "../math/Vec2.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Raycast.js": {
-      "bytes": 14863,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js",
-          "kind": "import-statement",
-          "original": "../math/Vec2.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Curve.js": {
-      "bytes": 5010,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/BaseSegment.js": {
-      "bytes": 1202,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/utils.js": {
-      "bytes": 5005,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/CubicBezierSegment.js": {
-      "bytes": 2714,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/BaseSegment.js",
-          "kind": "import-statement",
-          "original": "./BaseSegment.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/utils.js",
-          "kind": "import-statement",
-          "original": "./utils.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/QuadraticBezierSegment.js": {
-      "bytes": 2453,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/BaseSegment.js",
-          "kind": "import-statement",
-          "original": "./BaseSegment.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/utils.js",
-          "kind": "import-statement",
-          "original": "./utils.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/LineSegment.js": {
-      "bytes": 1400,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/BaseSegment.js",
-          "kind": "import-statement",
-          "original": "./BaseSegment.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec3Func.js",
-          "kind": "import-statement",
-          "original": "../../math/functions/Vec3Func.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/Path.js": {
-      "bytes": 8618,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../../math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/CubicBezierSegment.js",
-          "kind": "import-statement",
-          "original": "./CubicBezierSegment.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/QuadraticBezierSegment.js",
-          "kind": "import-statement",
-          "original": "./QuadraticBezierSegment.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/LineSegment.js",
-          "kind": "import-statement",
-          "original": "./LineSegment.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/utils.js",
-          "kind": "import-statement",
-          "original": "./utils.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Tube.js": {
-      "bytes": 3935,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js",
-          "kind": "import-statement",
-          "original": "../math/Vec2.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Post.js": {
-      "bytes": 4437,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/RenderTarget.js",
-          "kind": "import-statement",
-          "original": "../core/RenderTarget.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Triangle.js",
-          "kind": "import-statement",
-          "original": "./Triangle.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Animation.js": {
-      "bytes": 1633,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Quat.js",
-          "kind": "import-statement",
-          "original": "../math/Quat.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Skin.js": {
-      "bytes": 3613,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js",
-          "kind": "import-statement",
-          "original": "../core/Transform.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Animation.js",
-          "kind": "import-statement",
-          "original": "./Animation.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Text.js": {
-      "bytes": 7166,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/NormalProgram.js": {
-      "bytes": 840,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Flowmap.js": {
-      "bytes": 4453,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/RenderTarget.js",
-          "kind": "import-statement",
-          "original": "../core/RenderTarget.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js",
-          "kind": "import-statement",
-          "original": "../math/Vec2.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Triangle.js",
-          "kind": "import-statement",
-          "original": "./Triangle.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GPGPU.js": {
-      "bytes": 4466,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/RenderTarget.js",
-          "kind": "import-statement",
-          "original": "../core/RenderTarget.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Triangle.js",
-          "kind": "import-statement",
-          "original": "./Triangle.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Polyline.js": {
-      "bytes": 6008,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js",
-          "kind": "import-statement",
-          "original": "../math/Vec2.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Color.js",
-          "kind": "import-statement",
-          "original": "../math/Color.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Shadow.js": {
-      "bytes": 3704,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Camera.js",
-          "kind": "import-statement",
-          "original": "../core/Camera.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/RenderTarget.js",
-          "kind": "import-statement",
-          "original": "../core/RenderTarget.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/KTXTexture.js": {
-      "bytes": 2919,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/TextureLoader.js": {
-      "bytes": 6681,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/KTXTexture.js",
-          "kind": "import-statement",
-          "original": "./KTXTexture.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFAnimation.js": {
-      "bytes": 4441,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Quat.js",
-          "kind": "import-statement",
-          "original": "../math/Quat.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFSkin.js": {
-      "bytes": 2407,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/InstancedMesh.js": {
-      "bytes": 3664,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js",
-          "kind": "import-statement",
-          "original": "../core/Transform.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec4.js",
-          "kind": "import-statement",
-          "original": "../math/Vec4.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFLoader.js": {
-      "bytes": 42616,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js",
-          "kind": "import-statement",
-          "original": "../core/Transform.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Camera.js",
-          "kind": "import-statement",
-          "original": "../core/Camera.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFAnimation.js",
-          "kind": "import-statement",
-          "original": "./GLTFAnimation.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFSkin.js",
-          "kind": "import-statement",
-          "original": "./GLTFSkin.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "../math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/NormalProgram.js",
-          "kind": "import-statement",
-          "original": "./NormalProgram.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/InstancedMesh.js",
-          "kind": "import-statement",
-          "original": "./InstancedMesh.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/DracoManager.js": {
-      "bytes": 939,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/BasisManager.js": {
-      "bytes": 1965,
-      "imports": [],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/WireMesh.js": {
-      "bytes": 2978,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Color.js",
-          "kind": "import-statement",
-          "original": "../math/Color.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/AxesHelper.js": {
-      "bytes": 1589,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/GridHelper.js": {
-      "bytes": 1437,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/VertexNormalsHelper.js": {
-      "bytes": 2715,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat3.js",
-          "kind": "import-statement",
-          "original": "../../math/Mat3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/FaceNormalsHelper.js": {
-      "bytes": 3348,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "../../core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "../../core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "../../core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "../../math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat3.js",
-          "kind": "import-statement",
-          "original": "../../math/Mat3.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Texture3D.js": {
-      "bytes": 2802,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "../core/Texture.js"
-        }
-      ],
-      "format": "esm"
-    },
-    "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/index.js": {
-      "bytes": 2442,
-      "imports": [
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js",
-          "kind": "import-statement",
-          "original": "./core/Geometry.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js",
-          "kind": "import-statement",
-          "original": "./core/Program.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Renderer.js",
-          "kind": "import-statement",
-          "original": "./core/Renderer.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Camera.js",
-          "kind": "import-statement",
-          "original": "./core/Camera.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js",
-          "kind": "import-statement",
-          "original": "./core/Transform.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js",
-          "kind": "import-statement",
-          "original": "./core/Mesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js",
-          "kind": "import-statement",
-          "original": "./core/Texture.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/RenderTarget.js",
-          "kind": "import-statement",
-          "original": "./core/RenderTarget.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Color.js",
-          "kind": "import-statement",
-          "original": "./math/Color.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Euler.js",
-          "kind": "import-statement",
-          "original": "./math/Euler.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat3.js",
-          "kind": "import-statement",
-          "original": "./math/Mat3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js",
-          "kind": "import-statement",
-          "original": "./math/Mat4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Quat.js",
-          "kind": "import-statement",
-          "original": "./math/Quat.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec2.js",
-          "kind": "import-statement",
-          "original": "./math/Vec2.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js",
-          "kind": "import-statement",
-          "original": "./math/Vec3.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec4.js",
-          "kind": "import-statement",
-          "original": "./math/Vec4.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Plane.js",
-          "kind": "import-statement",
-          "original": "./extras/Plane.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Box.js",
-          "kind": "import-statement",
-          "original": "./extras/Box.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Sphere.js",
-          "kind": "import-statement",
-          "original": "./extras/Sphere.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Cylinder.js",
-          "kind": "import-statement",
-          "original": "./extras/Cylinder.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Triangle.js",
-          "kind": "import-statement",
-          "original": "./extras/Triangle.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Torus.js",
-          "kind": "import-statement",
-          "original": "./extras/Torus.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Orbit.js",
-          "kind": "import-statement",
-          "original": "./extras/Orbit.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Raycast.js",
-          "kind": "import-statement",
-          "original": "./extras/Raycast.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Curve.js",
-          "kind": "import-statement",
-          "original": "./extras/Curve.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/path/Path.js",
-          "kind": "import-statement",
-          "original": "./extras/path/Path.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Tube.js",
-          "kind": "import-statement",
-          "original": "./extras/Tube.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Post.js",
-          "kind": "import-statement",
-          "original": "./extras/Post.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Skin.js",
-          "kind": "import-statement",
-          "original": "./extras/Skin.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Animation.js",
-          "kind": "import-statement",
-          "original": "./extras/Animation.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Text.js",
-          "kind": "import-statement",
-          "original": "./extras/Text.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/NormalProgram.js",
-          "kind": "import-statement",
-          "original": "./extras/NormalProgram.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Flowmap.js",
-          "kind": "import-statement",
-          "original": "./extras/Flowmap.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GPGPU.js",
-          "kind": "import-statement",
-          "original": "./extras/GPGPU.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Polyline.js",
-          "kind": "import-statement",
-          "original": "./extras/Polyline.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Shadow.js",
-          "kind": "import-statement",
-          "original": "./extras/Shadow.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/KTXTexture.js",
-          "kind": "import-statement",
-          "original": "./extras/KTXTexture.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/TextureLoader.js",
-          "kind": "import-statement",
-          "original": "./extras/TextureLoader.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFLoader.js",
-          "kind": "import-statement",
-          "original": "./extras/GLTFLoader.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFSkin.js",
-          "kind": "import-statement",
-          "original": "./extras/GLTFSkin.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/GLTFAnimation.js",
-          "kind": "import-statement",
-          "original": "./extras/GLTFAnimation.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/DracoManager.js",
-          "kind": "import-statement",
-          "original": "./extras/DracoManager.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/BasisManager.js",
-          "kind": "import-statement",
-          "original": "./extras/BasisManager.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/WireMesh.js",
-          "kind": "import-statement",
-          "original": "./extras/WireMesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/AxesHelper.js",
-          "kind": "import-statement",
-          "original": "./extras/helpers/AxesHelper.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/GridHelper.js",
-          "kind": "import-statement",
-          "original": "./extras/helpers/GridHelper.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/VertexNormalsHelper.js",
-          "kind": "import-statement",
-          "original": "./extras/helpers/VertexNormalsHelper.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/helpers/FaceNormalsHelper.js",
-          "kind": "import-statement",
-          "original": "./extras/helpers/FaceNormalsHelper.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/InstancedMesh.js",
-          "kind": "import-statement",
-          "original": "./extras/InstancedMesh.js"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/extras/Texture3D.js",
-          "kind": "import-statement",
-          "original": "./extras/Texture3D.js"
-        }
-      ],
-      "format": "esm"
-    },
     "src/stores/background.ts": {
       "bytes": 4599,
       "imports": [
@@ -46833,12 +45542,12 @@
       "format": "esm"
     },
     "src/shaders/animatedBg/fragment.glsl": {
-      "bytes": 3477,
+      "bytes": 2664,
       "imports": [],
       "format": "esm"
     },
     "src/component/ui/background/AnimatedLayer.tsx": {
-      "bytes": 40976,
+      "bytes": 53095,
       "imports": [
         {
           "path": "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js",
@@ -46849,11 +45558,6 @@
           "path": "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js",
           "kind": "import-statement",
           "original": "solid-js/web"
-        },
-        {
-          "path": "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/index.js",
-          "kind": "import-statement",
-          "original": "ogl"
         },
         {
           "path": "node_modules/.bun/@nanostores+solid@1.1.1+9e6d3323b694db9e/node_modules/@nanostores/solid/dist/index.js",
@@ -46975,32 +45679,32 @@
       ],
       "format": "esm"
     },
-    "src/kawarp/shaders/vertex.glsl": {
+    "src/shaders/kawarp/vertex.glsl": {
       "bytes": 165,
       "imports": [],
       "format": "esm"
     },
-    "src/kawarp/shaders/kawase_blur.glsl": {
+    "src/shaders/kawarp/kawase_blur.glsl": {
       "bytes": 538,
       "imports": [],
       "format": "esm"
     },
-    "src/kawarp/shaders/blend.glsl": {
+    "src/shaders/kawarp/blend.glsl": {
       "bytes": 286,
       "imports": [],
       "format": "esm"
     },
-    "src/kawarp/shaders/tint.glsl": {
+    "src/shaders/kawarp/tint.glsl": {
       "bytes": 377,
       "imports": [],
       "format": "esm"
     },
-    "src/kawarp/shaders/domain_warp.glsl": {
+    "src/shaders/kawarp/domain_warp.glsl": {
       "bytes": 1447,
       "imports": [],
       "format": "esm"
     },
-    "src/kawarp/shaders/output.glsl": {
+    "src/shaders/kawarp/output.glsl": {
       "bytes": 821,
       "imports": [],
       "format": "esm"
@@ -47009,34 +45713,34 @@
       "bytes": 26762,
       "imports": [
         {
-          "path": "src/kawarp/shaders/vertex.glsl",
+          "path": "src/shaders/kawarp/vertex.glsl",
           "kind": "import-statement",
-          "original": "@/kawarp/shaders/vertex.glsl"
+          "original": "@/shaders/kawarp/vertex.glsl"
         },
         {
-          "path": "src/kawarp/shaders/kawase_blur.glsl",
+          "path": "src/shaders/kawarp/kawase_blur.glsl",
           "kind": "import-statement",
-          "original": "@/kawarp/shaders/kawase_blur.glsl"
+          "original": "@/shaders/kawarp/kawase_blur.glsl"
         },
         {
-          "path": "src/kawarp/shaders/blend.glsl",
+          "path": "src/shaders/kawarp/blend.glsl",
           "kind": "import-statement",
-          "original": "@/kawarp/shaders/blend.glsl"
+          "original": "@/shaders/kawarp/blend.glsl"
         },
         {
-          "path": "src/kawarp/shaders/tint.glsl",
+          "path": "src/shaders/kawarp/tint.glsl",
           "kind": "import-statement",
-          "original": "@/kawarp/shaders/tint.glsl"
+          "original": "@/shaders/kawarp/tint.glsl"
         },
         {
-          "path": "src/kawarp/shaders/domain_warp.glsl",
+          "path": "src/shaders/kawarp/domain_warp.glsl",
           "kind": "import-statement",
-          "original": "@/kawarp/shaders/domain_warp.glsl"
+          "original": "@/shaders/kawarp/domain_warp.glsl"
         },
         {
-          "path": "src/kawarp/shaders/output.glsl",
+          "path": "src/shaders/kawarp/output.glsl",
           "kind": "import-statement",
-          "original": "@/kawarp/shaders/output.glsl"
+          "original": "@/shaders/kawarp/output.glsl"
         }
       ],
       "format": "esm"
@@ -52468,7 +51172,7 @@
           "bytesInOutput": 0
         },
         "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/dist/solid.js": {
-          "bytesInOutput": 16588
+          "bytesInOutput": 16591
         },
         "node_modules/.bun/solid-js@1.9.11/node_modules/solid-js/web/dist/web.js": {
           "bytesInOutput": 11958
@@ -52480,7 +51184,7 @@
           "bytesInOutput": 4972
         },
         "node_modules/.bun/solid-sonner@0.2.8+2e1854f049906f04/node_modules/solid-sonner/dist/index.js": {
-          "bytesInOutput": 30001
+          "bytesInOutput": 30004
         },
         "src/constants/defaults.ts": {
           "bytesInOutput": 1171
@@ -52737,60 +51441,6 @@
         "src/styles/component/background.scss": {
           "bytesInOutput": 0
         },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec3Func.js": {
-          "bytesInOutput": 2351
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Vec3.js": {
-          "bytesInOutput": 1595
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Geometry.js": {
-          "bytesInOutput": 4663
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/index.js": {
-          "bytesInOutput": 0
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Program.js": {
-          "bytesInOutput": 6209
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Renderer.js": {
-          "bytesInOutput": 7554
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Vec4Func.js": {
-          "bytesInOutput": 326
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/QuatFunc.js": {
-          "bytesInOutput": 2293
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Quat.js": {
-          "bytesInOutput": 1764
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Mat4Func.js": {
-          "bytesInOutput": 6944
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat4.js": {
-          "bytesInOutput": 2036
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/EulerFunc.js": {
-          "bytesInOutput": 1085
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Euler.js": {
-          "bytesInOutput": 1115
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Transform.js": {
-          "bytesInOutput": 1657
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/functions/Mat3Func.js": {
-          "bytesInOutput": 2302
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/math/Mat3.js": {
-          "bytesInOutput": 693
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Mesh.js": {
-          "bytesInOutput": 1564
-        },
-        "node_modules/.bun/ogl@1.0.11/node_modules/ogl/src/core/Texture.js": {
-          "bytesInOutput": 5003
-        },
         "src/stores/background.ts": {
           "bytesInOutput": 1141
         },
@@ -52831,10 +51481,10 @@
           "bytesInOutput": 82
         },
         "src/shaders/animatedBg/fragment.glsl": {
-          "bytesInOutput": 3470
+          "bytesInOutput": 2657
         },
         "src/component/ui/background/AnimatedLayer.tsx": {
-          "bytesInOutput": 3770
+          "bytesInOutput": 5241
         },
         "src/component/ui/background/ColorLayer.tsx": {
           "bytesInOutput": 143
@@ -52842,22 +51492,22 @@
         "src/component/ui/background/ImageLayer.tsx": {
           "bytesInOutput": 1626
         },
-        "src/kawarp/shaders/vertex.glsl": {
+        "src/shaders/kawarp/vertex.glsl": {
           "bytesInOutput": 158
         },
-        "src/kawarp/shaders/kawase_blur.glsl": {
+        "src/shaders/kawarp/kawase_blur.glsl": {
           "bytesInOutput": 531
         },
-        "src/kawarp/shaders/blend.glsl": {
+        "src/shaders/kawarp/blend.glsl": {
           "bytesInOutput": 279
         },
-        "src/kawarp/shaders/tint.glsl": {
+        "src/shaders/kawarp/tint.glsl": {
           "bytesInOutput": 370
         },
-        "src/kawarp/shaders/domain_warp.glsl": {
+        "src/shaders/kawarp/domain_warp.glsl": {
           "bytesInOutput": 1440
         },
-        "src/kawarp/shaders/output.glsl": {
+        "src/shaders/kawarp/output.glsl": {
           "bytesInOutput": 814
         },
         "src/kawarp/index.ts": {
@@ -53026,7 +51676,7 @@
           "bytesInOutput": 1824
         },
         "src/lib/ttml/parse/amll.ts": {
-          "bytesInOutput": 2426
+          "bytesInOutput": 2428
         },
         "src/lib/ttml/parser.ts": {
           "bytesInOutput": 934
@@ -53095,7 +51745,7 @@
           "bytesInOutput": 1325
         },
         "src/component/lyrics/line/LineLyrics.tsx": {
-          "bytesInOutput": 6013
+          "bytesInOutput": 6011
         },
         "src/component/lyrics/static/StaticLyrics.tsx": {
           "bytesInOutput": 341
@@ -53116,7 +51766,7 @@
           "bytesInOutput": 0
         },
         "src/component/lyrics/syllable/SyllableLyrics.tsx": {
-          "bytesInOutput": 10067
+          "bytesInOutput": 10083
         },
         "src/component/lyrics/credits/CreditItem.tsx": {
           "bytesInOutput": 240
@@ -53215,7 +51865,7 @@
           "bytesInOutput": 1571
         },
         "src/component/ttml/LocalTTMLModal.tsx": {
-          "bytesInOutput": 6694
+          "bytesInOutput": 6651
         },
         "src/component/ui/button/LocalTTMLButton.tsx": {
           "bytesInOutput": 234
@@ -53296,7 +51946,7 @@
           "bytesInOutput": 0
         },
         "src/component/settings/LocalImagesModal.tsx": {
-          "bytesInOutput": 3183
+          "bytesInOutput": 3196
         },
         "src/component/settings/section/Background.tsx": {
           "bytesInOutput": 8970
@@ -53371,7 +52021,7 @@
           "bytesInOutput": 373
         },
         "src/component/page/FullscreenPage.tsx": {
-          "bytesInOutput": 2314
+          "bytesInOutput": 2317
         },
         "src/component/fullscreen/Fullscreen.tsx": {
           "bytesInOutput": 1141
@@ -53383,7 +52033,7 @@
           "bytesInOutput": 1031
         }
       },
-      "bytes": 423661
+      "bytes": 375160
     },
     "dist/app.css": {
       "imports": [
