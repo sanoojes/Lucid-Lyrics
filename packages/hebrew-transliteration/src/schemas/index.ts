@@ -1,11 +1,11 @@
-import { brillAcademic } from "./brillAcademic";
-import { brillSimple } from "./brillSimple";
-import { sblAcademicSpirantization } from "./sblAcademicSpirantization";
-import { sblSimple } from "./sblSimple";
-import { michiganClaremont } from "./michiganClaremont";
-import { romaniote } from "./romaniote";
-import { jss } from "./jss";
-import { tiberian } from "./tiberian";
+import { brillAcademic } from "@/schemas/brillAcademic";
+import { brillSimple } from "@/schemas/brillSimple";
+import { sblAcademicSpirantization } from "@/schemas/sblAcademicSpirantization";
+import { sblSimple } from "@/schemas/sblSimple";
+import { michiganClaremont } from "@/schemas/michiganClaremont";
+import { romaniote } from "@/schemas/romaniote";
+import { jss } from "@/schemas/jss";
+import { tiberian } from "@/schemas/tiberian";
 
 export {
   brillAcademic,

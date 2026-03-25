@@ -1,5 +1,5 @@
 import type { Lyrics, SyllableData } from "@/lib/api/types";
-import { formatTime, hasOppositeAligned } from "./utils";
+import { formatTime, hasOppositeAligned } from "@/lib/ttml/build/utils";
 
 export function buildAppleMetadata(data: Lyrics) {
   const agents: any[] = [{ "@_type": "person", "@_xml:id": "v1" }];
