@@ -16,7 +16,7 @@ const GOTHIC_TRANSLITERATION = "gothic-transliteration";
 const PERSIAN_TRANSLITERATION = "persian-transliteration";
 const URDU_TRANSLITERATION = "urdu-transliteration";
 const LOCALE = "locale";
-const LOCALE_VERSION = "1.0.5";
+const LOCALE_VERSION = __APP_VERSION__; // using the app version so that we dont need to manage this separately
 
 const KUROMOJI_PATH = `${JSDELIVR_PACKAGE_REPO}/${KUROMOJI}`;
 export const KUROMOJI_DICT_PATH = `${KUROMOJI_PATH}/dict`;
