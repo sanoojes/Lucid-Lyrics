@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 .l-btn {
-  --btn-bg: var(--primary-bg, #{v.$color-fg});
+  --btn-bg: var(--primary-bg, #{v.$color-bg});
   --btn-fg: var(--primary-fg, #{v.$color});
   --btn-border: transparent;
   --btn-hover-bg: var(--primary-hover, #222);
@@ -44,6 +44,7 @@
   }
 
   &--default {
+    --btn-border: rgba(255, 255, 255, 0.1);
     height: v.$btn-size-base;
     padding: 0 v.$space-lg;
     font-size: v.$fs-sm;
