@@ -1,4 +1,4 @@
-import { persistentJSON } from "@nanostores/persistent";
+import { persistentJSON } from "@/utils/nanostores";
 import { getName } from "@/stores/persist";
 import { atom, computed } from "nanostores";
 import { DEFAULT_PAGE_STATE, DEFAULT_FULLSCREEN_STATE } from "@/constants";

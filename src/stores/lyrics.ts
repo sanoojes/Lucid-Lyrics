@@ -1,6 +1,6 @@
 import { type APIStatus, type FetchOptions } from "@/lib/api/types";
 import { $player_data } from "@/stores/player";
-import { persistentJSON } from "@nanostores/persistent";
+import { persistentJSON } from "@/utils/nanostores";
 import { atom, computed } from "nanostores";
 import { getName } from "@/stores/persist";
 import { DEFAULT_PROVIDER_ORDER, type LyricsProviders } from "@/constants";
