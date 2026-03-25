@@ -1,34 +1,27 @@
-import { Show, type JSXElement } from "solid-js";
+import { Show } from "solid-js";
 import { useStore } from "@nanostores/solid";
 import type { Lyrics } from "@/lib/api/types";
 import { $page_state } from "@/stores/page";
 import { getProviderName } from "@/constants";
+import { t } from "@/i18n";
+import { CreditItem } from "@/component/lyrics/credits/CreditItem";
+import { TtmlUserCredit } from "@/component/lyrics/credits/TtmlUserCredit";
+import { AmllGithubCredit } from "@/component/lyrics/credits/AmllGithubCredit";
 
 type LyricsCreditsProps = {
   lyrics: Lyrics;
 };
 
-type CreditItemProps = {
-  label: string;
-  class?: string;
-  children: JSXElement;
-};
-
-function CreditItem(props: CreditItemProps) {
-  return (
-    <p class={`credit-item ${props.class ?? ""}`.trim()}>
-      <span class="credit-label">{props.label}:</span> {props.children}
-    </p>
-  );
-}
-
-function LyricsCredits(props: LyricsCreditsProps) {
+export function LyricsCredits(props: LyricsCreditsProps) {
   const pageState = useStore($page_state);
 
   const artists = () => props.lyrics.Artists;
   const songwriters = () => props.lyrics.SongWriters;
   const provider = () => props.lyrics.Provider;
   const ttmlUpload = () => props.lyrics.TTMLUploadMetadata;
+  const amll = () => props.lyrics.Amll;
+
+  const githubUsername = () => amll()?.ttmlAuthorGithubLogin || amll()?.ttmlAuthorGithub;
 
   const activeTtmlUser = () => {
     const meta = ttmlUpload();
@@ -41,39 +34,26 @@ function LyricsCredits(props: LyricsCreditsProps) {
   return (
     <Show when={pageState().showCredits}>
       <div class="lyrics-credits">
-        <Show when={artists() && artists()!.length > 0}>
-          <CreditItem label="Artists" class="artists">
-            {artists()?.join(", ")}
+        <Show when={artists()?.length}>
+          <CreditItem label={t("lyricsCredits.artists")} class="artists">
+            {artists()!.join(", ")}
           </CreditItem>
         </Show>
 
-        <Show when={songwriters() && songwriters()!.length > 0}>
-          <CreditItem label="Written By" class="written-by">
-            {songwriters()?.join(", ")}
+        <Show when={songwriters()?.length}>
+          <CreditItem label={t("lyricsCredits.writtenBy")} class="written-by">
+            {songwriters()!.join(", ")}
           </CreditItem>
         </Show>
 
-        <Show when={activeTtmlUser()}>
-          {(user) => (
-            <CreditItem label="Made by" class="ttml-user">
-              <span class="ttml-user-wrapper">
-                <Show when={user().avatar}>
-                  <img
-                    src={user().avatar}
-                    alt={`${user().username || "User"}'s avatar`}
-                    class="ttml-user-avatar"
-                    width={22}
-                    height={22}
-                  />
-                </Show>
-                <span class="ttml-user-name">{user().username || user().id}</span>
-              </span>
-            </CreditItem>
-          )}
+        <Show when={activeTtmlUser()}>{(user) => <TtmlUserCredit user={user()} />}</Show>
+
+        <Show when={githubUsername()}>
+          {(username) => <AmllGithubCredit username={username()} />}
         </Show>
 
         <Show when={provider()}>
-          <CreditItem label="Provider" class="provider">
+          <CreditItem label={t("lyricsCredits.provider")} class="provider">
             {getProviderName(provider() ?? "Unknown")}
             {ttmlUpload() ? " (community)" : ""}
           </CreditItem>

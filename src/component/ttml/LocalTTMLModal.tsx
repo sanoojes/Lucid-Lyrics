@@ -14,7 +14,7 @@ import {
 import { useStore } from "@nanostores/solid";
 import { $player_data } from "@/stores/player";
 import { t } from "@/i18n";
-import type { LyricsProviders } from "@/constants";
+import { getProviderName, type LyricsProviders } from "@/constants";
 import { toast } from "@/lib/sonner";
 import SolidLenis from "@/component/ui/Lenis";
 import { lyricsResource, refetchLyrics } from "@/api/solid";
@@ -24,11 +24,6 @@ import Marquee from "@/component/ui/Marquee";
 const isValidTTMLFile = (file: File) =>
   file.name.endsWith(".ttml") || file.type === "application/ttml+xml" || file.type === "text/xml";
 
-const providerLabels: Record<LyricsProviders, string> = {
-  user: "User (TTML)",
-  spotify: "Spotify",
-  spicy: "Spicy",
-} as const;
 
 const getTTMLFileName = (songName: string, artistNames: string) =>
   `${songName} by ${artistNames}.ttml`;
@@ -194,11 +189,19 @@ function LocalTTMLModal() {
     input.value = "";
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteLocalTTML(id);
-    await refetchLyrics();
-    await refetchTtmlFiles();
-    toast.success(t("ttml.deleteSuccess"));
+  const handleDelete = async (ttml: LocalTTML) => {
+    showAlert({
+      title: t("ttml.deleteConfirm", { songName: ttml.songName }),
+      description: t("ttml.deleteDescription"),
+      onConfirm: async () => {
+        await deleteLocalTTML(ttml.id);
+        await refetchLyrics();
+        await refetchTtmlFiles();
+        toast.success(t("ttml.deleteSuccess"));
+      },
+      variant: "destructive",
+      icon: <Trash2 />,
+    });
   };
 
   const copyToClipboard = (rawTTML: string) => {
@@ -208,12 +211,12 @@ function LocalTTMLModal() {
 
   const handleDownload = (ttml: LocalTTML) => {
     const fileName = getTTMLFileName(ttml.songName, ttml.artistNames);
-    showAlert(
-      t("ttml.downloadConfirm", {
+    showAlert({
+      title: t("ttml.downloadConfirm", {
         songName: ttml.songName,
         artistName: ttml.artistNames,
       }),
-      () => {
+      onConfirm: () => {
         const blob = new Blob([ttml.rawTTML], { type: "application/ttml+xml" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -225,26 +228,27 @@ function LocalTTMLModal() {
         URL.revokeObjectURL(url);
         toast.success(t("ttml.downloadSuccess", { fileName }));
       },
-      "default",
-      t("ttml.downloadPath"),
-      t("ttml.downloadTTML"),
-      {
+      variant: "default",
+      description: t("ttml.downloadPath"),
+      confirmLabel: t("ttml.downloadTTML"),
+      secondaryAction: {
         label: t("ttml.copyTTML"),
         onClick: () => copyToClipboard(ttml.rawTTML),
       },
-    );
+      icon: <Download size={24} />,
+    });
   };
 
   const handleApplyTTML = (ttml: LocalTTML) => {
     const songId = currentSongId();
     if (!songId) return;
 
-    showAlert(
-      t("ttml.applyConfirm", {
+    showAlert({
+      title: t("ttml.applyConfirm", {
         songName: ttml.songName,
         artistName: ttml.artistNames,
       }),
-      async () => {
+      onConfirm: async () => {
         copyToClipboard(ttml.rawTTML);
         const blob = new Blob([ttml.rawTTML], { type: "application/ttml+xml" });
         const file = new File([blob], `${ttml.songName}.ttml`, {
@@ -261,8 +265,9 @@ function LocalTTMLModal() {
         await refetchTtmlFiles();
         toast.success(t("ttml.applySuccess"));
       },
-      "default",
-    );
+      variant: "default",
+      icon: <Check size={24} />,
+    });
   };
 
   const renderTTMLItem = (ttml: LocalTTML) => {
@@ -296,7 +301,7 @@ function LocalTTMLModal() {
           <Button variant="default" size="icon" onClick={() => copyToClipboard(ttml.rawTTML)}>
             <Copy size={16} />
           </Button>
-          <Button variant="destructive" size="icon" onClick={() => handleDelete(ttml.id)}>
+          <Button variant="destructive" size="icon" onClick={() => handleDelete(ttml)}>
             <Trash2 size={16} />
           </Button>
         </div>
@@ -349,8 +354,7 @@ function LocalTTMLModal() {
                     <span>{t("ttml.copyTTML")}</span>
                   </Button>
                 </>,
-                providerLabels[currentLyrics()!.Provider as LyricsProviders] ||
-                  currentLyrics()!.Provider,
+                getProviderName(currentLyrics()!.Provider as LyricsProviders)
               )}
             </Show>
 
@@ -371,7 +375,7 @@ function LocalTTMLModal() {
                       <Copy size={16} />
                       <span>{t("ttml.copyTTML")}</span>
                     </Button>
-                    <Button variant="destructive" onClick={() => handleDelete(ttml().id)}>
+                    <Button variant="destructive" onClick={() => handleDelete(ttml())}>
                       <Trash2 size={16} />
                       <span>{t("ttml.delete")}</span>
                     </Button>

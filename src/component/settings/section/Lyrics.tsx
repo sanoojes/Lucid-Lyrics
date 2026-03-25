@@ -12,15 +12,9 @@ import {
 import { SettingsSection } from "@/component/settings/Section";
 import { GripVertical } from "lucide-solid";
 import { t } from "@/i18n";
-import type { LyricsProviders } from "@/constants";
 import { Select } from "@/component/ui/Select";
 import { Slider } from "@/component/ui/Slider";
-
-const providerLabels: Record<LyricsProviders, string> = {
-  user: "User (TTML)",
-  spotify: "Spotify",
-  spicy: "Spicy",
-} as const;
+import { getProviderName } from "@/constants";
 
 const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.default"), value: "default" },
@@ -132,7 +126,7 @@ function LyricsSettings() {
                 onDrop={(e) => handleDrop(e, index())}
               >
                 <GripVertical size={16} class="drag-handle" />
-                <span class="provider-label">{providerLabels[provider]}</span>
+                <span class="provider-label">{getProviderName(provider)}</span>
                 <span class="provider-badge">{index() + 1}</span>
               </div>
             )}

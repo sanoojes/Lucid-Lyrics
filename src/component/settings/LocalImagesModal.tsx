@@ -94,10 +94,13 @@ function LocalImagesModal() {
   };
 
   const handleDeleteAll = () => {
-    showAlert(t("bg.deleteAllConfirm"), async () => {
-      await deleteAllLocalImages();
-      updateLocalSelectedId(undefined);
-      setImages([]);
+    showAlert({
+      title: t("bg.deleteAllConfirm"),
+      onConfirm: async () => {
+        await deleteAllLocalImages();
+        updateLocalSelectedId(undefined);
+        setImages([]);
+      },
     });
   };
 

@@ -6,6 +6,7 @@ import { render } from "solid-js/web";
 import { logger } from "@/utils/logger";
 import { Button } from "@/component/ui/Button";
 import { t } from "@/i18n";
+import { BadgeAlert, CircleAlert, ShieldAlert } from "lucide-solid";
 export { useDialog };
 
 type ModalItem = {
@@ -29,7 +30,7 @@ export function showModal(render: () => JSXElement) {
 export function handleClose(id: string) {
   setModals((m) => m.id === id, "isOpen", false);
   setTimeout(() => {
-    setModals((prev) => prev.filter((m) => m.id !== id));
+    setModals((prev) => prev.filter((m) => m.id === id));
   }, 300);
 }
 
@@ -37,21 +38,45 @@ export function closeAllModals() {
   modals.forEach((m) => handleClose(m.id));
 }
 
-export function showAlert(
-  message: string,
-  onConfirm?: () => void,
-  variant: "default" | "destructive" = "destructive",
-  description?: string,
-  confirmLabel?: string,
+const DefaultIcons = {
+  destructive: <BadgeAlert />,
+  warning: <ShieldAlert />,
+  default: <CircleAlert />,
+} as const;
+
+export type AlertOptions = {
+  title: string;
+  onConfirm?: () => void;
+  variant?: "default" | "destructive" | "warning";
+  description?: string;
+  confirmLabel?: string;
   secondaryAction?: {
     label: string;
     onClick: () => void;
-  },
-) {
+  };
+  icon?: JSXElement;
+};
+
+export function showAlert(options: AlertOptions) {
+  const {
+    title,
+    onConfirm,
+    variant = "destructive",
+    description,
+    confirmLabel,
+    secondaryAction,
+    icon,
+  } = options;
+
+  const defaultIcon = DefaultIcons[variant];
+  const displayIcon = icon ?? defaultIcon;
+
   return showModal(() => {
     const { close } = useDialog();
 
-    const handleConfirm = () => {
+    const handleConfirm = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
       if (onConfirm) onConfirm();
       close();
     };
@@ -61,12 +86,19 @@ export function showAlert(
       close();
     };
 
+    const handleCloseClick = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      close();
+    };
+
     return (
-      <div class="alert-modal">
-        <p class="alert-message">{message}</p>
+      <div class={`alert-modal alert-modal--${variant}`}>
+        <div class="alert-icon">{displayIcon}</div>
+        <h2 class="alert-title">{title}</h2>
         {description && <p class="alert-description">{description}</p>}
         <div class="alert-actions">
-          <Button variant="glass" shape="rounded" size="lg" onClick={close}>
+          <Button variant="glass" shape="rounded" size="lg" onClick={handleCloseClick}>
             {t("common.cancel")}
           </Button>
           {secondaryAction && (
@@ -74,12 +106,27 @@ export function showAlert(
               {secondaryAction.label}
             </Button>
           )}
-          <Button variant={variant} shape="rounded" size="lg" onClick={handleConfirm}>
+          <Button
+            variant={variant === "warning" ? "default" : variant}
+            shape="rounded"
+            size="lg"
+            onClick={handleConfirm}
+          >
             {confirmLabel || t("common.confirm")}
           </Button>
         </div>
       </div>
     );
+  });
+}
+
+export function showLinkAlert(url: string, onOpen?: () => void) {
+  return showAlert({
+    title: t("alerts.externalLink.title"),
+    onConfirm: onOpen,
+    variant: "warning",
+    description: t("alerts.externalLink.description", { url }),
+    confirmLabel: t("alerts.externalLink.open"),
   });
 }
 

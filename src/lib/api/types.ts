@@ -61,11 +61,30 @@ type TTMLUser = {
   hasProfileBanner: boolean;
 };
 
+export type AmllData = {
+  spotifyId: string[];
+  appleMusicId: string[];
+  isrc: string[];
+  musicName: string[];
+  artists: string[];
+  album: string[];
+  ttmlAuthorGithub?: string;
+  ttmlAuthorGithubLogin?: string;
+  ncmMusicId: string[];
+  qqMusicId?: string;
+};
+
 type CommonStates = {
   HasRomanizedText: boolean;
   NeedsRomanization: boolean;
   IsRTL?: boolean;
   Provider: LyricsProviders;
+
+  /**
+   * Only for lyrics fetch from AMLL(Apple Music Like Lyrics)
+   */
+  Amll?: AmllData;
+  AmllTTML?: string;
 
   /**
    * Is Subject to change, from Spicy Lyrics (only used to show credits)
@@ -85,12 +104,23 @@ export type TimeRange = {
 export type Syllable = {
   Text: string;
   IsPartOfWord: boolean;
+  EmptyBeat?: number;
 } & TimeRange &
   RomanizedText;
 
 /* Vocal parts */
 export type VocalPart = {
   Syllables: Syllable[];
+
+  /**
+   * Only For AMLL
+   */
+  Translated?: Record<string, string>;
+
+  /**
+   * Only For AMLL
+   */
+  RomanText?: string;
 } & TimeRange;
 
 export type AlignedContent = {

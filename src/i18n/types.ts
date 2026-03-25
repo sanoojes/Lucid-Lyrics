@@ -133,6 +133,7 @@ export type Dict = {
   "settings.resetDesc": string;
   "settings.resetButton": string;
   "settings.resetConfirm": string;
+  "settings.resetDescription": string;
   "settings.resetting": string;
   "settings.resettingDesc": string;
   "settings.resetComplete": string;
@@ -194,6 +195,8 @@ export type Dict = {
   "ttml.copyTTML": string;
   "ttml.copySuccess": string;
   "ttml.delete": string;
+  "ttml.deleteConfirm": string;
+  "ttml.deleteDescription": string;
   "ttml.currentSongTTML": string;
   "ttml.noLocalTTML": string;
   "ttml.allUploadedTTML": string;
@@ -257,4 +260,12 @@ export type Dict = {
   "fullscreenPage.hideWidget": string;
   "fullscreenPage.exitFull": string;
   "fullscreenPage.exitCinema": string;
+  "lyricsCredits.artists": string;
+  "lyricsCredits.writtenBy": string;
+  "lyricsCredits.madeBy": string;
+  "lyricsCredits.provider": string;
+  "lyricsCredits.goToGithubProfile": string;
+  "alerts.externalLink.title": string;
+  "alerts.externalLink.description": string;
+  "alerts.externalLink.open": string;
 };

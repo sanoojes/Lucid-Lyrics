@@ -1,29 +1,65 @@
 @use "../variables" as v;
 
 .alert-modal {
-  padding: v.$space-xl v.$space-2xl;
-  min-width: 320px;
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: v.$space-2xl;
+  min-width: 340px;
+  max-width: 420px;
   text-align: center;
 
-  .alert-message {
+  .alert-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: v.$r-full;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: v.$space-lg;
+    color: v.$color-accent;
+  }
+
+  .alert-title {
     font-size: v.$fs-lg;
-    font-weight: v.$fw-medium;
-    color: v.$default-font-color;
-    line-height: 1.5;
-    margin-bottom: v.$space-sm;
+    font-weight: v.$fw-bold;
+    color: v.$color;
+    line-height: 1.3;
+    margin: 0 0 v.$space-sm;
   }
 
   .alert-description {
     font-size: v.$fs-sm;
     color: v.$color-muted;
-    line-height: 1.4;
-    margin-bottom: v.$space-xl;
+    line-height: 1.5;
+    margin: 0 0 v.$space-xl;
+    max-width: 300px;
   }
 
   .alert-actions {
     display: flex;
     gap: v.$space-md;
     justify-content: center;
+    width: 100%;
+
+    .l-btn {
+      flex: 1;
+      min-width: 100px;
+    }
+  }
+
+  &--warning {
+    .alert-icon {
+      background: rgba(255, 184, 0, 0.15);
+      color: #ffb800;
+    }
+  }
+
+  &--destructive {
+    .alert-icon {
+      background: rgb(220, 38, 38, 0.15);
+      color: v.$color-danger;
+    }
   }
 }
