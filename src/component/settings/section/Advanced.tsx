@@ -22,6 +22,7 @@ import { Show } from "solid-js";
 import { logger } from "@/utils/logger";
 import { toast } from "@/lib/sonner";
 import { showAlert } from "@/lib/modal";
+import { resetLocalTTML } from "@/stores/idb/ttml";
 
 function AdvancedSettings() {
   const devMode = useStore($developer_mode);
@@ -58,6 +59,26 @@ function AdvancedSettings() {
     });
   };
 
+  const resetLocalTTMLData = async () => {
+    try {
+      await resetLocalTTML();
+      toast.success(t("advanced.resetLocalTTMLSuccess"));
+    } catch (error) {
+      toast.error(t("advanced.resetLocalTTMLError"));
+      logger.error("Failed to reset local TTML: ", error);
+    }
+  };
+
+  const handleResetLocalTTML = () => {
+    showAlert({
+      title: t("advanced.resetLocalTTMLConfirm"),
+      description: t("advanced.resetLocalTTMLConfirmDesc"),
+      onConfirm: () => resetLocalTTMLData(),
+      variant: "destructive",
+      confirmLabel: t("advanced.resetLocalTTMLButton"),
+    });
+  };
+
   return (
     <SettingsSection title={t("advanced.title")}>
       <SettingsRow label={t("advanced.devMode")} description={t("advanced.devModeDesc")}>
@@ -83,6 +104,19 @@ function AdvancedSettings() {
           </Button>
         </div>
       </SettingsRow>
+      <Show when={ttmlMakerMode() === "on"}>
+        <SettingsRow
+          label={t("advanced.resetLocalTTML")}
+          description={t("advanced.resetLocalTTMLDesc")}
+        >
+          <div class="adv-settings__cache-row">
+            <Button variant="destructive" size="sm" onClick={handleResetLocalTTML}>
+              <RotateCcw size={16} />
+              {t("advanced.resetLocalTTMLButton")}
+            </Button>
+          </div>
+        </SettingsRow>
+      </Show>
       <SettingsRow label={t("advanced.cacheTTL")} description={t("advanced.cacheTTLDesc")}>
         <Slider
           value={cacheSettings().ttlDays}

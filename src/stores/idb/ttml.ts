@@ -1,5 +1,5 @@
-import { get, set, del } from "idb-keyval";
-import { lyricsStore } from "@/stores/idb";
+import { get, set, del, clear } from "idb-keyval";
+import { ttmlStore } from "@/stores/idb";
 import { parse, type ParseResult } from "@/lib/ttml/parser";
 
 export interface LocalTTML {
@@ -36,7 +36,7 @@ export async function saveLocalTTML(
   albumName: string,
   file: File,
 ): Promise<SaveTTMLResult> {
-  const existingManifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, lyricsStore)) || [];
+  const existingManifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
   const existingEntry = existingManifest.find((e) => e.songId === songId);
 
   const id = existingEntry?.id ?? crypto.randomUUID();
@@ -61,12 +61,12 @@ export async function saveLocalTTML(
     updatedAt: Date.now(),
   };
 
-  await set(`${TTML_KEY_PREFIX}${id}`, ttml, lyricsStore);
+  await set(`${TTML_KEY_PREFIX}${id}`, ttml, ttmlStore);
 
   let manifest = existingManifest.filter((e) => e.songId !== songId);
   manifest.push({ id, songId, createdAt });
   manifest.sort((a, b) => b.createdAt - a.createdAt);
-  await set(MANIFEST_KEY, manifest, lyricsStore);
+  await set(MANIFEST_KEY, manifest, ttmlStore);
 
   return {
     ttml,
@@ -76,19 +76,19 @@ export async function saveLocalTTML(
 }
 
 export async function getLocalTTML(id: string): Promise<LocalTTML | undefined> {
-  const ttml = await get<LocalTTML>(`${TTML_KEY_PREFIX}${id}`, lyricsStore);
+  const ttml = await get<LocalTTML>(`${TTML_KEY_PREFIX}${id}`, ttmlStore);
   return ttml;
 }
 
 export async function getLocalTTMLBySongId(songId: string): Promise<LocalTTML | undefined> {
-  const manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, lyricsStore)) || [];
+  const manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
   const entry = manifest.find((e) => e.songId === songId);
   if (!entry) return undefined;
   return await getLocalTTML(entry.id);
 }
 
 export async function getAllLocalTTML(): Promise<LocalTTML[]> {
-  const manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, lyricsStore)) || [];
+  const manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
 
   const ttmalResults = await Promise.all(
     manifest.map(async (entry) => {
@@ -102,16 +102,20 @@ export async function getAllLocalTTML(): Promise<LocalTTML[]> {
 }
 
 export async function deleteLocalTTML(id: string): Promise<void> {
-  await del(`${TTML_KEY_PREFIX}${id}`, lyricsStore);
-  let manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, lyricsStore)) || [];
+  await del(`${TTML_KEY_PREFIX}${id}`, ttmlStore);
+  let manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
   manifest = manifest.filter((entry) => entry.id !== id);
-  await set(MANIFEST_KEY, manifest, lyricsStore);
+  await set(MANIFEST_KEY, manifest, ttmlStore);
 }
 
 export async function deleteLocalTTMLBySongId(songId: string): Promise<void> {
-  const manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, lyricsStore)) || [];
+  const manifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
   const entry = manifest.find((e) => e.songId === songId);
   if (entry) {
     await deleteLocalTTML(entry.id);
   }
+}
+
+export async function resetLocalTTML(): Promise<void> {
+  await clear(ttmlStore);
 }

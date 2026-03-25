@@ -1,5 +1,5 @@
 import { clear } from "idb-keyval";
-import { imageStore, lyricsStore, moduleStore } from "@/stores/idb";
+import { imageStore, lyricsStore, moduleStore, ttmlStore } from "@/stores/idb";
 import {
   resetBackground,
   resetWidget,
@@ -33,6 +33,7 @@ export async function resetAllConfig() {
       clear(lyricsStore),
       clear(moduleStore),
       clear(imageStore),
+      clear(ttmlStore),
       lyricsResourceAction.refetch(),
     ]);
 

@@ -148,6 +148,13 @@ export type Dict = {
   "advanced.clearCache": string;
   "advanced.clearCacheDesc": string;
   "advanced.clearCacheButton": string;
+  "advanced.resetLocalTTML": string;
+  "advanced.resetLocalTTMLDesc": string;
+  "advanced.resetLocalTTMLButton": string;
+  "advanced.resetLocalTTMLSuccess": string;
+  "advanced.resetLocalTTMLError": string;
+  "advanced.resetLocalTTMLConfirm": string;
+  "advanced.resetLocalTTMLConfirmDesc": string;
   "advanced.storageStats": string;
   "advanced.storageStatsDesc": string;
   "advanced.original": string;
