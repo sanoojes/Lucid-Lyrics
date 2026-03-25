@@ -103,6 +103,7 @@ export const dict: Dict = {
   "common.confirm": "Подтвердить",
   "common.loading": "Загрузка...",
   "common.forceReload": "Принудительная Перезагрузка",
+  "common.close": "Закрыть",
   "router.lyricsPageError": "Что-то пошло не так при загрузке страницы текстов. Попробуйте снова.",
   "router.settingsError": "Что-то пошло не так при добавлении настроек.",
   "menu.appName": "Lucid Lyrics",
@@ -213,6 +214,7 @@ export const dict: Dict = {
   "ttml.applyConfirm":
     'Применить TTML для "{{songName}}" исполнителя {{artistName}} к текущей песне?',
   "ttml.applySuccess": "TTML успешно применён",
+  "ttml.currentSong": "Текущая песня",
   "ttml.currentLyrics": "Текущие тексты песен",
   "ttml.downloadError": "Ошибка при создании TTML",
   "ttml.copyError": "Ошибка при копировании TTML",

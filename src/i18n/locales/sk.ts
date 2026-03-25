@@ -103,6 +103,7 @@ export const dict: Dict = {
   "common.confirm": "Potvrdiť",
   "common.loading": "Načítava sa...",
   "common.forceReload": "Vynútené načítanie",
+  "common.close": "Zavrieť",
   "router.lyricsPageError":
     "Pri načítavaní stránky s textom piesne sa niečo pokazilo. Skúste to znova.",
   "router.settingsError": "Pri pridávaní nastavení sa vyskytla chyba.",
@@ -215,6 +216,7 @@ export const dict: Dict = {
   "ttml.applyConfirm":
     'Použiť TTML pre skladbu "{{songName}}" od {{artistName}} na aktuálnu skladbu?',
   "ttml.applySuccess": "TTML sa úspešne aplikoval",
+  "ttml.currentSong": "Aktuálna skladba",
   "ttml.currentLyrics": "Aktuálne texty",
   "ttml.downloadError": "Chyba pri vytváraní TTML",
   "ttml.copyError": "Chyba pri kopírovaní TTML",

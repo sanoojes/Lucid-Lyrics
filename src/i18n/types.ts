@@ -101,6 +101,7 @@ export type Dict = {
   "common.confirm": string;
   "common.loading": string;
   "common.forceReload": string;
+  "common.close": string;
   "router.lyricsPageError": string;
   "router.settingsError": string;
   "menu.appName": string;
@@ -213,6 +214,7 @@ export type Dict = {
   "ttml.applyTTML": string;
   "ttml.applyConfirm": string;
   "ttml.applySuccess": string;
+  "ttml.currentSong": string;
   "ttml.currentLyrics": string;
   "ttml.downloadError": string;
   "ttml.copyError": string;
