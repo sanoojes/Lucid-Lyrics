@@ -66,7 +66,7 @@ type LeadRendererProps = {
   getCurrentPos: () => number;
   lineStatus: () => "past" | "active" | "upcoming";
   isRTL?: boolean;
-  globalPadding: string;
+  hasOppAligned?: boolean;
 };
 
 function LeadRenderer(props: LeadRendererProps) {
@@ -101,6 +101,14 @@ function LeadRenderer(props: LeadRendererProps) {
     ).join("");
   });
 
+  const paddingInline = () => {
+    if (!props.hasOppAligned) return "0";
+
+    return props.oppAligned
+      ? "var(--lyrics-line-default-padding) 0"
+      : "0 var(--lyrics-line-default-padding)";
+  };
+
   return (
     <span
       class="syllable-line"
@@ -111,9 +119,7 @@ function LeadRenderer(props: LeadRendererProps) {
       }}
       style={{
         "text-align": props.oppAligned ? "end" : "start", // for some reason scss makes end => right and start => left
-        "padding-inline": props.oppAligned
-          ? "var(--lyrics-line-default-padding) 0"
-          : "0 var(--lyrics-line-default-padding)",
+        "padding-inline": paddingInline(),
       }}
       onClick={handleClick}
       role="button"
@@ -621,7 +627,6 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     <div class="syllable-lyrics" ref={containerRef}>
       <For each={lineEntries()}>
         {(entry) => {
-          const padding = () => (hasOppAligned() ? "var(--lyrics-line-default-padding)" : "0");
           const blur = createMemo(() => getBlurAmount(entry.index, isUserScroll()));
           const isActive = createMemo(() => {
             const isTarget = activeIndices().includes(entry.index);
@@ -697,7 +702,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                     getCurrentPos={currentPos}
                     lineStatus={lineStatus}
                     isRTL={isLineRTL()}
-                    globalPadding={padding()}
+                    hasOppAligned={hasOppAligned()}
                   />
                   <Show when={entry.content.Background}>
                     {(bg) => (
@@ -712,7 +717,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
                             getCurrentPos={currentPos}
                             lineStatus={lineStatus}
                             isRTL={isLineRTL()}
-                            globalPadding={padding()}
+                            hasOppAligned={hasOppAligned()}
                           />
                         )}
                       </For>
