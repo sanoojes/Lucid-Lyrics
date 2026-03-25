@@ -11,6 +11,7 @@ import { GITHUB_ISSUES_LINK } from "@/constants";
 import { dictResource, t } from "@/i18n";
 import { setupNPV } from "@/npv";
 import { setupFullscreen } from "@/fullscreen";
+import { migrateTTMLFromLyricsStore } from "@/stores/idb/ttml";
 
 App();
 
@@ -50,6 +51,15 @@ async function App() {
         },
       },
       {
+        name: "migration",
+        async fn() {
+          const migrated = localStorage.getItem("__lucid_ttml_migrated__");
+          if (migrated) return;
+          await migrateTTMLFromLyricsStore();
+          localStorage.setItem("__lucid_ttml_migrated__", "1");
+        },
+      },
+      {
         name: "preload",
         fn: () => preloadModules(["pinyin", "kuromoji", "kuroshiro", "cyrillic-romanization"]),
       },
@@ -71,7 +81,6 @@ async function App() {
       toast.info(m);
 
       router.navigate("/");
-      window.LucidLyrics?.clearLyricsCache?.();
     }
   } catch (err) {
     toast.error(t("common.appLoadError"), {
