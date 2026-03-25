@@ -6,7 +6,7 @@
     padding: v.$space-lg v.$space-xl;
     display: flex;
     flex-direction: column;
-    gap: v.$space-lg;
+    gap: v.$space-base;
     position: relative;
     transition: background-color v.$ease-fast;
 
@@ -23,7 +23,6 @@
       content: "";
       position: absolute;
       inset: v.$space-xs;
-      margin: v.$space-xs;
       border: 2px dashed v.$color-accent;
       border-radius: v.$r-lg;
       opacity: 0;
@@ -36,54 +35,10 @@
     }
   }
 
-  .ttml-mode-toggle {
-    display: flex;
-    align-items: center;
-    gap: v.$space-base;
-    padding: v.$space-md;
-    background: v.$glass-bg;
-    border-radius: v.$r-md;
-    border: 1px solid v.$glass-bd;
-
-    .ttml-mode-label {
-      font-weight: v.$fw-bold;
-      color: v.$color;
-    }
-
-    .ttml-mode-value {
-      margin-right: auto;
-      font-size: v.$fs-sm;
-      color: v.$color-accent;
-      font-weight: v.$fw-bold;
-    }
-  }
-
-  .message {
-    display: flex;
-    align-items: center;
-    gap: v.$space-sm;
-    padding: v.$space-md v.$space-lg;
-    border-radius: v.$r-md;
-    font-size: v.$fs-sm;
-    animation: slideIn 0.3s ease-out;
-
-    &--success {
-      background: rgba(v.$color-accent, 0.15);
-      color: v.$color-accent;
-      border: 1px solid rgba(v.$color-accent, 0.3);
-    }
-
-    &--error {
-      background: rgba(v.$color-danger, 0.15);
-      color: v.$color-danger;
-      border: 1px solid rgba(v.$color-danger, 0.3);
-    }
-  }
-
-  @keyframes slideIn {
+  @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(-10px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
@@ -91,28 +46,84 @@
     }
   }
 
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, v.$glass-bg 25%, rgba(v.$color, 0.1) 50%, v.$glass-bg 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: v.$r-sm;
+  }
+
   .upload-section {
     display: flex;
     justify-content: center;
-    border-radius: v.$r-md;
-    gap: v.$space-md;
     padding: v.$space-lg;
-    transition: all v.$ease-fast;
     border: 2px dashed v.$glass-bd;
+    border-radius: v.$r-md;
     background: v.$glass-bg;
+    transition:
+      border-color v.$ease-fast,
+      background-color v.$ease-fast;
+    animation: fadeInUp 0.3s v.$ease-out both;
   }
 
   .upload-button {
+    transition:
+      border-color v.$ease-fast,
+      background-color v.$ease-fast,
+      transform v.$ease-out;
+
     &:hover {
       border-color: v.$color-accent;
       background: rgba(v.$color-accent, 0.1);
     }
   }
 
-  .loading {
-    text-align: center;
-    padding: v.$space-xl;
-    color: v.$color-muted;
+  .ttml-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: v.$space-base;
+    padding: v.$space-md;
+    background: v.$glass-bg;
+    border: 1px solid v.$glass-bd;
+    border-radius: v.$r-md;
+    animation: fadeInUp 0.3s v.$ease-out 0.1s both;
+
+    .ttml-mode-label {
+      font-weight: v.$fw-bold;
+      color: v.$color;
+    }
+
+    .ttml-mode-value {
+      margin-left: auto;
+      font-size: v.$fs-sm;
+      font-weight: v.$fw-bold;
+      color: v.$color-accent;
+    }
   }
 
   .empty-state {
@@ -120,44 +131,71 @@
     flex-direction: column;
     align-items: center;
     gap: v.$space-md;
+    padding: v.$space-2xl;
+    background: v.$glass-bg;
+    border: 1px solid v.$glass-bd;
+    border-radius: v.$r-md;
+    color: v.$color-muted;
+    animation: fadeInUp 0.3s v.$ease-out both;
+  }
+
+  .loading {
+    text-align: center;
     padding: v.$space-xl;
     color: v.$color-muted;
 
-    p {
-      margin: 0;
+    &::after {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: v.$space-sm;
+      border: 2px solid v.$glass-bd;
+      border-top-color: v.$color-accent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
   }
 
   .current-song-ttml {
-    background: v.$glass-bg;
-    border-radius: v.$r-md;
     padding: v.$space-md;
+    background: v.$glass-bg;
     border: 1px solid v.$glass-bd;
-
-    .provider-badge {
-      color: v.$color;
-      background: v.$glass-bg;
-      border-radius: v.$r-md;
-      padding: v.$space-xs v.$space-base;
-      font-size: v.$fs-sm;
-      font-weight: v.$fw-bold;
-      border: 1px solid v.$glass-bd;
-      margin-left: auto;
-    }
+    border-radius: v.$r-md;
+    animation: fadeInUp 0.3s v.$ease-out both;
 
     .current-song-header {
       display: flex;
       align-items: center;
       gap: v.$space-sm;
-      color: v.$color-accent;
       margin-bottom: v.$space-sm;
+      color: v.$color-accent;
+
+      .label {
+        font-weight: v.$fw-bold;
+      }
 
       .icon {
         flex-shrink: 0;
       }
 
-      .label {
+      .provider-badge {
+        margin-left: auto;
+        padding: v.$space-xs v.$space-base;
+        font-size: v.$fs-sm;
         font-weight: v.$fw-bold;
+        color: v.$color;
+        background: v.$glass-bg;
+        border: 1px solid v.$glass-bd;
+        border-radius: v.$r-md;
+        transition:
+          border-color v.$ease-fast,
+          color v.$ease-fast;
+
+        &:hover {
+          border-color: v.$color-accent;
+          color: v.$color-accent;
+        }
       }
     }
 
@@ -168,26 +206,51 @@
       padding-left: v.$space-md;
     }
 
-    .song-buttons {
-      display: flex;
-      gap: v.$space-md;
-      margin-top: v.$space-lg;
-      padding-left: v.$space-md;
-    }
-
     .song-name {
-      color: v.$color;
       font-weight: v.$fw-bold;
+      color: v.$color;
+      line-height: 1.4;
+      min-height: 18px;
+
+      .skeleton {
+        height: 18px;
+        width: 70%;
+      }
     }
 
     .song-artist {
-      color: v.$color-muted;
       font-size: v.$fs-sm;
+      color: v.$color-muted;
+      line-height: 1.4;
+      min-height: 14px;
+
+      .skeleton {
+        height: 14px;
+        width: 50%;
+      }
     }
 
     .song-album {
-      color: v.$color-muted;
       font-size: v.$fs-xs;
+      color: v.$color-muted;
+      line-height: 1.4;
+      min-height: 12px;
+
+      .skeleton {
+        height: 12px;
+        width: 40%;
+      }
+    }
+
+    .song-buttons {
+      display: flex;
+      gap: v.$space-base;
+      margin-top: v.$space-lg;
+      padding-left: v.$space-md;
+
+      &:empty {
+        display: none;
+      }
     }
   }
 
@@ -195,41 +258,59 @@
     display: flex;
     flex-direction: column;
     gap: v.$space-md;
+    animation: fadeInUp 0.2s v.$ease-out 0.1s both;
 
     .list-header {
       font-size: v.$fs-sm;
       color: v.$color-muted;
-      margin: 0;
+      margin-top: v.$space-md;
+      min-height: 20px;
     }
   }
 
-  .is-current {
-    border-color: v.$color-accent;
-    box-shadow:
-      0 0 0 1px v.$color-accent,
-      0 4px 12px rgba(v.$color-accent, 0.3);
-  }
   .ttml-item {
     display: flex;
     justify-content: space-between;
-    gap: v.$space-md;
     align-items: center;
+    gap: v.$space-md;
     padding: v.$space-md;
     background: v.$glass-bg;
-    border-radius: v.$r-md;
     border: 1px solid v.$glass-bd;
-    transition: all v.$ease-fast;
+    border-radius: v.$r-md;
+    min-height: 72px;
+    transition:
+      border-color v.$ease-out,
+      transform v.$ease-out,
+      box-shadow v.$ease-out;
+    animation: fadeInUp 0.2s v.$ease-out both;
 
     &:hover {
       border-color: rgba(v.$color, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &.is-current {
+      border-color: v.$color-accent;
+      box-shadow:
+        0 0 0 1px v.$color-accent,
+        0 4px 12px rgba(v.$color-accent, 0.3);
+
+      .ttml-song-name {
+        color: v.$color-accent;
+      }
     }
 
     .ttml-info {
       display: flex;
       flex-direction: column;
       gap: v.$space-xs;
-      min-width: 0;
       flex: 1;
+      min-width: 0;
 
       .ttml-song-name {
         display: flex;
@@ -239,32 +320,39 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        line-height: 1.4;
+        min-height: 18px;
       }
+
       .type-pill {
+        flex-shrink: 0;
+        padding: 2px v.$space-sm;
         font-size: v.$fs-xs;
         font-weight: v.$fw-bold;
-        padding: 2px v.$space-sm;
-        border-radius: v.$r-sm;
-        background: v.$color-bg;
         color: v.$color;
+        background: v.$color-bg;
         border: 1px solid rgba(v.$color, 0.1);
-        flex-shrink: 0;
+        border-radius: v.$r-sm;
+        line-height: 1.4;
+      }
+
+      .ttml-artist,
+      .ttml-album {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.4;
       }
 
       .ttml-artist {
-        color: v.$color-muted;
         font-size: v.$fs-sm;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        color: v.$color-muted;
+        min-height: 14px;
       }
 
       .ttml-album {
-        color: v.$color-muted;
         font-size: v.$fs-xs;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        color: v.$color-muted;
       }
     }
 
@@ -275,12 +363,13 @@
       flex-shrink: 0;
 
       .current-badge {
-        background-color: v.$color-accent;
-        color: v.$color-fg;
+        padding: 2px v.$space-sm;
         font-size: v.$fs-xs;
         font-weight: v.$fw-bold;
-        padding: 2px v.$space-sm;
+        color: v.$color-fg;
+        background: v.$color-accent;
         border-radius: v.$r-sm;
+        animation: pulse 2s ease-in-out infinite;
       }
     }
   }
