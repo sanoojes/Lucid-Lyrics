@@ -44,7 +44,7 @@ export const DEFAULT_BACKGROUND_STATE = {
         opacity: 100,
       },
       transitionDuration: 0.5,
-      rotationSpeed: 0.8,
+      rotationSpeed: 0.4,
     },
     kawarp: {
       mode: "player",
