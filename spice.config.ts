@@ -40,7 +40,7 @@ export default defineConfig({
           "persian-transliteration",
           "urdu-transliteration",
         ],
-        ignore: ["**/node_modules/**", "internal-scripts/**", ".DS_Store"],
+        ignore: ["**/node_modules/**", ".DS_Store"],
       }),
       localePlugin({
         localesDir,
