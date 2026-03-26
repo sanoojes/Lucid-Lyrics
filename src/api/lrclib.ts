@@ -167,7 +167,7 @@ async function fetchLyrics(info: FetchOptions["data"]): Promise<LRCResult> {
 
   const response = await fetch(requestUrl, {
     headers: {
-      "x-user-agent": `Lucid Lyrics v${APP_VERSION} (https://github.com/sanoojes/lucid-lyrics)`,
+      "x-user-agent": `Lucid-Lyrics v${APP_VERSION} (https://github.com/sanoojes/lucid-lyrics)`,
     },
   });
 
