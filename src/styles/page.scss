@@ -25,6 +25,7 @@ $floating-transition:
 }
 
 .lucid-contents {
+  --player-widget-width: min(36cqw, 64cqh);
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
@@ -70,7 +71,7 @@ $floating-transition:
     }
 
     .player-widget {
-      width: min(40cqw, 64cqh);
+      width: var(--player-widget-width);
       transition-property: flex-direction;
       transition-duration: 0.4s;
       transition-timing-function: ease;
@@ -99,7 +100,7 @@ $floating-transition:
   }
 
   .lyrics-area {
-    margin-left: calc(min(40cqw, 64cqh) + 8cqw);
+    margin-left: calc(var(--player-widget-width) + 8cqw);
     margin-top: 0;
 
     &.widget-hidden {
@@ -460,7 +461,8 @@ $floating-transition:
   --interlude-dots-gap: max(calc(var(--interlude-height) * 0.3), 16px);
   --interlude-size: max(calc(var(--interlude-height) * 0.3), 10px);
 
-  word-break: break-word;
+  text-wrap: balance;
+  word-break: keep-all;
   overflow-wrap: break-word;
 
   font-size: var(--lead-font-size);
@@ -635,7 +637,8 @@ $floating-transition:
   --lead-font-weight: 700;
   --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
 
-  word-break: break-word;
+  text-wrap: balance;
+  word-break: keep-all;
   overflow-wrap: break-word;
 
   font-size: var(--lead-font-size);
