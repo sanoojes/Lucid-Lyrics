@@ -1,4 +1,4 @@
-import Kawarp from "@/kawarp";
+import Kawarp from "@/lib/kawarp";
 import { useStore } from "@nanostores/solid";
 import { $kawarp_options, $current_track_image } from "@/stores";
 import { createMemo, createEffect, onMount, onCleanup } from "solid-js";
