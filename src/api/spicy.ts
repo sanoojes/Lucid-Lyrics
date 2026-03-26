@@ -5,7 +5,9 @@ import { getAuthToken } from "@/lib/spotify";
 export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
     const response = await _fetchSpicy(id);
-    const queryResult = response?.queries?.[0];
+    const queryResult = response?.queries?.find(
+      (q) => !("__type" in q) && q.operation === "lyrics",
+    );
 
     if (!response || !queryResult) {
       return {
