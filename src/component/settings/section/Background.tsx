@@ -302,7 +302,7 @@ function BackgroundSettings() {
             value={kawarpOptions().saturation}
             onChange={(v) => updateKawarpOptions({ saturation: v })}
             min={0}
-            max={3}
+            max={10}
             step={0.1}
           />
         </SettingsRow>

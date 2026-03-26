@@ -264,7 +264,7 @@ export class Kawarp {
     return this._saturation;
   }
   set saturation(value: number) {
-    this._saturation = Math.max(0, Math.min(3, value));
+    this._saturation = Math.max(0, Math.min(10, value));
   }
 
   get tintColor(): [number, number, number] {
