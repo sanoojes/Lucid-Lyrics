@@ -6,7 +6,7 @@ export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyri
   try {
     const response = await _fetchSpicy(id);
     const queryResult = response?.queries?.find(
-      (q) => !("__type" in q) && q.operation === "lyrics",
+      (q) => q.operationId === "0" || q.operation === "lyrics",
     );
 
     if (!response || !queryResult) {
