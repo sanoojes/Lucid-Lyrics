@@ -87,17 +87,20 @@ export class LyricsAPI {
 
       const response = await this._fetch(providerId, options, cacheKey);
 
-      if (
-        response.status === "success" ||
-        !navigator.onLine ||
-        response.error?.code === "OFFLINE"
-      ) {
+      if (response.status === "success" || response.error?.code === "PARSE_ERROR") {
         return response;
       }
+    }
 
-      if (response.error?.code === "PARSE_ERROR") {
-        return response;
-      }
+    if (!navigator.onLine) {
+      return {
+        status: "error",
+        data: null,
+        error: {
+          code: "OFFLINE",
+          message: "You're offline right now. We'll grab these lyrics once you're back online.",
+        },
+      };
     }
 
     return {
@@ -116,7 +119,9 @@ export class LyricsAPI {
     const handler = this._handlers.get(provider);
     const shouldCache = handler?.cache !== false;
 
-    if (!forceRefresh && shouldCache) {
+    const attemptCacheRead = (!forceRefresh && shouldCache) || isOffline;
+
+    if (attemptCacheRead) {
       try {
         const cached = await get<CachedLyrics>(cacheKey, lyricsStore);
         if (cached) {
@@ -143,11 +148,9 @@ export class LyricsAPI {
 
               if (!isOffline && needsRomanization) {
                 try {
-                  if (needsRomanization) {
-                    const reProcessed = await processLyrics(lyricsData);
-                    await this._saveToCache(cacheKey, reProcessed);
-                    return { status: "success", data: reProcessed };
-                  }
+                  const reProcessed = await processLyrics(lyricsData);
+                  await this._saveToCache(cacheKey, reProcessed);
+                  return { status: "success", data: reProcessed };
                 } catch (err) {
                   log.error("reprocess_err", err);
                 }
@@ -163,7 +166,7 @@ export class LyricsAPI {
       }
     }
 
-    if (isOffline)
+    if (isOffline) {
       return {
         status: "error",
         data: null,
@@ -172,8 +175,9 @@ export class LyricsAPI {
           message: "You're offline right now. We'll grab these lyrics once you're back online.",
         },
       };
+    }
 
-    if (!handler)
+    if (!handler) {
       return {
         status: "error",
         data: null,
@@ -182,6 +186,7 @@ export class LyricsAPI {
           message: "We couldn't find the lyrics for this song.",
         },
       };
+    }
 
     try {
       const response = await handler.fetch(options);
