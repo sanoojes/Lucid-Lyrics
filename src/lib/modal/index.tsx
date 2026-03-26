@@ -21,7 +21,6 @@ const [modals, setModals] = createStore<ModalItem[]>([]);
 export function showModal(renderFunc: () => JSXElement) {
   const id = crypto.randomUUID();
 
-  // Push to the end of the array to maintain proper DOM stacking order
   setModals((prev) => [...prev, { id, render: renderFunc, isOpen: true }]);
 
   return {
@@ -31,12 +30,9 @@ export function showModal(renderFunc: () => JSXElement) {
 }
 
 export function handleClose(id: string) {
-  // 1. Trigger the exit animation by setting isOpen to false
   setModals((m) => m.id === id, "isOpen", false);
 
-  // 2. Remove from DOM after animation completes (matched to 0.4s SCSS transition)
   setTimeout(() => {
-    // FIXED: Use !== to keep the other modals and remove the closed one
     setModals((prev) => prev.filter((m) => m.id !== id));
   }, 400);
 }
