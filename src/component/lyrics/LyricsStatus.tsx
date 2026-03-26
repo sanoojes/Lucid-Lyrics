@@ -1,6 +1,6 @@
 import "@/styles/component/lyrics-status.scss";
 import { Show } from "solid-js";
-import { WifiOff, RefreshCw, OctagonAlert, SearchX } from "lucide-solid";
+import { WifiOff, RefreshCw, OctagonAlert, SearchX, CircleAlert } from "lucide-solid";
 import { Button } from "@/component/ui/Button";
 import { $developer_mode } from "@/stores/dev";
 import { useStore } from "@nanostores/solid";
@@ -16,7 +16,7 @@ interface StatusProps {
 
 const ICONS = {
   offline: WifiOff,
-  error: OctagonAlert,
+  error: CircleAlert,
   missing: SearchX,
 };
 
