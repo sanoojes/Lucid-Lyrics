@@ -25,9 +25,19 @@ export interface LyricsHandler {
   cache?: boolean; // default = true
 }
 
-type CurrItem = Partial<typeof Spicetify.Player.data.item>;
+// type CurrItem = Partial<typeof Spicetify.Player.data.item>;
 
-type FetchData = Pick<CurrItem, "name">;
+type FetchData = {
+  uri: string;
+  title?: string;
+  album?: string;
+  artist?: string;
+
+  /**
+   * Duration in ms
+   */
+  duration: number;
+};
 
 export type FetchOptions = {
   /**
@@ -158,7 +168,7 @@ export type LineData = {
   Type: "Line";
   SongWriters: string[];
   Artists?: string[];
-  Content: LineContent[];
+  Content: (LineContent | InterludeContent)[];
 } & TimeRange &
   Partial<CommonStates>;
 

@@ -14,7 +14,7 @@ import { SortableList } from "@/component/ui/SortableList";
 import { t } from "@/i18n";
 import { Select } from "@/component/ui/Select";
 import { Slider } from "@/component/ui/Slider";
-import { getProviderName, type LyricsProviders } from "@/constants";
+import { ALL_PROVIDERS,getProviderName, type LyricsProviders } from "@/constants";
 
 const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.default"), value: "default" },
@@ -23,8 +23,6 @@ const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.heavy"), value: "heavy" },
   { label: t("lyrics.blurmapMode.custom"), value: "custom" },
 ];
-
-const ALL_PROVIDERS: LyricsProviders[] = ["spicy", "amll", "spotify"];
 
 function LyricsSettings() {
   const providerList = useStore($providers);
