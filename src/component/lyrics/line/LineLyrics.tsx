@@ -458,7 +458,7 @@ export default function LineLyrics(props: LineLyricsProps) {
           const useReplace = () => romanize() && romanize_position() === "replace";
 
           const displayText = createMemo(() =>
-            useReplace() ? entry.content.RomanizedText || entry.content.Text : entry.content.Text,
+            useReplace() ? entry.content.RomanizedText ?? entry.content.Text : entry.content.Text,
           );
 
           const hasRomanized = createMemo(() => !!entry.content.RomanizedText && romanize());

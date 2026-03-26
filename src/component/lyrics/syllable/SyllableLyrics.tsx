@@ -95,12 +95,6 @@ function LeadRenderer(props: LeadRendererProps) {
   const showBottom = () => props.romanize && props.romanize_position === "bottom";
   const useReplace = () => props.romanize && props.romanize_position === "replace";
 
-  const fullText = createMemo(() => {
-    return props.vocalPart.Syllables.map((syllable) =>
-      useReplace() ? syllable.RomanizedText || syllable.Text : syllable.Text,
-    ).join("");
-  });
-
   const paddingInline = () => {
     if (!props.hasOppAligned) return "0";
 
@@ -124,7 +118,6 @@ function LeadRenderer(props: LeadRendererProps) {
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      aria-label={fullText()}
     >
       <For each={words()}>
         {(word, wordIdx) => {
@@ -149,7 +142,7 @@ function LeadRenderer(props: LeadRendererProps) {
               <For each={wordSyllables}>
                 {(syllable) => {
                   const displayText = createMemo(() =>
-                    useReplace() ? syllable.RomanizedText || syllable.Text : syllable.Text,
+                    useReplace() ? syllable.RomanizedText ?? syllable.Text : syllable.Text,
                   );
                   const splitText = createMemo(() => splitGraphemes(displayText()));
                   const hasRomanizedForSyllable = createMemo(
