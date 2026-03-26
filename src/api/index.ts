@@ -11,22 +11,27 @@ const API = new LyricsAPI([
     id: "user",
     fetch: fetchUser,
     cache: false,
+    supports: ["local", "audio"],
   },
   {
     id: "spicy",
     fetch: fetchSpicy,
+    supports: ["audio"],
   },
   {
     id: "amll",
     fetch: fetchAMLL,
+    supports: ["audio"],
   },
   {
     id: "spotify",
     fetch: fetchSpotify,
+    supports: ["audio"],
   },
   {
     id: "lrclib",
     fetch: fetchLRCLIB,
+    supports: ["local", "audio"],
   },
 ]);
 

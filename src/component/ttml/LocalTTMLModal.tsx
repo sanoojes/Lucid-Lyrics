@@ -145,16 +145,16 @@ function LocalTTMLModal() {
     const songId = currentSongId();
     if (!files || !songId) return;
 
-    let hasChanges = false;
-
+    let validFile: File | null = null;
     for (const file of files) {
       if (isValidTTMLFile(file)) {
-        await handleSave(file);
-        hasChanges = true;
+        validFile = file;
+        break;
       }
     }
 
-    if (hasChanges) {
+    if (validFile) {
+      await handleSave(validFile);
       await refetchLyrics();
       await refetchTtmlFiles();
     }

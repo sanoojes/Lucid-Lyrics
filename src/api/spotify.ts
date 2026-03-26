@@ -12,24 +12,22 @@ import { wait } from "@/lib/dom/wait";
 
 export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
-    const trackId = id.includes(":") ? id.split(":")[2] : id;
     const baseURL = "https://spclient.wg.spotify.com/color-lyrics/v2/track/";
 
     let body: any;
     try {
       const get = await wait(() => Spicetify.CosmosAsync?.get);
-      body = await get(`${baseURL}${trackId}?format=json&vocalRemoval=false&market=from_token`);
+      body = await get(`${baseURL}${id}?format=json&vocalRemoval=false&market=from_token`);
     } catch {
       return {
         status: "error",
-        data: null,
-        error: { code: "FETCH_FAILED", message: "Spotify Request error" },
+        message: "Spotify Request error",
       };
     }
 
     const lyrics = body?.lyrics;
     if (!lyrics) {
-      return { status: "missing_lyrics", data: null };
+      return { status: "missing_lyrics" };
     }
 
     const lines = lyrics.lines;
@@ -68,7 +66,7 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
       });
 
       result = {
-        Id: trackId,
+        Id: id,
         Type: "Line",
         SongWriters: [],
         Content: content,
@@ -78,7 +76,7 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
       } satisfies LineData;
     } else {
       result = {
-        Id: trackId,
+        Id: id,
         Type: "Static",
         SongWriters: [],
         Lines: lines.map(
@@ -95,11 +93,7 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
   } catch (err) {
     return {
       status: "error",
-      data: null,
-      error: {
-        code: "PROVIDER_FAILED",
-        message: err instanceof Error ? err.message : String(err),
-      },
+      message: String(err),
     };
   }
 }

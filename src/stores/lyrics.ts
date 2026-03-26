@@ -5,8 +5,6 @@ import { atom, computed } from "nanostores";
 import { getName } from "@/stores/persist";
 import { DEFAULT_PROVIDER_ORDER, type LyricsProviders } from "@/constants";
 
-export type LyricsQuery = FetchOptions;
-
 export type BlurmapMode = "default" | "minimal" | "smooth" | "heavy" | "none" | "custom";
 
 export const DEFAULT_BLURMAP: Record<BlurmapMode, number[]> = {
@@ -45,20 +43,33 @@ export function resetBlurmap() {
   $custom_blurmap.set(DEFAULT_BLURMAP.default);
 }
 export const $lyrics_query = computed($player_data, (player) => {
-  const trackId = player?.uri?.split(":")[2];
-  if (!trackId) return null;
-  const meta = player.metadata;
+  const uri = player?.uri;
+  const meta = player?.metadata;
+  if (!uri || !meta) return null;
+  const split = uri.split(":");
+
+  const type: FetchOptions["type"] = (() => {
+    const sub = split[1];
+    if (sub === "track") {
+      //TODO: check if other mediaTypes exists otherthan video and audio
+      if (player.mediaType === "video") return "video";
+      return "audio";
+    }
+
+    return sub;
+  })();
 
   return {
-    id: trackId,
+    uri,
+    id: split[2],
+    type,
     data: {
-      uri: trackId,
       album: meta?.album_title,
       artist: meta?.artist_name,
       title: meta?.title,
       duration: Number(meta?.duration ?? 0),
     },
-  } satisfies LyricsQuery;
+  } satisfies FetchOptions;
 });
 
 export const $has_romanized = atom<boolean>(false);

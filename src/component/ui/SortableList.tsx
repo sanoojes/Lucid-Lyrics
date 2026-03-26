@@ -117,10 +117,7 @@ export const SortableList: Component<SortableListProps> = (props) => {
         <Select
           value=""
           onChange={handleAdd}
-          options={[
-            { label: props.addPlaceholder ?? "Add", value: "" },
-            ...selectOptions(),
-          ]}
+          options={[{ label: props.addPlaceholder ?? "Add", value: "" }, ...selectOptions()]}
         />
       </Show>
     </div>

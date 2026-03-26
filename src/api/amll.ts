@@ -3,6 +3,7 @@ import { parse } from "@/lib/ttml/parser";
 import { logger } from "@/utils/logger";
 
 const missing = { status: "missing_lyrics", data: null } satisfies APIResponse<Lyrics>;
+
 export async function fetchAMLL({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
     const baseURL = "https://raw.githubusercontent.com/amll-dev/amll-ttml-db/main/spotify-lyrics";
@@ -18,7 +19,6 @@ export async function fetchAMLL({ id }: FetchOptions): Promise<APIResponse<Lyric
     }
 
     const ttml = await res.text();
-    console.log(ttml);
 
     if (ttml.trim() === "") {
       return missing;
@@ -33,18 +33,13 @@ export async function fetchAMLL({ id }: FetchOptions): Promise<APIResponse<Lyric
     }
     logger.error(`failed_to_parse:${id}:`, parsedTTML);
     return {
-      status: "error",
-      data: null,
-      error: { code: "PARSE_ERROR", message: "Parsing failed" },
+      status: "parse_error",
+      message: "Parsing failed",
     };
   } catch (err) {
     return {
       status: "error",
-      data: null,
-      error: {
-        code: "PROVIDER_FAILED",
-        message: err instanceof Error ? err.message : String(err),
-      },
+      message: String(err),
     };
   }
 }

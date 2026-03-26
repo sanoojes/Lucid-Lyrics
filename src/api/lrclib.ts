@@ -21,20 +21,16 @@ export async function fetchLRCLIB({ data, id }: FetchOptions): Promise<APIRespon
   } catch (err) {
     return {
       status: "error",
-      data: null,
-      error: {
-        code: "PROVIDER_FAILED",
-        message: err instanceof Error ? err.message : String(err),
-      },
+      message: String(err),
     };
   }
 
-  if ("error" in list || "statusCode" in list || !list) {
+  if ("error" in list || "statusCode" in list) {
     return missing;
   }
 
-  const lrcData = list as LRCSuccess;
-  const trackId = id ? (id.includes(":") ? id.split(":")[2] : id) : String(lrcData.id);
+  const lrcData = list;
+  const trackId = id ? id : String(lrcData.id);
 
   if (lrcData.syncedLyrics) {
     const content = parseLRC(lrcData.syncedLyrics, lrcData.duration || 0);
@@ -93,7 +89,7 @@ export type LRCFail = {
   statusCode: number;
 };
 
-export type LRCResult = LRCSuccess | LRCFail | { error: string; uri?: string };
+export type LRCResult = LRCSuccess | LRCFail;
 
 function parseLRC(lyrics: string, durationSecs: number): (LineContent | InterludeContent)[] {
   const lines = lyrics.split("\n");
@@ -172,7 +168,7 @@ async function fetchLyrics(info: FetchOptions["data"]): Promise<LRCResult> {
   });
 
   if (!response.ok) {
-    return { error: "Request error: Track wasn't found", uri: info.uri };
+    throw new Error("LRC Fetch Failed");
   }
 
   return (await response.json()) as LRCResult;

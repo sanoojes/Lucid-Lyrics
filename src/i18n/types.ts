@@ -1,5 +1,6 @@
 export type Dict = {
   "lyrics.status.missing": string;
+  "lyrics.status.localSong": string;
   "lyrics.status.offline": string;
   "lyrics.status.offlineDesc": string;
   "lyrics.status.error": string;

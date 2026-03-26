@@ -84,13 +84,17 @@ function Lyrics(props: LyricsProps) {
             </Show>
           </Match>
 
-          <Match when={response()?.status === "error" || response()?.status === "malformed"}>
+          <Match when={response()?.status === "local_song"}>
+            <Show when={!props.hideStatus}>
+              <LyricsStatus type="local_song" message={t("lyrics.status.localSong")} />
+            </Show>
+          </Match>
+
+          <Match when={response()?.status !== "success"}>
             <Show when={!props.hideStatus}>
               <LyricsStatus
                 type="error"
-                message={response()?.error?.message || t("lyrics.status.error")}
-                code={response()?.error?.code}
-                onRetry={handleRetry}
+                message={response()?.message || t("lyrics.status.error")}
               />
             </Show>
           </Match>

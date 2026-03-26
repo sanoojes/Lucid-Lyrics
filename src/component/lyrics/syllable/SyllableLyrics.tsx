@@ -142,7 +142,7 @@ function LeadRenderer(props: LeadRendererProps) {
               <For each={wordSyllables}>
                 {(syllable) => {
                   const displayText = createMemo(() =>
-                    useReplace() ? syllable.RomanizedText ?? syllable.Text : syllable.Text,
+                    useReplace() ? (syllable.RomanizedText ?? syllable.Text) : syllable.Text,
                   );
                   const splitText = createMemo(() => splitGraphemes(displayText()));
                   const hasRomanizedForSyllable = createMemo(
@@ -393,11 +393,14 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     if (indices.length > 1) {
       const entries = lineEntries();
       const currentEntry = entries[indices[indices.length - 1]];
-      const isRTL = currentEntry?.type === "lyric"
-        ? (romanize() && romanize_position() === "replace" ? false : currentEntry.content.IsRTL)
-        : currentEntry?.type === "interlude"
-          ? !(romanize() && romanize_position() === "replace") && currentEntry.isRTL
-          : false;
+      const isRTL =
+        currentEntry?.type === "lyric"
+          ? romanize() && romanize_position() === "replace"
+            ? false
+            : currentEntry.content.IsRTL
+          : currentEntry?.type === "interlude"
+            ? !(romanize() && romanize_position() === "replace") && currentEntry.isRTL
+            : false;
 
       targetIdx = isRTL ? indices[0] : indices[indices.length - 1];
     }
@@ -674,9 +677,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
             if (active.includes(entry.index)) return "active";
 
             const endTime =
-              entry.type === "interlude"
-                ? entry.end
-                : getVocalPartBounds(entry.content).end;
+              entry.type === "interlude" ? entry.end : getVocalPartBounds(entry.content).end;
 
             if (currentPos() >= endTime) return "past";
             if (active.length > 0 && active[0] > entry.index) return "past";

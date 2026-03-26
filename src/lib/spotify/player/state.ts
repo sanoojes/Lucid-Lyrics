@@ -53,7 +53,7 @@ export function toggleShuffle(state: ShuffleState) {
 }
 
 export function getLiked() {
-  return Spicetify?.Player?.getHeart();
+  return Spicetify.Player?.origin._state?.item?.metadata?.["collection.in_collection"] === "true";
 }
 
 export function setLiked(like: boolean) {

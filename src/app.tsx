@@ -11,7 +11,6 @@ import { GITHUB_ISSUES_LINK } from "@/constants";
 import { dictResource, t } from "@/i18n";
 import { setupNPV } from "@/npv";
 import { setupFullscreen } from "@/fullscreen";
-import { migrateTTMLFromLyricsStore } from "@/stores/idb/ttml";
 
 App();
 
@@ -48,15 +47,6 @@ async function App() {
         name: "cinema/fullscreen",
         fn: async () => {
           setupFullscreen();
-        },
-      },
-      {
-        name: "migration",
-        async fn() {
-          const migrated = localStorage.getItem("__lucid_ttml_migrated__");
-          if (migrated) return;
-          await migrateTTMLFromLyricsStore();
-          localStorage.setItem("__lucid_ttml_migrated__", "1");
         },
       },
       {

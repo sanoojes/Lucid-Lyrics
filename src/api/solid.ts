@@ -11,9 +11,9 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
 
   const [lyricsResource, lyricsResourceAction] = createResource(
     () => {
-      const p = requestParams();
-      if (!p?.id) return null;
-      return { id: p.id, data: p.data };
+      const params = requestParams();
+      if (!params || !params.id) return null;
+      return { ...params };
     },
     async (source) => {
       log.debug("request", source);
@@ -29,16 +29,17 @@ export const { lyricsResource, lyricsResourceAction, refetchLyrics } = createRoo
       }
     },
   );
+
   createEffect(() => {
-    const data = lyricsResource();
-    $lyrics_status.set(data?.status);
-    $has_romanized.set(!!data?.data?.HasRomanizedText);
+    const res = lyricsResource();
+    $lyrics_status.set(res?.status);
+    $has_romanized.set(!!res?.data?.HasRomanizedText);
   });
 
   createEffect(() => {
     const handleOnline = () => {
       const data = lyricsResource();
-      if ((data?.status === "error" || !!data?.error) && data?.error?.code === "OFFLINE") {
+      if (data?.status === "offline") {
         log.debug("online_refetching");
         lyricsResourceAction.refetch();
       }

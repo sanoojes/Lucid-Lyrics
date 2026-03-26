@@ -14,7 +14,7 @@ import { SortableList } from "@/component/ui/SortableList";
 import { t } from "@/i18n";
 import { Select } from "@/component/ui/Select";
 import { Slider } from "@/component/ui/Slider";
-import { ALL_PROVIDERS,getProviderName, type LyricsProviders } from "@/constants";
+import { ALL_PROVIDERS, getProviderName, type LyricsProviders } from "@/constants";
 
 const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.default"), value: "default" },
@@ -35,7 +35,7 @@ function LyricsSettings() {
     reorderableProviders().map((p) => ({
       id: p,
       label: getProviderName(p),
-    }))
+    })),
   );
 
   const availableProviderItems = createMemo(() => {

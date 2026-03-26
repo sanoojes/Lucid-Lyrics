@@ -1,5 +1,5 @@
-import { get, set, del, clear, keys } from "idb-keyval";
-import { ttmlStore, lyricsStore } from "@/stores/idb";
+import { get, set, del, clear } from "idb-keyval";
+import { ttmlStore } from "@/stores/idb";
 import { parse, type ParseResult } from "@/lib/ttml/parser";
 import type { TTMLMode } from "@/stores/ttml";
 
@@ -123,51 +123,4 @@ export async function deleteLocalTTMLBySongId(songId: string): Promise<void> {
 
 export async function resetLocalTTML(): Promise<void> {
   await clear(ttmlStore);
-}
-
-export async function migrateTTMLFromLyricsStore(): Promise<{
-  migratedCount: number;
-}> {
-  const allKeys = await keys(lyricsStore);
-  const ttmlKeys = allKeys.filter(
-    (key): key is string => typeof key === "string" && key.startsWith(TTML_KEY_PREFIX),
-  );
-
-  if (ttmlKeys.length === 0) {
-    return { migratedCount: 0 };
-  }
-
-  const existingManifest = (await get<TTMLManifestEntry[]>(MANIFEST_KEY, ttmlStore)) || [];
-
-  const existingSongIds = new Set(existingManifest.map((e) => e.songId));
-
-  let migratedCount = 0;
-
-  for (const key of ttmlKeys) {
-    const ttml = await get<LocalTTML>(key, lyricsStore);
-    if (ttml) {
-      await set(key, ttml, ttmlStore);
-      migratedCount++;
-
-      if (!existingSongIds.has(ttml.songId)) {
-        existingManifest.push({
-          id: ttml.id,
-          songId: ttml.songId,
-          createdAt: ttml.createdAt,
-        });
-        existingSongIds.add(ttml.songId);
-      }
-    }
-  }
-
-  existingManifest.sort((a, b) => b.createdAt - a.createdAt);
-  await set(MANIFEST_KEY, existingManifest, ttmlStore);
-
-  for (const key of ttmlKeys) {
-    await del(key, lyricsStore);
-  }
-
-  await del(MANIFEST_KEY, lyricsStore);
-
-  return { migratedCount };
 }

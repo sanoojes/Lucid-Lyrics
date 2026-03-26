@@ -70,8 +70,7 @@ export class LyricsAPI {
   }
 
   private _getKey(provider: string, options: FetchOptions): string {
-    const { id } = options;
-    return `cache_${provider.toLowerCase()}_${id
+    return `cache_${provider.toLowerCase()}_${options.id
       .toString()
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "_")}`;
@@ -79,15 +78,26 @@ export class LyricsAPI {
 
   private async _tryFetchWithProviders(options: FetchOptions): Promise<APIResponse<Lyrics>> {
     const order = $providers.get();
+    const isLocalSong = options.type === "local";
+    const source = options.type ?? "audio";
 
-    for (const providerId of order) {
+    for (let i = 0; i < order.length; i++) {
+      const providerId = order[i];
+      const handler = this._handlers.get(providerId);
+
+      if (handler?.supports && !handler.supports.includes(source)) {
+        if (i === order.length - 1) {
+          return { status: "unsupported", message: "This Content is Unsupported" };
+        }
+        log.debug(`skipping_unsupported`, { providerId, source });
+        continue;
+      }
+
       const cacheKey = this._getKey(providerId, options);
-
-      log.debug(`trying_provider`, { providerId, id: options.id });
-
+      log.debug(`trying_provider`, { providerId, options });
       const response = await this._fetch(providerId, options, cacheKey);
 
-      if (response.status === "success" || response.error?.code === "PARSE_ERROR") {
+      if (response.status === "success" || response.status === "parse_error") {
         return response;
       }
     }
@@ -95,11 +105,14 @@ export class LyricsAPI {
     if (!navigator.onLine) {
       return {
         status: "error",
-        data: null,
-        error: {
-          code: "OFFLINE",
-          message: "You're offline right now. We'll grab these lyrics once you're back online.",
-        },
+        message: "You're offline right now. We'll grab the lyrics once you're back online.",
+      };
+    }
+
+    if (isLocalSong) {
+      return {
+        status: "local_song",
+        message: "We couldn't find lyrics for this local file",
       };
     }
 
@@ -168,22 +181,15 @@ export class LyricsAPI {
     if (isOffline) {
       return {
         status: "error",
-        data: null,
-        error: {
-          code: "OFFLINE",
-          message: "You're offline right now. We'll grab these lyrics once you're back online.",
-        },
+
+        message: "You're offline right now. We'll grab these lyrics once you're back online.",
       };
     }
 
     if (!handler) {
       return {
         status: "error",
-        data: null,
-        error: {
-          code: "HANDLER_NOT_FOUND",
-          message: "We couldn't find the lyrics for this song.",
-        },
+        message: "We couldn't find the lyrics for this song.",
       };
     }
 
@@ -200,11 +206,7 @@ export class LyricsAPI {
     } catch {
       return {
         status: "error",
-        data: null,
-        error: {
-          code: "FETCH_FAILED",
-          message: "Couldn't get Lyrics !",
-        },
+        message: "Couldn't get Lyrics !",
       };
     }
   }
@@ -252,7 +254,7 @@ export class LyricsAPI {
   }
 
   async fetch(options: FetchOptions): Promise<APIResponse<Lyrics>> {
-    const trackKey = `request_${options.id.toString().toLowerCase()}`;
+    const trackKey = `request_${(options.id || options.uri).toString().toLowerCase()}`;
     const existingRequest = this._inFlight.get(trackKey);
 
     if (existingRequest) {

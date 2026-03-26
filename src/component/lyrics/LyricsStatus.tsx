@@ -1,16 +1,13 @@
 import "@/styles/component/lyrics-status.scss";
 import { Show } from "solid-js";
-import { WifiOff, RefreshCw, OctagonAlert, SearchX, CircleAlert } from "lucide-solid";
+import { WifiOff, RefreshCw, SearchX, CircleAlert } from "lucide-solid";
 import { Button } from "@/component/ui/Button";
-import { $developer_mode } from "@/stores/dev";
-import { useStore } from "@nanostores/solid";
 import { t } from "@/i18n";
 
 interface StatusProps {
-  type: "offline" | "error" | "missing";
+  type: "offline" | "error" | "missing" | "local_song";
   message: string;
   desc?: string;
-  code?: string;
   onRetry?: () => void;
 }
 
@@ -18,10 +15,10 @@ const ICONS = {
   offline: WifiOff,
   error: CircleAlert,
   missing: SearchX,
+  local_song: SearchX,
 };
 
 function LyricsStatus(props: StatusProps) {
-  const dev = useStore($developer_mode);
   const Icon = ICONS[props.type];
 
   return (
@@ -33,12 +30,6 @@ function LyricsStatus(props: StatusProps) {
         <p class="status-message">{props.message}</p>
         <Show when={props.desc}>
           <p class="status-desc">{props.desc}</p>
-        </Show>
-
-        <Show when={dev() === "on" && props.code}>
-          <p class="status-code">
-            {t("common.errorCode")} {props.code}
-          </p>
         </Show>
       </div>
 

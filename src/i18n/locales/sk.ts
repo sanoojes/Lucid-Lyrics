@@ -70,6 +70,7 @@ export const dict: Dict = {
   "bg.rotationSpeedDesc": "Rýchlosť rotácie kruhov",
   "lyrics.title": "Text piesne",
   "lyrics.status.missing": "Nenašli sa žiadne texty piesní",
+  "lyrics.status.localSong": "Pre tento lokálny súbor sa nenašli texty piesní",
   "lyrics.status.offline": "Ste offline",
   "lyrics.status.offlineDesc": "Skontrolujte vaše pripojenie",
   "lyrics.status.error": "Niečo sa pokazilo",

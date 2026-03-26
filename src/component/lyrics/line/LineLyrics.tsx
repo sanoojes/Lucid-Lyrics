@@ -40,7 +40,10 @@ type LineEntry =
 
 function buildLineEntries(lyrics: LineData): LineEntry[] {
   const allContent = lyrics.Content ?? [];
-  const content = allContent.filter((c) => c.Type !== "Interlude") as Extract<LineData["Content"][number], { Type: string }>[];
+  const content = allContent.filter((c) => c.Type !== "Interlude") as Extract<
+    LineData["Content"][number],
+    { Type: string }
+  >[];
   const entries: LineEntry[] = [];
   let lineIdx = 0;
 
@@ -153,11 +156,14 @@ export default function LineLyrics(props: LineLyricsProps) {
     if (indices.length > 1) {
       const entries = lineEntries();
       const currentEntry = entries[indices[indices.length - 1]];
-      const isRTL = currentEntry?.type === "lyric"
-        ? (romanize() && romanize_position() === "replace" ? false : currentEntry.content.IsRTL)
-        : currentEntry?.type === "interlude"
-          ? !(romanize() && romanize_position() === "replace") && currentEntry.isRTL
-          : false;
+      const isRTL =
+        currentEntry?.type === "lyric"
+          ? romanize() && romanize_position() === "replace"
+            ? false
+            : currentEntry.content.IsRTL
+          : currentEntry?.type === "interlude"
+            ? !(romanize() && romanize_position() === "replace") && currentEntry.isRTL
+            : false;
 
       targetIdx = isRTL ? indices[0] : indices[indices.length - 1];
     }
@@ -376,7 +382,8 @@ export default function LineLyrics(props: LineLyricsProps) {
       <For each={lineEntries()}>
         {(entry) => {
           const isActive = createMemo(() => {
-            const isTarget = activeIndices().includes(entry.index) || scrollToIndex() === entry.index;
+            const isTarget =
+              activeIndices().includes(entry.index) || scrollToIndex() === entry.index;
 
             if (isTarget && entry.index === lineEntries().length - 1) {
               const endTime = entry.type === "interlude" ? entry.end : entry.content.EndTime * 1000;
@@ -391,10 +398,7 @@ export default function LineLyrics(props: LineLyricsProps) {
             const active = activeIndices();
             if (active.includes(entry.index)) return "active";
 
-            const endTime =
-              entry.type === "interlude"
-                ? entry.end
-                : entry.content.EndTime * 1000;
+            const endTime = entry.type === "interlude" ? entry.end : entry.content.EndTime * 1000;
 
             if (currentPos() >= endTime) return "past";
             if (active.length > 0 && active[0] > entry.index) return "past";
@@ -458,7 +462,7 @@ export default function LineLyrics(props: LineLyricsProps) {
           const useReplace = () => romanize() && romanize_position() === "replace";
 
           const displayText = createMemo(() =>
-            useReplace() ? entry.content.RomanizedText ?? entry.content.Text : entry.content.Text,
+            useReplace() ? (entry.content.RomanizedText ?? entry.content.Text) : entry.content.Text,
           );
 
           const hasRomanized = createMemo(() => !!entry.content.RomanizedText && romanize());

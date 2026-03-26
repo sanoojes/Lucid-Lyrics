@@ -12,8 +12,7 @@ export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyri
     if (!response || !queryResult) {
       return {
         status: "error",
-        data: null,
-        error: { code: "FETCH_FAILED", message: "Network or Validation failed" },
+        message: "Data Validation failed",
       };
     }
 
@@ -25,27 +24,20 @@ export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyri
       httpStatus === 404 || ("error" in lyricData && lyricData.error === "MISSING_LYRICS");
 
     if (isMissing) {
-      return { status: "missing_lyrics", data: null };
+      return { status: "missing_lyrics" };
     }
 
     if (httpStatus !== 200 || "error" in lyricData) {
-      return {
-        status: "error",
-        data: null,
-        error: { code: "PROVIDER_FAILED", message: "Unexpected Error from Spicy" },
-      };
+      throw new Error("Spicy: Unexpected Error");
     }
+
     const data = lyricData;
     data.Provider = "spicy";
     return { status: "success", data };
   } catch (err) {
     return {
       status: "error",
-      data: null,
-      error: {
-        code: "FETCH_FAILED",
-        message: err instanceof Error ? err.message : String(err),
-      },
+      message: String(err),
     };
   }
 }

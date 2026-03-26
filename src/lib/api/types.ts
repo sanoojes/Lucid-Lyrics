@@ -1,34 +1,39 @@
 import type { LyricsProviders } from "@/constants";
 
-export type APIStatus = "success" | "error" | "missing_lyrics" | "malformed" | "offline";
+export type APIStatus =
+  | "success"
+  | "error"
+  | "missing_lyrics"
+  | "malformed"
+  | "offline"
+  | "local_song"
+  | "parse_error"
+  | "unsupported";
 
-export interface APIError {
-  code:
-    | "NO_PROVIDERS"
-    | "PROVIDER_FAILED"
-    | "FETCH_FAILED"
-    | "OFFLINE"
-    | "HANDLER_NOT_FOUND"
-    | "MISSING_LYRICS"
-    | "PARSE_ERROR";
-  message: string;
-}
-export interface APIResponse<T> {
-  status: APIStatus;
-  data: T | null;
-  error?: APIError;
-}
+export type ErrorStatus = Exclude<APIStatus, "success">;
 
+export type APIResponse<T> =
+  | {
+      status: "success";
+      data: T;
+    }
+  | {
+      status: ErrorStatus;
+      data?: undefined | null;
+      message?: string;
+    };
+
+export type SupportedSongs = "audio" | "local" | "video";
 export interface LyricsHandler {
   id: LyricsProviders;
   fetch(options: FetchOptions): Promise<APIResponse<Lyrics>>;
   cache?: boolean; // default = true
+  supports?: SupportedSongs[];
 }
 
 // type CurrItem = Partial<typeof Spicetify.Player.data.item>;
 
 type FetchData = {
-  uri: string;
   title?: string;
   album?: string;
   artist?: string;
@@ -41,10 +46,18 @@ type FetchData = {
 
 export type FetchOptions = {
   /**
+   * Spotify track uri
+   * Example: "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"
+   */
+  uri: string;
+
+  /**
    * Spotify track ID
    * Example: "3n3Ppam7vgaVa1iaRUc9Lp"
    */
   id: string;
+
+  type?: SupportedSongs;
 
   data: FetchData;
 };
