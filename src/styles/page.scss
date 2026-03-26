@@ -461,7 +461,6 @@ $floating-transition:
   --interlude-dots-gap: max(calc(var(--interlude-height) * 0.3), 16px);
   --interlude-size: max(calc(var(--interlude-height) * 0.3), 10px);
 
-  text-wrap: balance;
   word-break: keep-all;
   overflow-wrap: break-word;
 
@@ -637,7 +636,6 @@ $floating-transition:
   --lead-font-weight: 700;
   --lead-font-size: clamp(1.8rem, 4cqw, 3.6rem);
 
-  text-wrap: balance;
   word-break: keep-all;
   overflow-wrap: break-word;
 
