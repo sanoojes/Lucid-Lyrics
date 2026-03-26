@@ -50,7 +50,7 @@ export const DEFAULT_BACKGROUND_STATE = {
       mode: "player",
       customUrl,
       scale: 1.0,
-      saturation: 4.0,
+      saturation: 3.0,
       brightness: 0.8,
       animationSpeed: 1.0,
       blurPasses: 12,
