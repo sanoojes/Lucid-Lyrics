@@ -46880,7 +46880,7 @@
       "format": "esm"
     },
     "src/api/spicy.ts": {
-      "bytes": 2318,
+      "bytes": 2323,
       "imports": [
         {
           "path": "src/lib/api/spicy.ts",
@@ -51705,7 +51705,7 @@
           "bytesInOutput": 169
         },
         "src/api/spicy.ts": {
-          "bytesInOutput": 791
+          "bytesInOutput": 795
         },
         "src/api/spotify.ts": {
           "bytesInOutput": 1172
@@ -52023,7 +52023,7 @@
           "bytesInOutput": 1031
         }
       },
-      "bytes": 375205
+      "bytes": 375209
     },
     "dist/app.css": {
       "imports": [
