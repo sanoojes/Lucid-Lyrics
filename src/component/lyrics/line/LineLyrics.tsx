@@ -1,4 +1,4 @@
-import type { LineData } from "@/lib/api/types";
+import type { LineData, LineContent } from "@/lib/api/types";
 import {
   createEffect,
   createMemo,
@@ -26,7 +26,7 @@ type LineEntry =
       type: "lyric";
       index: number;
       contentIndex: number;
-      content: LineData["Content"][number];
+      content: LineContent;
     }
   | {
       type: "interlude";
@@ -39,12 +39,13 @@ type LineEntry =
     };
 
 function buildLineEntries(lyrics: LineData): LineEntry[] {
-  const content = lyrics.Content ?? [];
+  const allContent = lyrics.Content ?? [];
+  const content = allContent.filter((c) => c.Type !== "Interlude") as Extract<LineData["Content"][number], { Type: string }>[];
   const entries: LineEntry[] = [];
   let lineIdx = 0;
 
   for (let i = 0; i < content.length; i++) {
-    const c = content[i];
+    const c = content[i] as Extract<LineData["Content"][number], { Type: string }>;
     const start = c.StartTime * 1000;
 
     if (i === 0 && start > 2000) {
