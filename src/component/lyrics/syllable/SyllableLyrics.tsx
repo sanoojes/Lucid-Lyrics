@@ -279,6 +279,9 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   const itemRefs = new Map<number, HTMLDivElement>();
   const elementToIndex = new WeakMap<Element, number>();
 
+  let highestActiveIndex = 0;
+  let lastSeenPos = 0;
+
   const [isUserScroll, setIsUserScroll] = createSignal(false);
   const [isInteracting, setIsInteracting] = createSignal(false);
   const [visibleElements, setVisibleElements] = createSignal<Set<number>>(new Set());
@@ -384,7 +387,39 @@ function SyllableLyrics(props: SyllableLyricsProps) {
     },
   );
 
-  const firstActiveIndex = createMemo(() => activeIndices()[0] ?? 0);
+  const scrollToIndex = createMemo((prevIdx: number) => {
+    const pos = currentPos();
+    const isSeek = Math.abs(pos - lastSeenPos) > 1200;
+    lastSeenPos = pos;
+
+    const indices = activeIndices();
+    if (indices.length === 0) return prevIdx || 0;
+
+    let targetIdx = indices[0] ?? 0;
+
+    if (indices.length > 1) {
+      const entries = lineEntries();
+      const currentEntry = entries[indices[indices.length - 1]];
+      const isRTL = currentEntry?.type === "lyric"
+        ? (romanize() && romanize_position() === "replace" ? false : currentEntry.content.IsRTL)
+        : currentEntry?.type === "interlude"
+          ? !(romanize() && romanize_position() === "replace") && currentEntry.isRTL
+          : false;
+
+      targetIdx = isRTL ? indices[0] : indices[indices.length - 1];
+    }
+
+    if (isSeek || pos === 0) {
+      highestActiveIndex = targetIdx;
+      return targetIdx;
+    }
+
+    if (targetIdx > highestActiveIndex) {
+      highestActiveIndex = targetIdx;
+    }
+
+    return Math.max(targetIdx, highestActiveIndex);
+  }, 0);
 
   const [scrollOffset, setScrollOffset] = createSignal(0);
 
@@ -420,7 +455,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = firstActiveIndex();
+    const idx = scrollToIndex();
     const targetRef = itemRefs.get(idx);
 
     if (!lenis || !targetRef || !targetRef.isConnected) return;
@@ -460,7 +495,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   );
 
   createEffect(() => {
-    const idx = firstActiveIndex();
+    const idx = scrollToIndex();
 
     if (!isUserScroll() && idx !== -1 && itemRefs.has(idx)) {
       requestAnimationFrame(() => {
@@ -498,7 +533,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   };
 
   createEffect(() => {
-    const activeVisible = visibleElements().has(firstActiveIndex());
+    const activeVisible = visibleElements().has(scrollToIndex());
     setIsActiveVisible(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
@@ -612,7 +647,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
     const blurmap = getBlurmap();
     const active = activeIndices();
-    let distance = Math.abs(index - firstActiveIndex());
+    let distance = Math.abs(index - scrollToIndex());
 
     for (const a of active) {
       const d = Math.abs(index - a);
@@ -644,6 +679,13 @@ function SyllableLyrics(props: SyllableLyricsProps) {
           const lineStatus = createMemo(() => {
             const active = activeIndices();
             if (active.includes(entry.index)) return "active";
+
+            const endTime =
+              entry.type === "interlude"
+                ? entry.end
+                : getVocalPartBounds(entry.content).end;
+
+            if (currentPos() >= endTime) return "past";
             if (active.length > 0 && active[0] > entry.index) return "past";
             return "upcoming";
           });

@@ -87,6 +87,9 @@ export default function LineLyrics(props: LineLyricsProps) {
   const itemRefs = new Map<number, HTMLDivElement>();
   const elementToIndex = new WeakMap<Element, number>();
 
+  let highestActiveIndex = 0;
+  let lastSeenPos = 0;
+
   const [isUserScroll, setIsUserScroll] = createSignal(false);
   const [isInteracting, setIsInteracting] = createSignal(false);
   const [visibleElements, setVisibleElements] = createSignal<Set<number>>(new Set());
@@ -136,9 +139,39 @@ export default function LineLyrics(props: LineLyricsProps) {
     },
   );
 
-  const firstActiveIndex = createMemo(() => activeIndices()[0] ?? 0);
+  const scrollToIndex = createMemo((prevIdx: number) => {
+    const pos = currentPos();
+    const isSeek = Math.abs(pos - lastSeenPos) > 1200;
+    lastSeenPos = pos;
 
-  // const hasOppAligned = createMemo(() => props.lyrics.Content.some((v) => v.OppositeAligned));
+    const indices = activeIndices();
+    if (indices.length === 0) return prevIdx || 0;
+
+    let targetIdx = indices[0] ?? 0;
+
+    if (indices.length > 1) {
+      const entries = lineEntries();
+      const currentEntry = entries[indices[indices.length - 1]];
+      const isRTL = currentEntry?.type === "lyric"
+        ? (romanize() && romanize_position() === "replace" ? false : currentEntry.content.IsRTL)
+        : currentEntry?.type === "interlude"
+          ? !(romanize() && romanize_position() === "replace") && currentEntry.isRTL
+          : false;
+
+      targetIdx = isRTL ? indices[0] : indices[indices.length - 1];
+    }
+
+    if (isSeek || pos === 0) {
+      highestActiveIndex = targetIdx;
+      return targetIdx;
+    }
+
+    if (targetIdx > highestActiveIndex) {
+      highestActiveIndex = targetIdx;
+    }
+
+    return Math.max(targetIdx, highestActiveIndex);
+  }, 0);
 
   function updateOffset(isWidgetHidden = props.widgetHidden ?? false) {
     if (!containerRef) return;
@@ -158,7 +191,7 @@ export default function LineLyrics(props: LineLyricsProps) {
 
   const performScroll = (immediate: boolean, forceScroll = false) => {
     const lenis = getLenis();
-    const idx = firstActiveIndex();
+    const idx = scrollToIndex();
     const targetRef = itemRefs.get(idx);
 
     if (!lenis || !targetRef) return;
@@ -191,7 +224,7 @@ export default function LineLyrics(props: LineLyricsProps) {
   );
 
   createEffect(() => {
-    const idx = firstActiveIndex();
+    const idx = scrollToIndex();
 
     if (!isUserScroll() && idx !== -1 && itemRefs.has(idx)) {
       requestAnimationFrame(() => {
@@ -227,7 +260,7 @@ export default function LineLyrics(props: LineLyricsProps) {
   };
 
   createEffect(() => {
-    const activeVisible = visibleElements().has(firstActiveIndex());
+    const activeVisible = visibleElements().has(scrollToIndex());
     setIsActiveVisible(activeVisible);
 
     if (!isInteracting() && isUserScroll()) {
@@ -342,7 +375,7 @@ export default function LineLyrics(props: LineLyricsProps) {
       <For each={lineEntries()}>
         {(entry) => {
           const isActive = createMemo(() => {
-            const isTarget = activeIndices().includes(entry.index);
+            const isTarget = activeIndices().includes(entry.index) || scrollToIndex() === entry.index;
 
             if (isTarget && entry.index === lineEntries().length - 1) {
               const endTime = entry.type === "interlude" ? entry.end : entry.content.EndTime * 1000;
@@ -353,11 +386,26 @@ export default function LineLyrics(props: LineLyricsProps) {
             return isTarget;
           });
 
+          const lineStatus = createMemo(() => {
+            const active = activeIndices();
+            if (active.includes(entry.index)) return "active";
+
+            const endTime =
+              entry.type === "interlude"
+                ? entry.end
+                : entry.content.EndTime * 1000;
+
+            if (currentPos() >= endTime) return "past";
+            if (active.length > 0 && active[0] > entry.index) return "past";
+
+            return "upcoming";
+          });
+
           const blurStyle = createMemo(() => {
             if (isUserScroll()) return "0px";
             const blurmap = getBlurmap();
             const active = activeIndices();
-            let distance = Math.abs(entry.index - firstActiveIndex());
+            let distance = Math.abs(entry.index - scrollToIndex());
 
             for (const a of active) {
               const d = Math.abs(entry.index - a);
@@ -414,13 +462,11 @@ export default function LineLyrics(props: LineLyricsProps) {
 
           const hasRomanized = createMemo(() => !!entry.content.RomanizedText && romanize());
 
-          const needsExtraSpace = createMemo(
-            () =>
-              hasRomanized() && (romanize_position() === "top" || romanize_position() === "bottom"),
-          );
-
           const progress = createMemo(() => {
-            if (!isActive()) return 0;
+            const status = lineStatus();
+            if (status === "past") return 100;
+            if (status === "upcoming") return 0;
+
             const start = entry.content.StartTime * 1000;
             const end = entry.content.EndTime * 1000;
             const pos = currentPos();
