@@ -37,11 +37,6 @@ export type FetchOptions = {
   id: string;
 
   data: FetchData;
-
-  /**
-   * Force refresh/get latest one
-   */
-  forceRefresh?: boolean;
 };
 
 export type Lyrics = SyllableData | LineData | StaticData;

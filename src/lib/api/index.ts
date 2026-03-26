@@ -114,12 +114,11 @@ export class LyricsAPI {
     options: FetchOptions,
     cacheKey: string,
   ): Promise<APIResponse<Lyrics>> {
-    const { forceRefresh = false } = options;
     const isOffline = !navigator.onLine;
     const handler = this._handlers.get(provider);
     const shouldCache = handler?.cache !== false;
 
-    const attemptCacheRead = (!forceRefresh && shouldCache) || isOffline;
+    const attemptCacheRead = shouldCache || isOffline;
 
     if (attemptCacheRead) {
       try {
