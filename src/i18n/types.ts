@@ -102,6 +102,7 @@ export type Dict = {
   "common.loading": string;
   "common.forceReload": string;
   "common.close": string;
+  "common.remove": string;
   "router.lyricsPageError": string;
   "router.settingsError": string;
   "menu.appName": string;
@@ -141,6 +142,7 @@ export type Dict = {
   "settings.resetCompleteDesc": string;
   "settings.resetFailed": string;
   "settings.resetFailedDesc": string;
+  "settings.addProvider": string;
   "advanced.title": string;
   "advanced.devMode": string;
   "advanced.devModeDesc": string;
@@ -186,6 +188,7 @@ export type Dict = {
   "lyrics.blurmapMode.custom": string;
   "lyrics.customBlurmap": string;
   "lyrics.customBlurmapDesc": string;
+  "lyrics.minProviderWarning": string;
   "position.top": string;
   "position.bottom": string;
   "position.left": string;

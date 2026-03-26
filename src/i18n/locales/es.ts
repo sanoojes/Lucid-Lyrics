@@ -104,6 +104,7 @@ export const dict: Dict = {
   "common.loading": "Cargando...",
   "common.forceReload": "Forzar Recarga",
   "common.close": "Cerrar",
+  "common.remove": "Eliminar",
   "router.lyricsPageError": "Algo salió mal al cargar la página de letras. Intenta de nuevo.",
   "router.settingsError": "Algo salió mal al agregar los ajustes.",
   "menu.appName": "Lucid Lyrics",
@@ -143,6 +144,7 @@ export const dict: Dict = {
     "No es necesario forzar la recarga, pero se recomienda si algo no se ve correctamente",
   "settings.resetFailed": "Restablecimiento fallido",
   "settings.resetFailedDesc": "Ocurrió un error al restablecer",
+  "settings.addProvider": "Añadir proveedor",
   "advanced.title": "Avanzado",
   "advanced.devMode": "Modo Desarrollador",
   "advanced.devModeDesc": "Habilitar funciones de desarrollador y registro de depuración",
@@ -185,6 +187,7 @@ export const dict: Dict = {
   "lyrics.customBlurmap": "Niveles de Desenfoque Personalizados",
   "lyrics.customBlurmapDesc":
     "Establece la cantidad de desenfoque para cada nivel de distancia (0-5). Los niveles más altos pueden afectar el rendimiento",
+  "lyrics.minProviderWarning": "Se requiere al menos un proveedor",
   "position.top": "Arriba",
   "position.bottom": "Abajo",
   "position.left": "Izquierda",

@@ -104,6 +104,7 @@ export const dict: Dict = {
   "common.loading": "Načítava sa...",
   "common.forceReload": "Vynútené načítanie",
   "common.close": "Zavrieť",
+  "common.remove": "Odstrániť",
   "router.lyricsPageError":
     "Pri načítavaní stránky s textom piesne sa niečo pokazilo. Skúste to znova.",
   "router.settingsError": "Pri pridávaní nastavení sa vyskytla chyba.",
@@ -144,6 +145,7 @@ export const dict: Dict = {
     "Vynútené načítanie nie je potrebné, ale odporúča sa, ak niečo nevyzerá správne",
   "settings.resetFailed": "Obnovenie zlyhalo",
   "settings.resetFailedDesc": "Pri resetovaní sa vyskytla chyba",
+  "settings.addProvider": "Pridať poskytovateľa",
   "advanced.title": "Pokročilé",
   "advanced.devMode": "Režim pre vývojárov",
   "advanced.devModeDesc": "Povoliť funkcie pre vývojárov",
@@ -187,6 +189,7 @@ export const dict: Dict = {
   "lyrics.customBlurmap": "Vlastné Úrovne Rozmazania",
   "lyrics.customBlurmapDesc":
     "Nastavte množstvo rozmazania pre každú úroveň vzdialenosti (0-5). Vyššie úrovne môžu ovplyvniť výkon",
+  "lyrics.minProviderWarning": "Je potrebný aspoň jeden poskytovateľ",
   "position.top": "Hore",
   "position.bottom": "Dole",
   "position.left": "Vľavo",

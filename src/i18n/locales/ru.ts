@@ -104,6 +104,7 @@ export const dict: Dict = {
   "common.loading": "Загрузка...",
   "common.forceReload": "Принудительная Перезагрузка",
   "common.close": "Закрыть",
+  "common.remove": "Удалить",
   "router.lyricsPageError": "Что-то пошло не так при загрузке страницы текстов. Попробуйте снова.",
   "router.settingsError": "Что-то пошло не так при добавлении настроек.",
   "menu.appName": "Lucid Lyrics",
@@ -143,6 +144,7 @@ export const dict: Dict = {
     "Принудительная перезагрузка не требуется, но рекомендуется, если что-то выглядит не так",
   "settings.resetFailed": "Сброс не удался",
   "settings.resetFailedDesc": "Произошла ошибка при сбросе",
+  "settings.addProvider": "Добавить поставщика",
   "advanced.title": "Дополнительно",
   "advanced.devMode": "Режим разработчика",
   "advanced.devModeDesc": "Включить функции разработчика и журнал отладки",
@@ -185,6 +187,7 @@ export const dict: Dict = {
   "lyrics.customBlurmap": "Свои Уровни Размытия",
   "lyrics.customBlurmapDesc":
     "Установите уровень размытия для каждой дистанции (0-5). Более высокие значения могут повлиять на производительность",
+  "lyrics.minProviderWarning": "Требуется как минимум один поставщик",
   "position.top": "Сверху",
   "position.bottom": "Снизу",
   "position.left": "Слева",

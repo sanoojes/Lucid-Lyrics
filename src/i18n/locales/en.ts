@@ -104,6 +104,7 @@ export const dict: Dict = {
   "common.loading": "Loading...",
   "common.forceReload": "Force Reload",
   "common.close": "Close",
+  "common.remove": "Remove",
   "router.lyricsPageError": "Something went wrong while loading lyrics page. Please try again.",
   "router.settingsError": "Something went wrong while adding settings.",
   "menu.appName": "Lucid Lyrics",
@@ -143,6 +144,7 @@ export const dict: Dict = {
     "A force reload is not required but recommended if something doesn't look right",
   "settings.resetFailed": "Reset Failed",
   "settings.resetFailedDesc": "An error occurred while resetting",
+  "settings.addProvider": "Add provider",
   "advanced.title": "Advanced",
   "advanced.devMode": "Developer Mode",
   "advanced.devModeDesc": "Enable developer features and debug logging",
@@ -192,6 +194,7 @@ export const dict: Dict = {
   "lyrics.customBlurmap": "Custom Blur Levels",
   "lyrics.customBlurmapDesc":
     "Set blur amount for each distance level (0-5). Higher levels may impact performance",
+  "lyrics.minProviderWarning": "At least one provider is required",
   "position.top": "Top",
   "position.bottom": "Bottom",
   "position.left": "Left",

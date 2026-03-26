@@ -1,0 +1,66 @@
+@use "../variables" as v;
+
+.sortable-list {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-xs;
+  min-width: 180px;
+}
+
+.sortable-item {
+  display: flex;
+  align-items: center;
+  gap: v.$space-sm;
+  padding: v.$space-sm v.$space-md;
+  background: v.$glass-bg;
+  border: 1px solid v.$glass-bd;
+  border-radius: v.$r-md;
+  cursor: grab;
+  transition: all v.$ease-fast;
+
+  &:hover {
+    border-color: rgba(v.$color, 0.3);
+    background: rgba(v.$color, 0.05);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &.dragging {
+    opacity: 0.5;
+    border-color: v.$color-accent;
+  }
+
+  .drag-handle {
+    color: v.$color-muted;
+    flex-shrink: 0;
+  }
+
+  .item-label {
+    flex: 1;
+    font-size: v.$fs-sm;
+  }
+
+  .item-badge {
+    background: v.$color-accent;
+    color: v.$color-fg;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-bold;
+    padding: 2px v.$space-sm;
+    border-radius: v.$r-sm;
+    flex-shrink: 0;
+  }
+
+  .l-btn {
+    --btn-size: 28px;
+    --icon-padding: 0;
+  }
+}
+
+.sortable-empty {
+  font-size: v.$fs-sm;
+  color: v.$color-muted;
+  padding: v.$space-sm;
+  text-align: center;
+}

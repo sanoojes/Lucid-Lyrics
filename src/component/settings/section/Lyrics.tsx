@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { For, Index, Show } from "solid-js";
+import { Index, Show, createMemo } from "solid-js";
 import { SettingsRow } from "@/component/settings/Row";
 import {
   $providers,
@@ -10,11 +10,11 @@ import {
   type BlurmapMode,
 } from "@/stores/lyrics";
 import { SettingsSection } from "@/component/settings/Section";
-import { GripVertical } from "lucide-solid";
+import { SortableList } from "@/component/ui/SortableList";
 import { t } from "@/i18n";
 import { Select } from "@/component/ui/Select";
 import { Slider } from "@/component/ui/Slider";
-import { getProviderName } from "@/constants";
+import { getProviderName, type LyricsProviders } from "@/constants";
 
 const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.default"), value: "default" },
@@ -24,6 +24,8 @@ const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.custom"), value: "custom" },
 ];
 
+const ALL_PROVIDERS: LyricsProviders[] = ["spicy", "amll", "spotify"];
+
 function LyricsSettings() {
   const providerList = useStore($providers);
   const blurmapMode = useStore($blurmap_mode);
@@ -31,42 +33,32 @@ function LyricsSettings() {
 
   const reorderableProviders = () => providerList().slice(1);
 
-  const handleDragStart = (e: DragEvent, index: number) => {
-    if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text/plain", String(index));
-    }
-    const target = e.target as HTMLElement;
-    target.classList.add("dragging");
+  const providerItems = createMemo(() =>
+    reorderableProviders().map((p) => ({
+      id: p,
+      label: getProviderName(p),
+    }))
+  );
+
+  const availableProviderItems = createMemo(() => {
+    const current = providerList();
+    return ALL_PROVIDERS.filter((p) => !current.includes(p)).map((p) => ({
+      id: p,
+      label: getProviderName(p),
+    }));
+  });
+
+  const handleReorder = (items: { id: string; label: string }[]) => {
+    $providers.set(["user", ...items.map((i) => i.id as LyricsProviders)]);
   };
 
-  const handleDragEnd = (e: DragEvent) => {
-    const target = e.target as HTMLElement;
-    target.classList.remove("dragging");
+  const handleRemove = (id: string) => {
+    const current = providerList();
+    $providers.set(current.filter((p) => p !== id));
   };
 
-  const handleDragOver = (e: DragEvent, _targetIndex: number) => {
-    e.preventDefault();
-    if (e.dataTransfer) {
-      e.dataTransfer.dropEffect = "move";
-    }
-  };
-
-  const handleDrop = (e: DragEvent, targetIndex: number) => {
-    e.preventDefault();
-    const sourceIndex = Number(e.dataTransfer?.getData("text/plain"));
-    if (isNaN(sourceIndex)) return;
-
-    const reorderable = reorderableProviders();
-    if (sourceIndex === targetIndex) return;
-    if (sourceIndex < 0 || sourceIndex >= reorderable.length) return;
-    if (targetIndex < 0 || targetIndex >= reorderable.length) return;
-
-    const newReorderable = [...reorderable];
-    const [moved] = newReorderable.splice(sourceIndex, 1);
-    newReorderable.splice(targetIndex, 0, moved);
-
-    $providers.set(["user", ...newReorderable]);
+  const handleAdd = (id: string) => {
+    $providers.set([...providerList(), id as LyricsProviders]);
   };
 
   return (
@@ -114,24 +106,17 @@ function LyricsSettings() {
         description={t("lyrics.providerOrderDesc")}
         column
       >
-        <div class="provider-order-list">
-          <For each={reorderableProviders()}>
-            {(provider, index) => (
-              <div
-                class="provider-item"
-                draggable={true}
-                onDragStart={(e) => handleDragStart(e, index())}
-                onDragEnd={handleDragEnd}
-                onDragOver={(e) => handleDragOver(e, index())}
-                onDrop={(e) => handleDrop(e, index())}
-              >
-                <GripVertical size={16} class="drag-handle" />
-                <span class="provider-label">{getProviderName(provider)}</span>
-                <span class="provider-badge">{index() + 1}</span>
-              </div>
-            )}
-          </For>
-        </div>
+        <SortableList
+          items={providerItems()}
+          availableItems={availableProviderItems()}
+          minItems={1}
+          addPlaceholder={t("settings.addProvider")}
+          emptyMessage={t("lyrics.minProviderWarning")}
+          removeTitle={t("common.remove")}
+          onReorder={handleReorder}
+          onRemove={handleRemove}
+          onAdd={handleAdd}
+        />
       </SettingsRow>
     </SettingsSection>
   );
