@@ -86,7 +86,7 @@ export class LyricsAPI {
       const handler = this._handlers.get(providerId);
 
       if (handler?.supports && !handler.supports.includes(source)) {
-        if (i === order.length - 1) {
+        if (i === order.length - 1 && !isLocalSong) {
           return { status: "unsupported", message: "This Content is Unsupported" };
         }
         log.debug(`skipping_unsupported`, { providerId, source });
@@ -131,9 +131,7 @@ export class LyricsAPI {
     const handler = this._handlers.get(provider);
     const shouldCache = handler?.cache !== false;
 
-    const attemptCacheRead = shouldCache || isOffline;
-
-    if (attemptCacheRead) {
+    if (shouldCache || isOffline) {
       try {
         const cached = await get<CachedLyrics>(cacheKey, lyricsStore);
         if (cached) {
