@@ -46,6 +46,7 @@
   &--default {
     --btn-border: rgba(255, 255, 255, 0.1);
     height: v.$btn-size-base;
+    min-height: v.$btn-size-base;
     padding: 0 v.$space-lg;
     font-size: v.$fs-sm;
   }
