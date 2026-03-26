@@ -67,6 +67,7 @@ export const DEFAULT_PROVIDER_ORDER = [
   "user",
   "spicy",
   "amll",
+  "lrclib",
   "spotify",
 ] satisfies LyricsProviders[];
 
