@@ -1,5 +1,4 @@
 import API from "@/api";
-import { build } from "@/lib/ttml/builder";
 import { $has_romanized, $lyrics_query, $lyrics_status } from "@/stores";
 import { createLogger } from "@/utils/logger";
 import { useStore } from "@nanostores/solid";

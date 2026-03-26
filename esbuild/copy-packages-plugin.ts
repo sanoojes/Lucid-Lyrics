@@ -1,7 +1,6 @@
 import type { Plugin } from "esbuild";
 import { cpSync, existsSync, globSync, mkdirSync, rmSync, statSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { $ } from "bun";
 
 const colors = {
   reset: "\x1b[0m",

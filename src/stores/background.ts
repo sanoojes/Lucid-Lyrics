@@ -2,7 +2,6 @@ import { persistentJSON } from "@/utils/nanostores";
 import { computed } from "nanostores";
 import { getName } from "@/stores/persist";
 import { DEFAULT_BACKGROUND_STATE } from "@/constants";
-import deepmerge from "@/utils/deepmerge";
 
 export const $background = persistentJSON<BackgroundState>(
   getName("background"),
