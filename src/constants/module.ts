@@ -1,7 +1,7 @@
-const JSDELIVR = "https://cdn.jsdelivr.net";
+const JSDELIVR = "https://lucid-lyrics.sanooj.uk";
 const JSDELIVR_TO_REPO = __LUCID_DEV_MODE__
   ? "http://localhost:54321/files"
-  : `${JSDELIVR}/gh/sanoojes/Lucid-Lyrics@refs/heads/releases/latest`;
+  : `${JSDELIVR}/spice`;
 const JSDELIVR_PACKAGE_REPO = `${JSDELIVR_TO_REPO}/packages`;
 
 const PINYIN = "pinyin";
