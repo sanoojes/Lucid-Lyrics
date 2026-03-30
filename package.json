@@ -16,7 +16,7 @@
   "scripts": {
     "sc": "bun --bun run spicetify-creator",
     "dev": "bun run build:packages && bun --bun run spicetify-creator dev",
-    "build:theme":"bun run build:packages && bun --bun run spicetify-creator build",
+    "build:theme": "bun run build:packages && bun --bun run spicetify-creator build",
     "build": "bun run docs:build && bun run build:theme",
     "fmt": "oxfmt",
     "lint": "oxlint",
@@ -27,8 +27,7 @@
     "build:packages": "bun --filter './packages/*' build",
     "update:packages": "bun run build:packages && bun scripts/update-packages.ts",
     "generate-release-artifacts": "bun run scripts/generate-release-artifacts.ts",
-    "generate-links": "bun scripts/generate-jsdelivr-links.ts"
-    ,
+    "generate-links": "bun scripts/generate-jsdelivr-links.ts",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
@@ -80,7 +79,8 @@
     "pinyin": "^4.0.0",
     "urdu-transliteration": "workspace:*",
     "vitepress": "^1.6.4",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vue": "^3.5.31"
   },
   "peerDependencies": {
     "typescript": "^5.9.3"
