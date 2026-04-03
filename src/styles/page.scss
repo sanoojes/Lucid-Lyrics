@@ -687,51 +687,6 @@ $floating-transition:
   }
 }
 
-.has-glassify-theme {
-  & {
-    overflow: hidden;
-    box-shadow: var(--shadow-glass-large) !important;
-  }
-
-  .player-floating & {
-    padding-top: v.$space-md;
-    padding-bottom: calc(var(--player-height) + v.$space-md);
-  }
-
-  .player-widget--glass {
-    border: none;
-    box-shadow: var(--shadow-glass-large);
-  }
-  .floating-area {
-    border: none;
-    box-shadow: var(--shadow-glass, var(--shadow-glass-large));
-
-    body.player-floating &.on-bottom {
-      bottom: calc(var(--player-height) + v.$space-md);
-    }
-  }
-}
-
-.has-lucid-theme {
-  overflow: hidden;
-
-  .player-floating & {
-    padding-top: v.$space-md;
-    padding-bottom: calc(var(--player-height) + v.$space-md);
-  }
-
-  .player-widget--glass {
-    border: var(--default-border);
-  }
-  .floating-area {
-    border: var(--default-border);
-
-    body.player-floating &.on-bottom {
-      bottom: calc(var(--player-height) + v.$space-md);
-    }
-  }
-}
-
 @keyframes l-page-entry {
   0% {
     opacity: 0;
