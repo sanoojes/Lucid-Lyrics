@@ -114,7 +114,7 @@ _(Use `spicetify config-dir` to quickly find your Spicetify configuration
 folder._
 
 - **Linux/macOS:** `~/.config/spicetify/`
-- **Windows:** `%APPDATA%\spicetify\`_
+- **Windows:** `%APPDATA%\spicetify\`\_
 
 #### 4. Enable the Extension
 

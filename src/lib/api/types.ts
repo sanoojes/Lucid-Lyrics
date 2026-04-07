@@ -174,6 +174,7 @@ export type InterludeContent = {
   Type: "Interlude";
   Text: string;
 } & TimeRange &
+  RomanizedText &
   AlignedContent;
 
 export type LineData = {
