@@ -1,4 +1,4 @@
-export const URDU_CHAR_MAP: Record<string, string> = {
+export const URDU_CHAR_MAP: StringMap = {
   ا: "a",
   آ: "aa",
   ع: "a",
@@ -54,16 +54,12 @@ export const URDU_CHAR_MAP: Record<string, string> = {
   "\u0640": "",
   "\u0670": "a",
   "\u064B": "an",
+  "،": ",",
+  "؟": "?",
+  "۔": ".",
 };
 
-export const WORD_PRIORITY_MAP: Record<string, string> = {
-  عبادت: "ibadat",
-  محبت: "muhabbat",
-  ہوئے: "hue",
-  دعاؤں: "duaon",
-  روح: "rooh",
-  اترتا: "utarta",
-  دل: "dil",
+export const WORD_PRIORITY_MAP: StringMap = {
   ہے: "hai",
   ہوں: "hoon",
   ہیں: "hain",
@@ -84,6 +80,11 @@ export const WORD_PRIORITY_MAP: Record<string, string> = {
   اور: "aur",
   اگر: "agar",
   لیکن: "lekin",
+  یہاں: "yahan",
+  یہیں: "yahin",
+  بھی: "bhi",
+  ہوئے: "hue",
+  اترتا: "utarta",
   بہن: "behan",
   بھائی: "bhai",
   "سوتیلا بھائی": "sotela bhai",
@@ -103,6 +104,11 @@ export const WORD_PRIORITY_MAP: Record<string, string> = {
   نواسہ: "nawasa",
   نواسی: "nawasi",
   یتیم: "yateem",
+  عبادت: "ibadat",
+  محبت: "muhabbat",
+  دعاؤں: "duaon",
+  روح: "rooh",
+  دل: "dil",
   اللہ: "Allah",
   محمد: "Muhammad",
   رسول: "Rasool",
@@ -142,27 +148,33 @@ export const WORD_PRIORITY_MAP: Record<string, string> = {
   ابوبکر: "Abu Bakr",
 };
 
-const SORTED_PHRASES = Object.keys(WORD_PRIORITY_MAP).sort((a, b) => b.length - a.length);
+const escapeRegExp = (str: string): string => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const DICTIONARY_REGEX: RegExp = new RegExp(
+  `(?<![\\p{L}\\p{M}])(?:${Object.keys(WORD_PRIORITY_MAP)
+    .sort((a: string, b: string) => b.length - a.length)
+    .map(escapeRegExp)
+    .join("|")})(?![\\p{L}\\p{M}])`,
+  "gu",
+);
+
+const CHAR_REGEX: RegExp = new RegExp(
+  Object.keys(URDU_CHAR_MAP)
+    .sort((a: string, b: string) => b.length - a.length)
+    .map(escapeRegExp)
+    .join("|"),
+  "g",
+);
 
 export function romanizeUrdu(text: string): string {
   if (!text) return "";
 
-  let processedText = text.normalize("NFC");
-
-  for (const word of SORTED_PHRASES) {
-    const boundaryRegex = new RegExp(`(?<![\\u0600-\\u06FF])${word}(?![\\u0600-\\u06FF])`, "g");
-    const replacement = WORD_PRIORITY_MAP[word] ?? "";
-    processedText = processedText.replace(boundaryRegex, replacement);
-  }
-
-  let finalResult = "";
-
-  for (const char of processedText) {
-    const mappedChar = URDU_CHAR_MAP[char as string];
-    finalResult += !mappedChar ? mappedChar : char;
-  }
-
-  return finalResult;
+  return text
+    .normalize("NFC")
+    .replace(DICTIONARY_REGEX, (match: string): string => WORD_PRIORITY_MAP[match] || match)
+    .replace(CHAR_REGEX, (match: string): string => URDU_CHAR_MAP[match] || match);
 }
 
 export default romanizeUrdu;
+
+type StringMap = Readonly<Record<string, string>>;
