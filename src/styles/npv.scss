@@ -15,11 +15,14 @@
     visibility: hidden;
     display: none;
   }
+}
 
-  .main-nowPlayingView-contextItemInfo:before {
-    display: none;
-    content: none;
-    visibility: hidden;
+#Desktop_PanelContainer_Id {
+  .main-nowPlayingView-contextItemInfo {
+    &:before {
+      display: none;
+      content: none;
+    }
   }
   .main-nowPlayingView-nowPlayingWidget {
     order: 1;
@@ -118,37 +121,36 @@
       --lyrics-line-default-padding: 12cqw;
     }
   }
+  .main-nowPlayingView-coverArtContainer {
+    & > div {
+      &::after,
+      &::before {
+        display: none;
+        content: none;
+      }
+    }
+
+    .canvasVideoContainerNPV {
+      mask-image: linear-gradient(
+        to bottom,
+        transparent -5%,
+        black var(--canvas-mask-start),
+        black var(--canvas-mask-stop),
+        transparent 100%
+      );
+      transition:
+        --canvas-mask-start 0.6s ease,
+        --canvas-mask-stop 0.6s ease;
+    }
+    &.XixZ4ftG53tYcM4KohE1 .canvasVideoContainerNPV {
+      --canvas-mask-start: 15%;
+      --canvas-mask-stop: 30%;
+    }
+  }
 }
 
 .use-lucid-lyrics-npv {
   .Root__right-sidebar {
-    .main-nowPlayingView-coverArtContainer {
-      & > div {
-        &::after,
-        &::before {
-          display: none;
-          content: none;
-        }
-      }
-
-      .canvasVideoContainerNPV {
-        mask-image: linear-gradient(
-          to bottom,
-          transparent -5%,
-          black var(--canvas-mask-start),
-          black var(--canvas-mask-stop),
-          transparent 100%
-        );
-        transition:
-          --canvas-mask-start 0.6s ease,
-          --canvas-mask-stop 0.6s ease;
-      }
-      &.XixZ4ftG53tYcM4KohE1 .canvasVideoContainerNPV {
-        --canvas-mask-start: 15%;
-        --canvas-mask-stop: 30%;
-      }
-    }
-
     .YEXWOdiHjsEepA97mhza,
     .RDlmt3TnmiGDFq273xIf,
     .Q4LnnBmyoXc5ojyZzR5V,
