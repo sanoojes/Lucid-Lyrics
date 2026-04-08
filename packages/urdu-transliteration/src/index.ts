@@ -1,180 +1,75 @@
-export const URDU_CHAR_MAP: StringMap = {
-  ا: "a",
-  آ: "aa",
-  ع: "a",
-  ء: "",
-  و: "o",
-  ی: "i",
-  ے: "e",
-  ب: "b",
-  پ: "p",
-  ت: "t",
-  ٹ: "t",
-  ث: "s",
-  ج: "j",
-  چ: "ch",
-  ح: "h",
-  خ: "kh",
-  د: "d",
-  ڈ: "d",
-  ذ: "z",
-  ر: "r",
-  ڑ: "r",
-  ز: "z",
-  س: "s",
-  ش: "sh",
-  ص: "s",
-  ض: "z",
-  ط: "t",
-  ظ: "z",
-  غ: "gh",
-  ف: "f",
-  ق: "q",
-  ک: "k",
-  گ: "g",
-  ل: "l",
-  م: "m",
-  ن: "n",
-  ں: "n",
-  ہ: "h",
-  ئ: "i",
-  ؤ: "o",
-  ھ: "h",
-  ۂ: "e",
-  ۓ: "e",
-  ك: "k",
-  ي: "i",
-  "\u064E": "a",
-  "\u0650": "i",
-  "\u064F": "u",
-  "\u0652": "",
-  "\u06DF": "",
-  "\u06E0": "",
-  "\u0651": "",
-  "\u0640": "",
-  "\u0670": "a",
-  "\u064B": "an",
-  "،": ",",
-  "؟": "?",
-  "۔": ".",
-};
+import { URDU_CHAR_MAP, WORD_PRIORITY_MAP } from "@/maps";
 
-export const WORD_PRIORITY_MAP: StringMap = {
-  ہے: "hai",
-  ہوں: "hoon",
-  ہیں: "hain",
-  تھا: "tha",
-  تھی: "thi",
-  تھے: "the",
-  میں: "mein",
-  ہم: "hum",
-  وہ: "woh",
-  یہ: "yeh",
-  آپ: "aap",
-  تو: "to",
-  ہی: "hi",
-  کیا: "kya",
-  کو: "ko",
-  سے: "se",
-  پر: "par",
-  اور: "aur",
-  اگر: "agar",
-  لیکن: "lekin",
-  یہاں: "yahan",
-  یہیں: "yahin",
-  بھی: "bhi",
-  ہوئے: "hue",
-  اترتا: "utarta",
-  بہن: "behan",
-  بھائی: "bhai",
-  "سوتیلا بھائی": "sotela bhai",
-  ماں: "maan",
-  باپ: "baap",
-  بیٹا: "beta",
-  بیٹی: "beti",
-  چاچا: "chacha",
-  ماموں: "mamoo",
-  خالہ: "khala",
-  پھوپھی: "phuphi",
-  نانی: "nani",
-  دادا: "dada",
-  دادی: "dadi",
-  پوتا: "pota",
-  پوتی: "poti",
-  نواسہ: "nawasa",
-  نواسی: "nawasi",
-  یتیم: "yateem",
-  عبادت: "ibadat",
-  محبت: "muhabbat",
-  دعاؤں: "duaon",
-  روح: "rooh",
-  دل: "dil",
-  اللہ: "Allah",
-  محمد: "Muhammad",
-  رسول: "Rasool",
-  نبی: "Nabi",
-  قرآن: "Quran",
-  حدیث: "Hadith",
-  اسلام: "Islam",
-  مسلمان: "Muslim",
-  ایمان: "Iman",
-  نماز: "Namaz",
-  روزہ: "Roza",
-  زکوٰۃ: "Zakat",
-  حج: "Hajj",
-  صدقہ: "Sadaqah",
-  جنت: "Jannat",
-  دوزخ: "Dozakh",
-  آخرت: "Aakhirat",
-  شریعت: "Shariat",
-  فقہ: "Fiqh",
-  قیامت: "Qayamat",
-  "الحمد للہ": "Alhamdulillah",
-  "ان شاء اللہ": "InshaAllah",
-  "ما شاء اللہ": "MashaAllah",
-  "جزاک اللہ": "JazakAllah",
-  "اللہ اکبر": "Allahu Akbar",
-  "السلام علیکم": "Assalamu Alaikum",
-  "وعلیکم السلام": "Wa Alaikum Assalam",
-  "رحمت اللہ": "Rahmatullah",
-  برکاتہ: "Barakatuh",
-  حسن: "Hasan",
-  حسین: "Husain",
-  علی: "Ali",
-  فاطمہ: "Fatima",
-  عائشہ: "Aisha",
-  عمر: "Umar",
-  عثمان: "Usman",
-  ابوبکر: "Abu Bakr",
-};
-
-const escapeRegExp = (str: string): string => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-const DICTIONARY_REGEX: RegExp = new RegExp(
-  `(?<![\\p{L}\\p{M}])(?:${Object.keys(WORD_PRIORITY_MAP)
-    .sort((a: string, b: string) => b.length - a.length)
-    .map(escapeRegExp)
-    .join("|")})(?![\\p{L}\\p{M}])`,
-  "gu",
-);
-
-const CHAR_REGEX: RegExp = new RegExp(
-  Object.keys(URDU_CHAR_MAP)
-    .sort((a: string, b: string) => b.length - a.length)
-    .map(escapeRegExp)
-    .join("|"),
-  "g",
-);
+const DIACRITICS_REGEX = /[\u064B-\u065F\u0670\u06DF-\u06E1]/g;
+const TOKEN_REGEX = /[\p{L}\p{M}\u200C\u200D]+|[،؟۔٪٫٬]/gu;
 
 export function romanizeUrdu(text: string): string {
   if (!text) return "";
 
-  return text
-    .normalize("NFC")
-    .replace(DICTIONARY_REGEX, (match: string): string => WORD_PRIORITY_MAP[match] || match)
-    .replace(CHAR_REGEX, (match: string): string => URDU_CHAR_MAP[match] || match);
+  return text.normalize("NFC").replace(TOKEN_REGEX, (match) => {
+    if (match.length === 1 && !match.match(/[\p{L}\p{M}]/u)) {
+      const charMatch = URDU_CHAR_MAP[match];
+      if (charMatch !== undefined) return charMatch;
+    }
+
+    const cleanWord = match
+      .replace(DIACRITICS_REGEX, "")
+      .replace(/[\u200C\u200D]/g, "")
+      .replace(/ي/g, "ی")
+      .replace(/ك/g, "ک");
+
+    const dictMatch = WORD_PRIORITY_MAP[cleanWord];
+    if (dictMatch !== undefined) {
+      const hasIzhafat = match.endsWith("\u0650");
+      return dictMatch + (hasIzhafat ? "-e" : "");
+    }
+
+    let result = "";
+    const chars = [...match.replace(/[\u200C\u200D]/g, "")];
+    const len = chars.length;
+
+    const nextBaseCharIs = (startIndex: number, targetList: string[]) => {
+      for (let j = startIndex; j < len; j++) {
+        const nextChar = chars[j] as string;
+        if (nextChar.match(DIACRITICS_REGEX)) continue;
+        return targetList.includes(nextChar);
+      }
+      return false;
+    };
+
+    let firstBaseIdx = 0;
+    while (firstBaseIdx < len && (chars[firstBaseIdx] as string).match(DIACRITICS_REGEX))
+      firstBaseIdx++;
+
+    let lastBaseIdx = len - 1;
+    while (lastBaseIdx >= 0 && (chars[lastBaseIdx] as string).match(DIACRITICS_REGEX))
+      lastBaseIdx--;
+
+    for (let i = 0; i < len; i++) {
+      const char = chars[i] as string;
+
+      if (char === "\u0650" && i >= lastBaseIdx) {
+        result += "-e";
+        continue;
+      }
+
+      if (char === "ی" || char === "ي") {
+        if (i <= firstBaseIdx || nextBaseCharIs(i + 1, ["ا", "و"])) result += "y";
+        else result += "i";
+      } else if (char === "و") {
+        if (i <= firstBaseIdx || nextBaseCharIs(i + 1, ["ا"])) result += "w";
+        else result += "o";
+      } else if (char === "ہ") {
+        if (i === lastBaseIdx) result += "a";
+        else result += "h";
+      } else {
+        const mappedChar = URDU_CHAR_MAP[char];
+        result += mappedChar !== undefined ? mappedChar : char;
+      }
+    }
+
+    return result;
+  });
 }
 
 export default romanizeUrdu;
-
-type StringMap = Readonly<Record<string, string>>;
