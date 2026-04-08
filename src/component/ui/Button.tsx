@@ -23,10 +23,12 @@ type ButtonProps = ComponentProps<"button"> & {
   iconSize?: number;
   active?: boolean;
   title?: string;
+  hide?: boolean;
 };
 
 export function Button(props: ButtonProps) {
-  const [local, others] = splitProps(props, ["variant", "size", "shape", "class", "title"]);
+  const [local, others] = splitProps(props, ["variant", "size", "shape", "class", "title", "hide"]);
+  if (local.hide !== undefined) return null;
 
   const variant = () => local.variant ?? "default";
   const size = () => local.size ?? "default";

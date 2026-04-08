@@ -36,7 +36,7 @@ const ScrollToActiveLyricsButton = (props: ScrollToActiveLyricsButtonProps) => {
       size={props.isSmall ? "icon-sm" : "icon"}
       variant="ghost"
       disabled={debouncedVisible()}
-      classList={{ "hide-btn": debouncedVisible() || !jumpToActive() }}
+      hide={debouncedVisible() || !jumpToActive()}
     >
       <AudioLines />
     </Button>
