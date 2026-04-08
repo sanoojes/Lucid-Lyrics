@@ -9,6 +9,7 @@
 .Root__right-sidebar,
 #Desktop_PanelContainer_Id {
   background-color: transparent !important;
+
   &::before {
     content: none;
     visibility: hidden;
@@ -121,6 +122,33 @@
 
 .use-lucid-lyrics-npv {
   .Root__right-sidebar {
+    .main-nowPlayingView-coverArtContainer {
+      & > div {
+        &::after,
+        &::before {
+          display: none;
+          content: none;
+        }
+      }
+
+      .canvasVideoContainerNPV {
+        mask-image: linear-gradient(
+          to bottom,
+          transparent -5%,
+          black var(--canvas-mask-start),
+          black var(--canvas-mask-stop),
+          transparent 100%
+        );
+        transition:
+          --canvas-mask-start 0.6s ease,
+          --canvas-mask-stop 0.6s ease;
+      }
+      &.XixZ4ftG53tYcM4KohE1 .canvasVideoContainerNPV {
+        --canvas-mask-start: 15%;
+        --canvas-mask-stop: 30%;
+      }
+    }
+
     .YEXWOdiHjsEepA97mhza,
     .RDlmt3TnmiGDFq273xIf,
     .Q4LnnBmyoXc5ojyZzR5V,
@@ -208,14 +236,28 @@
   }
 
   /* has canvas */
-  [data-testid="NPV_Panel_OpenDiv"]:has(.u_oJcTzbq1mJ8qfhBggZ) {
+  &:has(.main-nowPlayingView-coverArtContainer.u_oJcTzbq1mJ8qfhBggZ) {
     .EDzygJybL8LJ8ZCX5DuX {
       top: 4rem;
     }
-    .main-nowPlayingView-section,
-    .EDzygJybL8LJ8ZCX5DuX,
-    .main-nowPlayingView-contextItemInfo {
-      backdrop-filter: blur(var(--s-xl));
+    .main-nowPlayingView-section {
+      backdrop-filter: blur(16px);
     }
   }
+}
+
+@property --canvas-mask-stop {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 78%;
+}
+@property --canvas-mask-start {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 10%;
+}
+@property --npv-section-blur {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
 }
