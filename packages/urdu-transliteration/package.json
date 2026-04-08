@@ -1,6 +1,6 @@
 {
   "name": "urdu-transliteration",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Sanooj E Sanish <mail@sanooj.uk>",
   "files": [
     "dist"

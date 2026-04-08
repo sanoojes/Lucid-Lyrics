@@ -72,7 +72,7 @@ export const MODULE_METADATA = {
   },
   [URDU_TRANSLITERATION]: {
     name: URDU_TRANSLITERATION,
-    version: "0.0.1",
+    version: "0.0.2",
     url: `${JSDELIVR_PACKAGE_REPO}/${URDU_TRANSLITERATION}/index.js`,
   },
   [LOCALE]: {
