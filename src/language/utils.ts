@@ -43,7 +43,7 @@ export function detectLanguage(text: string): SupportedLanguage | "unknown" {
   if (/[\u0c00-\u0c7f]/.test(text)) return "telugu";
   if (/[\u0d00-\u0d7f]/.test(text)) return "malayalam";
 
-  if (/[\u0400-\u04FF]/.test(text)) return "cyrillic";
+  if (/[\u0400-\u04FF\u0500-\u052F\u2DE0-\u2DFF\uA640-\uA69F]{2,}/.test(text)) return "cyrillic";
   if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "greek";
   if (/[\u0530-\u058F]/.test(text)) return "armenian";
   if (/[\u10A0-\u10FF]/.test(text)) return "georgian";
