@@ -8,6 +8,7 @@ import { $has_romanized } from "@/stores";
 import { t } from "@/i18n";
 type RomanizeButtonProps = {
   isSmall?: boolean;
+  glass?: boolean;
 };
 const RomanizeButton = (props: RomanizeButtonProps) => {
   const hasRomanized = useStore($has_romanized);
@@ -18,7 +19,7 @@ const RomanizeButton = (props: RomanizeButtonProps) => {
   return (
     <Show when={hasRomanized()}>
       <Button
-        variant="ghost"
+        variant={props.glass ? "glass" : "ghost"}
         size={props.isSmall ? "icon-sm" : "icon"}
         onClick={toggleRomanize}
         class="romanize-btn"

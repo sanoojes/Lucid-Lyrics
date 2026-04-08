@@ -86,6 +86,7 @@ function FullscreenPage() {
               <div class="top-controls">
                 <CinemaButton glass />
                 <FullscreenButton glass />
+                <RomanizeButton glass />
                 <Button
                   variant="glass"
                   size="icon"
