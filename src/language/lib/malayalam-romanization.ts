@@ -38,7 +38,7 @@ const MALAYALAM_MAP: Record<string, string> = {
   ജ: "j",
   ഝ: "jh",
   ഞ: "nj",
-  ട: "d",
+  ട: "t",
   ഠ: "th",
   ഡ: "d",
   ഢ: "dh",
