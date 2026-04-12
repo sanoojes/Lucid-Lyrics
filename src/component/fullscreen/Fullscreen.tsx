@@ -26,6 +26,18 @@ function Fullscreen() {
     ),
   );
 
+  createEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && pageMode() === "fullscreen") {
+        setPageMode("cinema");
+      }
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    onCleanup(() => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    });
+  });
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 
