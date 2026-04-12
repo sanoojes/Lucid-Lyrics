@@ -23,10 +23,7 @@ function NowPlayingBarSettings() {
         label={t("nowPlayingBar.hideFullscreen")}
         description={t("nowPlayingBar.hideFullscreenDesc")}
       >
-        <Toggle
-          checked={nowPlayingBarSettings().hideFullscreen}
-          onChange={setHideFullscreenBtn}
-        />
+        <Toggle checked={nowPlayingBarSettings().hideFullscreen} onChange={setHideFullscreenBtn} />
       </SettingsRow>
     </SettingsSection>
   );

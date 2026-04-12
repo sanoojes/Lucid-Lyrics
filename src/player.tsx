@@ -6,7 +6,7 @@ import { logger } from "@/utils/logger";
 import { t } from "@/i18n";
 import { BASE_ROUTE } from "@/constants";
 import { Maximize2 } from "lucide-solid";
-import {$npb_state , setPageMode } from "@/stores";
+import { $npb_state, setPageMode } from "@/stores";
 
 const PAGE_PATH = BASE_ROUTE;
 
@@ -36,13 +36,12 @@ export async function setupPlayerButtons() {
           setPageMode("fullscreen");
         },
       },
-      { placement: "end", autoRegister: false }, 
+      { placement: "end", autoRegister: false },
     );
 
     const unsubscribeState = $npb_state.subscribe((state) => {
- 
       setSpotifyFullscreenDisplay(state.hideSpotifyFullscreen ? "none" : "");
-      
+
       if (state.hideFullscreen) {
         fullscreenBtnApi.deregister();
       } else {
@@ -53,12 +52,10 @@ export async function setupPlayerButtons() {
     return () => {
       unsubscribeRouter();
       unsubscribeState();
-      
+
       toggleBtn.destroy();
       fullscreenBtnApi.destroy();
-      
     };
-
   } catch (e) {
     const msg = t("player.addButtons");
     logger.error(msg, e);
