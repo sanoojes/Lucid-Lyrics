@@ -6,8 +6,7 @@
     "no-await-in-loop": "warn",
     "unicorn/prefer-array-find": "error",
     "unicorn/prefer-array-flat-map": "error",
-    "unicorn/prefer-set-has": "error",
-    "eslint/sort-imports": "warn"
+    "unicorn/prefer-set-has": "error"
   },
   "overrides": [
     {
