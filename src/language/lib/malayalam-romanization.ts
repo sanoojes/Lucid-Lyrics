@@ -38,7 +38,7 @@ const MALAYALAM_MAP: Record<string, string> = {
   ജ: "j",
   ഝ: "jh",
   ഞ: "nj",
-  ട: "t",
+  ട: "d",
   ഠ: "th",
   ഡ: "d",
   ഢ: "dh",
@@ -90,6 +90,8 @@ const MALAYALAM_MAP: Record<string, string> = {
   "ഃ": "h",
   "്": "",
 
+  ട്ട്: "tt",
+  ട്ട: "tt",
   ന്റ: "nt",
   ൻ്റ: "nt",
   റ്റ: "tt",
@@ -136,6 +138,7 @@ const CONSONANTS = new Set([
   "ള",
   "ഴ",
   "റ",
+  "ട്ട",
   "ന്റ",
   "ൻ്റ",
   "റ്റ",
@@ -145,7 +148,7 @@ const CONSONANTS = new Set([
   "ഞ്ജ",
 ]);
 
-const VOWEL_SIGNS = new Set(["ാ", "ി", "ീ", "ു", "ൂ", "ൃ", "െ", "േ", "ൈ", "ൊ", "ോ", "ൗ", "ം", "ഃ"]);
+const VOWEL_SIGNS = new Set(["ാ", "ി", "ീ", "ു", "ൂ", "ൃ", "െ", "േ", "ൈ", "ൊ", "ോ", "ൗ"]);
 
 const MAP_KEYS = Object.keys(MALAYALAM_MAP).sort((a, b) => b.length - a.length);
 
