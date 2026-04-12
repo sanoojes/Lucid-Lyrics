@@ -1,17 +1,17 @@
 import {
-  applyCasingPattern,
-  ARM_PUNCTUATION_MAP,
-  ARM_SPLIT_REGEX,
   ARMENIAN_LETTER_REGEX,
   ARMENIAN_LIGATURES,
+  ARM_PUNCTUATION_MAP,
+  ARM_SPLIT_REGEX,
+  applyCasingPattern,
   determineCasingPattern,
   isCharUppercase,
   splitTextPreservingDelimiters,
-} from "@/common";
+} from "~/common";
 
-import { TEMP_SYMBOLS_MAP } from "@/constants";
-import { FIRST_CHAR_RULES } from "@/rules";
-import { mapArmenianCharToLatin } from "@/transformations";
+import { TEMP_SYMBOLS_MAP } from "~/constants";
+import { FIRST_CHAR_RULES } from "~/rules";
+import { mapArmenianCharToLatin } from "~/transformations";
 
 /**
  * Represents a tuple containing the first and (optional) second character.

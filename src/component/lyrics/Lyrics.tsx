@@ -1,25 +1,25 @@
-import { lyricsResource, lyricsResourceAction } from "@/api/solid";
-import { t } from "@/i18n";
+import { lyricsResource, lyricsResourceAction } from "~/api/solid";
+import { t } from "~/i18n";
 import {
-  Switch,
-  Match,
-  Suspense,
-  createMemo,
-  createEffect,
-  on,
   type JSXElement,
-  children,
+  Match,
   Show,
+  Suspense,
+  Switch,
+  children,
+  createEffect,
+  createMemo,
+  on,
 } from "solid-js";
 
-import LyricsLoader from "@/component/lyrics/Loader";
-import LineLyrics from "@/component/lyrics/line/LineLyrics";
-import StaticLyrics from "@/component/lyrics/static/StaticLyrics";
-import LyricsStatus from "@/component/lyrics/LyricsStatus";
-import SyllableLyrics from "@/component/lyrics/syllable/SyllableLyrics";
-import SolidLenis from "@/component/ui/Lenis";
-import { useRenderer } from "@/context/LyricsRenderer";
-import LyricsCredits from "@/component/lyrics/LyricsCredits";
+import LyricsLoader from "~/component/lyrics/Loader";
+import LineLyrics from "~/component/lyrics/line/LineLyrics";
+import StaticLyrics from "~/component/lyrics/static/StaticLyrics";
+import LyricsStatus from "~/component/lyrics/LyricsStatus";
+import SyllableLyrics from "~/component/lyrics/syllable/SyllableLyrics";
+import SolidLenis from "~/component/ui/Lenis";
+import { useRenderer } from "~/context/LyricsRenderer";
+import LyricsCredits from "~/component/lyrics/LyricsCredits";
 
 type LyricsProps = {
   widgetHidden: boolean;

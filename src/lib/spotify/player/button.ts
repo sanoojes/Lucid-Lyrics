@@ -1,5 +1,5 @@
 import { render } from "solid-js/web";
-import { waitForElement } from "@/lib/dom/wait";
+import { waitForElement } from "~/lib/dom/wait";
 import { atom } from "nanostores";
 import type { JSXElement } from "solid-js";
 
@@ -37,7 +37,7 @@ export async function createButton(
   props: ButtonProps,
   options?: ButtonOptions,
 ): Promise<PlayerButtonAPI> {
-  const opts = { placement: "start", autoRegister: true, ...options };
+  const opts = { autoRegister: true, placement: "start", ...options };
   const isPrepend = opts.placement === "start";
 
   const rightContainer = await waitForElement(
@@ -111,10 +111,26 @@ export async function createButton(
   });
 
   const api: PlayerButtonAPI = {
-    element,
-    update: (next) => {
-      stateStore.set({ ...stateStore.get(), ...next });
+    deregister: () => {
+      if (!isMounted) return;
+      const currentState = stateStore.get();
+      currentState.onUnmount?.(api);
+
+      tippyInstance?.destroy();
+      tippyInstance = undefined;
+
+      disposeIcon?.();
+      disposeIcon = undefined;
+      iconElement.innerHTML = "";
+
+      element.remove();
+      isMounted = false;
     },
+    destroy: () => {
+      api.deregister();
+      unsubscribe();
+    },
+    element,
     register: () => {
       if (isMounted) return;
       const currentState = stateStore.get();
@@ -137,24 +153,8 @@ export async function createButton(
       isMounted = true;
       currentState.onMount?.(api);
     },
-    deregister: () => {
-      if (!isMounted) return;
-      const currentState = stateStore.get();
-      currentState.onUnmount?.(api);
-
-      tippyInstance?.destroy();
-      tippyInstance = undefined;
-
-      disposeIcon?.();
-      disposeIcon = undefined;
-      iconElement.innerHTML = "";
-
-      element.remove();
-      isMounted = false;
-    },
-    destroy: () => {
-      api.deregister();
-      unsubscribe();
+    update: (next) => {
+      stateStore.set({ ...stateStore.get(), ...next });
     },
   };
 

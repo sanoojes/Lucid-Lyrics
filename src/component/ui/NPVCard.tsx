@@ -1,15 +1,15 @@
-import { $npv_state, $page_mode, $page_state, setShowLyrics, toggleShowLyrics } from "@/stores";
+import { $npv_state, $page_mode, $page_state, setShowLyrics, toggleShowLyrics } from "~/stores";
 import { useStore } from "@nanostores/solid";
 import { ChevronDown, SquareArrowOutUpLeft } from "lucide-solid";
 import { Show } from "solid-js";
-import { t } from "@/i18n";
-import { Button } from "@/component/ui/Button";
-import Lyrics from "@/component/lyrics/Lyrics";
-import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
-import { LyricsRendererProvider } from "@/context/LyricsRenderer";
-import RomanizeButton from "@/component/ui/button/RomanizeButton";
-import router, { $in_lyrics_page } from "@/router";
-import CinemaButton from "@/component/ui/button/CinemaButton";
+import { t } from "~/i18n";
+import { Button } from "~/component/ui/Button";
+import Lyrics from "~/component/lyrics/Lyrics";
+import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
+import { LyricsRendererProvider } from "~/context/LyricsRenderer";
+import RomanizeButton from "~/component/ui/button/RomanizeButton";
+import router, { $in_lyrics_page } from "~/router";
+import CinemaButton from "~/component/ui/button/CinemaButton";
 
 const NPVCard = () => {
   const npvState = useStore($npv_state);

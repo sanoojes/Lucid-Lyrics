@@ -1,8 +1,8 @@
 import { Heart } from "lucide-solid";
 import { useStore } from "@nanostores/solid";
-import { $liked_state } from "@/stores";
-import { toggleLiked } from "@/lib/spotify/player";
-import { t } from "@/i18n";
+import { $liked_state } from "~/stores";
+import { toggleLiked } from "~/lib/spotify/player";
+import { t } from "~/i18n";
 
 const LikeButton = () => {
   const isLiked = useStore($liked_state);

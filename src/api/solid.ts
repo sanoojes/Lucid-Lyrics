@@ -1,6 +1,6 @@
-import API from "@/api";
-import { $has_romanized, $lyrics_query, $lyrics_status } from "@/stores";
-import { createLogger } from "@/utils/logger";
+import API from "~/api";
+import { $has_romanized, $lyrics_query, $lyrics_status } from "~/stores";
+import { createLogger } from "~/utils/logger";
 import { useStore } from "@nanostores/solid";
 import { createEffect, createResource, createRoot, onCleanup } from "solid-js";
 

@@ -21,8 +21,8 @@ export function requestPositionSync() {
         ? Platform.PlayerAPI._contextPlayer
             .getPositionState({})
             .then(({ position }: { position: number }) => ({
-              startedAt,
               position: Number(position),
+              startedAt,
             }))
         : (canSyncNonLocal > 0
             ? Platform.PlayerAPI._contextPlayer.resume({})
@@ -30,10 +30,10 @@ export function requestPositionSync() {
           ).then(() => {
             canSyncNonLocal = Math.max(0, canSyncNonLocal - 1);
             return {
-              startedAt,
               position:
                 Platform.PlayerAPI._state.positionAsOfTimestamp +
                 (Date.now() - Platform.PlayerAPI._state.timestamp),
+              startedAt,
             };
           });
 

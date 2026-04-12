@@ -1,7 +1,7 @@
-import { Select } from "@/component/ui/Select";
-import { SettingsRow } from "@/component/settings/Row";
-import { SettingsSection } from "@/component/settings/Section";
-import { t, useLocale, setLocale, type Locale, LANGUAGE_OPTIONS } from "@/i18n";
+import { Select } from "~/component/ui/Select";
+import { SettingsRow } from "~/component/settings/Row";
+import { SettingsSection } from "~/component/settings/Section";
+import { LANGUAGE_OPTIONS, type Locale, setLocale, t, useLocale } from "~/i18n";
 
 function LanguageSettings() {
   const locale = useLocale();

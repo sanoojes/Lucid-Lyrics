@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
-import { t } from "@/i18n";
-import { CreditItem } from "@/component/lyrics/credits/CreditItem";
+import { t } from "~/i18n";
+import { CreditItem } from "~/component/lyrics/credits/CreditItem";
 
 type TtmlUserCreditProps = {
   user: { avatar?: string; username?: string; id?: string | number };

@@ -1,29 +1,29 @@
-import { t } from "@/i18n";
-import { Show, For } from "solid-js";
+import { t } from "~/i18n";
+import { For, Show } from "solid-js";
 import { useStore } from "@nanostores/solid";
-import { Select } from "@/component/ui/Select";
-import { Slider } from "@/component/ui/Slider";
-import { Color } from "@/component/ui/Color";
-import { Toggle } from "@/component/ui/Toggle";
-import { Button } from "@/component/ui/Button";
-import { SettingsRow } from "@/component/settings/Row";
-import { SettingsSection } from "@/component/settings/Section";
+import { Select } from "~/component/ui/Select";
+import { Slider } from "~/component/ui/Slider";
+import { Color } from "~/component/ui/Color";
+import { Toggle } from "~/component/ui/Toggle";
+import { Button } from "~/component/ui/Button";
+import { SettingsRow } from "~/component/settings/Row";
+import { SettingsSection } from "~/component/settings/Section";
 import {
   $background,
   $bg_mode,
   $kawarp_options,
+  updateAnimatedFilter,
+  updateAnimatedOptions,
   updateBackground,
   updateColorOption,
-  updateImageOptions,
   updateImageFilter,
-  updateAnimatedOptions,
-  updateAnimatedFilter,
-  updateLocalImageOptions,
+  updateImageOptions,
   updateKawarpOptions,
-} from "@/stores/background";
-import type { BGTypes, ImageTypes, BackgroundState } from "@/stores/background";
-import Input from "@/component/ui/Input";
-import { showLocalImagesModal } from "@/component/settings/LocalImagesModal";
+  updateLocalImageOptions,
+} from "~/stores/background";
+import type { BGTypes, BackgroundState, ImageTypes } from "~/stores/background";
+import Input from "~/component/ui/Input";
+import { showLocalImagesModal } from "~/component/settings/LocalImagesModal";
 import { Image } from "lucide-solid";
 
 type CSSFilter = BackgroundState["options"]["image"]["filter"];
@@ -49,25 +49,25 @@ const FILTERS = (): {
   step: number;
   suffix: string;
 }[] => [
-  { key: "blur", label: t("bg.blur"), min: 0, max: 256, step: 1, suffix: "px" },
+  { key: "blur", label: t("bg.blur"), max: 256, min: 0, step: 1, suffix: "px" },
   {
     key: "saturation",
     label: t("bg.saturation"),
-    min: 0,
     max: 500,
+    min: 0,
     step: 1,
     suffix: "%",
   },
   {
     key: "brightness",
     label: t("bg.brightness"),
-    min: 0,
     max: 200,
+    min: 0,
     step: 1,
     suffix: "%",
   },
-  { key: "contrast", label: t("bg.contrast"), min: 0, max: 200, step: 1, suffix: "%" },
-  { key: "opacity", label: t("bg.opacity"), min: 0, max: 100, step: 5, suffix: "%" },
+  { key: "contrast", label: t("bg.contrast"), max: 200, min: 0, step: 1, suffix: "%" },
+  { key: "opacity", label: t("bg.opacity"), max: 100, min: 0, step: 5, suffix: "%" },
 ];
 
 function BackgroundSettings() {

@@ -1,28 +1,28 @@
-import "@/styles/component/advanced-settings.scss";
+import "~/styles/component/advanced-settings.scss";
 import { useStore } from "@nanostores/solid";
-import { Toggle } from "@/component/ui/Toggle";
-import { Slider } from "@/component/ui/Slider";
-import { SettingsRow } from "@/component/settings/Row";
+import { Toggle } from "~/component/ui/Toggle";
+import { Slider } from "~/component/ui/Slider";
+import { SettingsRow } from "~/component/settings/Row";
 import {
+  $cache_settings,
   $developer_mode,
   $ttml_maker_mode,
-  $cache_settings,
+  setCacheTTL,
   setDevMode,
   setTTMLMakerMode,
-  setCacheTTL,
-} from "@/stores/dev";
-import { $storageStats } from "@/stores/storage";
-import { SettingsSection } from "@/component/settings/Section";
-import { t } from "@/i18n";
-import { Button } from "@/component/ui/Button";
-import API from "@/api";
-import { lyricsResourceAction } from "@/api/solid";
+} from "~/stores/dev";
+import { $storageStats } from "~/stores/storage";
+import { SettingsSection } from "~/component/settings/Section";
+import { t } from "~/i18n";
+import { Button } from "~/component/ui/Button";
+import API from "~/api";
+import { lyricsResourceAction } from "~/api/solid";
 import { RotateCcw } from "lucide-solid";
 import { Show } from "solid-js";
-import { logger } from "@/utils/logger";
-import { toast } from "@/lib/sonner";
-import { showAlert } from "@/lib/modal";
-import { resetLocalTTML } from "@/stores/idb/ttml";
+import { logger } from "~/utils/logger";
+import { toast } from "~/lib/sonner";
+import { showAlert } from "~/lib/modal";
+import { resetLocalTTML } from "~/stores/idb/ttml";
 
 function AdvancedSettings() {
   const devMode = useStore($developer_mode);
@@ -51,11 +51,11 @@ function AdvancedSettings() {
 
   const handleClearCache = () => {
     showAlert({
-      title: t("advanced.clearCacheConfirm"),
+      confirmLabel: t("advanced.clearCacheButton"),
       description: t("advanced.clearCacheConfirmDesc"),
       onConfirm: () => clearCache(),
+      title: t("advanced.clearCacheConfirm"),
       variant: "destructive",
-      confirmLabel: t("advanced.clearCacheButton"),
     });
   };
 
@@ -71,11 +71,11 @@ function AdvancedSettings() {
 
   const handleResetLocalTTML = () => {
     showAlert({
-      title: t("advanced.resetLocalTTMLConfirm"),
+      confirmLabel: t("advanced.resetLocalTTMLButton"),
       description: t("advanced.resetLocalTTMLConfirmDesc"),
       onConfirm: () => resetLocalTTMLData(),
+      title: t("advanced.resetLocalTTMLConfirm"),
       variant: "destructive",
-      confirmLabel: t("advanced.resetLocalTTMLButton"),
     });
   };
 

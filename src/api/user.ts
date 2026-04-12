@@ -1,7 +1,7 @@
-import type { Lyrics, APIResponse, FetchOptions } from "@/lib/api/types";
-import { $ttml_maker_mode } from "@/stores/dev";
-import { getLocalTTMLBySongId } from "@/stores/idb/ttml";
-import { refetchLyrics } from "@/api/solid";
+import type { APIResponse, FetchOptions, Lyrics } from "~/lib/api/types";
+import { $ttml_maker_mode } from "~/stores/dev";
+import { getLocalTTMLBySongId } from "~/stores/idb/ttml";
+import { refetchLyrics } from "~/api/solid";
 
 export async function fetchUser({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
@@ -14,8 +14,8 @@ export async function fetchUser({ id }: FetchOptions): Promise<APIResponse<Lyric
 
     if (!ttml.parsedTTML.success) {
       return {
-        status: "parse_error",
         message: ttml.parsedTTML.error,
+        status: "parse_error",
       };
     }
 
@@ -24,11 +24,11 @@ export async function fetchUser({ id }: FetchOptions): Promise<APIResponse<Lyric
       Provider: "user",
     };
 
-    return { status: "success", data: lyrics };
+    return { data: lyrics, status: "success" };
   } catch (err) {
     return {
-      status: "error",
       message: String(err),
+      status: "error",
     };
   }
 }

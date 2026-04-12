@@ -1,5 +1,5 @@
 import { atom } from "nanostores";
-import { EMOJI_SAFE_REGEX } from "@/lib/string/regex";
+import { EMOJI_SAFE_REGEX } from "~/lib/string/regex";
 
 export const $segmenter = atom<Intl.Segmenter | null>(
   typeof Intl !== "undefined" && "Segmenter" in Intl

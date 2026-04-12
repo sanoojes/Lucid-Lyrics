@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/solid";
-import { $color_options } from "@/stores";
+import { $color_options } from "~/stores";
 
 const ColorLayer = () => {
   const color = useStore($color_options);

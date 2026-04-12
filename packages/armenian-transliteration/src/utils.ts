@@ -1,5 +1,5 @@
-import { ARM_VOWELS } from "@/common";
-import { TEMP_SYMBOLS_MAP } from "@/constants";
+import { ARM_VOWELS } from "~/common";
+import { TEMP_SYMBOLS_MAP } from "~/constants";
 
 /**
  * Checks if a character (or a temporary symbol) should be treated as a vowel in Armenian.

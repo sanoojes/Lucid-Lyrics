@@ -1,11 +1,11 @@
-import { Show, Switch, Match } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 import { useStore } from "@nanostores/solid";
-import { Button } from "@/component/ui/Button";
+import { Button } from "~/component/ui/Button";
 import { Languages } from "lucide-solid";
-import LetterA from "@/component/icon/LetterA";
-import { toggleRomanize, $romanize } from "@/stores";
-import { $has_romanized } from "@/stores";
-import { t } from "@/i18n";
+import LetterA from "~/component/icon/LetterA";
+import { $romanize, toggleRomanize } from "~/stores";
+import { $has_romanized } from "~/stores";
+import { t } from "~/i18n";
 type RomanizeButtonProps = {
   isSmall?: boolean;
   glass?: boolean;

@@ -1,4 +1,4 @@
-import { splitProps, type Component, type ComponentProps } from "solid-js";
+import { type Component, type ComponentProps, splitProps } from "solid-js";
 
 type SmartShuffleProps = ComponentProps<"svg"> & {
   size?: number | string;

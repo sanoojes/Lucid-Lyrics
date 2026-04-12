@@ -1,17 +1,17 @@
-import { APP_VERSION } from "@/constants";
+import { APP_VERSION } from "~/constants";
 import type {
   APIResponse,
   FetchOptions,
-  Lyrics,
-  LineData,
-  StaticData,
-  LineContent,
-  StaticLine,
   InterludeContent,
-} from "@/lib/api/types";
+  LineContent,
+  LineData,
+  Lyrics,
+  StaticData,
+  StaticLine,
+} from "~/lib/api/types";
 
 const LRCLIB_BASE_URL = "https://lrclib.net/api/get";
-const missing: APIResponse<Lyrics> = { status: "missing_lyrics", data: null };
+const missing: APIResponse<Lyrics> = { data: null, status: "missing_lyrics" };
 
 export async function fetchLRCLIB({ data, id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   let list: LRCResult;
@@ -20,8 +20,8 @@ export async function fetchLRCLIB({ data, id }: FetchOptions): Promise<APIRespon
     list = await fetchLyrics(data);
   } catch (err) {
     return {
-      status: "error",
       message: String(err),
+      status: "error",
     };
   }
 
@@ -36,16 +36,16 @@ export async function fetchLRCLIB({ data, id }: FetchOptions): Promise<APIRespon
     const content = parseLRC(lrcData.syncedLyrics, lrcData.duration || 0);
 
     const syncedResult: LineData = {
-      Id: trackId,
-      Type: "Line",
-      SongWriters: [],
       Content: content,
-      StartTime: content.length > 0 ? content[0].StartTime : 0,
       EndTime: content.length > 0 ? content[content.length - 1].EndTime : 0,
+      Id: trackId,
       Provider: "lrclib",
+      SongWriters: [],
+      StartTime: content.length > 0 ? content[0].StartTime : 0,
+      Type: "Line",
     };
 
-    return { status: "success", data: syncedResult };
+    return { data: syncedResult, status: "success" };
   }
 
   if (lrcData.plainLyrics) {
@@ -59,13 +59,13 @@ export async function fetchLRCLIB({ data, id }: FetchOptions): Promise<APIRespon
 
     const staticResult: StaticData = {
       Id: trackId,
-      Type: "Static",
-      SongWriters: [],
       Lines: staticLines,
       Provider: "lrclib",
+      SongWriters: [],
+      Type: "Static",
     };
 
-    return { status: "success", data: staticResult };
+    return { data: staticResult, status: "success" };
   }
 
   return missing;
@@ -127,11 +127,11 @@ function parseLRC(lyrics: string, durationSecs: number): (LineContent | Interlud
           }
 
           const newLine: LineContent | InterludeContent = {
-            Type: text === " " ? "Interlude" : "Line",
-            Text: text,
-            StartTime: startTime,
             EndTime: 0,
             OppositeAligned: false,
+            StartTime: startTime,
+            Text: text,
+            Type: text === " " ? "Interlude" : "Line",
           };
 
           if (prevLine) {
@@ -153,10 +153,10 @@ function parseLRC(lyrics: string, durationSecs: number): (LineContent | Interlud
 
 async function fetchLyrics(info: FetchOptions["data"]): Promise<LRCResult> {
   const params = new URLSearchParams({
-    track_name: info.title!,
-    artist_name: info.artist!,
     album_name: info.album!,
+    artist_name: info.artist!,
     duration: String((info.duration || 0) / 1000),
+    track_name: info.title!,
   });
 
   const requestUrl = `${LRCLIB_BASE_URL}?${params.toString()}`;

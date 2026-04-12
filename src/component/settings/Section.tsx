@@ -1,4 +1,4 @@
-import { children, createMemo, Show, type Component, type JSXElement } from "solid-js";
+import { type Component, type JSXElement, Show, children, createMemo } from "solid-js";
 
 interface SettingsSectionProps {
   title: string;

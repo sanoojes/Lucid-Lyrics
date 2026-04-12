@@ -1,7 +1,7 @@
 import { persistentAtom } from "@nanostores/persistent";
-import { persistentJSON } from "@/utils/nanostores";
-import { getName } from "@/stores/persist";
-import { DEFAULT_CACHE_SETTINGS } from "@/constants";
+import { persistentJSON } from "~/utils/nanostores";
+import { getName } from "~/stores/persist";
+import { DEFAULT_CACHE_SETTINGS } from "~/constants";
 
 type OnOff = "off" | "on";
 

@@ -6,4 +6,4 @@ function replaceByClonedSource(options: { clone: (value: any) => any }) {
     return clone(source);
   };
 }
-export default deepmerge({ onlyDefinedProperties: true, mergeArray: replaceByClonedSource });
+export default deepmerge({ mergeArray: replaceByClonedSource, onlyDefinedProperties: true });

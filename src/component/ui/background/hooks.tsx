@@ -1,21 +1,21 @@
 import {
-  createSignal,
-  createEffect,
-  onCleanup,
-  createMemo,
-  createRoot,
   type Accessor,
   type Setter,
+  createEffect,
+  createMemo,
+  createRoot,
+  createSignal,
+  onCleanup,
 } from "solid-js";
-import { getLocalImage, getRandomLocalImage, getAdjacentLocalImage } from "@/stores/idb/images";
+import { getAdjacentLocalImage, getLocalImage, getRandomLocalImage } from "~/stores/idb/images";
 import {
   $image_options,
   $slideshow,
+  type ImageTypes,
   updateLocalSelectedId,
   updateSlideshowElapsed,
   updateSlideshowStart,
-  type ImageTypes,
-} from "@/stores";
+} from "~/stores";
 import { useStore } from "@nanostores/solid";
 
 interface LocalBlobInstance {
@@ -101,6 +101,6 @@ export function useLocalBlob(mode: Accessor<ImageTypes>): LocalBlobInstance {
       onCleanup(() => clearInterval(interval));
     });
 
-    return { localBlob, isLoaded, setIsLoaded };
+    return { isLoaded, localBlob, setIsLoaded };
   });
 }

@@ -1,9 +1,9 @@
 import { useStore } from "@nanostores/solid";
 import { Show } from "solid-js";
-import { Button } from "@/component/ui/Button";
+import { Button } from "~/component/ui/Button";
 import { TvMinimalPlay } from "lucide-solid";
-import { $page_mode, setPageMode } from "@/stores/page";
-import { t } from "@/i18n";
+import { $page_mode, setPageMode } from "~/stores/page";
+import { t } from "~/i18n";
 
 type CinemaButtonProps = {
   glass?: boolean;

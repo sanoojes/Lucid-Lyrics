@@ -1,18 +1,18 @@
 import { clear } from "idb-keyval";
-import { imageStore, lyricsStore, moduleStore, ttmlStore } from "@/stores/idb";
+import { imageStore, lyricsStore, moduleStore, ttmlStore } from "~/stores/idb";
 import {
   resetBackground,
-  resetWidget,
-  resetPageState,
-  resetProviders,
   resetNPBState,
   resetNpvSettings,
-} from "@/stores";
-import { resetLocale, t } from "@/i18n";
-import { toast } from "@/lib/sonner";
-import { closeAllModals } from "@/lib/modal";
-import API from "@/api";
-import { lyricsResourceAction } from "@/api/solid";
+  resetPageState,
+  resetProviders,
+  resetWidget,
+} from "~/stores";
+import { resetLocale, t } from "~/i18n";
+import { toast } from "~/lib/sonner";
+import { closeAllModals } from "~/lib/modal";
+import API from "~/api";
+import { lyricsResourceAction } from "~/api/solid";
 
 export async function resetAllConfig() {
   closeAllModals();
@@ -42,11 +42,11 @@ export async function resetAllConfig() {
     toast.dismiss(loadingToast);
 
     toast.success(t("settings.resetComplete"), {
-      description: t("settings.resetCompleteDesc"),
       action: {
         label: t("common.forceReload"),
         onClick: () => location.reload(),
       },
+      description: t("settings.resetCompleteDesc"),
     });
   } catch {
     toast.dismiss(loadingToast);

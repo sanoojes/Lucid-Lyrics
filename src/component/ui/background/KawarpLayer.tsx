@@ -1,8 +1,8 @@
-import Kawarp from "@/lib/kawarp";
+import Kawarp from "~/lib/kawarp";
 import { useStore } from "@nanostores/solid";
-import { $kawarp_options, $current_track_image } from "@/stores";
-import { createMemo, createEffect, onMount, onCleanup } from "solid-js";
-import { useLocalBlob } from "@/component/ui/background/hooks";
+import { $current_track_image, $kawarp_options } from "~/stores";
+import { createEffect, createMemo, onCleanup, onMount } from "solid-js";
+import { useLocalBlob } from "~/component/ui/background/hooks";
 
 const KawarpLayer = () => {
   let canvasRef!: HTMLCanvasElement;
@@ -77,16 +77,16 @@ const KawarpLayer = () => {
     <div
       ref={containerRef}
       class="bg-animated is-kawarp"
-      style={{ position: "relative", width: "100%", height: "100%" }}
+      style={{ height: "100%", position: "relative", width: "100%" }}
     >
       <canvas
         ref={canvasRef}
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
           height: "100%",
+          inset: 0,
           "pointer-events": "none",
+          position: "absolute",
+          width: "100%",
         }}
       />
     </div>

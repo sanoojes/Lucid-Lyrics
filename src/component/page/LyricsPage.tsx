@@ -1,22 +1,22 @@
-import "@/styles/page.scss";
-import "@/styles/lenis.css";
+import "~/styles/page.scss";
+import "~/styles/lenis.css";
 import { useStore } from "@nanostores/solid";
 import { Show } from "solid-js";
 
-import { Background } from "@/component/ui/Background";
-import Lyrics from "@/component/lyrics/Lyrics";
-import Controls from "@/component/ui/player/Controls";
-import PlayerWidget from "@/component/ui/PlayingWidget";
-import CinemaButton from "@/component/ui/button/CinemaButton";
-import RomanizeButton from "@/component/ui/button/RomanizeButton";
-import LocalTTMLButton from "@/component/ui/button/LocalTTMLButton";
-import FullscreenButton from "@/component/ui/button/FullscreenButton";
-import ToggleWidgetButton from "@/component/ui/button/ToggleWidgetButton";
+import { Background } from "~/component/ui/Background";
+import Lyrics from "~/component/lyrics/Lyrics";
+import Controls from "~/component/ui/player/Controls";
+import PlayerWidget from "~/component/ui/PlayingWidget";
+import CinemaButton from "~/component/ui/button/CinemaButton";
+import RomanizeButton from "~/component/ui/button/RomanizeButton";
+import LocalTTMLButton from "~/component/ui/button/LocalTTMLButton";
+import FullscreenButton from "~/component/ui/button/FullscreenButton";
+import ToggleWidgetButton from "~/component/ui/button/ToggleWidgetButton";
 
-import { $lyrics_status, $page_mode, $page_state } from "@/stores";
-import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
-import { $installed_theme } from "@/stores/theme";
-import { LyricsRendererProvider } from "@/context/LyricsRenderer";
+import { $lyrics_status, $page_mode, $page_state } from "~/stores";
+import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
+import { $installed_theme } from "~/stores/theme";
+import { LyricsRendererProvider } from "~/context/LyricsRenderer";
 
 const LyricsPage = () => {
   const pageState = useStore($page_state);
@@ -36,15 +36,15 @@ const LyricsPage = () => {
       <div
         class={`lucid-contents${themeClassname()} ${lyricsStatus()}`}
         classList={{
-          "hide-scrollbars": pageState().hideScrollbar,
           "hide-lyrics-status": hideStatus(),
+          "hide-scrollbars": pageState().hideScrollbar,
         }}
       >
         <div
           class="widget-area"
           classList={{
-            "widget-area--hidden": isWidgetHidden(),
             "hide-lyrics-status": hideStatus(),
+            "widget-area--hidden": isWidgetHidden(),
           }}
         >
           <PlayerWidget controls={<Controls />} showLikeBtn />

@@ -1,4 +1,4 @@
-import type { AmllData, Lyrics } from "@/lib/api/types";
+import type { AmllData, Lyrics } from "~/lib/api/types";
 
 export type ParseResult = { success: true; data: Lyrics } | { success: false; error: string };
 
@@ -150,7 +150,7 @@ export function isOppositeAligned(
 }
 
 export function extractAppleMetaData(metadata: TTMLMetadata | undefined) {
-  const result = { spotifyId: undefined as string | undefined, artists: [] as string[] };
+  const result = { artists: [] as string[], spotifyId: undefined as string | undefined };
   const metas = toArray(metadata?.["amll:meta"]);
   for (const meta of metas) {
     if (meta.key === "spotifyId" && meta.value) result.spotifyId = meta.value;
@@ -161,15 +161,15 @@ export function extractAppleMetaData(metadata: TTMLMetadata | undefined) {
 
 export function extractAmllMetaData(metadata: TTMLMetadata | undefined) {
   const amll: AmllData = {
-    spotifyId: [],
+    album: [],
     appleMusicId: [],
+    artists: [],
     isrc: [],
     musicName: [],
-    artists: [],
-    album: [],
     ncmMusicId: [],
+    spotifyId: [],
   };
-  const result = { spotifyId: undefined as string | undefined, artists: [] as string[], amll };
+  const result = { amll, artists: [] as string[], spotifyId: undefined as string | undefined };
 
   const metas = toArray(metadata?.["amll:meta"]);
   for (const meta of metas) {

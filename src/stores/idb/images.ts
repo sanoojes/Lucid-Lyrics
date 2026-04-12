@@ -1,5 +1,5 @@
-import { get, set, del, entries, clear } from "idb-keyval";
-import { imageStore } from "@/stores/idb";
+import { clear, del, entries, get, set } from "idb-keyval";
+import { imageStore } from "~/stores/idb";
 
 export interface LocalImage {
   id: string;
@@ -65,19 +65,19 @@ export async function saveLocalImage(file: File): Promise<LocalImage> {
   const { blob: thumbnail, failed } = await createThumbnail(file);
 
   const image: LocalImage = {
+    blob: file,
+    createdAt: Date.now(),
     id,
     name: file.name,
-    type: file.type,
-    blob: file,
     thumbnail,
-    createdAt: Date.now(),
     thumbnailFailed: failed,
+    type: file.type,
   };
 
   await set(`${IMAGE_KEY_PREFIX}${id}`, image, imageStore);
 
   const manifest = (await get<ImageManifestEntry[]>(MANIFEST_KEY, imageStore)) || [];
-  manifest.push({ id, createdAt: image.createdAt });
+  manifest.push({ createdAt: image.createdAt, id });
   manifest.sort((a, b) => a.createdAt - b.createdAt);
   await set(MANIFEST_KEY, manifest, imageStore);
 
@@ -141,8 +141,8 @@ export async function getAllLocalImages(): Promise<LocalImage[]> {
   const results = await Promise.all(images.map((image) => retryThumbnailIfNeeded(image)));
   const sortedResults = results.sort((a, b) => a.createdAt - b.createdAt);
   const updatedManifest: ImageManifestEntry[] = sortedResults.map((img) => ({
-    id: img.id,
     createdAt: img.createdAt,
+    id: img.id,
   }));
   await set(MANIFEST_KEY, updatedManifest, imageStore);
 

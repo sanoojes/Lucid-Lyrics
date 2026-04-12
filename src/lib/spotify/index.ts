@@ -1,2 +1,2 @@
-export * from "@/lib/spotify/auth";
-export * from "@/lib/spotify/menu";
+export * from "~/lib/spotify/auth";
+export * from "~/lib/spotify/menu";

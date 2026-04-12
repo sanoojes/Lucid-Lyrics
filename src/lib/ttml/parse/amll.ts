@@ -8,18 +8,18 @@ import type {
   SyllableContent,
   SyllableData,
   VocalPart,
-} from "@/lib/api/types";
+} from "~/lib/api/types";
 import {
-  toArray,
-  parseTime,
-  checkIsWordBoundary,
-  extractSongwriters,
-  extractAgents,
-  isOppositeAligned,
-  extractAmllMetaData,
-  type TTMLRoot,
   type TTMLP,
-} from "@/lib/ttml/parse/utils";
+  type TTMLRoot,
+  checkIsWordBoundary,
+  extractAgents,
+  extractAmllMetaData,
+  extractSongwriters,
+  isOppositeAligned,
+  parseTime,
+  toArray,
+} from "~/lib/ttml/parse/utils";
 
 export function parseAmllSyllableLine(
   p: TTMLP,
@@ -93,13 +93,13 @@ export function parseAmllSyllableLine(
         const end = parseTime(bgSpan.end) - timeOffset;
 
         bgSyllables.push({
-          Text: rawText.trim(),
-          IsPartOfWord: isPartOfWord,
-          StartTime: start,
-          EndTime: end,
           EmptyBeat: bgSpan["amll:empty-beat"]
             ? parseInt(bgSpan["amll:empty-beat"], 10)
             : undefined,
+          EndTime: end,
+          IsPartOfWord: isPartOfWord,
+          StartTime: start,
+          Text: rawText.trim(),
         });
 
         if (start < bgStart) bgStart = start;
@@ -109,9 +109,9 @@ export function parseAmllSyllableLine(
       if (bgSyllables.length > 0) {
         bgSyllables.reverse();
         backgroundVocalParts.push({
-          Syllables: bgSyllables,
-          StartTime: bgStart,
           EndTime: bgEnd,
+          StartTime: bgStart,
+          Syllables: bgSyllables,
           ...(bgTranslated && { Translated: bgTranslated }),
           ...(bgRomanText && { RomanText: bgRomanText }),
         });
@@ -122,11 +122,11 @@ export function parseAmllSyllableLine(
       nextLeadText = rawText;
 
       leadSyllables.push({
-        Text: rawText.trim(),
+        EmptyBeat: span["amll:empty-beat"] ? parseInt(span["amll:empty-beat"], 10) : undefined,
+        EndTime: parseTime(span.end) - timeOffset,
         IsPartOfWord: isPartOfWord,
         StartTime: parseTime(span.begin) - timeOffset,
-        EndTime: parseTime(span.end) - timeOffset,
-        EmptyBeat: span["amll:empty-beat"] ? parseInt(span["amll:empty-beat"], 10) : undefined,
+        Text: rawText.trim(),
       });
     }
   }
@@ -135,16 +135,16 @@ export function parseAmllSyllableLine(
   backgroundVocalParts.reverse();
 
   return {
-    Type: "Vocal",
-    OppositeAligned: isOppositeAligned(p["ttm:agent"] || divAgentId, agents),
+    Background: backgroundVocalParts.length > 0 ? backgroundVocalParts : undefined,
     Lead: {
-      Syllables: leadSyllables,
-      StartTime: pBegin,
       EndTime: pEnd,
+      StartTime: pBegin,
+      Syllables: leadSyllables,
       ...(leadTranslated && { Translated: leadTranslated }),
       ...(leadRomanText && { RomanText: leadRomanText }),
     },
-    Background: backgroundVocalParts.length > 0 ? backgroundVocalParts : undefined,
+    OppositeAligned: isOppositeAligned(p["ttm:agent"] || divAgentId, agents),
+    Type: "Vocal",
   };
 }
 
@@ -167,12 +167,12 @@ export function parseAmll(ttml: TTMLRoot, timing: string): Lyrics {
       ),
     );
     return {
-      Id: spotifyId || "unknown",
-      Type: "Static",
-      SongWriters: songwriters,
-      Artists: artists.length > 0 ? artists : undefined,
-      Lines: lines,
       Amll: amllDataFinal,
+      Artists: artists.length > 0 ? artists : undefined,
+      Id: spotifyId || "unknown",
+      Lines: lines,
+      SongWriters: songwriters,
+      Type: "Static",
     } satisfies StaticData;
   }
 
@@ -187,23 +187,23 @@ export function parseAmll(ttml: TTMLRoot, timing: string): Lyrics {
         if (content.length === 0) startTime = pBegin;
         endTime = pEnd;
         content.push({
-          Type: "Vocal",
-          Text: p["#text"] || "",
-          StartTime: pBegin,
           EndTime: pEnd,
           OppositeAligned: isOppositeAligned(p["ttm:agent"] || div?.["ttm:agent"], agents),
+          StartTime: pBegin,
+          Text: p["#text"] || "",
+          Type: "Vocal",
         });
       });
     });
     return {
-      Id: spotifyId || "unknown",
-      Type: "Line",
-      SongWriters: songwriters,
+      Amll: amllDataFinal,
       Artists: artists.length > 0 ? artists : undefined,
       Content: content,
-      StartTime: startTime,
       EndTime: endTime,
-      Amll: amllDataFinal,
+      Id: spotifyId || "unknown",
+      SongWriters: songwriters,
+      StartTime: startTime,
+      Type: "Line",
     } satisfies LineData;
   }
 
@@ -218,13 +218,13 @@ export function parseAmll(ttml: TTMLRoot, timing: string): Lyrics {
     });
   });
   return {
-    Id: spotifyId || "unknown",
-    Type: "Syllable",
-    SongWriters: songwriters,
+    Amll: amllDataFinal,
     Artists: artists.length > 0 ? artists : undefined,
     Content: content,
-    StartTime: startTime,
     EndTime: endTime,
-    Amll: amllDataFinal,
+    Id: spotifyId || "unknown",
+    SongWriters: songwriters,
+    StartTime: startTime,
+    Type: "Syllable",
   } satisfies SyllableData;
 }

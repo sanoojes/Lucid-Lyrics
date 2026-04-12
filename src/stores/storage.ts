@@ -7,9 +7,9 @@ export interface StorageStats {
 }
 
 export const $storageStats = atom<StorageStats>({
-  totalOriginal: 0,
-  totalCompressed: 0,
   entryCount: 0,
+  totalCompressed: 0,
+  totalOriginal: 0,
 });
 
 export function setStorageStats(stats: StorageStats) {

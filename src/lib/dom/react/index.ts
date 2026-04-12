@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { createRoot, type Root } from "react-dom/client";
+import { type Root, createRoot } from "react-dom/client";
 
 type RenderOptions = {
   children: ReactElement;
@@ -66,5 +66,5 @@ export function createRenderer({
     void mount();
   }
 
-  return { mount, update, unmount };
+  return { mount, unmount, update };
 }

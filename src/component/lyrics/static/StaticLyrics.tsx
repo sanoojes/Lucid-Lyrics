@@ -1,7 +1,7 @@
-import type { StaticData } from "@/lib/api/types";
-import { $romanize } from "@/stores";
+import type { StaticData } from "~/lib/api/types";
+import { $romanize } from "~/stores";
 import { useStore } from "@nanostores/solid";
-import { For, type Component, createMemo } from "solid-js";
+import { type Component, For, createMemo } from "solid-js";
 
 type LineLyricsProps = { lyrics: StaticData };
 

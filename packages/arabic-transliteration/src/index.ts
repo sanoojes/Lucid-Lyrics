@@ -1,5 +1,5 @@
-import { farsiArabicPhoneticMap, urduArabicPhoneticMap } from "@/maps";
-import transliterate from "@/transliterate";
+import { farsiArabicPhoneticMap, urduArabicPhoneticMap } from "~/maps";
+import transliterate from "~/transliterate";
 
 const combinedPhoneticMap: Record<string, string> = {
   ...farsiArabicPhoneticMap,
@@ -7,21 +7,21 @@ const combinedPhoneticMap: Record<string, string> = {
 };
 
 const fallbackCharMap: Record<string, string> = {
-  ٱ: "ا",
+  ؤ: "و",
+  ئ: "ي",
   "ٰ": "ا",
-  ں: "ن",
+  ٱ: "ا",
   ک: "ك",
-  ی: "ي",
-  ے: "ي",
+  ں: "ن",
   ھ: "ه",
   ۀ: "ه",
   ہ: "ه",
+  ی: "ي",
+  ے: "ي",
   ﮨ: "ه",
   ﮩ: "ه",
   ﮪ: "ه",
   ﮫ: "ه",
-  ؤ: "و",
-  ئ: "ي",
 };
 
 export const transliterateArabic = (input: string): string => {

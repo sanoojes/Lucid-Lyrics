@@ -1,5 +1,5 @@
-import { wait } from "@/lib/dom/wait";
-import { showModal } from "@/lib/modal";
+import { wait } from "~/lib/dom/wait";
+import { showModal } from "~/lib/modal";
 import type { JSXElement } from "solid-js";
 
 export const setupMenu = async (

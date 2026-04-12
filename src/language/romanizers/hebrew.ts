@@ -1,4 +1,4 @@
-import { createLazyModuleLoader } from "@/language/lazy";
+import { createLazyModuleLoader } from "~/language/lazy";
 
 const hebrewLoader = createLazyModuleLoader("hebrew-transliteration", (mod) => mod.default);
 export async function romanizeHebrew(text: string) {

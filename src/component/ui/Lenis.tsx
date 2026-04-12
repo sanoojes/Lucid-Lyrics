@@ -1,13 +1,13 @@
 import {
+  type JSX,
+  Show,
   createContext,
-  useContext,
   createEffect,
-  onCleanup,
   createSignal,
+  onCleanup,
   onMount,
   splitProps,
-  Show,
-  type JSX,
+  useContext,
 } from "solid-js";
 import Tempus from "@darkroom.engineering/tempus";
 import Lenis, { type LenisOptions, type ScrollCallback } from "lenis";
@@ -94,8 +94,8 @@ export function SolidLenis(props: LenisProps) {
     const lenisInstance = new Lenis({
       ...local.options,
       ...(!local.root && {
-        wrapper: wrapperRef,
         content: contentRef,
+        wrapper: wrapperRef,
       }),
     });
 
@@ -108,9 +108,9 @@ export function SolidLenis(props: LenisProps) {
 
     if (local.root) {
       setRootLenisContext({
-        lenis: lenisInstance,
-        contentRef: undefined,
         addCallback,
+        contentRef: undefined,
+        lenis: lenisInstance,
         removeCallback,
       });
       onCleanup(() => setRootLenisContext(undefined));
@@ -137,9 +137,9 @@ export function SolidLenis(props: LenisProps) {
           {(readyLenis) => (
             <LenisContext.Provider
               value={{
-                lenis: readyLenis(),
-                contentRef: undefined,
                 addCallback,
+                contentRef: undefined,
+                lenis: readyLenis(),
                 removeCallback,
               }}
             >
@@ -158,9 +158,9 @@ export function SolidLenis(props: LenisProps) {
               {(readyLenis) => (
                 <LenisContext.Provider
                   value={{
-                    lenis: readyLenis(),
-                    contentRef,
                     addCallback,
+                    contentRef,
+                    lenis: readyLenis(),
                     removeCallback,
                   }}
                 >

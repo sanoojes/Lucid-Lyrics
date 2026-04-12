@@ -3,6 +3,8 @@
  * Added two extra guillemets: « and ».
  */
 export const ARM_PUNCTUATION_MAP: Record<string, string> = {
+  "«": '"',
+  "»": '"',
   ՙ: "'",
   "՚": "'",
   "՛": "'",
@@ -12,8 +14,6 @@ export const ARM_PUNCTUATION_MAP: Record<string, string> = {
   "՟": ".",
   "։": ".",
   "֊": "-",
-  "«": '"',
-  "»": '"',
 };
 
 /**
@@ -52,9 +52,9 @@ export const ARM_VOWELS = new Set([
  * Each object maps the ligature character to its two-letter expansion.
  */
 export const ARMENIAN_LIGATURES = [
-  { ligature: "ﬓ", expansion: "մն" }, // U+FB13
-  { ligature: "ﬔ", expansion: "մե" }, // U+FB14
-  { ligature: "ﬕ", expansion: "մի" }, // U+FB15
-  { ligature: "ﬖ", expansion: "վն" }, // U+FB16
-  { ligature: "ﬗ", expansion: "մխ" }, // U+FB17
+  { expansion: "մն", ligature: "ﬓ" }, // U+FB13
+  { expansion: "մե", ligature: "ﬔ" }, // U+FB14
+  { expansion: "մի", ligature: "ﬕ" }, // U+FB15
+  { expansion: "վն", ligature: "ﬖ" }, // U+FB16
+  { expansion: "մխ", ligature: "ﬗ" }, // U+FB17
 ] as const;

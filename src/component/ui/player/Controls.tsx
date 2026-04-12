@@ -1,9 +1,9 @@
-import "@/styles/component/controls.scss";
-import ControlButton from "@/component/ui/player/ControlButton";
-import ForwardButton from "@/component/ui/player/ForwardButton";
-import BackButton from "@/component/ui/player/BackButton";
-import ShuffleButton from "@/component/ui/player/ShuffleButton";
-import RepeatButton from "@/component/ui/player/RepeatButton";
+import "~/styles/component/controls.scss";
+import ControlButton from "~/component/ui/player/ControlButton";
+import ForwardButton from "~/component/ui/player/ForwardButton";
+import BackButton from "~/component/ui/player/BackButton";
+import ShuffleButton from "~/component/ui/player/ShuffleButton";
+import RepeatButton from "~/component/ui/player/RepeatButton";
 
 const Controls = () => {
   return (

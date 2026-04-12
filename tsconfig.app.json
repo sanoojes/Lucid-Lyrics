@@ -23,11 +23,11 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     // Paths
-    "baseUrl": ".",
+
     "paths": {
-      "@/*": ["./src/*"],
+      "~/*": ["./src/*"],
       "@root/*": ["./*"]
     }
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "docs"]
 }

@@ -1,20 +1,20 @@
 import { useStore } from "@nanostores/solid";
 import {
   $fullscreen_state,
-  setFullscreenHideScrollbar,
-  setFullscreenHideStatus,
-  setFullscreenShowCredits,
-  setFullscreenShowControls,
-  setFullscreenFloatingPosition,
-  setFullscreenRomanizePosition,
   type Positions,
   type RomanizePosition,
-} from "@/stores/page";
-import { SettingsSection } from "@/component/settings/Section";
-import { SettingsRow } from "@/component/settings/Row";
-import { Toggle } from "@/component/ui/Toggle";
-import { Select } from "@/component/ui/Select";
-import { t } from "@/i18n";
+  setFullscreenFloatingPosition,
+  setFullscreenHideScrollbar,
+  setFullscreenHideStatus,
+  setFullscreenRomanizePosition,
+  setFullscreenShowControls,
+  setFullscreenShowCredits,
+} from "~/stores/page";
+import { SettingsSection } from "~/component/settings/Section";
+import { SettingsRow } from "~/component/settings/Row";
+import { Toggle } from "~/component/ui/Toggle";
+import { Select } from "~/component/ui/Select";
+import { t } from "~/i18n";
 
 function FullscreenSettings() {
   const fullscreenState = useStore($fullscreen_state);

@@ -1,9 +1,9 @@
 import { useStore } from "@nanostores/solid";
 import { Show } from "solid-js";
 import { PanelBottomClose, PanelBottomOpen } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { t } from "@/i18n";
-import { $page_state, toggleWidget } from "@/stores/page";
+import { Button } from "~/component/ui/Button";
+import { t } from "~/i18n";
+import { $page_state, toggleWidget } from "~/stores/page";
 
 type ToggleWidgetButtonProps = {
   isSmall?: boolean;

@@ -1,6 +1,6 @@
-import { SearchX, OctagonAlert, House, RefreshCw } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { t } from "@/i18n";
+import { House, OctagonAlert, RefreshCw, SearchX } from "lucide-solid";
+import { Button } from "~/component/ui/Button";
+import { t } from "~/i18n";
 
 type ErrorPageProps = {
   icon: "404" | "error";

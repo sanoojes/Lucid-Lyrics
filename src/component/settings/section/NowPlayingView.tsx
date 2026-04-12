@@ -1,17 +1,17 @@
 import { useStore } from "@nanostores/solid";
-import { Toggle } from "@/component/ui/Toggle";
-import { Slider } from "@/component/ui/Slider";
-import { SettingsRow } from "@/component/settings/Row";
+import { Toggle } from "~/component/ui/Toggle";
+import { Slider } from "~/component/ui/Slider";
+import { SettingsRow } from "~/component/settings/Row";
 import {
   $npv_state,
-  setHideBackground,
-  setUseStyles,
   setAutoHideCardHeader,
   setCardHeightPercent,
   setCardMinHeight,
-} from "@/stores/npv";
-import { SettingsSection } from "@/component/settings/Section";
-import { t } from "@/i18n";
+  setHideBackground,
+  setUseStyles,
+} from "~/stores/npv";
+import { SettingsSection } from "~/component/settings/Section";
+import { t } from "~/i18n";
 
 function NowPlayingViewSettings() {
   const npvSettings = useStore($npv_state);

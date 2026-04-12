@@ -1,6 +1,6 @@
 import type { Component } from "solid-js";
 import { For } from "solid-js";
-import "@/styles/component/select.scss";
+import "~/styles/component/select.scss";
 
 export interface SelectOption {
   label: string;

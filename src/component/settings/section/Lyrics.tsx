@@ -1,20 +1,20 @@
 import { useStore } from "@nanostores/solid";
 import { Index, Show, createMemo } from "solid-js";
-import { SettingsRow } from "@/component/settings/Row";
+import { SettingsRow } from "~/component/settings/Row";
 import {
-  $providers,
   $blurmap_mode,
   $custom_blurmap,
+  $providers,
+  type BlurmapMode,
   setBlurmapMode,
   setCustomBlurmap,
-  type BlurmapMode,
-} from "@/stores/lyrics";
-import { SettingsSection } from "@/component/settings/Section";
-import { SortableList } from "@/component/ui/SortableList";
-import { t } from "@/i18n";
-import { Select } from "@/component/ui/Select";
-import { Slider } from "@/component/ui/Slider";
-import { ALL_PROVIDERS, getProviderName, type LyricsProviders } from "@/constants";
+} from "~/stores/lyrics";
+import { SettingsSection } from "~/component/settings/Section";
+import { SortableList } from "~/component/ui/SortableList";
+import { t } from "~/i18n";
+import { Select } from "~/component/ui/Select";
+import { Slider } from "~/component/ui/Slider";
+import { ALL_PROVIDERS, type LyricsProviders, getProviderName } from "~/constants";
 
 const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
   { label: t("lyrics.blurmapMode.default"), value: "default" },

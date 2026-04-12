@@ -1,13 +1,13 @@
-import { get, set, del, update } from "idb-keyval";
+import { del, get, set, update } from "idb-keyval";
 import { compressToUTF16, decompressFromUTF16 } from "lz-string";
-import { createLogger } from "@/utils/logger";
-import type { FetchOptions, Lyrics, LyricsHandler, APIResponse } from "@/lib/api/types";
-import { processLyrics } from "@/language/processor";
-import { $providers } from "@/stores";
-import { lyricsStore } from "@/stores/idb";
-import { setStorageStats } from "@/stores/storage";
-import { $cache_settings } from "@/stores/dev";
-import type { LyricsProviders } from "@/constants";
+import { createLogger } from "~/utils/logger";
+import type { APIResponse, FetchOptions, Lyrics, LyricsHandler } from "~/lib/api/types";
+import { processLyrics } from "~/language/processor";
+import { $providers } from "~/stores";
+import { lyricsStore } from "~/stores/idb";
+import { setStorageStats } from "~/stores/storage";
+import { $cache_settings } from "~/stores/dev";
+import type { LyricsProviders } from "~/constants";
 
 const log = createLogger("api:main");
 const STATS_KEY = "__cache_stats__";
@@ -45,7 +45,7 @@ export class LyricsAPI {
   private async _initStorageStats() {
     try {
       const stats = await get<StorageStats>(STATS_KEY, lyricsStore);
-      setStorageStats(stats || { totalOriginal: 0, totalCompressed: 0, entryCount: 0 });
+      setStorageStats(stats || { entryCount: 0, totalCompressed: 0, totalOriginal: 0 });
     } catch (err) {
       log.error("stats_init_failed", err);
     }
@@ -56,14 +56,14 @@ export class LyricsAPI {
       await update<StorageStats>(
         STATS_KEY,
         (old) => ({
-          totalOriginal: Math.max(0, (old?.totalOriginal || 0) + (diff.totalOriginal || 0)),
-          totalCompressed: Math.max(0, (old?.totalCompressed || 0) + (diff.totalCompressed || 0)),
           entryCount: Math.max(0, (old?.entryCount || 0) + (diff.entryCount || 0)),
+          totalCompressed: Math.max(0, (old?.totalCompressed || 0) + (diff.totalCompressed || 0)),
+          totalOriginal: Math.max(0, (old?.totalOriginal || 0) + (diff.totalOriginal || 0)),
         }),
         lyricsStore,
       );
       const newStats = await get<StorageStats>(STATS_KEY, lyricsStore);
-      setStorageStats(newStats || { totalOriginal: 0, totalCompressed: 0, entryCount: 0 });
+      setStorageStats(newStats || { entryCount: 0, totalCompressed: 0, totalOriginal: 0 });
     } catch (err) {
       log.error("stats_sync_failed", err);
     }
@@ -87,14 +87,14 @@ export class LyricsAPI {
 
       if (handler?.supports && !handler.supports.includes(source)) {
         if (i === order.length - 1 && !isLocalSong) {
-          return { status: "unsupported", message: "This Content is Unsupported" };
+          return { message: "This Content is Unsupported", status: "unsupported" };
         }
         log.debug(`skipping_unsupported`, { providerId, source });
         continue;
       }
 
       const cacheKey = this._getKey(providerId, options);
-      log.debug(`trying_provider`, { providerId, options });
+      log.debug(`trying_provider`, { options, providerId });
       const response = await this._fetch(providerId, options, cacheKey);
 
       if (response.status === "success" || response.status === "parse_error") {
@@ -104,21 +104,21 @@ export class LyricsAPI {
 
     if (!navigator.onLine) {
       return {
-        status: "error",
         message: "You're offline right now. We'll grab the lyrics once you're back online.",
+        status: "error",
       };
     }
 
     if (isLocalSong) {
       return {
-        status: "local_song",
         message: "We couldn't find lyrics for this local file",
+        status: "local_song",
       };
     }
 
     return {
-      status: "missing_lyrics",
       data: null,
+      status: "missing_lyrics",
     };
   }
 
@@ -160,12 +160,12 @@ export class LyricsAPI {
                 try {
                   const reProcessed = await processLyrics(lyricsData);
                   await this._saveToCache(cacheKey, reProcessed);
-                  return { status: "success", data: reProcessed };
+                  return { data: reProcessed, status: "success" };
                 } catch (err) {
                   log.error("reprocess_err", err);
                 }
               }
-              return { status: "success", data: lyricsData };
+              return { data: lyricsData, status: "success" };
             }
           } else {
             await this._removeItemWithStats(cacheKey, cached);
@@ -178,16 +178,16 @@ export class LyricsAPI {
 
     if (isOffline) {
       return {
-        status: "error",
-
         message: "You're offline right now. We'll grab these lyrics once you're back online.",
+
+        status: "error",
       };
     }
 
     if (!handler) {
       return {
-        status: "error",
         message: "We couldn't find the lyrics for this song.",
+        status: "error",
       };
     }
 
@@ -203,8 +203,8 @@ export class LyricsAPI {
       return response;
     } catch {
       return {
-        status: "error",
         message: "Couldn't get Lyrics !",
+        status: "error",
       };
     }
   }
@@ -221,8 +221,8 @@ export class LyricsAPI {
       if (compressedData) {
         const compressedSize = getByteSize(compressedData);
         const stats = {
-          originalSize,
           compressedSize,
+          originalSize,
           ratio: ((compressedSize / originalSize) * 100).toFixed(2) + "%",
         };
 
@@ -232,9 +232,9 @@ export class LyricsAPI {
           lyricsStore,
         );
         await this._updateStats({
-          totalOriginal: originalSize - (existing?.stats?.originalSize || 0),
-          totalCompressed: compressedSize - (existing?.stats?.compressedSize || 0),
           entryCount: existing ? 0 : 1,
+          totalCompressed: compressedSize - (existing?.stats?.compressedSize || 0),
+          totalOriginal: originalSize - (existing?.stats?.originalSize || 0),
         });
       }
     } catch (err) {
@@ -245,9 +245,9 @@ export class LyricsAPI {
   private async _removeItemWithStats(key: string, cachedEntry: CachedLyrics) {
     await del(key, lyricsStore);
     await this._updateStats({
-      totalOriginal: -(cachedEntry.stats?.originalSize || 0),
-      totalCompressed: -(cachedEntry.stats?.compressedSize || 0),
       entryCount: -1,
+      totalCompressed: -(cachedEntry.stats?.compressedSize || 0),
+      totalOriginal: -(cachedEntry.stats?.originalSize || 0),
     });
   }
 
@@ -306,9 +306,9 @@ export class LyricsAPI {
 
       if (deletedCount > 0) {
         await this._updateStats({
-          totalOriginal: -deletedOriginal,
-          totalCompressed: -deletedCompressed,
           entryCount: -deletedCount,
+          totalCompressed: -deletedCompressed,
+          totalOriginal: -deletedOriginal,
         });
       }
     } catch (err) {
@@ -341,9 +341,9 @@ export class LyricsAPI {
       await update<StorageStats>(
         STATS_KEY,
         () => ({
-          totalOriginal: 0,
-          totalCompressed: 0,
           entryCount: 0,
+          totalCompressed: 0,
+          totalOriginal: 0,
         }),
         lyricsStore,
       );
@@ -354,7 +354,7 @@ export class LyricsAPI {
 
   async getStorageStats(): Promise<StorageStats> {
     const stats = await get<StorageStats>(STATS_KEY, lyricsStore);
-    return stats || { totalOriginal: 0, totalCompressed: 0, entryCount: 0 };
+    return stats || { entryCount: 0, totalCompressed: 0, totalOriginal: 0 };
   }
 
   register(handler: LyricsHandler) {

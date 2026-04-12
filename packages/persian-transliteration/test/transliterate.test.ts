@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { romanizePersian } from "@/index";
+import { romanizePersian } from "~/index";
 
 interface Inputs {
   description: string;

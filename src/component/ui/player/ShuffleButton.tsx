@@ -1,11 +1,11 @@
 import { Shuffle } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
+import { Button } from "~/component/ui/Button";
 import { useStore } from "@nanostores/solid";
-import { $shuffle_state } from "@/stores";
+import { $shuffle_state } from "~/stores";
 import { Match, Switch } from "solid-js";
-import { toggleShuffle } from "@/lib/spotify/player";
-import SmartShuffle from "@/component/icon/SmartShuffle";
-import { t } from "@/i18n";
+import { toggleShuffle } from "~/lib/spotify/player";
+import SmartShuffle from "~/component/icon/SmartShuffle";
+import { t } from "~/i18n";
 
 const ShuffleButton = () => {
   const size = 16;

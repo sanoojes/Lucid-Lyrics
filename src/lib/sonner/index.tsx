@@ -1,6 +1,6 @@
-import "@/lib/sonner/styles.css";
-import { toast as sonnerToast, Toaster } from "solid-sonner";
-import { logger } from "@/utils/logger";
+import "~/lib/sonner/styles.css";
+import { Toaster, toast as sonnerToast } from "solid-sonner";
+import { logger } from "~/utils/logger";
 import { render } from "solid-js/web";
 export async function setupSonner() {
   try {

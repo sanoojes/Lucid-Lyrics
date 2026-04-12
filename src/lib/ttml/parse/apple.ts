@@ -8,18 +8,18 @@ import type {
   SyllableContent,
   SyllableData,
   VocalPart,
-} from "@/lib/api/types";
+} from "~/lib/api/types";
 import {
-  toArray,
-  parseTime,
-  checkIsWordBoundary,
-  extractSongwriters,
-  extractAgents,
-  isOppositeAligned,
-  extractAppleMetaData,
-  type TTMLRoot,
   type TTMLP,
-} from "@/lib/ttml/parse/utils";
+  type TTMLRoot,
+  checkIsWordBoundary,
+  extractAgents,
+  extractAppleMetaData,
+  extractSongwriters,
+  isOppositeAligned,
+  parseTime,
+  toArray,
+} from "~/lib/ttml/parse/utils";
 
 export function parseAppleSyllableLine(
   p: TTMLP,
@@ -50,16 +50,16 @@ export function parseAppleSyllableLine(
 
         const nextRawText = j < bgSpans.length - 1 ? bgSpans[j + 1]["#text"] || "" : null;
         bgSyllables.push({
-          Text: rawText.trim(),
+          EndTime: end,
           IsPartOfWord: !checkIsWordBoundary(rawText, nextRawText),
           StartTime: start,
-          EndTime: end,
+          Text: rawText.trim(),
         });
         if (start < bgStart) bgStart = start;
         if (end > bgEnd) bgEnd = end;
       }
       if (bgSyllables.length > 0)
-        backgroundVocalParts.push({ Syllables: bgSyllables, StartTime: bgStart, EndTime: bgEnd });
+        backgroundVocalParts.push({ EndTime: bgEnd, StartTime: bgStart, Syllables: bgSyllables });
     } else if (span["#text"] !== undefined) {
       const rawText = span["#text"] || "";
       let nextLeadText: string | null = null;
@@ -70,19 +70,19 @@ export function parseAppleSyllableLine(
         }
       }
       leadSyllables.push({
-        Text: rawText.trim(),
+        EndTime: parseTime(span.end) - timeOffset,
         IsPartOfWord: !checkIsWordBoundary(rawText, nextLeadText),
         StartTime: parseTime(span.begin) - timeOffset,
-        EndTime: parseTime(span.end) - timeOffset,
+        Text: rawText.trim(),
       });
     }
   }
 
   return {
-    Type: "Vocal",
-    OppositeAligned: isOppositeAligned(p["ttm:agent"] || divAgentId, agents),
-    Lead: { Syllables: leadSyllables, StartTime: pBegin, EndTime: pEnd },
     Background: backgroundVocalParts.length > 0 ? backgroundVocalParts : undefined,
+    Lead: { EndTime: pEnd, StartTime: pBegin, Syllables: leadSyllables },
+    OppositeAligned: isOppositeAligned(p["ttm:agent"] || divAgentId, agents),
+    Type: "Vocal",
   };
 }
 
@@ -103,11 +103,11 @@ export function parseApple(ttml: TTMLRoot, timing: string): Lyrics {
       ),
     );
     return {
-      Id: spotifyId || "unknown",
-      Type: "Static",
-      SongWriters: songwriters,
       Artists: artists.length > 0 ? artists : undefined,
+      Id: spotifyId || "unknown",
       Lines: lines,
+      SongWriters: songwriters,
+      Type: "Static",
     } satisfies StaticData;
   }
 
@@ -122,22 +122,22 @@ export function parseApple(ttml: TTMLRoot, timing: string): Lyrics {
         if (content.length === 0) startTime = pBegin;
         endTime = pEnd;
         content.push({
-          Type: "Vocal",
-          Text: p["#text"] || "",
-          StartTime: pBegin,
           EndTime: pEnd,
           OppositeAligned: isOppositeAligned(p["ttm:agent"] || div?.["ttm:agent"], agents),
+          StartTime: pBegin,
+          Text: p["#text"] || "",
+          Type: "Vocal",
         });
       });
     });
     return {
-      Id: spotifyId || "unknown",
-      Type: "Line",
-      SongWriters: songwriters,
       Artists: artists.length > 0 ? artists : undefined,
       Content: content,
-      StartTime: startTime,
       EndTime: endTime,
+      Id: spotifyId || "unknown",
+      SongWriters: songwriters,
+      StartTime: startTime,
+      Type: "Line",
     } satisfies LineData;
   }
 
@@ -152,12 +152,12 @@ export function parseApple(ttml: TTMLRoot, timing: string): Lyrics {
     });
   });
   return {
-    Id: spotifyId || "unknown",
-    Type: "Syllable",
-    SongWriters: songwriters,
     Artists: artists.length > 0 ? artists : undefined,
     Content: content,
-    StartTime: startTime,
     EndTime: endTime,
+    Id: spotifyId || "unknown",
+    SongWriters: songwriters,
+    StartTime: startTime,
+    Type: "Syllable",
   } satisfies SyllableData;
 }

@@ -1,4 +1,4 @@
-import { createLazyModuleLoader } from "@/language/lazy";
+import { createLazyModuleLoader } from "~/language/lazy";
 
 const cyrillicLoader = createLazyModuleLoader("cyrillic-romanization", (mod) => mod.default);
 

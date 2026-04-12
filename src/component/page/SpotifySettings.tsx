@@ -1,7 +1,7 @@
-import { Button } from "@/component/ui/Button";
-import { showSettingsModal } from "@/component/settings/SettingsModal";
-import { CogwheelHTML } from "@/component/icon/Cogwheel";
-import { t } from "@/i18n";
+import { Button } from "~/component/ui/Button";
+import { showSettingsModal } from "~/component/settings/SettingsModal";
+import { CogwheelHTML } from "~/component/icon/Cogwheel";
+import { t } from "~/i18n";
 
 const SpotifySettings = () => {
   return (

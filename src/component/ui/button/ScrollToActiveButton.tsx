@@ -1,8 +1,8 @@
-import { useRenderer } from "@/context/LyricsRenderer";
-import { Button } from "@/component/ui/Button";
+import { useRenderer } from "~/context/LyricsRenderer";
+import { Button } from "~/component/ui/Button";
 import { LocateFixed } from "lucide-solid";
 import { type Component, Show } from "solid-js";
-import { t } from "@/i18n";
+import { t } from "~/i18n";
 
 type Props = {
   onlyIcon: boolean;

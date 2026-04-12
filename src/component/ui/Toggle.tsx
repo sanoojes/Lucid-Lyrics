@@ -1,5 +1,5 @@
 import type { Component } from "solid-js";
-import "@/styles/component/toggle.scss";
+import "~/styles/component/toggle.scss";
 
 interface ToggleProps {
   checked: boolean;

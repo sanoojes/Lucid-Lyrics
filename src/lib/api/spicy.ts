@@ -1,5 +1,5 @@
-import { SPICY_APP_VERSION } from "@/constants";
-import { createLogger } from "@/utils/logger";
+import { SPICY_APP_VERSION } from "~/constants";
+import { createLogger } from "~/utils/logger";
 
 let version = SPICY_APP_VERSION;
 const semverRegex =
@@ -59,16 +59,16 @@ export async function sendSpicyRequest(queries: SpicyQuery[], authHeader?: strin
 
 async function executeFetch(baseUrl: string, queries: SpicyQuery[], auth: string | undefined) {
   const response = await fetch(`${baseUrl}/query`, {
-    method: "POST",
+    body: JSON.stringify({
+      client: { version },
+      queries,
+    }),
     headers: {
       "Content-Type": "application/json",
       "SpicyLyrics-Version": version,
       ...(auth && { "SpicyLyrics-WebAuth": auth }),
     },
-    body: JSON.stringify({
-      queries,
-      client: { version },
-    }),
+    method: "POST",
   });
 
   if (!response.ok) throw new Error(`Node ${baseUrl} failed`);

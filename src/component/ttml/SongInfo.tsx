@@ -1,5 +1,5 @@
-import { Show, type JSXElement } from "solid-js";
-import Marquee from "@/component/ui/Marquee";
+import { type JSXElement, Show } from "solid-js";
+import Marquee from "~/component/ui/Marquee";
 
 type SongInfoProps = {
   icon: JSXElement;

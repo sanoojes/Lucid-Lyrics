@@ -1,11 +1,11 @@
-import "@/styles/modal/alert.scss";
-import { For, Show, type JSXElement } from "solid-js";
+import "~/styles/modal/alert.scss";
+import { For, type JSXElement, Show } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Dialog, useDialog } from "@/lib/modal/component/Dialog";
+import { Dialog, useDialog } from "~/lib/modal/component/Dialog";
 import { render } from "solid-js/web";
-import { logger } from "@/utils/logger";
-import { Button } from "@/component/ui/Button";
-import { t } from "@/i18n";
+import { logger } from "~/utils/logger";
+import { Button } from "~/component/ui/Button";
+import { t } from "~/i18n";
 import { BadgeAlert, CircleAlert, ShieldAlert } from "lucide-solid";
 
 export { useDialog };
@@ -21,11 +21,11 @@ const [modals, setModals] = createStore<ModalItem[]>([]);
 export function showModal(renderFunc: () => JSXElement) {
   const id = crypto.randomUUID();
 
-  setModals((prev) => [...prev, { id, render: renderFunc, isOpen: true }]);
+  setModals((prev) => [...prev, { id, isOpen: true, render: renderFunc }]);
 
   return {
-    id,
     close: () => handleClose(id),
+    id,
   };
 }
 
@@ -42,9 +42,9 @@ export function closeAllModals() {
 }
 
 const DefaultIcons = {
+  default: <CircleAlert />,
   destructive: <BadgeAlert />,
   warning: <ShieldAlert />,
-  default: <CircleAlert />,
 } as const;
 
 export type AlertOptions = {
@@ -128,11 +128,11 @@ export function showAlert(options: AlertOptions) {
 
 export function showLinkAlert(url: string, onOpen?: () => void) {
   return showAlert({
-    title: t("alerts.externalLink.title"),
-    onConfirm: onOpen,
-    variant: "warning",
-    description: t("alerts.externalLink.description", { url }),
     confirmLabel: t("alerts.externalLink.open"),
+    description: t("alerts.externalLink.description", { url }),
+    onConfirm: onOpen,
+    title: t("alerts.externalLink.title"),
+    variant: "warning",
   });
 }
 

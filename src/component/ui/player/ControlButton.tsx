@@ -1,10 +1,10 @@
 import { Pause, Play } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { play, pause } from "@/lib/spotify/player";
+import { Button } from "~/component/ui/Button";
+import { pause, play } from "~/lib/spotify/player";
 import { useStore } from "@nanostores/solid";
-import { $playing } from "@/stores";
+import { $playing } from "~/stores";
 import { Match, Switch } from "solid-js";
-import { t } from "@/i18n";
+import { t } from "~/i18n";
 
 const ControlButton = () => {
   const isPlaying = useStore($playing);

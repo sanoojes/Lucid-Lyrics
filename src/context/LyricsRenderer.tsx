@@ -1,10 +1,10 @@
 import {
-  createSignal,
-  createContext,
-  useContext,
   type Accessor,
-  type Setter,
   type JSX,
+  type Setter,
+  createContext,
+  createSignal,
+  useContext,
 } from "solid-js";
 
 export type JumpToActive = (() => void) | null;
@@ -25,8 +25,8 @@ export function LyricsRendererProvider(props: { children: JSX.Element }) {
     <RendererContext.Provider
       value={{
         isActiveVisible,
-        setIsActiveVisible,
         jumpToActive,
+        setIsActiveVisible,
         setJumpToActive,
       }}
     >

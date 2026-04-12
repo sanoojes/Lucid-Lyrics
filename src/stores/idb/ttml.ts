@@ -1,7 +1,7 @@
-import { get, set, del, clear } from "idb-keyval";
-import { ttmlStore } from "@/stores/idb";
-import { parse, type ParseResult } from "@/lib/ttml/parser";
-import type { TTMLMode } from "@/stores/ttml";
+import { clear, del, get, set } from "idb-keyval";
+import { ttmlStore } from "~/stores/idb";
+import { type ParseResult, parse } from "~/lib/ttml/parser";
+import type { TTMLMode } from "~/stores/ttml";
 
 export interface LocalTTML {
   id: string;
@@ -54,29 +54,29 @@ export async function saveLocalTTML(
   }
 
   const ttml: LocalTTML = {
+    albumName,
+    artistNames,
+    createdAt,
     id,
+    parsedTTML,
+    rawTTML: text,
     songId,
     songName,
-    artistNames,
-    albumName,
-    rawTTML: text,
-    parsedTTML,
     type,
-    createdAt,
     updatedAt: Date.now(),
   };
 
   await set(`${TTML_KEY_PREFIX}${id}`, ttml, ttmlStore);
 
   let manifest = existingManifest.filter((e) => e.songId !== songId);
-  manifest.push({ id, songId, createdAt });
+  manifest.push({ createdAt, id, songId });
   manifest.sort((a, b) => b.createdAt - a.createdAt);
   await set(MANIFEST_KEY, manifest, ttmlStore);
 
   return {
-    ttml,
     isOverwrite: !!existingEntry,
     parseError,
+    ttml,
   };
 }
 

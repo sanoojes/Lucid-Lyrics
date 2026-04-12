@@ -1,10 +1,10 @@
 export const GOTHIC_PHONETIC_MAP: Record<string, string> = {
-  𐌲𐌲: "ng",
-  𐌲𐌺: "nk",
-  𐌲𐌵: "nq",
   𐌰: "a",
   𐌱: "b",
   𐌲: "g",
+  𐌲𐌲: "ng",
+  𐌲𐌵: "nq",
+  𐌲𐌺: "nk",
   𐌳: "d",
   𐌴: "e",
   𐌵: "q",
@@ -19,6 +19,7 @@ export const GOTHIC_PHONETIC_MAP: Record<string, string> = {
   𐌾: "j",
   𐌿: "u",
   𐍀: "p",
+  𐍁: "",
   𐍂: "r",
   𐍃: "s",
   𐍄: "t",
@@ -27,7 +28,6 @@ export const GOTHIC_PHONETIC_MAP: Record<string, string> = {
   𐍇: "x",
   𐍈: "hw",
   𐍉: "o",
-  𐍁: "",
   𐍊: "",
 };
 

@@ -1,1 +1,1 @@
-export * from "@/language/utils";
+export * from "~/language/utils";

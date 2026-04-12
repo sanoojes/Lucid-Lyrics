@@ -1,20 +1,20 @@
-import type { LineData, LineContent } from "@/lib/api/types";
+import type { LineContent, LineData } from "~/lib/api/types";
 import {
+  For,
+  Show,
   createEffect,
   createMemo,
   createSignal,
-  For,
   on,
   onCleanup,
   onMount,
-  Show,
 } from "solid-js";
-import { useLenis, useLenisContent } from "@/component/ui/Lenis";
+import { useLenis, useLenisContent } from "~/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $romanize, $romanize_position, getBlurmap } from "@/stores";
-import { useRenderer } from "@/context/LyricsRenderer";
-import { seekTo } from "@/lib/spotify/player";
-import { Interlude } from "@/component/lyrics/Interlude";
+import { $current_position, $romanize, $romanize_position, getBlurmap } from "~/stores";
+import { useRenderer } from "~/context/LyricsRenderer";
+import { seekTo } from "~/lib/spotify/player";
+import { Interlude } from "~/component/lyrics/Interlude";
 
 export type LineLyricsProps = {
   lyrics: LineData;
@@ -53,30 +53,30 @@ function buildLineEntries(lyrics: LineData): LineEntry[] {
 
     if (i === 0 && start > 2000) {
       entries.push({
-        type: "interlude",
-        index: lineIdx++,
-        start: 0,
         end: start,
-        oppAligned: c.OppositeAligned,
+        index: lineIdx++,
         isIntro: true,
         isRTL: c.IsRTL,
+        oppAligned: c.OppositeAligned,
+        start: 0,
+        type: "interlude",
       });
     }
 
-    entries.push({ type: "lyric", index: lineIdx++, contentIndex: i, content: c });
+    entries.push({ content: c, contentIndex: i, index: lineIdx++, type: "lyric" });
 
     if (i < content.length - 1) {
       const next = content[i + 1];
       const gap = next.StartTime * 1000 - c.EndTime * 1000;
       if (gap > 2000) {
         entries.push({
-          type: "interlude",
-          index: lineIdx++,
-          start: c.EndTime * 1000 - 100,
           end: next.StartTime * 1000 - 100,
-          oppAligned: c.OppositeAligned,
+          index: lineIdx++,
           isIntro: false,
           isRTL: c.IsRTL,
+          oppAligned: c.OppositeAligned,
+          start: c.EndTime * 1000 - 100,
+          type: "interlude",
         });
       }
     }
@@ -111,9 +111,9 @@ export default function LineLyrics(props: LineLyricsProps) {
   const allBounds = createMemo(() => {
     return lineEntries().map((entry) => {
       if (entry.type === "interlude") {
-        return { start: entry.start, end: entry.end };
+        return { end: entry.end, start: entry.start };
       }
-      return { start: entry.content.StartTime * 1000, end: entry.content.EndTime * 1000 };
+      return { end: entry.content.EndTime * 1000, start: entry.content.StartTime * 1000 };
     });
   });
 
@@ -442,8 +442,8 @@ export default function LineLyrics(props: LineLyricsProps) {
                 }}
                 style={{
                   "--l-blur": blurStyle(),
-                  "--l-scale": isActive() ? 1.01 : 1,
                   "--l-opacity": isActive() ? 1 : 0.6,
+                  "--l-scale": isActive() ? 1.01 : 1,
                 }}
               >
                 <Interlude
@@ -493,15 +493,15 @@ export default function LineLyrics(props: LineLyricsProps) {
               }}
               style={{
                 "--l-blur": blurStyle(),
-                "--l-scale": isActive() ? 1.01 : 1,
                 "--l-opacity": isActive() ? 1 : 0.6,
+                "--l-scale": isActive() ? 1.01 : 1,
               }}
             >
               <div
                 class="line"
                 classList={{
-                  "has-romanized-top": showTop() && hasRomanized(),
                   "has-romanized-bottom": showBottom() && hasRomanized(),
+                  "has-romanized-top": showTop() && hasRomanized(),
                 }}
                 onClick={() => seekTo(entry.content.StartTime * 1000)}
                 role="button"
@@ -509,8 +509,8 @@ export default function LineLyrics(props: LineLyricsProps) {
                 style={{
                   "--line-progress": `${progress()}%`,
                   "--line-progress-2": `${progress() > 0 ? progress() + 20 : 0}%`,
-                  "--shadow-blur": `${progress() * 0.06}px`,
                   "--shadow-alpha": (progress() / 200) * 0.85,
+                  "--shadow-blur": `${progress() * 0.06}px`,
                   "text-align": entry.content.OppositeAligned ? "end" : "start",
                 }}
               >

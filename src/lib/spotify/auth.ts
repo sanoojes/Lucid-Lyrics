@@ -1,4 +1,4 @@
-import { wait } from "@/lib/dom/wait";
+import { wait } from "~/lib/dom/wait";
 
 type TokenProviderResponse = {
   accessToken: string;

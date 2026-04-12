@@ -1,10 +1,10 @@
-import { detectLanguage, isRTL, containsRTL } from "@/language/utils";
-import type { SupportedLanguage } from "@/language";
-import { Romanizers } from "@/language/romanizers";
-import { createLogger } from "@/utils/logger";
-import type { Lyrics } from "@/lib/api/types";
-import { toast } from "@/lib/sonner";
-import { t } from "@/i18n";
+import { containsRTL, detectLanguage, isRTL } from "~/language/utils";
+import type { SupportedLanguage } from "~/language";
+import { Romanizers } from "~/language/romanizers";
+import { createLogger } from "~/utils/logger";
+import type { Lyrics } from "~/lib/api/types";
+import { toast } from "~/lib/sonner";
+import { t } from "~/i18n";
 
 const log = createLogger("language:processor");
 
@@ -67,8 +67,8 @@ export async function processLyrics(lyric: Lyrics): Promise<Lyrics> {
 
     log.debug("success", {
       durationMs: performance.now() - startTime,
-      hasRomanized: lyric.HasRomanizedText,
       errorCount: romanizationErrors.length,
+      hasRomanized: lyric.HasRomanizedText,
     });
 
     return lyric;
@@ -176,7 +176,7 @@ async function addRomanizationToLyrics(
             if (chunks.length > 0 && chunks[chunks.length - 1].lang === lang) {
               chunks[chunks.length - 1].text += token;
             } else {
-              chunks.push({ text: token, lang });
+              chunks.push({ lang, text: token });
             }
           }
 

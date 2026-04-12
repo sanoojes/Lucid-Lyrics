@@ -1,6 +1,6 @@
 import { persistentAtom } from "@nanostores/persistent";
 import type { WritableAtom } from "nanostores";
-import deepmerge from "@/utils/deepmerge";
+import deepmerge from "~/utils/deepmerge";
 
 interface PersistentSimpleOptions {
   /**

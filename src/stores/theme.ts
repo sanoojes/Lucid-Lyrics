@@ -1,5 +1,5 @@
-import { waitForElement } from "@/lib/dom/wait";
-import { logger } from "@/utils/logger";
+import { waitForElement } from "~/lib/dom/wait";
+import { logger } from "~/utils/logger";
 import { atom, onMount } from "nanostores";
 
 export const $installed_theme = atom<string | null>(null);

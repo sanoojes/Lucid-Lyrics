@@ -1,4 +1,4 @@
-import { getModule } from "@/lib/dom/load";
+import { getModule } from "~/lib/dom/load";
 
 type ModuleName = Parameters<typeof getModule>[0];
 

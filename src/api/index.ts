@@ -1,36 +1,36 @@
-import { LyricsAPI } from "@/lib/api";
-import { fetchAMLL } from "@/api/amll";
-import { fetchUser } from "@/api/user";
-import { fetchSpicy } from "@/api/spicy";
-import { fetchLRCLIB } from "@/api/lrclib";
-import { fetchSpotify } from "@/api/spotify";
-import { logger } from "@/utils/logger";
+import { LyricsAPI } from "~/lib/api";
+import { fetchAMLL } from "~/api/amll";
+import { fetchUser } from "~/api/user";
+import { fetchSpicy } from "~/api/spicy";
+import { fetchLRCLIB } from "~/api/lrclib";
+import { fetchSpotify } from "~/api/spotify";
+import { logger } from "~/utils/logger";
 
 const API = new LyricsAPI([
   {
-    id: "user",
-    fetch: fetchUser,
     cache: false,
+    fetch: fetchUser,
+    id: "user",
     supports: ["local", "audio"],
   },
   {
-    id: "spicy",
     fetch: fetchSpicy,
+    id: "spicy",
     supports: ["audio"],
   },
   {
-    id: "amll",
     fetch: fetchAMLL,
+    id: "amll",
     supports: ["audio"],
   },
   {
-    id: "spotify",
     fetch: fetchSpotify,
+    id: "spotify",
     supports: ["audio"],
   },
   {
-    id: "lrclib",
     fetch: fetchLRCLIB,
+    id: "lrclib",
     supports: ["local", "audio"],
   },
 ]);

@@ -1,17 +1,17 @@
-import { SettingsRow } from "@/component/settings/Row";
-import { SettingsSection } from "@/component/settings/Section";
-import { resetAllConfig } from "@/stores/reset";
-import { Button } from "@/component/ui/Button";
-import { t } from "@/i18n";
+import { SettingsRow } from "~/component/settings/Row";
+import { SettingsSection } from "~/component/settings/Section";
+import { resetAllConfig } from "~/stores/reset";
+import { Button } from "~/component/ui/Button";
+import { t } from "~/i18n";
 import { RotateCcw } from "lucide-solid";
-import { showAlert } from "@/lib/modal";
+import { showAlert } from "~/lib/modal";
 
 function ResetSettings() {
   const handleReset = () => {
     showAlert({
-      title: t("settings.resetConfirm"),
       description: t("settings.resetDescription"),
       onConfirm: () => resetAllConfig(),
+      title: t("settings.resetConfirm"),
       variant: "destructive",
     });
   };

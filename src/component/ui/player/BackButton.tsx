@@ -1,5 +1,5 @@
-import { Button } from "@/component/ui/Button";
-import { prev } from "@/lib/spotify/player";
+import { Button } from "~/component/ui/Button";
+import { prev } from "~/lib/spotify/player";
 import { SkipBack } from "lucide-solid";
 
 const BackButton = () => {

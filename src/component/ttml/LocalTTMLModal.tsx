@@ -1,30 +1,30 @@
-import "@/styles/modal/ttml-modal.scss";
-import { useDialog } from "@/lib/modal/component/Dialog";
-import { showModal, showAlert } from "@/lib/modal";
-import { X, Upload, Trash2, FileText, Music, Download, Copy, Check } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { createSignal, createResource, createMemo, createEffect, For, Show } from "solid-js";
+import "~/styles/modal/ttml-modal.scss";
+import { useDialog } from "~/lib/modal/component/Dialog";
+import { showAlert, showModal } from "~/lib/modal";
+import { Check, Copy, Download, FileText, Music, Trash2, Upload, X } from "lucide-solid";
+import { Button } from "~/component/ui/Button";
+import { For, Show, createEffect, createMemo, createResource, createSignal } from "solid-js";
 import { createStore, reconcile } from "solid-js/store";
 import {
-  saveLocalTTML,
-  getAllLocalTTML,
-  deleteLocalTTML,
   type LocalTTML,
   type SaveTTMLResult,
-} from "@/stores/idb/ttml";
+  deleteLocalTTML,
+  getAllLocalTTML,
+  saveLocalTTML,
+} from "~/stores/idb/ttml";
 import { useStore } from "@nanostores/solid";
-import { $player_data } from "@/stores/player";
-import { $ttml_mode } from "@/stores/ttml";
-import { $lyrics_status } from "@/stores";
-import { t } from "@/i18n";
-import { getProviderName, type LyricsProviders } from "@/constants";
-import { toast } from "@/lib/sonner";
-import SolidLenis from "@/component/ui/Lenis";
-import { lyricsResource, refetchLyrics } from "@/api/solid";
-import { build } from "@/lib/ttml/builder";
-import { Toggle } from "@/component/ui/Toggle";
-import { SongInfo } from "@/component/ttml/SongInfo";
-import { TTMLItem } from "@/component/ttml/TTMLItem";
+import { $player_data } from "~/stores/player";
+import { $ttml_mode } from "~/stores/ttml";
+import { $lyrics_status } from "~/stores";
+import { t } from "~/i18n";
+import { type LyricsProviders, getProviderName } from "~/constants";
+import { toast } from "~/lib/sonner";
+import SolidLenis from "~/component/ui/Lenis";
+import { lyricsResource, refetchLyrics } from "~/api/solid";
+import { build } from "~/lib/ttml/builder";
+import { Toggle } from "~/component/ui/Toggle";
+import { SongInfo } from "~/component/ttml/SongInfo";
+import { TTMLItem } from "~/component/ttml/TTMLItem";
 
 const isValidTTMLFile = (file: File) =>
   file.name.endsWith(".ttml") || file.type === "application/ttml+xml" || file.type === "text/xml";
@@ -184,16 +184,16 @@ function LocalTTMLModal() {
 
   const handleDelete = async (ttml: LocalTTML) => {
     showAlert({
-      title: t("ttml.deleteConfirm", { songName: ttml.songName }),
       description: t("ttml.deleteDescription"),
+      icon: <Trash2 />,
       onConfirm: async () => {
         await deleteLocalTTML(ttml.id);
         await refetchLyrics();
         await refetchTtmlFiles();
         toast.success(t("ttml.deleteSuccess"));
       },
+      title: t("ttml.deleteConfirm", { songName: ttml.songName }),
       variant: "destructive",
-      icon: <Trash2 />,
     });
   };
 
@@ -205,10 +205,9 @@ function LocalTTMLModal() {
   const handleDownload = (ttml: LocalTTML) => {
     const fileName = getTTMLFileName(ttml.songName, ttml.artistNames);
     showAlert({
-      title: t("ttml.downloadConfirm", {
-        songName: ttml.songName,
-        artistName: ttml.artistNames,
-      }),
+      confirmLabel: t("ttml.downloadTTML"),
+      description: t("ttml.downloadPath"),
+      icon: <Download size={24} />,
       onConfirm: () => {
         const blob = new Blob([ttml.rawTTML], { type: "application/ttml+xml" });
         const url = URL.createObjectURL(blob);
@@ -221,14 +220,15 @@ function LocalTTMLModal() {
         URL.revokeObjectURL(url);
         toast.success(t("ttml.downloadSuccess", { fileName }));
       },
-      variant: "default",
-      description: t("ttml.downloadPath"),
-      confirmLabel: t("ttml.downloadTTML"),
       secondaryAction: {
         label: t("ttml.copyTTML"),
         onClick: () => copyToClipboard(ttml.rawTTML),
       },
-      icon: <Download size={24} />,
+      title: t("ttml.downloadConfirm", {
+        artistName: ttml.artistNames,
+        songName: ttml.songName,
+      }),
+      variant: "default",
     });
   };
 
@@ -237,10 +237,7 @@ function LocalTTMLModal() {
     if (!songId) return;
 
     showAlert({
-      title: t("ttml.applyConfirm", {
-        songName: ttml.songName,
-        artistName: ttml.artistNames,
-      }),
+      icon: <Check size={24} />,
       onConfirm: async () => {
         copyToClipboard(ttml.rawTTML);
         const blob = new Blob([ttml.rawTTML], { type: "application/ttml+xml" });
@@ -259,8 +256,11 @@ function LocalTTMLModal() {
         await refetchTtmlFiles();
         toast.success(t("ttml.applySuccess"));
       },
+      title: t("ttml.applyConfirm", {
+        artistName: ttml.artistNames,
+        songName: ttml.songName,
+      }),
       variant: "default",
-      icon: <Check size={24} />,
     });
   };
 

@@ -1,14 +1,14 @@
 import type { Plugin } from "esbuild";
-import { cpSync, existsSync, globSync, mkdirSync, rmSync, statSync, readdirSync } from "node:fs";
+import { cpSync, existsSync, globSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const colors = {
-  reset: "\x1b[0m",
   bold: "\x1b[1m",
-  green: "\x1b[32m",
-  yellow: "\x1b[33m",
   cyan: "\x1b[36m",
   gray: "\x1b[90m",
+  green: "\x1b[32m",
+  reset: "\x1b[0m",
+  yellow: "\x1b[33m",
 };
 
 interface CopyPackagesPluginOptions {
@@ -31,7 +31,7 @@ export function copyPackagesPlugin(options: CopyPackagesPluginOptions): Plugin {
         const validItems = globSync("*", { cwd: inputDir, exclude: ignore });
 
         if (existsSync(outputPath)) {
-          rmSync(outputPath, { recursive: true, force: true });
+          rmSync(outputPath, { force: true, recursive: true });
         }
         mkdirSync(outputPath, { recursive: true });
 

@@ -7,7 +7,13 @@ export default function arabicTransliterate(
   const char = (academic: string, standard: string) => (useStandardLatin ? standard : academic);
 
   const arabicMap: Record<string, string> = {
+    ء: char("ʾ", "'"),
+    أ: char("ʾ", "'"),
+    ؤ: char("ʾ", "'"),
+    إ: char("ʾ", "'"),
+    ئ: char("ʾ", "'"),
     ب: "b",
+    ة: "a",
     ت: "t",
     ث: "th",
     ج: "j",
@@ -32,18 +38,12 @@ export default function arabicTransliterate(
     م: "m",
     ن: "n",
     ه: "h",
-    ء: char("ʾ", "'"),
-    أ: char("ʾ", "'"),
-    إ: char("ʾ", "'"),
-    ؤ: char("ʾ", "'"),
-    ئ: char("ʾ", "'"),
-    ة: "a",
     ى: "aa",
     پ: "p",
     چ: "ch",
     ژ: "zh",
-    گ: "g",
     ڤ: "v",
+    گ: "g",
   };
 
   // Vowels & Diacritics Map
@@ -63,18 +63,16 @@ export default function arabicTransliterate(
   // Ligatures & Punctuation
   const ligatures: Record<string, string> = {
     ال: "al-",
-    لا: "laa",
+    لآ: "laa'",
     لأ: "la'",
     لإ: "li'",
-    لآ: "laa'",
+    لا: "laa",
   };
 
   const punctuation: Record<string, string> = {
     "،": ",",
     "؛": ";",
     "؟": "?",
-    "۔": ".",
-    "٪": "%",
     "٠": "0",
     "١": "1",
     "٢": "2",
@@ -85,6 +83,8 @@ export default function arabicTransliterate(
     "٧": "7",
     "٨": "8",
     "٩": "9",
+    "٪": "%",
+    "۔": ".",
   };
 
   const shadda = "\u0651";

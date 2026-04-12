@@ -1,6 +1,6 @@
-import { Show, type Component, type JSXElement, createMemo } from "solid-js";
-import "@/styles/component/settings-row.scss";
-import { useSettings } from "@/component/settings/context";
+import { type Component, type JSXElement, Show, createMemo } from "solid-js";
+import "~/styles/component/settings-row.scss";
+import { useSettings } from "~/component/settings/context";
 
 interface SettingsRowProps {
   label: string;

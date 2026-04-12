@@ -1,7 +1,7 @@
-import { persistentJSON } from "@/utils/nanostores";
-import { getName } from "@/stores/persist";
-import type { PlayerWidgetVariants } from "@/component/ui/PlayingWidget";
-import { DEFAULT_WIDGET_STATE } from "@/constants";
+import { persistentJSON } from "~/utils/nanostores";
+import { getName } from "~/stores/persist";
+import type { PlayerWidgetVariants } from "~/component/ui/PlayingWidget";
+import { DEFAULT_WIDGET_STATE } from "~/constants";
 export type WidgetState = {
   variant: PlayerWidgetVariants;
   centerText: boolean;

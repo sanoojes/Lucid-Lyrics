@@ -1,4 +1,4 @@
-import type { Dict } from "@/i18n/types";
+import type { Dict } from "~/i18n/types";
 
 export const dict: Dict = {
   "advanced.cacheTTL": "Trvanie vyrovnávacej pamäte",

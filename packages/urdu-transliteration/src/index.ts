@@ -1,4 +1,4 @@
-import { URDU_CHAR_MAP, WORD_PRIORITY_MAP } from "@/maps";
+import { URDU_CHAR_MAP, WORD_PRIORITY_MAP } from "~/maps";
 
 const DIACRITICS_REGEX = /[\u064B-\u065F\u0670\u06DF-\u06E1]/g;
 const TOKEN_REGEX = /[\p{L}\p{M}\u200C\u200D]+|[،؟۔٪٫٬]/gu;

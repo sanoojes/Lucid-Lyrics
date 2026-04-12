@@ -1,7 +1,7 @@
 import { clear, get, set } from "idb-keyval";
-import { MODULE_METADATA } from "@/constants";
-import { createLogger } from "@/utils/logger";
-import { moduleStore } from "@/stores/idb";
+import { MODULE_METADATA } from "~/constants";
+import { createLogger } from "~/utils/logger";
+import { moduleStore } from "~/stores/idb";
 
 type ModuleName = keyof typeof MODULE_METADATA;
 type ModuleRegistry = {
@@ -54,13 +54,13 @@ function getModuleMeta(name: ModuleName): ModuleMeta {
   const meta = MODULE_METADATA[name];
   if ("baseUrl" in meta) {
     return {
-      name: meta.name,
-      version: meta.version,
       baseUrl: meta.baseUrl,
       localeVersions: meta.localeVersions,
+      name: meta.name,
+      version: meta.version,
     };
   }
-  return { name: meta.name, version: meta.version, url: meta.url };
+  return { name: meta.name, url: meta.url, version: meta.version };
 }
 
 function getModuleUrl(name: ModuleName, suffix?: string): { url: string; version: string } {
@@ -152,7 +152,7 @@ async function fetchAndEvalModule<T>(name: string, url: string, version: string)
 
     scriptContent = await response.text();
 
-    set(name, { version, url, code: scriptContent }, moduleStore).catch(() =>
+    set(name, { code: scriptContent, url, version }, moduleStore).catch(() =>
       log.warn(`${name}_idb_save_failed`),
     );
   }

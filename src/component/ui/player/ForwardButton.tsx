@@ -1,6 +1,6 @@
 import { SkipForward } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { next } from "@/lib/spotify/player";
+import { Button } from "~/component/ui/Button";
+import { next } from "~/lib/spotify/player";
 
 const ForwardButton = () => {
   return (

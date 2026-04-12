@@ -1,9 +1,9 @@
 import { Repeat, Repeat1 } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
+import { Button } from "~/component/ui/Button";
 import { useStore } from "@nanostores/solid";
-import { $repeat_state } from "@/stores";
+import { $repeat_state } from "~/stores";
 import { Match, Switch } from "solid-js";
-import { t } from "@/i18n";
+import { t } from "~/i18n";
 
 const RepeatButton = () => {
   const size = 16;

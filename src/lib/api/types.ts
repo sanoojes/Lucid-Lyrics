@@ -1,4 +1,4 @@
-import type { LyricsProviders } from "@/constants";
+import type { LyricsProviders } from "~/constants";
 
 export type APIStatus =
   | "success"

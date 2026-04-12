@@ -1,9 +1,9 @@
-import "@/styles/fullscreen.scss";
-import { logger } from "@/utils/logger";
+import "~/styles/fullscreen.scss";
+import { logger } from "~/utils/logger";
 import { useStore } from "@nanostores/solid";
-import { $page_mode, setPageMode } from "@/stores/page";
-import { createEffect, on, onMount, onCleanup, Show } from "solid-js";
-import FullscreenPage from "@/component/page/FullscreenPage";
+import { $page_mode, setPageMode } from "~/stores/page";
+import { Show, createEffect, on, onCleanup, onMount } from "solid-js";
+import FullscreenPage from "~/component/page/FullscreenPage";
 
 function Fullscreen() {
   const pageMode = useStore($page_mode);

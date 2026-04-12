@@ -1,25 +1,25 @@
-import "@/styles/page.scss";
-import "@/styles/lenis.css";
+import "~/styles/page.scss";
+import "~/styles/lenis.css";
 import { useStore } from "@nanostores/solid";
-import { Show, createSignal, onMount, onCleanup } from "solid-js";
+import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { X } from "lucide-solid";
-import { t } from "@/i18n";
+import { t } from "~/i18n";
 
-import { Button } from "@/component/ui/Button";
-import { Background } from "@/component/ui/Background";
-import Lyrics from "@/component/lyrics/Lyrics";
-import Controls from "@/component/ui/player/Controls";
-import PlayerWidget from "@/component/ui/PlayingWidget";
-import CinemaButton from "@/component/ui/button/CinemaButton";
-import RomanizeButton from "@/component/ui/button/RomanizeButton";
-import LocalTTMLButton from "@/component/ui/button/LocalTTMLButton";
-import FullscreenButton from "@/component/ui/button/FullscreenButton";
-import ToggleFullscreenWidgetButton from "@/component/ui/button/ToggleFullscreenWidgetButton";
+import { Button } from "~/component/ui/Button";
+import { Background } from "~/component/ui/Background";
+import Lyrics from "~/component/lyrics/Lyrics";
+import Controls from "~/component/ui/player/Controls";
+import PlayerWidget from "~/component/ui/PlayingWidget";
+import CinemaButton from "~/component/ui/button/CinemaButton";
+import RomanizeButton from "~/component/ui/button/RomanizeButton";
+import LocalTTMLButton from "~/component/ui/button/LocalTTMLButton";
+import FullscreenButton from "~/component/ui/button/FullscreenButton";
+import ToggleFullscreenWidgetButton from "~/component/ui/button/ToggleFullscreenWidgetButton";
 
-import { $fullscreen_state, $lyrics_status, $page_mode, setPageMode } from "@/stores";
-import ScrollToActiveLyricsButton from "@/component/ui/button/ScrollToActiveLyricsButton";
-import { $installed_theme } from "@/stores/theme";
-import { LyricsRendererProvider } from "@/context/LyricsRenderer";
+import { $fullscreen_state, $lyrics_status, $page_mode, setPageMode } from "~/stores";
+import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
+import { $installed_theme } from "~/stores/theme";
+import { LyricsRendererProvider } from "~/context/LyricsRenderer";
 
 function FullscreenPage() {
   const pageState = useStore($fullscreen_state);
@@ -69,16 +69,16 @@ function FullscreenPage() {
       <div
         class={`lucid-contents${themeClassname()}`}
         classList={{
-          "hide-scrollbars": pageState().hideScrollbar,
           "hide-cursor": !isFloatingVisible(),
           "hide-lyrics-status": hideStatus(),
+          "hide-scrollbars": pageState().hideScrollbar,
         }}
       >
         <div
           class="widget-area"
           classList={{
-            "widget-area--hidden": isWidgetHidden(),
             "hide-lyrics-status": hideStatus(),
+            "widget-area--hidden": isWidgetHidden(),
           }}
         >
           <PlayerWidget

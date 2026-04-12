@@ -1,4 +1,4 @@
-import { Schema } from "@/schema";
+import { Schema } from "~/schema";
 
 interface map {
   [k: string]: keyof Schema;

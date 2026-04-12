@@ -38,8 +38,8 @@ async function generateReadme(): Promise<void> {
     const versionJsonPath2 = `${targetDir}/latest/version.json`;
 
     const versionData = JSON.stringify({
-      version: latestVersion,
       latest: latestVersion,
+      version: latestVersion,
     });
 
     await Bun.write(versionJsonPath, versionData);

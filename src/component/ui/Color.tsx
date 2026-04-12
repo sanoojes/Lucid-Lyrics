@@ -1,5 +1,5 @@
 import type { Component } from "solid-js";
-import "@/styles/component/color.scss";
+import "~/styles/component/color.scss";
 
 interface ColorProps {
   value: string;

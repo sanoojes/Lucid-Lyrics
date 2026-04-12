@@ -1,15 +1,15 @@
 import { useStore } from "@nanostores/solid";
-import { $animated_options, $current_track_image } from "@/stores";
-import { createMemo, createEffect, onMount, onCleanup } from "solid-js";
-import { useLocalBlob } from "@/component/ui/background/hooks";
+import { $animated_options, $current_track_image } from "~/stores";
+import { createEffect, createMemo, onCleanup, onMount } from "solid-js";
+import { useLocalBlob } from "~/component/ui/background/hooks";
 import Tempus from "@darkroom.engineering/tempus";
 
-import vertex from "@/shaders/animatedBg/vertex.glsl";
-import fragment from "@/shaders/animatedBg/fragment.glsl";
+import vertex from "~/shaders/animatedBg/vertex.glsl";
+import fragment from "~/shaders/animatedBg/fragment.glsl";
 
 const createImageBitmapOptions = {
-  premultiplyAlpha: "none" as const,
   colorSpaceConversion: "none" as const,
+  premultiplyAlpha: "none" as const,
 };
 
 const generateBlurredCoverArt = async (
@@ -165,25 +165,25 @@ const AnimatedLayer = () => {
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
     const uniforms: Uniforms = {
-      t: gl.getUniformLocation(program, "t"),
       bca: gl.getUniformLocation(program, "bca"),
-      pca: gl.getUniformLocation(program, "pca"),
       bco: gl.getUniformLocation(program, "bco"),
       bcr: gl.getUniformLocation(program, "bcr"),
+      br: gl.getUniformLocation(program, "br"),
       cco: gl.getUniformLocation(program, "cco"),
       ccr: gl.getUniformLocation(program, "ccr"),
+      co: gl.getUniformLocation(program, "co"),
+      di: gl.getUniformLocation(program, "di"),
       lco: gl.getUniformLocation(program, "lco"),
       lcr: gl.getUniformLocation(program, "lcr"),
+      op: gl.getUniformLocation(program, "op"),
+      pca: gl.getUniformLocation(program, "pca"),
       rco: gl.getUniformLocation(program, "rco"),
       rcr: gl.getUniformLocation(program, "rcr"),
-      br: gl.getUniformLocation(program, "br"),
-      sa: gl.getUniformLocation(program, "sa"),
-      co: gl.getUniformLocation(program, "co"),
-      op: gl.getUniformLocation(program, "op"),
-      tr: gl.getUniformLocation(program, "tr"),
-      sc: gl.getUniformLocation(program, "sc"),
       rs: gl.getUniformLocation(program, "rs"),
-      di: gl.getUniformLocation(program, "di"),
+      sa: gl.getUniformLocation(program, "sa"),
+      sc: gl.getUniformLocation(program, "sc"),
+      t: gl.getUniformLocation(program, "t"),
+      tr: gl.getUniformLocation(program, "tr"),
     };
 
     const createTexture = () => {
@@ -402,9 +402,9 @@ const AnimatedLayer = () => {
       <canvas
         ref={canvasRef}
         style={{
-          position: "absolute",
           inset: 0,
           "pointer-events": "none",
+          position: "absolute",
         }}
       />
     </div>

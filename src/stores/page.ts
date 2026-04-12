@@ -1,7 +1,7 @@
-import { persistentJSON } from "@/utils/nanostores";
-import { getName } from "@/stores/persist";
+import { persistentJSON } from "~/utils/nanostores";
+import { getName } from "~/stores/persist";
 import { atom, computed } from "nanostores";
-import { DEFAULT_PAGE_STATE, DEFAULT_FULLSCREEN_STATE } from "@/constants";
+import { DEFAULT_FULLSCREEN_STATE, DEFAULT_PAGE_STATE } from "~/constants";
 
 export type Positions = "top" | "bottom" | "left" | "right";
 

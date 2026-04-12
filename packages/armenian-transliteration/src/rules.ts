@@ -1,6 +1,6 @@
-import { mapArmenianCharToLatin } from "@/transformations";
-import { isArmenianVowel } from "@/utils";
-import { type FirstCharRule } from "@/common";
+import { mapArmenianCharToLatin } from "~/transformations";
+import { isArmenianVowel } from "~/utils";
+import { type FirstCharRule } from "~/common";
 
 /**
  * List of rules that apply specifically to the first character (and possibly the second)

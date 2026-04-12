@@ -2,36 +2,35 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Lucid Lyrics",
   description:
     "Yet another lyrics extension for Spotify. Documentation for installation, customization, and configuration.",
   head: [
-    ["link", { rel: "icon", href: "/favicon.ico" }],
-    ["meta", { name: "author", content: "Sanooj E Sanish" }],
-    ["meta", { property: "og:url", content: "https://lucid-lyrics.sanooj.uk" }],
+    ["link", { href: "/favicon.ico", rel: "icon" }],
+    ["meta", { content: "Sanooj E Sanish", name: "author" }],
+    ["meta", { content: "https://lucid-lyrics.sanooj.uk", property: "og:url" }],
     [
       "script",
       {
-        src: "https://static.cloudflareinsights.com/beacon.min.js",
         "data-cf-beacon": '{"token": "c65c4b2591bf43199d0e1dc7200f1987"}',
         defer: "true",
+        src: "https://static.cloudflareinsights.com/beacon.min.js",
       },
     ],
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [{ text: "Guide", link: "/getting-started" }],
+    nav: [{ link: "/getting-started", text: "Guide" }],
 
     sidebar: [
       {
-        text: "Lucid Lyrics",
         items: [
-          { text: "Overview", link: "/" },
-          { text: "Installation", link: "/getting-started" },
-          { text: "Screenshots", link: "/screenshots" },
-          { text: "Uninstallation", link: "/uninstallation" },
-          { text: "Credits", link: "/credits" },
+          { link: "/", text: "Overview" },
+          { link: "/getting-started", text: "Installation" },
+          { link: "/screenshots", text: "Screenshots" },
+          { link: "/uninstallation", text: "Uninstallation" },
+          { link: "/credits", text: "Credits" },
         ],
+        text: "Lucid Lyrics",
       },
     ],
 
@@ -43,4 +42,5 @@ export default defineConfig({
       },
     ],
   },
+  title: "Lucid Lyrics",
 });

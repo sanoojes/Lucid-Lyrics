@@ -1,65 +1,65 @@
-import type { LyricsProviders } from "@/constants";
+import type { LyricsProviders } from "~/constants";
 import type {
   BackgroundState,
   FullscreenState,
+  NowPlayingBarState,
   NpvSettingsState,
   PageState,
-  NowPlayingBarState,
   WidgetState,
-} from "@/stores";
-import type { CacheSettings } from "@/stores/dev";
+} from "~/stores";
+import type { CacheSettings } from "~/stores/dev";
 
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
   mode: "kawarp",
   options: {
-    color: "#000000",
-    image: {
-      mode: "player",
-      customUrl,
-      scale: 130,
-      filter: {
-        blur: 48,
-        saturation: 200,
-        contrast: 110,
-        brightness: 70,
-        opacity: 100,
-      },
-      local: {
-        time: 30,
-        shuffle: true,
-        direction: "next",
-        slideshow: true,
-        selectedId: undefined,
-      },
-    },
     animated: {
-      mode: "player",
       customUrl,
-      scale: 100,
       filter: {
         blur: 42,
-        saturation: 250,
-        contrast: 115,
         brightness: 60,
+        contrast: 115,
         opacity: 100,
+        saturation: 250,
       },
-      transitionDuration: 0.5,
+      mode: "player",
       rotationSpeed: 0.4,
+      scale: 100,
+      transitionDuration: 0.5,
+    },
+    color: "#000000",
+    image: {
+      customUrl,
+      filter: {
+        blur: 48,
+        brightness: 70,
+        contrast: 110,
+        opacity: 100,
+        saturation: 200,
+      },
+      local: {
+        direction: "next",
+        selectedId: undefined,
+        shuffle: true,
+        slideshow: true,
+        time: 30,
+      },
+      mode: "player",
+      scale: 130,
     },
     kawarp: {
-      mode: "player",
-      customUrl,
-      scale: 1.0,
-      saturation: 3.0,
-      brightness: 0.8,
       animationSpeed: 1.0,
       blurPasses: 12,
-      warpIntensity: 1.0,
+      brightness: 0.8,
+      customUrl,
       dithering: 0.008,
-      tintIntensity: 0.15,
+      mode: "player",
+      saturation: 3.0,
+      scale: 1.0,
       tintColor: [0.157, 0.157, 0.235],
+      tintIntensity: 0.15,
       transitionDuration: 1000,
+      warpIntensity: 1.0,
     },
   },
 } satisfies BackgroundState;
@@ -73,33 +73,33 @@ export const DEFAULT_PROVIDER_ORDER = [
 ] satisfies LyricsProviders[];
 
 export const DEFAULT_PAGE_STATE = {
-  widget: "show",
+  floatingPosition: "bottom",
+  hideScrollbar: false,
+  hideStatus: false,
   romanize: false,
   romanize_position: "replace",
-  showCredits: true,
-  hideScrollbar: false,
   showControls: false,
-  hideStatus: false,
-  floatingPosition: "bottom",
+  showCredits: true,
+  widget: "show",
 } satisfies PageState;
 
 export const DEFAULT_FULLSCREEN_STATE = {
-  widget: "show",
+  floatingPosition: "bottom",
+  hideScrollbar: false,
+  hideStatus: true,
   romanize: false,
   romanize_position: "replace",
-  showCredits: true,
-  hideScrollbar: false,
   showControls: true,
-  hideStatus: true,
-  floatingPosition: "bottom",
+  showCredits: true,
+  widget: "show",
 } satisfies FullscreenState;
 
 export const DEFAULT_WIDGET_STATE = {
-  variant: "glass",
   centerText: true,
-  hideTitle: false,
-  hideArtist: false,
   hideAlbum: true,
+  hideArtist: false,
+  hideTitle: false,
+  variant: "glass",
 } satisfies WidgetState;
 
 export const DEFAULT_CACHE_SETTINGS = {
@@ -107,12 +107,12 @@ export const DEFAULT_CACHE_SETTINGS = {
 } satisfies CacheSettings;
 
 export const DEFAULT_NPV_SETTINGS = {
-  hideBackground: false,
-  useStyles: true,
-  showLyrics: true,
+  autoHideCardHeader: false,
   cardHeightPercent: 37,
   cardMinHeight: 400,
-  autoHideCardHeader: false,
+  hideBackground: false,
+  showLyrics: true,
+  useStyles: true,
 } satisfies NpvSettingsState;
 
 export const DEFAULT_NPB_SETTINGS: NowPlayingBarState = {

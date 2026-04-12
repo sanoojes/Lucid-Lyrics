@@ -1,13 +1,13 @@
-import { flatten, translator, resolveTemplate, type Flatten } from "@solid-primitives/i18n";
+import { type Flatten, flatten, resolveTemplate, translator } from "@solid-primitives/i18n";
 import { persistentAtom } from "@nanostores/persistent";
 import { useStore } from "@nanostores/solid";
-import { createResource, createRoot, Suspense, type ParentComponent } from "solid-js";
-import { toast } from "@/lib/sonner";
-import { getName } from "@/stores/persist";
-import { getModule } from "@/lib/dom/load";
-import type { Dict } from "@/i18n/types";
-import { dict as enDict } from "@/i18n/locales/en";
-import { createLogger } from "@/utils/logger";
+import { type ParentComponent, Suspense, createResource, createRoot } from "solid-js";
+import { toast } from "~/lib/sonner";
+import { getName } from "~/stores/persist";
+import { getModule } from "~/lib/dom/load";
+import type { Dict } from "~/i18n/types";
+import { dict as enDict } from "~/i18n/locales/en";
+import { createLogger } from "~/utils/logger";
 
 const log = createLogger("i18n");
 
@@ -74,7 +74,7 @@ export const { dict: dictResource, actions: dictActions } = createRoot(() => {
     initialValue: DEFAULT_DICT,
   });
 
-  return { dict, actions };
+  return { actions, dict };
 });
 
 export const t = translator(dictResource, resolveTemplate);

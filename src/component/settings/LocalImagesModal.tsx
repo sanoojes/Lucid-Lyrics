@@ -1,23 +1,23 @@
-import "@/styles/modal/local-images.scss";
-import { useDialog } from "@/lib/modal/component/Dialog";
-import { showAlert, showModal } from "@/lib/modal";
-import { X, Upload, Trash2, Image as ImageIcon, ImageOff } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { createSignal, For, Show, onMount, onCleanup } from "solid-js";
+import "~/styles/modal/local-images.scss";
+import { useDialog } from "~/lib/modal/component/Dialog";
+import { showAlert, showModal } from "~/lib/modal";
+import { Image as ImageIcon, ImageOff, Trash2, Upload, X } from "lucide-solid";
+import { Button } from "~/component/ui/Button";
+import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import {
-  saveLocalImage,
-  getAllLocalImages,
-  deleteLocalImage,
-  deleteAllLocalImages,
-  createBlobUrl,
-  revokeBlobUrl,
   type LocalImage,
-} from "@/stores/idb/images";
-import { updateLocalSelectedId } from "@/stores/background";
+  createBlobUrl,
+  deleteAllLocalImages,
+  deleteLocalImage,
+  getAllLocalImages,
+  revokeBlobUrl,
+  saveLocalImage,
+} from "~/stores/idb/images";
+import { updateLocalSelectedId } from "~/stores/background";
 import { useStore } from "@nanostores/solid";
-import { $background } from "@/stores/background";
-import { t } from "@/i18n";
-import SolidLenis from "@/component/ui/Lenis";
+import { $background } from "~/stores/background";
+import { t } from "~/i18n";
+import SolidLenis from "~/component/ui/Lenis";
 
 function LocalImagesModal() {
   const { close } = useDialog();
@@ -95,12 +95,12 @@ function LocalImagesModal() {
 
   const handleDeleteAll = () => {
     showAlert({
-      title: t("bg.deleteAllConfirm"),
       onConfirm: async () => {
         await deleteAllLocalImages();
         updateLocalSelectedId(undefined);
         setImages([]);
       },
+      title: t("bg.deleteAllConfirm"),
     });
   };
 

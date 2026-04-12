@@ -1,18 +1,18 @@
 import { useStore } from "@nanostores/solid";
-import { Toggle } from "@/component/ui/Toggle";
-import { Select } from "@/component/ui/Select";
-import { SettingsRow } from "@/component/settings/Row";
+import { Toggle } from "~/component/ui/Toggle";
+import { Select } from "~/component/ui/Select";
+import { SettingsRow } from "~/component/settings/Row";
 import {
   $widget,
-  setVariant,
   setCenterText,
-  setHideTitle,
   setHideAlbum,
   setHideArtist,
-} from "@/stores/widget";
-import type { PlayerWidgetVariants } from "@/component/ui/PlayingWidget";
-import { SettingsSection } from "@/component/settings/Section";
-import { t } from "@/i18n";
+  setHideTitle,
+  setVariant,
+} from "~/stores/widget";
+import type { PlayerWidgetVariants } from "~/component/ui/PlayingWidget";
+import { SettingsSection } from "~/component/settings/Section";
+import { t } from "~/i18n";
 
 function WidgetSettings() {
   const widget = useStore($widget);

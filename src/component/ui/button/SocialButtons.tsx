@@ -1,9 +1,9 @@
 import { Show } from "solid-js";
-import { Button } from "@/component/ui/Button";
+import { Button } from "~/component/ui/Button";
 import { Globe } from "lucide-solid";
-import { DISCORD_LINK, GITHUB_LINK, WEBSITE_LINK } from "@/constants";
-import Github from "@/component/icon/Github";
-import Discord from "@/component/icon/Discord";
+import { DISCORD_LINK, GITHUB_LINK, WEBSITE_LINK } from "~/constants";
+import Github from "~/component/icon/Github";
+import Discord from "~/component/icon/Discord";
 
 type SocialButtonsProps = {
   variant?: "ghost" | "glass";

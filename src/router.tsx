@@ -1,14 +1,14 @@
-import { toast } from "@/lib/sonner";
+import { toast } from "~/lib/sonner";
 import { render } from "solid-js/web";
 import { ErrorBoundary } from "solid-js";
-import Router, { $router_state } from "@/lib/spotify/router";
-import { BASE_ROUTE } from "@/constants";
-import LyricsPage from "@/component/page/LyricsPage";
-import SpotifySettings from "@/component/page/SpotifySettings";
-import { t } from "@/i18n";
-import ErrorPage from "@/lib/spotify/router/component/ErrorPage";
+import Router, { $router_state } from "~/lib/spotify/router";
+import { BASE_ROUTE } from "~/constants";
+import LyricsPage from "~/component/page/LyricsPage";
+import SpotifySettings from "~/component/page/SpotifySettings";
+import { t } from "~/i18n";
+import ErrorPage from "~/lib/spotify/router/component/ErrorPage";
 import { computed } from "nanostores";
-import { logger } from "@/utils/logger";
+import { logger } from "~/utils/logger";
 
 export const $in_lyrics_page = computed($router_state, ({ path }) => {
   return path === BASE_ROUTE;
@@ -16,6 +16,7 @@ export const $in_lyrics_page = computed($router_state, ({ path }) => {
 
 const router = new Router(BASE_ROUTE, {
   "/": {
+    hideSiblings: true,
     onMount: (el) => {
       const dispose = render(
         () => (
@@ -47,12 +48,9 @@ const router = new Router(BASE_ROUTE, {
         if (__LUCID_DEV_MODE__) logger.debug("Disposed: '/'");
       };
     },
-    hideSiblings: true,
   },
   "/preferences": {
     absolute: true,
-    selector:
-      ".main-view-container__scroll-node-child .x-settings-container, .main-view-container__scroll-node-child .x-settings-container",
     onMount: (el) => {
       const dispose = render(
         () => (
@@ -74,6 +72,8 @@ const router = new Router(BASE_ROUTE, {
         if (__LUCID_DEV_MODE__) logger.debug("Disposed: '/preferences'");
       };
     },
+    selector:
+      ".main-view-container__scroll-node-child .x-settings-container, .main-view-container__scroll-node-child .x-settings-container",
   },
 });
 

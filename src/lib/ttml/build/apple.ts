@@ -1,5 +1,5 @@
-import type { Lyrics, SyllableData } from "@/lib/api/types";
-import { formatTime, hasOppositeAligned } from "@/lib/ttml/build/utils";
+import type { Lyrics, SyllableData } from "~/lib/api/types";
+import { formatTime, hasOppositeAligned } from "~/lib/ttml/build/utils";
 
 export function buildAppleMetadata(data: Lyrics) {
   const agents: any[] = [{ "@_type": "person", "@_xml:id": "v1" }];
@@ -14,8 +14,8 @@ export function buildAppleMetadata(data: Lyrics) {
   }
 
   return {
-    "ttm:agent": agents,
     iTunesMetadata: Object.keys(iTunesMetadata).length > 0 ? iTunesMetadata : undefined,
+    "ttm:agent": agents,
   };
 }
 
@@ -37,20 +37,20 @@ export function buildAppleSyllableBody(data: SyllableData, timeScale: number) {
                 trailingSpace = " ";
               }
               spans.push({
+                "#text": syl.Text + trailingSpace,
                 "@_begin": formatTime((syl.StartTime ?? 0) * timeScale),
                 "@_end": formatTime((syl.EndTime ?? 0) * timeScale),
-                "#text": syl.Text + trailingSpace,
               });
             });
           }
 
           if (line.Lead?.Translated) {
             Object.entries(line.Lead.Translated).forEach(([lang, text]) => {
-              spans.push({ "@_ttm:role": "x-translation", "@_xml:lang": lang, "#text": text });
+              spans.push({ "#text": text, "@_ttm:role": "x-translation", "@_xml:lang": lang });
             });
           }
           if (line.Lead?.RomanText) {
-            spans.push({ "@_ttm:role": "x-roman", "#text": line.Lead.RomanText });
+            spans.push({ "#text": line.Lead.RomanText, "@_ttm:role": "x-roman" });
           }
 
           if (line.Background?.length) {
@@ -63,29 +63,29 @@ export function buildAppleSyllableBody(data: SyllableData, timeScale: number) {
                 if (!syl.IsPartOfWord && !isLast && !/\s$/.test(syl.Text)) trailingSpace = " ";
 
                 bgSpans.push({
+                  "#text": syl.Text + trailingSpace,
                   "@_begin": formatTime((syl.StartTime ?? 0) * timeScale),
                   "@_end": formatTime((syl.EndTime ?? 0) * timeScale),
-                  "#text": syl.Text + trailingSpace,
                 });
               });
 
               if (bg.Translated) {
                 Object.entries(bg.Translated).forEach(([lang, text]) => {
                   bgSpans.push({
+                    "#text": text,
                     "@_ttm:role": "x-translation",
                     "@_xml:lang": lang,
-                    "#text": text,
                   });
                 });
               }
               if (bg.RomanText) {
-                bgSpans.push({ "@_ttm:role": "x-roman", "#text": bg.RomanText });
+                bgSpans.push({ "#text": bg.RomanText, "@_ttm:role": "x-roman" });
               }
 
               spans.push({
-                "@_ttm:role": "x-bg",
                 "@_begin": formatTime((bg.StartTime ?? 0) * timeScale),
                 "@_end": formatTime((bg.EndTime ?? 0) * timeScale),
+                "@_ttm:role": "x-bg",
                 span: bgSpans,
               });
             });
@@ -94,8 +94,8 @@ export function buildAppleSyllableBody(data: SyllableData, timeScale: number) {
           return {
             "@_begin": formatTime((line.Lead?.StartTime ?? 0) * timeScale),
             "@_end": formatTime((line.Lead?.EndTime ?? 0) * timeScale),
-            "@_ttm:agent": line.OppositeAligned ? "v2" : "v1",
             "@_itunes:key": `L${index + 1}`,
+            "@_ttm:agent": line.OppositeAligned ? "v2" : "v1",
             span: spans.length > 0 ? spans : undefined,
           };
         }) || [],

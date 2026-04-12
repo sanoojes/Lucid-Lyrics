@@ -1,26 +1,26 @@
-import "@/styles/modal/settings.scss";
+import "~/styles/modal/settings.scss";
 
-import { t } from "@/i18n";
-import { useDialog } from "@/lib/modal/component/Dialog";
-import { showModal } from "@/lib/modal";
-import { X, Search } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { SocialButtons } from "@/component/ui/button/SocialButtons";
-import { createEffect, createSignal, on, Show } from "solid-js";
-import { SettingsContext } from "@/component/settings/context";
-import WidgetSettings from "@/component/settings/section/Widget";
-import NowPlayingBarSettings from "@/component/settings/section/NowPlayingBar";
-import NowPlayingViewSettings from "@/component/settings/section/NowPlayingView";
-import BackgroundSettings from "@/component/settings/section/Background";
-import LyricsSettings from "@/component/settings/section/Lyrics";
-import PageSettings from "@/component/settings/section/Page";
-import FullscreenSettings from "@/component/settings/section/Fullscreen";
-import LanguageSettings from "@/component/settings/section/Language";
-import ResetSettings from "@/component/settings/section/Reset";
-import AdvancedSettings from "@/component/settings/section/Advanced";
-import MainList from "@/component/settings/MainList";
-import SolidLenis from "@/component/ui/Lenis";
-import { APP_NAME, APP_VERSION } from "@/constants";
+import { t } from "~/i18n";
+import { useDialog } from "~/lib/modal/component/Dialog";
+import { showModal } from "~/lib/modal";
+import { Search, X } from "lucide-solid";
+import { Button } from "~/component/ui/Button";
+import { SocialButtons } from "~/component/ui/button/SocialButtons";
+import { Show, createEffect, createSignal, on } from "solid-js";
+import { SettingsContext } from "~/component/settings/context";
+import WidgetSettings from "~/component/settings/section/Widget";
+import NowPlayingBarSettings from "~/component/settings/section/NowPlayingBar";
+import NowPlayingViewSettings from "~/component/settings/section/NowPlayingView";
+import BackgroundSettings from "~/component/settings/section/Background";
+import LyricsSettings from "~/component/settings/section/Lyrics";
+import PageSettings from "~/component/settings/section/Page";
+import FullscreenSettings from "~/component/settings/section/Fullscreen";
+import LanguageSettings from "~/component/settings/section/Language";
+import ResetSettings from "~/component/settings/section/Reset";
+import AdvancedSettings from "~/component/settings/section/Advanced";
+import MainList from "~/component/settings/MainList";
+import SolidLenis from "~/component/ui/Lenis";
+import { APP_NAME, APP_VERSION } from "~/constants";
 
 export function SettingsModal() {
   let inputRef!: HTMLInputElement;

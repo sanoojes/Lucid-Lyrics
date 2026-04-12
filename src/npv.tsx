@@ -1,25 +1,25 @@
-import "@/styles/npv.scss";
+import "~/styles/npv.scss";
 
 import { render } from "solid-js/web";
 import { ErrorBoundary } from "solid-js";
 import { toast } from "solid-sonner";
 
-import { observeElement } from "@/lib/dom/observe";
-import NPVBackground from "@/component/ui/NPVBackground";
-import NPVCard from "@/component/ui/NPVCard";
-import { createLogger } from "@/utils/logger";
-import { t } from "@/i18n";
-import { $npv_state, setShowLyrics } from "@/stores";
+import { observeElement } from "~/lib/dom/observe";
+import NPVBackground from "~/component/ui/NPVBackground";
+import NPVCard from "~/component/ui/NPVCard";
+import { createLogger } from "~/utils/logger";
+import { t } from "~/i18n";
+import { $npv_state, setShowLyrics } from "~/stores";
 
 const log = createLogger("npv");
 
 const SELECTORS = {
-  SIDEBAR: ".Root__right-sidebar",
-  INERT_SENSORS: ".pP41asBpzic1bRlrsDcs[inert], .OwsIyGIUSADBO6hvtdEE.bVJH37qfz55VdpglJjHJ",
   BG_CONTAINER:
     ".Root__right-sidebar .oXO9_yYs6JyOwkBn8E4a, #Desktop_PanelContainer_Id, .Root__right-sidebar aside.NowPlayingView, .Root__right-sidebar aside",
   CARD_PARENT:
     '#Desktop_PanelContainer_Id div[data-testid="NPV_Panel_OpenDiv"], .Root__right-sidebar div[data-testid="NPV_Panel_OpenDiv"]',
+  INERT_SENSORS: ".pP41asBpzic1bRlrsDcs[inert], .OwsIyGIUSADBO6hvtdEE.bVJH37qfz55VdpglJjHJ",
+  SIDEBAR: ".Root__right-sidebar",
 };
 
 export function setupNPV() {

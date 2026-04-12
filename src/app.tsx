@@ -1,16 +1,16 @@
-import "@/styles";
-import { setupSonner, toast } from "@/lib/sonner";
-import { logger } from "@/utils/logger";
-import { setupPlayerButtons } from "@/player";
-import router from "@/router";
-import { preloadModules } from "@/lib/dom/load";
-import exposeGlobals from "@/expose";
-import { renderModalRoot } from "@/lib/modal";
-import { setupSettingsMenu } from "@/menu";
-import { GITHUB_ISSUES_LINK } from "@/constants";
-import { dictResource, t } from "@/i18n";
-import { setupNPV } from "@/npv";
-import { setupFullscreen } from "@/fullscreen";
+import "~/styles";
+import { setupSonner, toast } from "~/lib/sonner";
+import { logger } from "~/utils/logger";
+import { setupPlayerButtons } from "~/player";
+import router from "~/router";
+import { preloadModules } from "~/lib/dom/load";
+import exposeGlobals from "~/expose";
+import { renderModalRoot } from "~/lib/modal";
+import { setupSettingsMenu } from "~/menu";
+import { GITHUB_ISSUES_LINK } from "~/constants";
+import { dictResource, t } from "~/i18n";
+import { setupNPV } from "~/npv";
+import { setupFullscreen } from "~/fullscreen";
 
 App();
 
@@ -23,35 +23,35 @@ async function App() {
   if (preventDuplicate()) return;
   try {
     const tasks: Task[] = [
-      { name: "expose", fn: exposeGlobals },
+      { fn: exposeGlobals, name: "expose" },
       {
-        name: "i18n",
         fn: () => {
           try {
             dictResource();
           } catch {}
         },
+        name: "i18n",
       },
-      { name: "toast", fn: setupSonner },
-      { name: "router", fn: async () => await router.onReady() },
-      { name: "player", fn: setupPlayerButtons },
-      { name: "npv", fn: setupNPV },
+      { fn: setupSonner, name: "toast" },
+      { fn: async () => await router.onReady(), name: "router" },
+      { fn: setupPlayerButtons, name: "player" },
+      { fn: setupNPV, name: "npv" },
       {
-        name: "ui",
         fn: async () => {
           renderModalRoot();
           await setupSettingsMenu();
         },
+        name: "ui",
       },
       {
-        name: "cinema/fullscreen",
         fn: async () => {
           setupFullscreen();
         },
+        name: "cinema/fullscreen",
       },
       {
-        name: "preload",
         fn: () => preloadModules(["pinyin", "kuromoji", "kuroshiro", "cyrillic-romanization"]),
+        name: "preload",
       },
     ];
 
@@ -74,11 +74,11 @@ async function App() {
     }
   } catch (err) {
     toast.error(t("common.appLoadError"), {
-      description: t("common.reportIssue"),
       action: {
         label: t("common.report"),
         onClick: () => window.open(GITHUB_ISSUES_LINK, "_blank"),
       },
+      description: t("common.reportIssue"),
       duration: Number.POSITIVE_INFINITY,
     });
     logger.error("fatal_crash", err);

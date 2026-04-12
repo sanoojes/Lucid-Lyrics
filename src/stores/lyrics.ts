@@ -1,19 +1,19 @@
-import { type APIStatus, type FetchOptions } from "@/lib/api/types";
-import { $player_data } from "@/stores/player";
-import { persistentJSON } from "@/utils/nanostores";
+import { type APIStatus, type FetchOptions } from "~/lib/api/types";
+import { $player_data } from "~/stores/player";
+import { persistentJSON } from "~/utils/nanostores";
 import { atom, computed } from "nanostores";
-import { getName } from "@/stores/persist";
-import { DEFAULT_PROVIDER_ORDER, type LyricsProviders } from "@/constants";
+import { getName } from "~/stores/persist";
+import { DEFAULT_PROVIDER_ORDER, type LyricsProviders } from "~/constants";
 
 export type BlurmapMode = "default" | "minimal" | "smooth" | "heavy" | "none" | "custom";
 
 export const DEFAULT_BLURMAP: Record<BlurmapMode, number[]> = {
+  custom: [0, 1, 2, 3, 4, 5],
   default: [0, 1, 1, 1, 2, 2],
+  heavy: [0, 2, 4, 6, 8, 8],
   minimal: [0, 0.2, 0.5, 0.7, 1, 1],
   none: [0, 0, 0, 0, 0],
   smooth: [0, 1, 1, 2, 3, 4],
-  heavy: [0, 2, 4, 6, 8, 8],
-  custom: [0, 1, 2, 3, 4, 5],
 };
 
 export const $blurmap_mode = persistentJSON<BlurmapMode>(getName("blurmap_mode"), "default");
@@ -60,15 +60,15 @@ export const $lyrics_query = computed($player_data, (player) => {
   })();
 
   return {
-    uri,
-    id: split[2],
-    type,
     data: {
       album: meta?.album_title,
       artist: meta?.artist_name,
-      title: meta?.title,
       duration: Number(meta?.duration ?? 0),
+      title: meta?.title,
     },
+    id: split[2],
+    type,
+    uri,
   } satisfies FetchOptions;
 });
 

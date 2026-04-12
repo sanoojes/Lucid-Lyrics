@@ -12,18 +12,18 @@ type ModuleMeta = {
 const JSDELIVR = "https://cdn.jsdelivr.net";
 
 const DOWNLOAD_MODULES: ModuleMeta[] = [
-  { name: "pinyin", version: "4.0.0", url: `${JSDELIVR}/npm/pinyin@4.0.0/+esm` },
+  { name: "pinyin", url: `${JSDELIVR}/npm/pinyin@4.0.0/+esm`, version: "4.0.0" },
   {
     name: "cyrillic-romanization",
-    version: "1.1.8",
     url: `${JSDELIVR}/npm/cyrillic-romanization@1.1.8/+esm`,
+    version: "1.1.8",
   },
   {
     name: "greek-transliteration",
-    version: "2.0.0",
     url: `${JSDELIVR}/npm/greek-transliteration@2.0.0/+esm`,
+    version: "2.0.0",
   },
-  { name: "kuroshiro", version: "1.2.0", url: `${JSDELIVR}/npm/kuroshiro@1.2.0/+esm` },
+  { name: "kuroshiro", url: `${JSDELIVR}/npm/kuroshiro@1.2.0/+esm`, version: "1.2.0" },
 ];
 
 const NPM_BASE_URL = "https://www.npmjs.com/package/";

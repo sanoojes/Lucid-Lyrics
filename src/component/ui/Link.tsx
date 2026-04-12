@@ -1,4 +1,4 @@
-import { type ComponentProps, splitProps, type JSXElement } from "solid-js";
+import { type ComponentProps, type JSXElement, splitProps } from "solid-js";
 
 interface LinkProps extends ComponentProps<"span"> {
   children: JSXElement;

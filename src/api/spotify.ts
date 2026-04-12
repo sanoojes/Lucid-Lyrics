@@ -1,14 +1,14 @@
 import type {
-  Lyrics,
   APIResponse,
-  StaticData,
+  FetchOptions,
+  InterludeContent,
   LineContent,
   LineData,
-  InterludeContent,
-  FetchOptions,
+  Lyrics,
+  StaticData,
   StaticLine,
-} from "@/lib/api/types";
-import { wait } from "@/lib/dom/wait";
+} from "~/lib/api/types";
+import { wait } from "~/lib/dom/wait";
 
 export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
@@ -20,8 +20,8 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
       body = await get(`${baseURL}${id}?format=json&vocalRemoval=false&market=from_token`);
     } catch {
       return {
-        status: "error",
         message: "Spotify Request error",
+        status: "error",
       };
     }
 
@@ -48,37 +48,35 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
 
         if (line.words === "♪") {
           return {
-            Type: "Interlude",
-            Text: line.words,
-            StartTime: startTime,
             EndTime: endTime,
             OppositeAligned: false,
+            StartTime: startTime,
+            Text: line.words,
+            Type: "Interlude",
           } satisfies InterludeContent;
         }
 
         return {
-          Type: "Line",
-          Text: line.words,
-          StartTime: startTime,
           EndTime: endTime,
           OppositeAligned: false,
+          StartTime: startTime,
+          Text: line.words,
+          Type: "Line",
         } satisfies LineContent;
       });
 
       result = {
-        Id: id,
-        Type: "Line",
-        SongWriters: [],
         Content: content,
-        StartTime: content.length > 0 ? content[0].StartTime : 0,
         EndTime: content.length > 0 ? content[content.length - 1].EndTime : 0,
+        Id: id,
         Provider: "spotify",
+        SongWriters: [],
+        StartTime: content.length > 0 ? content[0].StartTime : 0,
+        Type: "Line",
       } satisfies LineData;
     } else {
       result = {
         Id: id,
-        Type: "Static",
-        SongWriters: [],
         Lines: lines.map(
           (line: any) =>
             ({
@@ -86,14 +84,16 @@ export async function fetchSpotify({ id }: FetchOptions): Promise<APIResponse<Ly
             }) satisfies StaticLine,
         ),
         Provider: "spotify",
+        SongWriters: [],
+        Type: "Static",
       } satisfies StaticData;
     }
 
-    return { status: "success", data: result };
+    return { data: result, status: "success" };
   } catch (err) {
     return {
-      status: "error",
       message: String(err),
+      status: "error",
     };
   }
 }

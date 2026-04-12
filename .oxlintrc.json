@@ -1,16 +1,22 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": null,
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
   "categories": {},
   "rules": {
     "no-await-in-loop": "warn",
     "unicorn/prefer-array-find": "error",
     "unicorn/prefer-array-flat-map": "error",
-    "unicorn/prefer-set-has": "error"
+    "unicorn/prefer-set-has": "error",
+    "eslint/sort-imports": "warn"
   },
+  "overrides": [
+    {
+      "files": ["src/i18n/locales/**/*.ts"],
+      "rules": { "eslint/sort-keys": "error" }
+    }
+  ],
   "settings": {
     "jsx-a11y": {
-      "polymorphicPropName": null,
       "components": {},
       "attributes": {}
     },

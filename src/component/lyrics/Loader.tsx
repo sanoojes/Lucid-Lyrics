@@ -1,5 +1,5 @@
-import "@/styles/component/lyrics-loading.scss";
-import { For, type Component } from "solid-js";
+import "~/styles/component/lyrics-loading.scss";
+import { type Component, For } from "solid-js";
 
 interface Segment {
   x: number;
@@ -17,17 +17,17 @@ interface Block {
 }
 
 const config = {
-  lineHeight: 62,
-  gap: 16,
-  blockGap: 16,
-  radius: 8,
   blockCount: 15,
-  interludeSize: 28,
+  blockGap: 16,
+  gap: 16,
   interludeGap: 8,
-  segmentGapPct: 1.5,
+  interludeSize: 28,
+  lineHeight: 62,
+  maxLineWidth: 95,
   maxSegmentWidth: 62,
   minSegmentWidth: 30,
-  maxLineWidth: 95,
+  radius: 8,
+  segmentGapPct: 1.5,
 } as const;
 
 const step = config.lineHeight + config.gap;
@@ -63,7 +63,7 @@ const LyricsLoader: Component = () => {
 
           const width = ((Math.random() * (maxAllowed - minAllowed + 1)) | 0) + minAllowed;
 
-          segments.push({ x: currentX, width });
+          segments.push({ width, x: currentX });
           currentX += width + config.segmentGapPct;
         }
         lines.push({ segments });

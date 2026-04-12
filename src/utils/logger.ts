@@ -1,5 +1,5 @@
-import { APP_NAME, WARN } from "@/constants";
-import { $developer_mode } from "@/stores/dev";
+import { APP_NAME, WARN } from "~/constants";
+import { $developer_mode } from "~/stores/dev";
 
 export class Logger {
   private prefix: string;

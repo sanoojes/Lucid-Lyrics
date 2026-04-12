@@ -1,10 +1,10 @@
-import { t } from "@/i18n";
+import { t } from "~/i18n";
 import { Show } from "solid-js";
 import { Check, Copy, Download, Music, Trash2 } from "lucide-solid";
 
-import Marquee from "@/component/ui/Marquee";
-import { Button } from "@/component/ui/Button";
-import type { LocalTTML } from "@/stores/idb/ttml";
+import Marquee from "~/component/ui/Marquee";
+import { Button } from "~/component/ui/Button";
+import type { LocalTTML } from "~/stores/idb/ttml";
 
 type TTMLItemProps = {
   ttml: LocalTTML;

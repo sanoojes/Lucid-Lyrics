@@ -1,8 +1,8 @@
 import { atom } from "nanostores";
 import { render } from "solid-js/web";
-import { wait, waitForElement } from "@/lib/dom/wait";
-import { createLogger } from "@/utils/logger";
-import ErrorPage from "@/lib/spotify/router/component/ErrorPage";
+import { wait, waitForElement } from "~/lib/dom/wait";
+import { createLogger } from "~/utils/logger";
+import ErrorPage from "~/lib/spotify/router/component/ErrorPage";
 
 export type RouteHandler = {
   onMount: (el: HTMLElement) => (() => void) | void;
@@ -21,16 +21,16 @@ interface HistoryLocation {
 }
 
 export const $router_state = atom({
-  path: Spicetify?.Platform?.History?.location?.pathname ?? "",
   isNavigating: false,
+  path: Spicetify?.Platform?.History?.location?.pathname ?? "",
 });
 
 const log = createLogger("router");
 
 const SELECTORS = {
   // MAIN_VIEW: "#main-view .main-view-container__scroll-node-child > main, .Root__main-view .main-view-container__scroll-node-child > main",
-  MAIN_VIEW: "#main-view, .Root__main-view",
   CONTAINER_ID: "lucid-page",
+  MAIN_VIEW: "#main-view, .Root__main-view",
 };
 
 export class Router {
@@ -80,7 +80,7 @@ export class Router {
     const handler = this._routes.get(path);
     const isMatched = path.startsWith(this._basePath) || handler?.absolute === true;
 
-    $router_state.set({ path, isNavigating: true });
+    $router_state.set({ isNavigating: true, path });
 
     if (this._cleanup) {
       this._cleanup();
@@ -158,7 +158,7 @@ export class Router {
       );
     }
 
-    $router_state.set({ path, isNavigating: false });
+    $router_state.set({ isNavigating: false, path });
   }
 
   private _hideSiblings(parent: HTMLElement, current: HTMLElement) {

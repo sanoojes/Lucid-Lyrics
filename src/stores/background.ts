@@ -1,7 +1,7 @@
-import { persistentJSON } from "@/utils/nanostores";
+import { persistentJSON } from "~/utils/nanostores";
 import { computed } from "nanostores";
-import { getName } from "@/stores/persist";
-import { DEFAULT_BACKGROUND_STATE } from "@/constants";
+import { getName } from "~/stores/persist";
+import { DEFAULT_BACKGROUND_STATE } from "~/constants";
 
 export const $background = persistentJSON<BackgroundState>(
   getName("background"),
@@ -13,8 +13,8 @@ type Slideshow = {
   elapsedTime: number | null;
 };
 export const $slideshow = persistentJSON<Slideshow>(getName("bg-slideshow"), {
-  startTime: -1,
   elapsedTime: null,
+  startTime: -1,
 });
 
 export function updateSlideshow(state: Partial<Slideshow>) {

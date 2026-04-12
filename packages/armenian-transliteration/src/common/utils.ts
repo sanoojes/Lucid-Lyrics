@@ -1,4 +1,4 @@
-import { WordCasing } from "@/common/types";
+import { WordCasing } from "~/common/types";
 
 /**
  * Determines if a character is uppercase by comparing its

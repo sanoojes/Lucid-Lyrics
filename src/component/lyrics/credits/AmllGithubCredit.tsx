@@ -1,7 +1,7 @@
-import { t } from "@/i18n";
-import { Tippy } from "@/component/ui/Tippy";
-import { showLinkAlert } from "@/lib/modal";
-import { CreditItem } from "@/component/lyrics/credits/CreditItem";
+import { t } from "~/i18n";
+import { Tippy } from "~/component/ui/Tippy";
+import { showLinkAlert } from "~/lib/modal";
+import { CreditItem } from "~/component/lyrics/credits/CreditItem";
 
 type AmllGithubCreditProps = {
   username: string;

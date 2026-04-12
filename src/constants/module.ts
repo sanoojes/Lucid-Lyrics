@@ -22,67 +22,67 @@ export const KUROMOJI_DICT_PATH = `${KUROMOJI_PATH}/dict`;
 export const MODULE_METADATA = {
   [PINYIN]: {
     name: PINYIN,
-    version: "4.0.0",
     url: `${JSDELIVR_PACKAGE_REPO}/${PINYIN}.mjs`,
+    version: "4.0.0",
   },
   [CYRILLIC_ROMANIZATION]: {
     name: CYRILLIC_ROMANIZATION,
-    version: "1.1.8",
     url: `${JSDELIVR_PACKAGE_REPO}/${CYRILLIC_ROMANIZATION}.mjs`,
+    version: "1.1.8",
   },
   [GREEK_TRANSLITERATION]: {
     name: GREEK_TRANSLITERATION,
-    version: "2.0.0",
     url: `${JSDELIVR_PACKAGE_REPO}/${GREEK_TRANSLITERATION}.mjs`,
+    version: "2.0.0",
   },
   [KUROSHIRO]: {
     name: KUROSHIRO,
-    version: "1.2.0",
     url: `${JSDELIVR_PACKAGE_REPO}/${KUROSHIRO}.mjs`,
+    version: "1.2.0",
   },
   [KUROMOJI]: {
     name: KUROMOJI,
-    version: "0.1.2",
     url: `${KUROMOJI_PATH}/index.mjs`,
+    version: "0.1.2",
   },
   [ARMENIAN_TRANSLITERATION]: {
     name: ARMENIAN_TRANSLITERATION,
-    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${ARMENIAN_TRANSLITERATION}/index.js`,
+    version: "0.0.1",
   },
   [ARABIC_TRANSLITERATION]: {
     name: ARABIC_TRANSLITERATION,
-    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${ARABIC_TRANSLITERATION}/index.js`,
+    version: "0.0.1",
   },
   [HEBREW_TRANSLITERATION]: {
     name: HEBREW_TRANSLITERATION,
-    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${HEBREW_TRANSLITERATION}/index.js`,
+    version: "0.0.1",
   },
   [GOTHIC_TRANSLITERATION]: {
     name: GOTHIC_TRANSLITERATION,
-    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${GOTHIC_TRANSLITERATION}/index.js`,
+    version: "0.0.1",
   },
   [PERSIAN_TRANSLITERATION]: {
     name: PERSIAN_TRANSLITERATION,
-    version: "0.0.1",
     url: `${JSDELIVR_PACKAGE_REPO}/${PERSIAN_TRANSLITERATION}/index.js`,
+    version: "0.0.1",
   },
   [URDU_TRANSLITERATION]: {
     name: URDU_TRANSLITERATION,
-    version: "0.0.3",
     url: `${JSDELIVR_PACKAGE_REPO}/${URDU_TRANSLITERATION}/index.js`,
+    version: "0.0.3",
   },
   [LOCALE]: {
-    name: LOCALE,
-    version: LOCALE_VERSION,
     baseUrl: `${JSDELIVR_TO_REPO}/locales/`,
     localeVersions: {
       es: LOCALE_VERSION,
       ru: LOCALE_VERSION,
       sk: LOCALE_VERSION,
     },
+    name: LOCALE,
+    version: LOCALE_VERSION,
   },
 } as const;

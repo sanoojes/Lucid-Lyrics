@@ -1,12 +1,12 @@
 import { Show } from "solid-js";
 import { useStore } from "@nanostores/solid";
-import type { Lyrics } from "@/lib/api/types";
-import { $page_state } from "@/stores/page";
-import { getProviderName } from "@/constants";
-import { t } from "@/i18n";
-import { CreditItem } from "@/component/lyrics/credits/CreditItem";
-import { TtmlUserCredit } from "@/component/lyrics/credits/TtmlUserCredit";
-import { AmllGithubCredit } from "@/component/lyrics/credits/AmllGithubCredit";
+import type { Lyrics } from "~/lib/api/types";
+import { $page_state } from "~/stores/page";
+import { getProviderName } from "~/constants";
+import { t } from "~/i18n";
+import { CreditItem } from "~/component/lyrics/credits/CreditItem";
+import { TtmlUserCredit } from "~/component/lyrics/credits/TtmlUserCredit";
+import { AmllGithubCredit } from "~/component/lyrics/credits/AmllGithubCredit";
 
 type LyricsCreditsProps = {
   lyrics: Lyrics;

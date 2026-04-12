@@ -1,8 +1,8 @@
-import type { APIResponse, FetchOptions, Lyrics } from "@/lib/api/types";
-import { parse } from "@/lib/ttml/parser";
-import { logger } from "@/utils/logger";
+import type { APIResponse, FetchOptions, Lyrics } from "~/lib/api/types";
+import { parse } from "~/lib/ttml/parser";
+import { logger } from "~/utils/logger";
 
-const missing = { status: "missing_lyrics", data: null } satisfies APIResponse<Lyrics>;
+const missing = { data: null, status: "missing_lyrics" } satisfies APIResponse<Lyrics>;
 
 export async function fetchAMLL({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
@@ -27,19 +27,19 @@ export async function fetchAMLL({ id }: FetchOptions): Promise<APIResponse<Lyric
     const parsedTTML = parse(ttml, { mode: "amll" });
     if (parsedTTML.success) {
       return {
-        status: "success",
         data: { ...parsedTTML.data, AmllTTML: ttml, Provider: "amll" },
+        status: "success",
       };
     }
     logger.error(`failed_to_parse:${id}:`, parsedTTML);
     return {
-      status: "parse_error",
       message: "Parsing failed",
+      status: "parse_error",
     };
   } catch (err) {
     return {
-      status: "error",
       message: String(err),
+      status: "error",
     };
   }
 }

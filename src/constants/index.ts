@@ -1,7 +1,7 @@
-export * from "@/constants/defaults";
-export * from "@/constants/module";
-export * from "@/constants/versions";
-export * from "@/constants/providers";
+export * from "~/constants/defaults";
+export * from "~/constants/module";
+export * from "~/constants/versions";
+export * from "~/constants/providers";
 
 export const GITHUB_LINK = "https://github.com/sanoojes/lucid-lyrics";
 export const GITHUB_ISSUES_LINK = `${GITHUB_LINK}/issues`;

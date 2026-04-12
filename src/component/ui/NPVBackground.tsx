@@ -1,7 +1,7 @@
-import { $npv_state, $page_mode } from "@/stores";
+import { $npv_state, $page_mode } from "~/stores";
 import { useStore } from "@nanostores/solid";
-import { Background } from "@/component/ui/Background";
-import { createEffect, Show } from "solid-js";
+import { Background } from "~/component/ui/Background";
+import { Show, createEffect } from "solid-js";
 
 function NPVBackground() {
   const npvSettings = useStore($npv_state);

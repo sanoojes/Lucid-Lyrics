@@ -1,5 +1,5 @@
-import { children, createMemo, Show, type JSXElement } from "solid-js";
-import { t } from "@/i18n";
+import { type JSXElement, Show, children, createMemo } from "solid-js";
+import { t } from "~/i18n";
 
 function MainList(props: { children: JSXElement; searchQuery: string }) {
   const resolved = children(() => props.children);

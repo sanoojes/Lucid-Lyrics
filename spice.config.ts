@@ -11,27 +11,20 @@ const localesDir = join(__dirname, "src/i18n/locales");
 const packagesInputDir = join(__dirname, "packages/");
 
 export default defineConfig({
-  name,
-  version,
-  framework: "react",
-  linter: "oxlint",
-  template: "extension",
-  packageManager: "bun",
   cssId: "lucid-lyrics-styles",
   devModeVarName: "__LUCID_DEV_MODE__",
   esbuildOptions: {
+    alias: {
+      "~": join(__dirname, "src"),
+    },
     define: {
-      __APP_VERSION__: JSON.stringify(version),
       __APP_NAME__: JSON.stringify(name),
+      __APP_VERSION__: JSON.stringify(version),
     },
     legalComments: "none",
     metafile: true,
-    alias: {
-      "@": join(__dirname, "src"),
-    },
     plugins: [
       copyPackagesPlugin({
-        inputDir: packagesInputDir,
         build: [
           "arabic-transliteration",
           "armenian-transliteration",
@@ -41,6 +34,7 @@ export default defineConfig({
           "urdu-transliteration",
         ],
         ignore: ["**/node_modules/**", ".DS_Store"],
+        inputDir: packagesInputDir,
       }),
       localePlugin({
         localesDir,
@@ -56,4 +50,10 @@ export default defineConfig({
       }),
     ],
   },
+  framework: "react",
+  linter: "oxlint",
+  name,
+  packageManager: "bun",
+  template: "extension",
+  version,
 });

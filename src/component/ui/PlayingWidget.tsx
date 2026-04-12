@@ -1,10 +1,10 @@
-import "@/styles/component/widget.scss";
-import { $current_track_image, $player_data, $widget } from "@/stores";
+import "~/styles/component/widget.scss";
+import { $current_track_image, $player_data, $widget } from "~/stores";
 import { useStore } from "@nanostores/solid";
-import { For, Show, createEffect, createSignal, onCleanup, type JSXElement } from "solid-js";
-import Marquee from "@/component/ui/Marquee";
-import LikeButton from "@/component/ui/player/LikeButton";
-import Link from "@/component/ui/Link";
+import { For, type JSXElement, Show, createEffect, createSignal, onCleanup } from "solid-js";
+import Marquee from "~/component/ui/Marquee";
+import LikeButton from "~/component/ui/player/LikeButton";
+import Link from "~/component/ui/Link";
 
 export type PlayerWidgetVariants = "simple" | "light" | "dark" | "glass" | "overlay";
 

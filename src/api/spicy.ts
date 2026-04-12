@@ -1,6 +1,6 @@
-import { sendSpicyRequest } from "@/lib/api/spicy";
-import type { Lyrics, APIResponse, FetchOptions } from "@/lib/api/types";
-import { getAuthToken } from "@/lib/spotify";
+import { sendSpicyRequest } from "~/lib/api/spicy";
+import type { APIResponse, FetchOptions, Lyrics } from "~/lib/api/types";
+import { getAuthToken } from "~/lib/spotify";
 
 export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
@@ -11,8 +11,8 @@ export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyri
 
     if (!response || !queryResult) {
       return {
-        status: "error",
         message: "Data Validation failed",
+        status: "error",
       };
     }
 
@@ -33,11 +33,11 @@ export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyri
 
     const data = lyricData;
     data.Provider = "spicy";
-    return { status: "success", data };
+    return { data, status: "success" };
   } catch (err) {
     return {
-      status: "error",
       message: String(err),
+      status: "error",
     };
   }
 }
@@ -80,8 +80,8 @@ export async function _fetchSpicy(id: string): Promise<SpicyResponse> {
     {
       operation: "lyrics",
       variables: {
-        id,
         auth: "SpicyLyrics-WebAuth",
+        id,
       },
     },
   ];

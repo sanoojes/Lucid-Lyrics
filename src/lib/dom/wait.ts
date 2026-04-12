@@ -33,5 +33,5 @@ export function waitForElement(
   selector: string,
   { timeout = 30000, interval = 50 }: WaitForElementOptions = {},
 ): Promise<Element> {
-  return wait(() => document.querySelector(selector) ?? undefined, { timeout, interval });
+  return wait(() => document.querySelector(selector) ?? undefined, { interval, timeout });
 }

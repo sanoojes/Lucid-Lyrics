@@ -1,4 +1,4 @@
-import { createLazyModuleLoader } from "@/language/lazy";
+import { createLazyModuleLoader } from "~/language/lazy";
 
 const persianLoader = createLazyModuleLoader("persian-transliteration", (mod) => mod.default);
 export async function romanizePersian(text: string) {

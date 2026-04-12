@@ -1,21 +1,21 @@
-import type { Syllable, SyllableData, VocalPart } from "@/lib/api/types";
+import type { Syllable, SyllableData, VocalPart } from "~/lib/api/types";
 import {
+  For,
+  Show,
   createEffect,
   createMemo,
   createSignal,
-  For,
   on,
   onCleanup,
   onMount,
-  Show,
 } from "solid-js";
-import { useLenis, useLenisContent } from "@/component/ui/Lenis";
+import { useLenis, useLenisContent } from "~/component/ui/Lenis";
 import { useStore } from "@nanostores/solid";
-import { $current_position, $romanize, $romanize_position, getBlurmap } from "@/stores";
-import { useRenderer } from "@/context/LyricsRenderer";
-import { SPACE_REGEX, splitGraphemes } from "@/lib/string";
-import { seekTo } from "@/lib/spotify/player";
-import { Interlude } from "@/component/lyrics/Interlude";
+import { $current_position, $romanize, $romanize_position, getBlurmap } from "~/stores";
+import { useRenderer } from "~/context/LyricsRenderer";
+import { SPACE_REGEX, splitGraphemes } from "~/lib/string";
+import { seekTo } from "~/lib/spotify/player";
+import { Interlude } from "~/component/lyrics/Interlude";
 
 export type SyllableLyricsProps = {
   lyrics: SyllableData;
@@ -53,7 +53,7 @@ function getVocalPartBounds(content: SyllableData["Content"][number]) {
     }
   });
 
-  return { start: start === Infinity ? 0 : start, end };
+  return { end, start: start === Infinity ? 0 : start };
 }
 
 type LeadRendererProps = {
@@ -107,13 +107,13 @@ function LeadRenderer(props: LeadRendererProps) {
     <span
       class="syllable-line"
       classList={{
-        "has-bg-line": props.hasBg,
         "background-line": props.background,
+        "has-bg-line": props.hasBg,
         "opp-aligned": props.oppAligned,
       }}
       style={{
-        "text-align": props.oppAligned ? "end" : "start", // for some reason scss makes end => right and start => left
         "padding-inline": paddingInline(),
+        "text-align": props.oppAligned ? "end" : "start", // for some reason scss makes end => right and start => left
       }}
       onClick={handleClick}
       role="button"
@@ -134,9 +134,9 @@ function LeadRenderer(props: LeadRendererProps) {
             <span
               class="word"
               classList={{
-                "trailing-whitespace": isTrailing,
-                "has-romanized-top": showTop() && hasRomanizedInWord(),
                 "has-romanized-bottom": showBottom() && hasRomanizedInWord(),
+                "has-romanized-top": showTop() && hasRomanizedInWord(),
+                "trailing-whitespace": isTrailing,
               }}
             >
               <For each={wordSyllables}>
@@ -181,10 +181,10 @@ function LeadRenderer(props: LeadRendererProps) {
                                 style={{
                                   "--char-progress": `${progress()}%`,
                                   "--char-progress-2": `${progress() > 0 ? progress() + 20 : 0}%`,
-                                  display: "inline-block",
-                                  "background-image": `linear-gradient(90deg, rgba(255, 255, 255, 0.7) var(--char-progress), rgba(255, 255, 255, 0.3) var(--char-progress-2))`,
                                   "-webkit-text-fill-color": "transparent",
                                   "background-clip": "text",
+                                  "background-image": `linear-gradient(90deg, rgba(255, 255, 255, 0.7) var(--char-progress), rgba(255, 255, 255, 0.3) var(--char-progress-2))`,
+                                  display: "inline-block",
                                 }}
                               >
                                 {char}
@@ -200,8 +200,8 @@ function LeadRenderer(props: LeadRendererProps) {
                     <span
                       class="syllable"
                       classList={{
-                        "has-romanized-top": showTop() && hasRomanizedForSyllable(),
                         "has-romanized-bottom": showBottom() && hasRomanizedForSyllable(),
+                        "has-romanized-top": showTop() && hasRomanizedForSyllable(),
                       }}
                     >
                       <Show when={showTop()}>
@@ -240,8 +240,8 @@ function LeadRenderer(props: LeadRendererProps) {
                                 style={{
                                   "--char-progress": `${charProgress()}%`,
                                   "--char-progress-2": `${charProgress() > 0 ? charProgress() + 20 : 0}%`,
-                                  "--shadow-blur": `${charProgress() * 0.06}px`,
                                   "--shadow-alpha": (charProgress() / 200) * 0.85,
+                                  "--shadow-blur": `${charProgress() * 0.06}px`,
                                   "background-image": `linear-gradient(${props.isRTL ? 270 : 90}deg, rgba(255, 255, 255, 0.85) var(--char-progress), rgba(255, 255, 255, 0.4) var(--char-progress-2))`,
                                 }}
                               >
@@ -307,21 +307,21 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
       if (i === 0 && start > 2000) {
         entries.push({
-          type: "interlude",
-          index: lineIdx++,
-          start: 0,
           end: start,
-          oppAligned: c.OppositeAligned,
+          index: lineIdx++,
           isIntro: true,
           isRTL: c.IsRTL,
+          oppAligned: c.OppositeAligned,
+          start: 0,
+          type: "interlude",
         });
       }
 
       entries.push({
-        type: "lyric",
-        index: lineIdx++,
-        contentIndex: i,
         content: c,
+        contentIndex: i,
+        index: lineIdx++,
+        type: "lyric",
       });
 
       if (i < content.length - 1) {
@@ -331,13 +331,13 @@ function SyllableLyrics(props: SyllableLyricsProps) {
 
         if (gap > 2000) {
           entries.push({
-            type: "interlude",
-            index: lineIdx++,
-            start: Math.max(0, end - 100),
             end: Math.max(0, nextBounds.start - 100),
-            oppAligned: nextLine.OppositeAligned,
+            index: lineIdx++,
             isIntro: false,
             isRTL: nextLine.IsRTL,
+            oppAligned: nextLine.OppositeAligned,
+            start: Math.max(0, end - 100),
+            type: "interlude",
           });
         }
       }
@@ -348,7 +348,7 @@ function SyllableLyrics(props: SyllableLyricsProps) {
   const allBounds = createMemo(() => {
     return lineEntries().map((entry) => {
       if (entry.type === "interlude") {
-        return { start: entry.start, end: entry.end };
+        return { end: entry.end, start: entry.start };
       }
       return getVocalPartBounds(entry.content);
     });
@@ -701,12 +701,12 @@ function SyllableLyrics(props: SyllableLyricsProps) {
             <div
               class="line-wrapper"
               classList={{
-                rtl: isLineRTL(),
-                "roman-top": romanize() && romanize_position() === "top",
-                "roman-replace": romanize() && romanize_position() === "replace",
-                "roman-bottom": romanize() && romanize_position() === "bottom",
                 "has-romanized": hasRomanizedText(),
                 "interlude-wrapper": entry.type === "interlude",
+                "roman-bottom": romanize() && romanize_position() === "bottom",
+                "roman-replace": romanize() && romanize_position() === "replace",
+                "roman-top": romanize() && romanize_position() === "top",
+                rtl: isLineRTL(),
               }}
               ref={(el) => {
                 if (!el) return;
@@ -715,8 +715,8 @@ function SyllableLyrics(props: SyllableLyricsProps) {
               }}
               style={{
                 "--l-blur": blur(),
-                "--l-scale": isActive() ? 1.01 : 1,
                 "--l-opacity": isActive() ? 1 : 0.6,
+                "--l-scale": isActive() ? 1.01 : 1,
               }}
             >
               {entry.type === "interlude" ? (

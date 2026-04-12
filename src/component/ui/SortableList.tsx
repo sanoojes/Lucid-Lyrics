@@ -1,9 +1,9 @@
-import { For, Show, createMemo, type Component } from "solid-js";
+import { type Component, For, Show, createMemo } from "solid-js";
 import { GripVertical, X } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { Select, type SelectOption } from "@/component/ui/Select";
-import { toast } from "@/lib/sonner";
-import "@/styles/component/sortable-list.scss";
+import { Button } from "~/component/ui/Button";
+import { Select, type SelectOption } from "~/component/ui/Select";
+import { toast } from "~/lib/sonner";
+import "~/styles/component/sortable-list.scss";
 
 export interface SortableItem {
   id: string;

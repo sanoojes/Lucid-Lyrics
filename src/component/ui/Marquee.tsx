@@ -1,5 +1,5 @@
-import "@/styles/component/marquee.scss";
-import { type JSXElement, onMount, createSignal } from "solid-js";
+import "~/styles/component/marquee.scss";
+import { type JSXElement, createSignal, onMount } from "solid-js";
 
 type MarqueeProps = {
   children: JSXElement;

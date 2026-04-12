@@ -1,20 +1,20 @@
 import { useStore } from "@nanostores/solid";
 import {
   $page_state,
-  setHideScrollbar,
-  setHideStatus,
-  setShowCredits,
-  setShowControls,
-  setFloatingPosition,
-  setRomanizePosition,
   type Positions,
   type RomanizePosition,
-} from "@/stores/page";
-import { SettingsSection } from "@/component/settings/Section";
-import { SettingsRow } from "@/component/settings/Row";
-import { Toggle } from "@/component/ui/Toggle";
-import { Select } from "@/component/ui/Select";
-import { t } from "@/i18n";
+  setFloatingPosition,
+  setHideScrollbar,
+  setHideStatus,
+  setRomanizePosition,
+  setShowControls,
+  setShowCredits,
+} from "~/stores/page";
+import { SettingsSection } from "~/component/settings/Section";
+import { SettingsRow } from "~/component/settings/Row";
+import { Toggle } from "~/component/ui/Toggle";
+import { Select } from "~/component/ui/Select";
+import { t } from "~/i18n";
 
 function PageSettings() {
   const pageState = useStore($page_state);

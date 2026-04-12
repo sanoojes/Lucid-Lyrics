@@ -217,7 +217,7 @@ describe("extending SBL schema for optional arguments", () => {
   test("syllable separator when two vowles are next to each other", () => {
     const hebrew = "יָאֵר";
     const transliteration = "yā.eer";
-    expect(transliterate(hebrew, { SYLLABLE_SEPARATOR: ".", ALEF: "", TSERE: "ee" })).toBe(
+    expect(transliterate(hebrew, { ALEF: "", SYLLABLE_SEPARATOR: ".", TSERE: "ee" })).toBe(
       transliteration,
     );
   });
@@ -242,8 +242,8 @@ describe("extending SBL schema for optional arguments", () => {
         const { hebrew, transliteration } = inputs;
         const options: Partial<Schema> = {
           BET_DAGESH: "B",
-          GIMEL_DAGESH: "G",
           DALET_DAGESH: "D",
+          GIMEL_DAGESH: "G",
           KAF_DAGESH: "K",
           PE_DAGESH: "P",
           TAV_DAGESH: "T",
@@ -256,9 +256,9 @@ describe("extending SBL schema for optional arguments", () => {
       test.each`
         description                              | hebrew      | transliteration | options
         ${"false, results in no doubling"}       | ${"שַׁבָּת֔וֹן"}  | ${"šabātôn"}    | ${{ DAGESH_CHAZAQ: false }}
-        ${"false, change character"}             | ${"שַׁבָּת֔וֹן"}  | ${"šavātôn"}    | ${{ DAGESH_CHAZAQ: false, BET: "v" }}
-        ${"false, with a BET_DAGESH"}            | ${"שַׁבָּת֔וֹן"}  | ${"šabātôn"}    | ${{ DAGESH_CHAZAQ: false, BET: "v", BET_DAGESH: "b" }}
-        ${"true, with a BET_DAGESH"}             | ${"שַׁבָּת֔וֹן"}  | ${"šabbātôn"}   | ${{ DAGESH_CHAZAQ: true, BET: "v", BET_DAGESH: "b" }}
+        ${"false, change character"}             | ${"שַׁבָּת֔וֹן"}  | ${"šavātôn"}    | ${{ BET: "v", DAGESH_CHAZAQ: false }}
+        ${"false, with a BET_DAGESH"}            | ${"שַׁבָּת֔וֹן"}  | ${"šabātôn"}    | ${{ BET: "v", BET_DAGESH: "b", DAGESH_CHAZAQ: false }}
+        ${"true, with a BET_DAGESH"}             | ${"שַׁבָּת֔וֹן"}  | ${"šabbātôn"}   | ${{ BET: "v", BET_DAGESH: "b", DAGESH_CHAZAQ: true }}
         ${"string, where it is a dagesh chazaq"} | ${"שַׁבָּת֔וֹן"}  | ${"šab́ātôn"}    | ${{ DAGESH_CHAZAQ: "\u0301" }}
         ${"string, where it is a dagesh qal "}   | ${"בְּרֵאשִׁ֖ית"} | ${"bərēʾšît"}   | ${{ DAGESH_CHAZAQ: "\u0301" }}
       `("$description", (inputs: Inputs) => {
@@ -298,8 +298,8 @@ describe("extending SBL schema for optional arguments", () => {
         transliterate(heb, {
           ADDITIONAL_FEATURES: [
             {
-              HEBREW: "\u{05B0}",
               FEATURE: "cluster",
+              HEBREW: "\u{05B0}",
               TRANSLITERATION: function (cluster, hebrew, schema) {
                 const tsere = /\u{05B5}/u;
                 const next = cluster.next as Cluster;
@@ -322,8 +322,8 @@ describe("extending SBL schema for optional arguments", () => {
         transliterate(heb, {
           ADDITIONAL_FEATURES: [
             {
-              HEBREW: "(?<![\u{05B1}-\u{05BB}\u{05C7}].*)\u{05B0}",
               FEATURE: "syllable",
+              HEBREW: "(?<![\u{05B1}-\u{05BB}\u{05C7}].*)\u{05B0}",
               TRANSLITERATION: function (syllable, _hebrew, schema) {
                 const next = syllable.next as Syllable;
                 const nextVowel =
@@ -348,8 +348,8 @@ describe("extending SBL schema for optional arguments", () => {
         transliterate(heb, {
           ADDITIONAL_FEATURES: [
             {
-              HEBREW: "(?<![\u{05B1}-\u{05BB}\u{05C7}].*)\u{05B0}",
               FEATURE: "syllable",
+              HEBREW: "(?<![\u{05B1}-\u{05BB}\u{05C7}].*)\u{05B0}",
               TRANSLITERATION: function (syllable, _hebrew, schema) {
                 const next = syllable.next as Syllable;
                 const nextVowel =
@@ -374,8 +374,8 @@ describe("extending SBL schema for optional arguments", () => {
         transliterate(heb, {
           ADDITIONAL_FEATURES: [
             {
-              HEBREW: "(?<![\u{05B1}-\u{05BB}\u{05C7}].*)\u{05B0}",
               FEATURE: "syllable",
+              HEBREW: "(?<![\u{05B1}-\u{05BB}\u{05C7}].*)\u{05B0}",
               PASS_THROUGH: false,
               TRANSLITERATION: function (syllable, _hebrew, schema) {
                 const next = syllable.next as Syllable;
@@ -403,8 +403,8 @@ describe("extending SBL schema for optional arguments", () => {
         transliterate(heb, {
           ADDITIONAL_FEATURES: [
             {
-              HEBREW: "שְׁתַּיִם",
               FEATURE: "word",
+              HEBREW: "שְׁתַּיִם",
               TRANSLITERATION: function (_word, _hebrew, schema) {
                 return (
                   schema["SHIN"] +
@@ -427,8 +427,8 @@ describe("extending SBL schema for optional arguments", () => {
         transliterate(heb, {
           ADDITIONAL_FEATURES: [
             {
-              HEBREW: "שְׁתַּיִם",
               FEATURE: "word",
+              HEBREW: "שְׁתַּיִם",
               PASS_THROUGH: false,
               TRANSLITERATION: function (_word, _hebrew, schema) {
                 return (
@@ -455,11 +455,11 @@ describe("extending SBL schema for optional arguments", () => {
       ${"before-vowel"}             | ${"מֶ֣לֶךְ"}          | ${"ḿelek"}             | ${{ STRESS_MARKER: { location: "before-vowel", mark: "\u0301" } }}
       ${"after-vowel"}              | ${"מֶ֣לֶךְ"}          | ${"mélek"}             | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301" } }}
       ${"after-vowel with mater"}   | ${"אֱלֹהִ֔ים"}        | ${"ʾĕlōhî́m"}           | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301" } }}
-      ${"after-vowel with digraph"} | ${"בֵּ֣ית"}          | ${"beít"}              | ${{ TSERE_YOD: "ei", STRESS_MARKER: { location: "after-vowel", mark: "\u0301" } }}
+      ${"after-vowel with digraph"} | ${"בֵּ֣ית"}          | ${"beít"}              | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301" }, TSERE_YOD: "ei" }}
       ${"exclude undefined"}        | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yốm ʾeḥā́d"}   | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301" } }}
-      ${"exclude never"}            | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yốm ʾeḥā́d"}   | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301", exclude: "never" } }}
-      ${"exclude single"}           | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yôm ʾeḥā́d"}   | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301", exclude: "single" } }}
-      ${"exclude final"}            | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yôm ʾeḥād"}   | ${{ STRESS_MARKER: { location: "after-vowel", mark: "\u0301", exclude: "final" } }}
+      ${"exclude never"}            | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yốm ʾeḥā́d"}   | ${{ STRESS_MARKER: { exclude: "never", location: "after-vowel", mark: "\u0301" } }}
+      ${"exclude single"}           | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yôm ʾeḥā́d"}   | ${{ STRESS_MARKER: { exclude: "single", location: "after-vowel", mark: "\u0301" } }}
+      ${"exclude final"}            | ${"בֹּ֖קֶר י֥וֹם אֶחָֽד׃"} | ${"bṓqer yôm ʾeḥād"}   | ${{ STRESS_MARKER: { exclude: "final", location: "after-vowel", mark: "\u0301" } }}
       ${"ignore paseq"}             | ${"לְפָנַ֨י ׀ שֻׁלְחָ֗ן"}  | ${"ləpāˈnay  šulˈḥān"} | ${{ STRESS_MARKER: { location: "before-syllable", mark: "ˈ" } }}
     `("$description", (inputs: Inputs) => {
       const { hebrew, transliteration, options } = inputs;

@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/solid";
-import { $current_track_image, $image_options } from "@/stores";
-import { createMemo, createEffect, Show, createSignal, onCleanup } from "solid-js";
-import { useLocalBlob } from "@/component/ui/background/hooks";
+import { $current_track_image, $image_options } from "~/stores";
+import { Show, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
+import { useLocalBlob } from "~/component/ui/background/hooks";
 
 const ImageLayer = () => {
   const options = useStore($image_options);

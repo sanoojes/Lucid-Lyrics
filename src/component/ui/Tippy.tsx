@@ -1,12 +1,12 @@
-import "@/styles/component/tippy.scss";
+import "~/styles/component/tippy.scss";
 import {
   type ComponentProps,
-  splitProps,
-  createSignal,
-  Show,
-  onCleanup,
   type JSXElement,
+  Show,
   createEffect,
+  createSignal,
+  onCleanup,
+  splitProps,
 } from "solid-js";
 import { Portal } from "solid-js/web";
 
@@ -41,7 +41,7 @@ export function Tippy(props: TippyProps) {
     "interactive",
   ]);
   const [visible, setVisible] = createSignal(false);
-  const [coords, setCoords] = createSignal({ x: 0, y: 0, placement: "top" });
+  const [coords, setCoords] = createSignal({ placement: "top", x: 0, y: 0 });
 
   let triggerRef: HTMLSpanElement | undefined;
   let tooltipRef: HTMLDivElement | undefined;
@@ -75,7 +75,7 @@ export function Tippy(props: TippyProps) {
       x = viewportWidth - tooltipRect.width - margin;
     }
 
-    setCoords({ x: x + window.scrollX, y: y + window.scrollY, placement });
+    setCoords({ placement, x: x + window.scrollX, y: y + window.scrollY });
   };
 
   createEffect(() => {
@@ -127,12 +127,12 @@ export function Tippy(props: TippyProps) {
             data-placement={coords().placement}
             classList={{ "lucid-tippy--visible": visible() }}
             style={{
-              position: "absolute",
               left: `${coords().x}px`,
-              top: `${coords().y}px`,
-              visibility: coords().x === 0 ? "hidden" : "visible",
               "pointer-events": local.interactive ? "auto" : "none",
+              position: "absolute",
+              top: `${coords().y}px`,
               "user-select": local.interactive ? "auto" : "none",
+              visibility: coords().x === 0 ? "hidden" : "visible",
             }}
           >
             {local.title}

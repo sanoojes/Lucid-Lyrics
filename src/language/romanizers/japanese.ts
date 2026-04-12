@@ -1,7 +1,7 @@
-import * as KuromojiAnalyzer from "@/language/lib/kuroshiro-analyzer-kuromoji.ts";
-import { createLazyModuleLoader } from "@/language/lazy";
+import * as KuromojiAnalyzer from "~/language/lib/kuroshiro-analyzer-kuromoji.ts";
+import { createLazyModuleLoader } from "~/language/lazy";
 
-const KUROSHIRO_OPTS = { to: "romaji", mode: "spaced" };
+const KUROSHIRO_OPTS = { mode: "spaced", to: "romaji" };
 
 const kuroshiroLoader = createLazyModuleLoader("kuroshiro", async (mod) => {
   const Kuroshiro = mod.default;

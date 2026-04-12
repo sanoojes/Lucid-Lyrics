@@ -1,8 +1,8 @@
-import "@/styles/component/lyrics-status.scss";
+import "~/styles/component/lyrics-status.scss";
 import { Show } from "solid-js";
-import { WifiOff, RefreshCw, SearchX, CircleAlert } from "lucide-solid";
-import { Button } from "@/component/ui/Button";
-import { t } from "@/i18n";
+import { CircleAlert, RefreshCw, SearchX, WifiOff } from "lucide-solid";
+import { Button } from "~/component/ui/Button";
+import { t } from "~/i18n";
 
 interface StatusProps {
   type: "offline" | "error" | "missing" | "local_song";
@@ -12,10 +12,10 @@ interface StatusProps {
 }
 
 const ICONS = {
-  offline: WifiOff,
   error: CircleAlert,
-  missing: SearchX,
   local_song: SearchX,
+  missing: SearchX,
+  offline: WifiOff,
 };
 
 function LyricsStatus(props: StatusProps) {

@@ -1,6 +1,6 @@
-import { persistentJSON } from "@/utils/nanostores";
-import { getName } from "@/stores/persist";
-import { DEFAULT_NPV_SETTINGS } from "@/constants";
+import { persistentJSON } from "~/utils/nanostores";
+import { getName } from "~/stores/persist";
+import { DEFAULT_NPV_SETTINGS } from "~/constants";
 
 export type NpvSettingsState = {
   hideBackground: boolean;

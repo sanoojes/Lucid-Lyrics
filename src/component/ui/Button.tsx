@@ -1,6 +1,6 @@
-import { splitProps, type ComponentProps } from "solid-js";
-import "@/styles/component/button.scss";
-import { Tippy } from "@/component/ui/Tippy";
+import { type ComponentProps, splitProps } from "solid-js";
+import "~/styles/component/button.scss";
+import { Tippy } from "~/component/ui/Tippy";
 
 type Variant =
   | "default"

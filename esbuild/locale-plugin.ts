@@ -4,13 +4,13 @@ import * as path from "path";
 import { transform } from "esbuild";
 
 const colors = {
-  reset: "\x1b[0m",
   bold: "\x1b[1m",
-  green: "\x1b[32m",
-  yellow: "\x1b[33m",
   cyan: "\x1b[36m",
   gray: "\x1b[90m",
+  green: "\x1b[32m",
   red: "\x1b[31m",
+  reset: "\x1b[0m",
+  yellow: "\x1b[33m",
 };
 
 interface LocalePluginOptions {
@@ -64,11 +64,11 @@ export function localePlugin(options: LocalePluginOptions): Plugin {
 
           const result = await transform(code, {
             format: "esm",
-            platform: "browser",
-            target: "es2020",
             loader: "ts",
             minify: true,
+            platform: "browser",
             sourcemap: false,
+            target: "es2020",
           });
 
           fs.writeFileSync(outputPath, result.code);

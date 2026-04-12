@@ -1,24 +1,24 @@
 import { XMLBuilder } from "fast-xml-parser";
-import type { LineData, Lyrics, StaticData, SyllableData } from "@/lib/api/types";
+import type { LineData, Lyrics, StaticData, SyllableData } from "~/lib/api/types";
 import {
   BUILD_TIME_MULTIPLIERS,
-  buildStaticBody,
-  buildLineBody,
   type BuildOptions,
-} from "@/lib/ttml/build/utils";
-import { buildAppleMetadata, buildAppleSyllableBody } from "@/lib/ttml/build/apple";
-import { buildAmllMetadata, buildAmllSyllableBody } from "@/lib/ttml/build/amll";
+  buildLineBody,
+  buildStaticBody,
+} from "~/lib/ttml/build/utils";
+import { buildAppleMetadata, buildAppleSyllableBody } from "~/lib/ttml/build/apple";
+import { buildAmllMetadata, buildAmllSyllableBody } from "~/lib/ttml/build/amll";
 
 export function build(data: Lyrics, options: BuildOptions = {}): string {
   const mode = options.mode || "apple";
   const timeScale = BUILD_TIME_MULTIPLIERS[mode];
 
   const builder = new XMLBuilder({
-    ignoreAttributes: false,
     attributeNamePrefix: "@_",
-    textNodeName: "#text",
     format: false,
+    ignoreAttributes: false,
     suppressEmptyNode: true,
+    textNodeName: "#text",
   });
 
   let timingStr = "None";
@@ -40,19 +40,19 @@ export function build(data: Lyrics, options: BuildOptions = {}): string {
 
   const ttmlObj: any = {
     "?xml": {
-      "@_version": "1.0",
       "@_encoding": "UTF-8",
+      "@_version": "1.0",
     },
     tt: {
-      "@_xmlns": "http://www.w3.org/ns/ttml",
-      "@_xmlns:ttm": "http://www.w3.org/ns/ttml#metadata",
-      "@_xmlns:itunes": "http://music.apple.com/lyric-ttml-internal",
       "@_itunes:timing": timingStr,
       "@_xml:lang": "en",
+      "@_xmlns": "http://www.w3.org/ns/ttml",
+      "@_xmlns:itunes": "http://music.apple.com/lyric-ttml-internal",
+      "@_xmlns:ttm": "http://www.w3.org/ns/ttml#metadata",
+      body: bodyObj,
       head: {
         metadata: mode === "amll" ? buildAmllMetadata(data) : buildAppleMetadata(data),
       },
-      body: bodyObj,
     },
   };
 
@@ -67,4 +67,4 @@ export function build(data: Lyrics, options: BuildOptions = {}): string {
   return xmlStr;
 }
 
-export type { BuildOptions } from "@/lib/ttml/build/utils";
+export type { BuildOptions } from "~/lib/ttml/build/utils";

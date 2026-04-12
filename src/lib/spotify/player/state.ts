@@ -1,4 +1,4 @@
-import type { ShuffleState } from "@/lib/spotify/player/types";
+import type { ShuffleState } from "~/lib/spotify/player/types";
 
 export function seekTo(progress: number) {
   try {

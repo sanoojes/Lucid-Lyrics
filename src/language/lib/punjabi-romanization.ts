@@ -11,7 +11,7 @@ export function punjabiRomanization(text: string) {
 }
 
 const GURMUKHI_MAP: Record<string, string> = {
-  ੳ: "u",
+  "ਂ": "n",
   ਅ: "a",
   ਆ: "aa",
   ਇ: "i",
@@ -23,8 +23,6 @@ const GURMUKHI_MAP: Record<string, string> = {
   ਓ: "o",
   ਔ: "au",
 
-  ਸ: "s",
-  ਹ: "h",
   ਕ: "k",
   ਖ: "kh",
   ਗ: "g",
@@ -53,30 +51,32 @@ const GURMUKHI_MAP: Record<string, string> = {
   ਯ: "y",
   ਰ: "r",
   ਲ: "l",
-  ਵ: "v",
-  ੜ: "r",
-
-  ਸ਼: "sh",
-  ਖ਼: "kh",
-  ਗ਼: "gh",
-  ਜ਼: "z",
-  ਫ਼: "f",
   ਲ਼: "l",
+  ਵ: "v",
+  ਸ਼: "sh",
+  ਸ: "s",
 
+  ਹ: "h",
+  "\u0A3C": "",
   "ਾ": "aa",
   "ਿ": "i",
   "ੀ": "ii",
   "ੁ": "u",
+
   "ੂ": "uu",
   "ੇ": "e",
   "ੈ": "ai",
   "ੋ": "o",
   "ੌ": "au",
-
-  "ੰ": "n",
-  "ਂ": "n",
   "੍": "",
-  "\u0A3C": "",
+  ਖ਼: "kh",
+  ਗ਼: "gh",
+  ਜ਼: "z",
+
+  ੜ: "r",
+  ਫ਼: "f",
+  "ੰ": "n",
+  ੳ: "u",
   ੴ: "ik onkar",
 };
 

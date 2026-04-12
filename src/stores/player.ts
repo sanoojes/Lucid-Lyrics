@@ -1,14 +1,14 @@
 import { atom, computed, onMount, task } from "nanostores";
 import {
+  type RepeatState,
   getLiked,
   getProgress,
   getRepeat,
   getShuffle,
   requestPositionSync,
-  type RepeatState,
-} from "@/lib/spotify/player";
+} from "~/lib/spotify/player";
 import Tempus from "@darkroom.engineering/tempus";
-import { wait } from "@/lib/dom/wait";
+import { wait } from "~/lib/dom/wait";
 
 type PlayerTrack = typeof Spicetify.Player.data.item;
 
@@ -75,10 +75,10 @@ onMount($playing, () => {
 });
 
 export const $player_states = atom({
+  liked: getLiked(),
   repeat: getRepeat(),
   shuffle: getShuffle() !== "none",
   smartShuffle: getShuffle() === "smart",
-  liked: getLiked(),
 });
 
 interface PlayerUpdateData {
@@ -105,12 +105,12 @@ onMount($player_states, () => {
   const listener = ({ data }: PlayerEvent) => {
     if (data.repeat !== undefined || data.shuffle !== undefined) {
       $player_states.set({
-        repeat: data.repeat ?? $player_states.get().repeat,
-        shuffle: data.shuffle ?? $player_states.get().shuffle,
-        smartShuffle: data.smartShuffle ?? $player_states.get().smartShuffle,
         liked: data?.item?.metadata["collection.in_collection"]
           ? data.item?.metadata["collection.in_collection"] === "true"
           : getLiked(),
+        repeat: data.repeat ?? $player_states.get().repeat,
+        shuffle: data.shuffle ?? $player_states.get().shuffle,
+        smartShuffle: data.smartShuffle ?? $player_states.get().smartShuffle,
       });
     }
   };

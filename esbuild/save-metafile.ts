@@ -1,15 +1,15 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { Plugin, PluginBuild, BuildResult } from "esbuild";
+import type { BuildResult, Plugin, PluginBuild } from "esbuild";
 
 const colors = {
-  reset: "\x1b[0m",
   bold: "\x1b[1m",
-  green: "\x1b[32m",
-  yellow: "\x1b[33m",
   cyan: "\x1b[36m",
   gray: "\x1b[90m",
+  green: "\x1b[32m",
   red: "\x1b[31m",
+  reset: "\x1b[0m",
+  yellow: "\x1b[33m",
 };
 
 export interface SaveMetafileOptions {

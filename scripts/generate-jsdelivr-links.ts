@@ -1,6 +1,6 @@
 import { execSync } from "node:child_process";
 import { writeFile } from "node:fs/promises";
-import { resolve, join, extname } from "node:path";
+import { extname, join, resolve } from "node:path";
 
 const REPO = "sanoojes/Lucid-Lyrics";
 const DIST_DIR = resolve(import.meta.dir, "../dist");

@@ -1,5 +1,5 @@
-import { createSignal, Show, onMount, type Component } from "solid-js";
-import "@/styles/component/input.scss";
+import { type Component, Show, createSignal, onMount } from "solid-js";
+import "~/styles/component/input.scss";
 
 const URL_REGEX = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(:\d+)?(\/.*)?$/i;
 

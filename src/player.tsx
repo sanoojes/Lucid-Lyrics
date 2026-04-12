@@ -1,12 +1,12 @@
-import { toast } from "@/lib/sonner";
-import Brand from "@/component/icon/Brand";
-import { createButton } from "@/lib/spotify/player";
-import router from "@/router";
-import { logger } from "@/utils/logger";
-import { t } from "@/i18n";
-import { BASE_ROUTE } from "@/constants";
+import { toast } from "~/lib/sonner";
+import Brand from "~/component/icon/Brand";
+import { createButton } from "~/lib/spotify/player";
+import router from "~/router";
+import { logger } from "~/utils/logger";
+import { t } from "~/i18n";
+import { BASE_ROUTE } from "~/constants";
 import { Maximize2 } from "lucide-solid";
-import { $npb_state, setPageMode } from "@/stores";
+import { $npb_state, setPageMode } from "~/stores";
 
 const PAGE_PATH = BASE_ROUTE;
 
@@ -14,8 +14,8 @@ export async function setupPlayerButtons() {
   try {
     // Lyrics Page Button
     const toggleBtn = await createButton({
-      label: t("menu.appName"),
       icon: <Brand size={18} />,
+      label: t("menu.appName"),
       onClick: (api) => {
         const active = router.togglePath(PAGE_PATH);
         api.update({ active });
@@ -29,14 +29,14 @@ export async function setupPlayerButtons() {
     // Fullscreen Button
     const fullscreenBtnApi = await createButton(
       {
-        label: t("fullscreen.enter"),
         icon: <Maximize2 size={18} />,
-        order: 0,
+        label: t("fullscreen.enter"),
         onClick: () => {
           setPageMode("fullscreen");
         },
+        order: 0,
       },
-      { placement: "end", autoRegister: false },
+      { autoRegister: false, placement: "end" },
     );
 
     const unsubscribeState = $npb_state.subscribe((state) => {

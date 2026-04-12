@@ -1,5 +1,5 @@
 import type { Component } from "solid-js";
-import "@/styles/component/slider.scss";
+import "~/styles/component/slider.scss";
 
 interface SliderProps {
   value: number;

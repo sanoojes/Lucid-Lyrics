@@ -7,7 +7,7 @@ async function build() {
     plugins: [isolatedDecl()],
     resolve: {
       alias: {
-        "@": "./src",
+        "~": "./src",
       },
     },
   });
