@@ -1,12 +1,23 @@
+import { render } from "solid-js/web";
 import { waitForElement } from "@/lib/dom/wait";
+import { atom } from "nanostores";
+import type { JSXElement } from "solid-js";
 
 export type ButtonProps = {
   label: string;
-  icon: string;
+  icon: string | JSXElement;
   onClick?: (api: PlayerButtonAPI) => void;
+  onMount?: (api: PlayerButtonAPI) => void;
+  onUnmount?: (api: PlayerButtonAPI) => void;
   disabled?: boolean;
   active?: boolean;
   className?: string;
+  order?: number;
+};
+
+export type ButtonOptions = {
+  placement?: "start" | "end";
+  autoRegister?: boolean;
 };
 
 export type PlayerButtonAPI = {
@@ -14,74 +25,147 @@ export type PlayerButtonAPI = {
   update: (props: Partial<ButtonProps>) => void;
   register: () => void;
   deregister: () => void;
+  destroy: () => void;
 };
 
-export async function createButton(props: ButtonProps, prepend = true): Promise<PlayerButtonAPI> {
+interface TippyInstance {
+  setContent: (content: string) => void;
+  destroy: () => void;
+}
+
+export async function createButton(
+  props: ButtonProps,
+  options?: ButtonOptions,
+): Promise<PlayerButtonAPI> {
+  const opts = { placement: "start", autoRegister: true, ...options };
+  const isPrepend = opts.placement === "start";
+
   const rightContainer = await waitForElement(
     ".main-nowPlayingBar-right .main-nowPlayingBar-extraControls",
     { timeout: 99999 },
   );
 
-  if (!rightContainer) throw new Error("Could not find the player container.");
+  if (!rightContainer) {
+    throw new Error("Could not find the player container.");
+  }
 
-  const state = { ...props };
+  const stateStore = atom<ButtonProps>(props);
+
+  let isMounted = false;
+  let disposeIcon: (() => void) | undefined;
+  let tippyInstance: TippyInstance | undefined;
+
   const element = document.createElement("button");
+  element.className = "main-genericButton-button l-player-btn";
 
-  element.className = `main-genericButton-button l-player-btn ${props.className || ""}`;
-  if (!prepend) element.style.order = "9999";
-  element.setAttribute("aria-label", props.label);
-
-  const tippyInstance = Spicetify?.Tippy?.(element, {
-    content: props.label,
-    ...Spicetify?.TippyProps,
-  });
+  const initialClass = stateStore.get().className;
+  if (initialClass) {
+    element.classList.add(...initialClass.split(" ").filter(Boolean));
+  }
 
   const iconElement = document.createElement("span");
-  iconElement.className = "Wrapper-sm-only Wrapper-small-only l-player-btn__wrapper";
-  iconElement.innerHTML = props.icon;
+  iconElement.className = "l-player-btn__wrapper";
   element.appendChild(iconElement);
 
-  const update = (next: Partial<ButtonProps>) => {
-    if (next.label !== undefined && next.label !== state.label) {
-      state.label = next.label;
-      element.setAttribute("aria-label", state.label);
-      tippyInstance?.setContent(state.label);
-    }
+  const applyIcon = (icon: string | JSXElement) => {
+    disposeIcon?.();
+    disposeIcon = undefined;
+    iconElement.innerHTML = "";
 
-    if (next.icon !== undefined && next.icon !== state.icon) {
-      state.icon = next.icon;
-      iconElement.innerHTML = state.icon;
+    if (typeof icon === "string") {
+      iconElement.innerHTML = icon;
+    } else {
+      disposeIcon = render(() => icon, iconElement);
     }
-
-    if (next.disabled !== undefined && next.disabled !== state.disabled) {
-      state.disabled = !!next.disabled;
-      element.disabled = state.disabled;
-      element.classList.toggle("disabled", state.disabled);
-    }
-
-    if (next.active !== undefined && next.active !== state.active) {
-      state.active = !!next.active;
-      element.classList.toggle("main-genericButton-buttonActive", state.active);
-      element.classList.toggle("main-genericButton-buttonActiveDot", state.active);
-    }
-
-    if (next.onClick !== undefined) state.onClick = next.onClick;
   };
+
+  let prevState: Partial<ButtonProps> = {};
+  const unsubscribe = stateStore.subscribe((nextState) => {
+    if (nextState.label !== prevState.label) {
+      element.setAttribute("aria-label", nextState.label);
+      tippyInstance?.setContent(nextState.label);
+    }
+
+    if (nextState.icon !== prevState.icon && isMounted) {
+      applyIcon(nextState.icon);
+    }
+
+    if (nextState.disabled !== prevState.disabled) {
+      const isDisabled = !!nextState.disabled;
+      element.disabled = isDisabled;
+      element.classList.toggle("disabled", isDisabled);
+    }
+
+    if (nextState.active !== prevState.active) {
+      const isActive = !!nextState.active;
+      element.classList.toggle("main-genericButton-buttonActive", isActive);
+      element.classList.toggle("main-genericButton-buttonActiveDot", isActive);
+    }
+
+    if (nextState.order !== prevState.order) {
+      element.style.order =
+        nextState.order !== undefined ? nextState.order.toString() : isPrepend ? "" : "9999";
+    }
+
+    prevState = { ...nextState };
+  });
 
   const api: PlayerButtonAPI = {
     element,
-    update,
+    update: (next) => {
+      stateStore.set({ ...stateStore.get(), ...next });
+    },
     register: () => {
-      rightContainer[prepend ? "prepend" : "append"](element);
+      if (isMounted) return;
+      const currentState = stateStore.get();
+
+      if (!tippyInstance && typeof Spicetify !== "undefined" && Spicetify.Tippy) {
+        tippyInstance = Spicetify.Tippy(element, {
+          content: currentState.label,
+          ...Spicetify.TippyProps,
+        });
+      }
+
+      applyIcon(currentState.icon);
+
+      if (isPrepend) {
+        rightContainer.prepend(element);
+      } else {
+        rightContainer.append(element);
+      }
+
+      isMounted = true;
+      currentState.onMount?.(api);
     },
     deregister: () => {
+      if (!isMounted) return;
+      const currentState = stateStore.get();
+      currentState.onUnmount?.(api);
+
       tippyInstance?.destroy();
+      tippyInstance = undefined;
+
+      disposeIcon?.();
+      disposeIcon = undefined;
+      iconElement.innerHTML = "";
+
       element.remove();
+      isMounted = false;
+    },
+    destroy: () => {
+      api.deregister();
+      unsubscribe();
     },
   };
 
-  element.onclick = () => state.onClick?.(api);
-  if (state.active || state.disabled) update(state);
+  element.addEventListener("click", () => {
+    const currentState = stateStore.get();
+    if (!currentState.disabled) currentState.onClick?.(api);
+  });
+
+  if (opts.autoRegister) {
+    api.register();
+  }
 
   return api;
 }

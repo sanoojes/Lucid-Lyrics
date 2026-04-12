@@ -4,6 +4,7 @@ import type {
   FullscreenState,
   NpvSettingsState,
   PageState,
+  NowPlayingBarState,
   WidgetState,
 } from "@/stores";
 import type { CacheSettings } from "@/stores/dev";
@@ -113,3 +114,8 @@ export const DEFAULT_NPV_SETTINGS = {
   cardMinHeight: 400,
   autoHideCardHeader: false,
 } satisfies NpvSettingsState;
+
+export const DEFAULT_NPB_SETTINGS: NowPlayingBarState = {
+  hideFullscreen: false,
+  hideSpotifyFullscreen: true,
+};

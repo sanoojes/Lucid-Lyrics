@@ -240,6 +240,11 @@ export type Dict = {
   "npv.openLyrics": string;
   "npv.closeLyrics": string;
   "npv.goToLyricsPage": string;
+  "nowPlayingBar.title": string;
+  "nowPlayingBar.hideSpotifyFullscreen": string;
+  "nowPlayingBar.hideSpotifyFullscreenDesc": string;
+  "nowPlayingBar.hideFullscreen": string;
+  "nowPlayingBar.hideFullscreenDesc": string;
   "page.title": string;
   "page.showCredits": string;
   "page.showCreditsDesc": string;

@@ -2,6 +2,7 @@ export * from "@/stores/background";
 export * from "@/stores/player";
 export * from "@/stores/widget";
 export * from "@/stores/npv";
+export * from "@/stores/npb";
 export * from "@/stores/page";
 export * from "@/context/LyricsRenderer";
 export * from "@/stores/lyrics";

@@ -9,6 +9,7 @@ import { SocialButtons } from "@/component/ui/button/SocialButtons";
 import { createEffect, createSignal, on, Show } from "solid-js";
 import { SettingsContext } from "@/component/settings/context";
 import WidgetSettings from "@/component/settings/section/Widget";
+import NowPlayingBarSettings from "@/component/settings/section/NowPlayingBar";
 import NowPlayingViewSettings from "@/component/settings/section/NowPlayingView";
 import BackgroundSettings from "@/component/settings/section/Background";
 import LyricsSettings from "@/component/settings/section/Lyrics";
@@ -82,6 +83,7 @@ export function SettingsModal() {
             <MainList searchQuery={searchQuery()}>
               <LanguageSettings />
               <WidgetSettings />
+              <NowPlayingBarSettings />
               <BackgroundSettings />
               <NowPlayingViewSettings />
               <PageSettings />

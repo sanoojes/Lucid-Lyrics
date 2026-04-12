@@ -5,6 +5,7 @@ import {
   resetWidget,
   resetPageState,
   resetProviders,
+  resetNPBState,
   resetNpvSettings,
 } from "@/stores";
 import { resetLocale, t } from "@/i18n";
@@ -23,6 +24,7 @@ export async function resetAllConfig() {
   try {
     resetBackground();
     resetWidget();
+    resetNPBState();
     resetNpvSettings();
     resetPageState();
     resetProviders();
