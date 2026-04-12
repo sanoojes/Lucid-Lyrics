@@ -94,7 +94,7 @@ function Lyrics(props: LyricsProps) {
             <Show when={!props.hideStatus}>
               <LyricsStatus
                 type="error"
-                message={response()?.message || t("lyrics.status.error")}
+                message={t("lyrics.status.error")}
               />
             </Show>
           </Match>

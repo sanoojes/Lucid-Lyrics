@@ -20,8 +20,6 @@ export type PageState = {
 
 export type FullscreenState = {
   widget: "hidden" | "show";
-  romanize: boolean;
-  romanize_position: RomanizePosition;
   showCredits: boolean;
   hideScrollbar: boolean;
   showControls: boolean;
@@ -95,10 +93,6 @@ export function resetFullscreenState() {
 
 export function updateFullscreenState(updater: (state: FullscreenState) => FullscreenState) {
   $fullscreen_state.set(updater($fullscreen_state.get()));
-}
-
-export function toggleFullscreenRomanize() {
-  updateFullscreenState((state) => ({ ...state, romanize: !state.romanize }));
 }
 
 export function setFullscreenRomanizePosition(position: RomanizePosition) {

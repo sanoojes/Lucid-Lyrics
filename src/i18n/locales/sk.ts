@@ -116,8 +116,6 @@ export const dict: Dict = {
   "fullscreen.hideScrollbarDesc": "Skryť posuvník textov piesne",
   "fullscreen.hideStatus": "Skryť stav",
   "fullscreen.hideStatusDesc": "Skryť stav textov piesne (bude nahradený widgetom)",
-  "fullscreen.romanizePosition": "Pozícia romanizácie",
-  "fullscreen.romanizePositionDesc": "Pozicia romanizovaného textu",
   "fullscreen.showControls": "Zobraziť ovládacie prvky",
   "fullscreen.showControlsDesc": "Zobraziť ovládacie prvky prehrávača v plávajúcej oblasti",
   "fullscreen.showCredits": "Zobraziť kredity",

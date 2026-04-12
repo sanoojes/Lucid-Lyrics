@@ -116,8 +116,6 @@ export const dict: Dict = {
   "fullscreen.hideScrollbarDesc": "Ocultar la barra de desplazamiento de las letras",
   "fullscreen.hideStatus": "Ocultar Estado",
   "fullscreen.hideStatusDesc": "Ocultar el estado de las letras (será reemplazado con widget)",
-  "fullscreen.romanizePosition": "Posición del Texto Romanizado",
-  "fullscreen.romanizePositionDesc": "Posición del texto romanizado respecto al original",
   "fullscreen.showControls": "Mostrar Controles",
   "fullscreen.showControlsDesc": "Mostrar controles del reproductor en el área flotante",
   "fullscreen.showCredits": "Mostrar Créditos",

@@ -57,20 +57,6 @@ function FullscreenSettings() {
           ]}
         />
       </SettingsRow>
-      <SettingsRow
-        label={t("fullscreen.romanizePosition")}
-        description={t("fullscreen.romanizePositionDesc")}
-      >
-        <Select
-          value={fullscreenState().romanize_position}
-          onChange={(v) => setFullscreenRomanizePosition(v as RomanizePosition)}
-          options={[
-            { label: t("position.bottom"), value: "bottom" },
-            { label: t("position.top"), value: "top" },
-            { label: t("position.replace"), value: "replace" },
-          ]}
-        />
-      </SettingsRow>
     </SettingsSection>
   );
 }

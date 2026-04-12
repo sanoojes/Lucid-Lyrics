@@ -87,8 +87,6 @@ export const DEFAULT_FULLSCREEN_STATE = {
   floatingPosition: "bottom",
   hideScrollbar: false,
   hideStatus: true,
-  romanize: false,
-  romanize_position: "replace",
   showControls: true,
   showCredits: true,
   widget: "show",

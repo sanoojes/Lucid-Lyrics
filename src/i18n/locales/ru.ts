@@ -115,8 +115,6 @@ export const dict: Dict = {
   "fullscreen.hideScrollbarDesc": "Скрыть полосу прокрутки текстов песен",
   "fullscreen.hideStatus": "Скрыть Статус",
   "fullscreen.hideStatusDesc": "Скрыть статус текстов песен (будет заменен виджетом)",
-  "fullscreen.romanizePosition": "Позиция Романизации",
-  "fullscreen.romanizePositionDesc": "Позиция романизированного текста",
   "fullscreen.showControls": "Показать Управление",
   "fullscreen.showControlsDesc": "Показать элементы управления проигрывателем в плавающей области",
   "fullscreen.showCredits": "Показать Титры",

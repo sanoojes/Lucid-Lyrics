@@ -115,8 +115,6 @@ export const dict: Dict = {
   "fullscreen.hideScrollbarDesc": "Hide the lyrics scrollbar",
   "fullscreen.hideStatus": "Hide Status",
   "fullscreen.hideStatusDesc": "Hide the lyrics status (will be replaced with widget)",
-  "fullscreen.romanizePosition": "Romanized Text Position",
-  "fullscreen.romanizePositionDesc": "Position of the romanized text relative to original",
   "fullscreen.showControls": "Show Controls",
   "fullscreen.showControlsDesc": "Show player controls in the floating area",
   "fullscreen.showCredits": "Show Credits",

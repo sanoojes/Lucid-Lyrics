@@ -270,8 +270,6 @@ export type Dict = {
   "fullscreen.showControlsDesc": string;
   "fullscreen.floatingPosition": string;
   "fullscreen.floatingPositionDesc": string;
-  "fullscreen.romanizePosition": string;
-  "fullscreen.romanizePositionDesc": string;
   "lyricsPage.toggleWidget": string;
   "lyricsPage.showWidget": string;
   "lyricsPage.hideWidget": string;

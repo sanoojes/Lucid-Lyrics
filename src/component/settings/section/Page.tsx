@@ -2,11 +2,9 @@ import { useStore } from "@nanostores/solid";
 import {
   $page_state,
   type Positions,
-  type RomanizePosition,
   setFloatingPosition,
   setHideScrollbar,
   setHideStatus,
-  setRomanizePosition,
   setShowControls,
   setShowCredits,
 } from "~/stores/page";
@@ -42,17 +40,6 @@ function PageSettings() {
             { label: t("position.top"), value: "top" },
             { label: t("position.left"), value: "left" },
             { label: t("position.right"), value: "right" },
-          ]}
-        />
-      </SettingsRow>
-      <SettingsRow label={t("page.romanizePosition")} description={t("page.romanizePositionDesc")}>
-        <Select
-          value={pageState().romanize_position}
-          onChange={(v) => setRomanizePosition(v as RomanizePosition)}
-          options={[
-            { label: t("position.bottom"), value: "bottom" },
-            { label: t("position.top"), value: "top" },
-            { label: t("position.replace"), value: "replace" },
           ]}
         />
       </SettingsRow>
