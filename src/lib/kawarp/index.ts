@@ -75,6 +75,7 @@ export class Kawarp {
   private lastFrameTime: number = 0;
   private accumulatedTime: number = 0;
   private isPlaying = false;
+  private isDisposed = false;
 
   // Transition state
   private isTransitioning = false;
@@ -346,10 +347,15 @@ export class Kawarp {
 
   // Image loading methods
   loadImage(src: string, crossOrigin: string | null = "anonymous"): Promise<void> {
+    if (this.isDisposed) return Promise.reject(new Error("Kawarp disposed"));
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = crossOrigin;
       img.onload = () => {
+        if (this.isDisposed || !this.sourceTexture) {
+          resolve();
+          return;
+        }
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.sourceTexture);
         this.gl.texImage2D(
           this.gl.TEXTURE_2D,
@@ -362,12 +368,19 @@ export class Kawarp {
         this.processNewImage();
         resolve();
       };
-      img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+      img.onerror = () => {
+        if (this.isDisposed) {
+          resolve();
+          return;
+        }
+        reject(new Error(`Failed to load image: ${src}`));
+      };
       img.src = src;
     });
   }
 
   loadImageElement(source: TexImageSource): void {
+    if (this.isDisposed) return;
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.sourceTexture);
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
@@ -381,6 +394,7 @@ export class Kawarp {
   }
 
   loadImageData(data: Uint8Array | Uint8ClampedArray, width: number, height: number): void {
+    if (this.isDisposed) return;
     this.gl.bindTexture(this.gl.TEXTURE_2D, this.sourceTexture);
     this.gl.texImage2D(
       this.gl.TEXTURE_2D,
@@ -401,12 +415,14 @@ export class Kawarp {
   }
 
   async loadBlob(blob: Blob): Promise<void> {
+    if (this.isDisposed) return;
     const bitmap = await createImageBitmap(blob);
     this.loadImageElement(bitmap);
     bitmap.close();
   }
 
   loadBase64(base64: string): Promise<void> {
+    if (this.isDisposed) return Promise.resolve();
     const src = base64.startsWith("data:") ? base64 : `data:image/png;base64,${base64}`;
     return this.loadImage(src);
   }
@@ -445,6 +461,7 @@ export class Kawarp {
    * This is the key optimization - blur only runs here, not every frame!
    */
   private processNewImage(): void {
+    if (this.isDisposed) return;
     // Swap album FBOs - current becomes the "from", we'll render "to" into next
     [this.currentAlbumFBO, this.nextAlbumFBO] = [this.nextAlbumFBO, this.currentAlbumFBO];
 
@@ -464,6 +481,7 @@ export class Kawarp {
    * Updates nextAlbumFBO in place without starting a transition
    */
   private reblurCurrentImage(): void {
+    if (this.isDisposed) return;
     this.blurSourceInto(this.nextAlbumFBO);
   }
 
@@ -471,6 +489,7 @@ export class Kawarp {
    * Blur the source texture into the target FBO (with tint applied before blur)
    */
   private blurSourceInto(targetFBO: Framebuffer): void {
+    if (this.isDisposed) return;
     const gl = this.gl;
 
     // Step 1: Apply tint to source texture → blurFBO1
@@ -512,6 +531,7 @@ export class Kawarp {
   }
 
   resize(): void {
+    if (this.isDisposed) return;
     const width = this.canvas.width;
     const height = this.canvas.height;
 
@@ -521,7 +541,7 @@ export class Kawarp {
   }
 
   start(): void {
-    if (this.isPlaying) return;
+    if (this.isDisposed || this.isPlaying) return;
     this.isPlaying = true;
     this.lastFrameTime = performance.now();
     requestAnimationFrame(this.renderLoop);
@@ -536,6 +556,7 @@ export class Kawarp {
   }
 
   renderFrame(time?: number): void {
+    if (this.isDisposed) return;
     const now = performance.now();
     if (time !== undefined) {
       this.render(time, now);
@@ -550,6 +571,7 @@ export class Kawarp {
 
   dispose(): void {
     this.stop();
+    this.isDisposed = true;
     const gl = this.gl;
 
     gl.deleteProgram(this.blurProgram);
@@ -570,7 +592,7 @@ export class Kawarp {
   }
 
   private renderLoop = (timestamp: DOMHighResTimeStamp): void => {
-    if (!this.isPlaying) return;
+    if (this.isDisposed || !this.isPlaying) return;
     const dt = (timestamp - this.lastFrameTime) / 1000;
     this.lastFrameTime = timestamp;
     this._animationSpeed += (this._targetAnimationSpeed - this._animationSpeed) * 0.05;
@@ -584,6 +606,7 @@ export class Kawarp {
    * Just: blend album FBOs → domain warp → output
    */
   private render(time: number, timestamp = performance.now()): void {
+    if (this.isDisposed) return;
     const gl = this.gl;
     const width = this.canvas.width;
     const height = this.canvas.height;
