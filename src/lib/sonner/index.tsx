@@ -12,7 +12,7 @@ export async function setupSonner() {
       () => (
         <Toaster
           theme="dark"
-          duration={50000}
+          duration={5000}
           visibleToasts={6}
           richColors={true}
           closeButton={true}
