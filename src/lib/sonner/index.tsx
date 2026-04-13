@@ -16,6 +16,8 @@ export async function setupSonner() {
           visibleToasts={6}
           richColors={true}
           closeButton={true}
+          position="bottom-center"
+          offset={(document.querySelector(".Root__now-playing-bar")?.clientHeight || 88) + 8}
         />
       ),
       root,
