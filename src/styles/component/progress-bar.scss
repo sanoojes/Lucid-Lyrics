@@ -1,0 +1,109 @@
+@use "../variables" as v;
+
+.player-progress {
+  display: flex;
+  align-items: center;
+  gap: v.$space-md;
+  padding: v.$space-xs 0;
+  height: 24px;
+  user-select: none;
+  margin: 8px 8px -8px 8px;
+
+  &__time {
+    font-size: 11px;
+    font-weight: v.$fw-medium;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.7);
+    min-width: 32px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #fff;
+    }
+
+    &--left {
+      text-align: left;
+    }
+    &--right {
+      text-align: right;
+    }
+  }
+
+  &__interactive-area {
+    flex: 1;
+    position: relative;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    &:hover,
+    &:active {
+      .player-progress__fill {
+        background-color: #fff;
+      }
+      .player-progress__thumb {
+        transform: scale(1);
+      }
+    }
+
+    &:active {
+      .player-progress__thumb {
+        transform: scale(1.25);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+
+  &__track {
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    pointer-events: none;
+    transform: translateX(calc(-100% + var(--_p, 0%)));
+    transition: transform var(--dur, 0s) linear;
+  }
+
+  &__thumb-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transform: translateX(calc(-100% + var(--_p, 0%)));
+    transition: transform var(--dur, 0s) linear;
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    margin-right: -6px;
+    margin-top: -6px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transform: scale(0);
+    transition:
+      transform 0.2s cubic-bezier(0.3, 0, 0, 1),
+      box-shadow 0.2s ease;
+  }
+}
