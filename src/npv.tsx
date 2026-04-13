@@ -62,9 +62,9 @@ export function setupNPV() {
     onRemove(dispose);
   });
 }
-function handleLyricsAutoToggle(sidebarEl: HTMLElement) {
-  let savedLyricsState = false;
 
+let savedLyricsState = false;
+function handleLyricsAutoToggle(sidebarEl: HTMLElement) {
   return observeElement(
     SELECTORS.INERT_SENSORS,
     (_, onInertRemove) => {
