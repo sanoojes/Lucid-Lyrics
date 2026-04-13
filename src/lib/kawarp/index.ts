@@ -416,9 +416,19 @@ export class Kawarp {
 
   async loadBlob(blob: Blob): Promise<void> {
     if (this.isDisposed) return;
-    const bitmap = await createImageBitmap(blob);
-    this.loadImageElement(bitmap);
-    bitmap.close();
+    try {
+      const bitmap = await createImageBitmap(blob);
+      if (this.isDisposed) {
+        bitmap.close();
+        return;
+      }
+      this.loadImageElement(bitmap);
+      bitmap.close();
+    } catch (error) {
+      if (!this.isDisposed) {
+        console.error("Failed to load Kawarp blob:", error);
+      }
+    }
   }
 
   loadBase64(base64: string): Promise<void> {
@@ -588,7 +598,11 @@ export class Kawarp {
     this.deleteFramebuffer(this.blurFBO2);
     this.deleteFramebuffer(this.currentAlbumFBO);
     this.deleteFramebuffer(this.nextAlbumFBO);
-    this.deleteFramebuffer(this.warpFBO);
+    if (this.warpFBO) this.deleteFramebuffer(this.warpFBO);
+    const ext = gl.getExtension("WEBGL_lose_context");
+    if (ext) {
+      ext.loseContext();
+    }
   }
 
   private renderLoop = (timestamp: DOMHighResTimeStamp): void => {

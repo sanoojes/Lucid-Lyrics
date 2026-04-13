@@ -8,7 +8,6 @@ const KawarpLayer = () => {
   let canvasRef!: HTMLCanvasElement;
   let containerRef!: HTMLDivElement;
   let kawarp: Kawarp | null = null;
-  let resizeObserver: ResizeObserver | null = null;
 
   const options = useStore($kawarp_options);
   const currentTrackImage = useStore($current_track_image);
@@ -40,7 +39,7 @@ const KawarpLayer = () => {
   onMount(() => {
     kawarp = new Kawarp(canvasRef, options());
 
-    resizeObserver = new ResizeObserver((entries) => {
+    const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         if (entry.target === containerRef) {
           const { width, height } = entry.contentRect;
@@ -58,6 +57,14 @@ const KawarpLayer = () => {
 
     kawarp.start();
     loadImage(activeSource());
+
+    onCleanup(() => {
+      resizeObserver.disconnect();
+      if (kawarp) {
+        kawarp.dispose();
+        kawarp = null;
+      }
+    });
   });
 
   createEffect(() => {
@@ -66,11 +73,6 @@ const KawarpLayer = () => {
 
   createEffect(() => {
     kawarp?.setOptions(options());
-  });
-
-  onCleanup(() => {
-    resizeObserver?.disconnect();
-    kawarp?.dispose();
   });
 
   return (
