@@ -105,6 +105,8 @@ const AnimatedLayer = () => {
   });
 
   onMount(() => {
+    let isDestroyed = false;
+
     const gl = canvasRef.getContext("webgl", {
       alpha: true,
       premultipliedAlpha: false,
@@ -244,6 +246,7 @@ const AnimatedLayer = () => {
     };
 
     const ro = new ResizeObserver((entries) => {
+      if (isDestroyed) return;
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
         setSize(width, height);
@@ -278,18 +281,21 @@ const AnimatedLayer = () => {
     let currentSource: string | Blob = "";
     let currentBlur = 0;
 
-    const loadImage = async (source: string | Blob, blurAmount: number) => {
+    const loadImage = async (source: string | Blob, blurAmount: number, signal: AbortSignal) => {
+      if (signal.aborted) return;
+
       if (source === currentSource && blurAmount === currentBlur) return;
       currentSource = source;
       currentBlur = blurAmount;
+
       if (source instanceof Blob) {
         try {
           const blurred = await generateBlurredCoverArt(source, blurAmount);
-          if (source === currentSource) {
-            updateTextureFromCanvas(blurred ?? createBlackOffscreenCanvas());
-          }
+          if (signal.aborted) return;
+
+          updateTextureFromCanvas(blurred ?? createBlackOffscreenCanvas());
         } catch {
-          if (source === currentSource) {
+          if (!signal.aborted) {
             updateTextureFromCanvas(createBlackOffscreenCanvas());
           }
         }
@@ -303,15 +309,17 @@ const AnimatedLayer = () => {
 
       if (canFetch) {
         try {
-          const response = await fetch(uri);
+          const response = await fetch(uri, { signal });
           const blob = await response.blob();
           const blurred = await generateBlurredCoverArt(blob, blurAmount);
-          if (uri === currentSource) {
-            updateTextureFromCanvas(blurred ?? createBlackOffscreenCanvas());
-          }
+
+          if (signal.aborted) return;
+          updateTextureFromCanvas(blurred ?? createBlackOffscreenCanvas());
           return;
-        } catch {
-          if (uri === currentSource) {
+        } catch (e) {
+          if (e instanceof Error && e.name === "AbortError") return; // Quietly ignore deliberate aborts
+
+          if (!signal.aborted) {
             updateTextureFromCanvas(createBlackOffscreenCanvas());
           }
           return;
@@ -321,35 +329,53 @@ const AnimatedLayer = () => {
       const img = new Image();
       img.crossOrigin = isSpotify || isData ? null : "anonymous";
       img.src = uri;
+
+      const onAbort = () => {
+        img.src = "";
+      };
+      signal.addEventListener("abort", onAbort, { once: true });
+
       img
         .decode?.()
         .then(() => {
-          if (uri !== currentSource) return;
-          generateBlurredCoverArt(img, blurAmount).then((result) => {
-            if (uri === currentSource) {
-              updateTextureFromCanvas(result ?? createBlackOffscreenCanvas());
-            }
-          });
+          if (signal.aborted) return null;
+          return generateBlurredCoverArt(img, blurAmount);
+        })
+        .then((result) => {
+          if (signal.aborted) return;
+          updateTextureFromCanvas(result ?? createBlackOffscreenCanvas());
         })
         .catch(() => {
-          if (uri === currentSource) {
+          if (!signal.aborted) {
             updateTextureFromCanvas(createBlackOffscreenCanvas());
           }
+        })
+        .finally(() => {
+          signal.removeEventListener("abort", onAbort);
         });
     };
 
     createEffect(() => {
+      if (isDestroyed) return;
       const source = activeSource();
       const blur = options().filter.blur;
+
+      const controller = new AbortController();
+
       if (source) {
-        loadImage(source, blur);
+        loadImage(source, blur, controller.signal);
       } else {
         currentSource = "";
         updateTextureFromCanvas(createBlackOffscreenCanvas());
       }
+
+      onCleanup(() => {
+        controller.abort();
+      });
     });
 
     createEffect(() => {
+      if (isDestroyed) return;
       const filter = options().filter;
       gl.uniform1f(uniforms.br, filter.brightness / 100);
       gl.uniform1f(uniforms.sa, filter.saturation / 100);
@@ -358,10 +384,12 @@ const AnimatedLayer = () => {
     });
 
     createEffect(() => {
+      if (isDestroyed) return;
       gl.uniform1f(uniforms.sc, options().scale / 100);
     });
 
     createEffect(() => {
+      if (isDestroyed) return;
       gl.uniform1f(uniforms.rs, options().rotationSpeed);
     });
 
@@ -373,6 +401,7 @@ const AnimatedLayer = () => {
     gl.uniform1f(uniforms.di, 0.008);
 
     const unsubscribe = Tempus.add((_time: number, deltaTime: number) => {
+      if (isDestroyed) return;
       const dt = deltaTime / 1000;
       time += dt;
       gl.uniform1f(uniforms.t, time);
@@ -388,12 +417,17 @@ const AnimatedLayer = () => {
     }, 1);
 
     onCleanup(() => {
+      isDestroyed = true;
       ro.disconnect();
       unsubscribe();
       gl.deleteProgram(program);
       gl.deleteBuffer(positionBuffer);
       gl.deleteTexture(texture);
       gl.deleteTexture(previousTexture);
+      const ext = gl.getExtension("WEBGL_lose_context");
+      if (ext) {
+        ext.loseContext();
+      }
     });
   });
 
