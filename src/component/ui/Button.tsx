@@ -20,7 +20,6 @@ type ButtonProps = ComponentProps<"button"> & {
   variant?: Variant;
   size?: Size;
   shape?: Shape;
-  iconSize?: number;
   active?: boolean;
   title?: string;
   hide?: boolean;
