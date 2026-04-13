@@ -33,7 +33,7 @@ async function App() {
         name: "i18n",
       },
       { fn: setupSonner, name: "toast" },
-      { fn: async () => await router.onReady(), name: "router" },
+      { fn: async () => await router.init(), name: "router" },
       { fn: setupPlayerButtons, name: "player" },
       { fn: setupNPV, name: "npv" },
       {

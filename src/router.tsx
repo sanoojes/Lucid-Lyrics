@@ -22,13 +22,13 @@ const router = new Router(BASE_ROUTE, {
         () => (
           <ErrorBoundary
             fallback={(err) => {
-              console.error(err);
+              logger.error("lyrics_page_error", err);
               toast.error(t("router.lyricsPageError"));
               return (
                 <ErrorPage
                   icon="error"
-                  title="Something went wrong !"
-                  message={`Failed to load lyrics page`}
+                  title="Something went wrong!"
+                  message="Failed to load lyrics page"
                   errorDetails={String(err)}
                   showRetry
                   onRetry={() => router.navigate("/")}
@@ -51,12 +51,14 @@ const router = new Router(BASE_ROUTE, {
   },
   "/preferences": {
     absolute: true,
+    selector:
+      ".main-view-container__scroll-node-child .x-settings-container, .main-view-container__scroll-node-child .x-settings-container",
     onMount: (el) => {
       const dispose = render(
         () => (
           <ErrorBoundary
             fallback={(err) => {
-              console.error(err);
+              logger.error("settings_error", err);
               toast.error(t("router.settingsError"));
               return null;
             }}
@@ -72,8 +74,6 @@ const router = new Router(BASE_ROUTE, {
         if (__LUCID_DEV_MODE__) logger.debug("Disposed: '/preferences'");
       };
     },
-    selector:
-      ".main-view-container__scroll-node-child .x-settings-container, .main-view-container__scroll-node-child .x-settings-container",
   },
 });
 
