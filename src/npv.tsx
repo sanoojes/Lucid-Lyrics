@@ -2,7 +2,7 @@ import "~/styles/npv.scss";
 
 import { render } from "solid-js/web";
 import { ErrorBoundary } from "solid-js";
-import { toast } from "solid-sonner";
+import { toast } from "~/lib/sonner";
 
 import { observeElement } from "~/lib/dom/observe";
 import NPVBackground from "~/component/ui/NPVBackground";

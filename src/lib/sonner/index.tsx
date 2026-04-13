@@ -1,5 +1,5 @@
 import "~/lib/sonner/styles.css";
-import { Toaster, toast as sonnerToast } from "solid-sonner";
+import { Toaster, toast as sonnerToast } from "~/lib/sonner/solid-sonner";
 import { logger } from "~/utils/logger";
 import { render } from "solid-js/web";
 export async function setupSonner() {
@@ -12,7 +12,7 @@ export async function setupSonner() {
       () => (
         <Toaster
           theme="dark"
-          duration={5000}
+          duration={50000}
           visibleToasts={6}
           richColors={true}
           closeButton={true}
