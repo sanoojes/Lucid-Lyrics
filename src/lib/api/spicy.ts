@@ -60,8 +60,8 @@ export async function sendSpicyRequest(queries: SpicyQuery[], authHeader?: strin
 async function executeFetch(baseUrl: string, queries: SpicyQuery[], auth: string | undefined) {
   const response = await fetch(`${baseUrl}/query`, {
     body: JSON.stringify({
-      client: { version },
       queries,
+      client: { version },
     }),
     headers: {
       "Content-Type": "application/json",

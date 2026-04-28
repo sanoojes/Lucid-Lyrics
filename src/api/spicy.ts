@@ -80,8 +80,8 @@ export async function _fetchSpicy(id: string): Promise<SpicyResponse> {
     {
       operation: "lyrics",
       variables: {
-        auth: "SpicyLyrics-WebAuth",
         id,
+        auth: "SpicyLyrics-WebAuth",
       },
     },
   ];
