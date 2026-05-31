@@ -1,6 +1,6 @@
 {
   "name": "Lucid Lyrics",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "private": true,
   "description": "A Powerful Lyrics Extension",
   "author": "Sanooj E Sanish <mail@sanooj.uk>",
@@ -15,7 +15,7 @@
   "type": "module",
   "scripts": {
     "sc": "bun --bun run spicetify-creator",
-    "dev": "bun run build:packages && bun --bun run spicetify-creator dev",
+    "dev": "bun run sync:spicy-obj-packer && bun run build:packages && bun --bun run spicetify-creator dev",
     "build:theme": "bun run build:packages && bun --bun run spicetify-creator build",
     "build": "bun run docs:build && bun run build:theme",
     "fmt": "oxfmt",
@@ -26,6 +26,7 @@
     "clean:spice": "spicetify-creator clean-spicetify --all",
     "build:packages": "bun --filter './packages/*' build",
     "update:packages": "bun run build:packages && bun scripts/update-packages.ts",
+    "sync:spicy-obj-packer": "bun run scripts/sync-spicy-unpacker.ts",
     "generate-release-artifacts": "bun run scripts/generate-release-artifacts.ts",
     "generate-links": "bun scripts/generate-jsdelivr-links.ts",
     "docs:dev": "vitepress dev docs",

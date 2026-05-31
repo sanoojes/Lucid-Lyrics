@@ -1,7 +1,9 @@
 import { sendSpicyRequest } from "~/lib/api/spicy";
 import type { APIResponse, FetchOptions, Lyrics } from "~/lib/api/types";
 import { getAuthToken } from "~/lib/spotify";
+import { SLObjPack } from "~/lib/spicy/objpack";
 
+const spicyPacker = new SLObjPack();
 export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyrics>> {
   try {
     const response = await _fetchSpicy(id);
@@ -17,12 +19,17 @@ export async function fetchSpicy({ id }: FetchOptions): Promise<APIResponse<Lyri
     }
 
     const {
-      result: { data: lyricData, httpStatus },
+      result: { data: unpackedData, httpStatus },
     } = queryResult;
+    let isMissing =
+      httpStatus === 404 || ("error" in unpackedData && unpackedData.error === "MISSING_LYRICS");
 
-    const isMissing =
-      httpStatus === 404 || ("error" in lyricData && lyricData.error === "MISSING_LYRICS");
+    if (isMissing) {
+      return { status: "missing_lyrics" };
+    }
 
+    const lyricData = spicyPacker.unpack(unpackedData) as Lyrics;
+    isMissing = lyricData === null || lyricData === undefined || lyricData === "";
     if (isMissing) {
       return { status: "missing_lyrics" };
     }
