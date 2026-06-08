@@ -11,3 +11,7 @@ precise timing adjustments – all while listening to your favorite tracks.
 ## 📄 License
 
 This project is licensed under the [GNU AGPLv3 License](LICENSE).
+
+> **Development & Contributions**
+>
+> The main development for this project happens on [GitLab](https://gitlab.com/sanoojes/lucid-lyrics).
