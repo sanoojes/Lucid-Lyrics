@@ -2,9 +2,20 @@
   {
     "name": "Lucid Lyrics",
     "description": "Yet another lyrics extension, with word synced lyrics, romanization support, and customizable display options.",
-    "preview": "https://cdn.statically.io/gl/sanoojes/lucid-lyrics@main/assets/preview.png",
+    "preview": "https://glcdn.githack.com/sanoojes/lucid-lyrics/-/raw/main/assets/preview.png",
     "main": "https://lucid-lyrics.sanooj.uk/spice/lucid-lyrics.js",
-    "readme": "https://cdn.statically.io/gl/sanoojes/lucid-lyrics@main/README.md",
-    "tags": ["lyrics", "romanization", "customization", "lucid"]
+    "readme": "https://glcdn.githack.com/sanoojes/lucid-lyrics/-/raw/main/README.md",
+    "tags": [
+      "lyrics",
+      "romanization",
+      "customization",
+      "lucid"
+    ],
+    "authors": [
+      {
+        "name": "Sachu",
+        "url": "https://gitlab.com/sanoojes"
+      }
+    ]
   }
 ]
