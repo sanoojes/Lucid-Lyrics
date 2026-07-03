@@ -243,7 +243,7 @@ function Toast(props: ToastProps) {
     if (props.icons?.loading) {
       return (
         <div
-          class={cn(classNames()?.loader, toastClassNames()?.loader, "sonner-loader")}
+          class={cn(classNames()?.loader, toastClassNames()?.loader, "lsonner-loader")}
           data-visible={toastType() === "loading"}
         >
           {props.icons.loading}
@@ -394,7 +394,7 @@ function Toast(props: ToastProps) {
         classNames()?.[toastType() as keyof ToastClassnames],
         toastClassNames()?.[toastType() as keyof ToastClassnames],
       )}
-      data-sonner-toast=""
+      data-lsonner-toast=""
       data-rich-colors={props.toast.richColors ?? props.defaultRichColors}
       data-styled={!(props.toast.jsx || props.toast.unstyled || props.unstyled)}
       data-mounted={mounted()}
@@ -817,8 +817,8 @@ function Toaster(props: ToasterProps) {
                   propsWithDefaults.dir === "auto" ? getDocumentDirection() : propsWithDefaults.dir
                 }
                 class={className()}
-                data-sonner-toaster
-                data-sonner-theme={actualTheme()}
+                data-lsonner-toaster
+                data-lsonner-theme={actualTheme()}
                 data-y-position={y}
                 data-x-position={x}
                 style={{
