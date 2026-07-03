@@ -12,7 +12,7 @@ export async function setupSonner() {
       () => (
         <Toaster
           theme="dark"
-          swipeDirections={['right' , 'bottom' ,'left']}
+          swipeDirections={["right", "bottom", "left"]}
           duration={5000}
           visibleToasts={6}
           richColors={true}
