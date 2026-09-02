@@ -16,8 +16,11 @@ const SpotifySettings = () => {
           variant="glass"
           onClick={showSettingsModal}
           shape="rounded"
-          innerHTML={CogwheelHTML + `<span>${t("settings.landing.configure")}</span>`}
-        />
+        >
+          {/* eslint-disable-next-line solid/no-innerhtml */}
+          <span aria-hidden="true" innerHTML={CogwheelHTML} style={{ display: "contents" }} />
+          <span>{t("settings.landing.configure")}</span>
+        </Button>
       </div>
     </label>
   );

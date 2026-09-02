@@ -45,6 +45,7 @@ export async function sendSpicyRequest(queries: SpicyQuery[], authHeader?: strin
       if (url === activeUrl) continue;
 
       try {
+        // oxlint-disable-next-line no-await-in-loop
         const result = await executeFetch(url, queries, authHeader);
         activeUrl = url;
         return result;

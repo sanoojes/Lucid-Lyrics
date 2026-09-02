@@ -1,7 +1,8 @@
-import { persistentJSON } from "~/utils/nanostores";
-import { getName } from "~/stores/persist";
 import { atom, computed } from "nanostores";
+
 import { DEFAULT_FULLSCREEN_STATE, DEFAULT_PAGE_STATE } from "~/constants";
+import { getName } from "~/stores/persist";
+import { persistentJSON } from "~/utils/nanostores";
 
 export type Positions = "top" | "bottom" | "left" | "right";
 
@@ -93,10 +94,6 @@ export function resetFullscreenState() {
 
 export function updateFullscreenState(updater: (state: FullscreenState) => FullscreenState) {
   $fullscreen_state.set(updater($fullscreen_state.get()));
-}
-
-export function setFullscreenRomanizePosition(position: RomanizePosition) {
-  updateFullscreenState((state) => ({ ...state, romanize_position: position }));
 }
 
 export function setFullscreenShowCredits(showCredits: boolean) {

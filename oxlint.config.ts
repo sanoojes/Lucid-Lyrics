@@ -7,6 +7,8 @@ export default defineConfig({
   categories: {},
   rules: {
     ...solid.rules,
+    "no-unassigned-vars": "off",
+    "unicorn/no-new-array": "off",
     "no-await-in-loop": "warn",
     "unicorn/prefer-array-find": "error",
     "unicorn/prefer-array-flat-map": "error",
