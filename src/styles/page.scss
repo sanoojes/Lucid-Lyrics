@@ -583,6 +583,9 @@ $floating-transition:
   }
 
   .line-wrapper.rtl .char {
+    display: inline;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
     background-image: linear-gradient(
       270deg,
       rgba(var(--lyrics-text-color), 0.85) var(--char-progress),
