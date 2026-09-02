@@ -1,4 +1,7 @@
 export type Dict = {
+  "pip.disable": string;
+  "pip.enable": string;
+  "pip.loading": string;
   "lyrics.status.missing": string;
   "lyrics.status.localSong": string;
   "lyrics.status.offline": string;

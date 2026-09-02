@@ -11,6 +11,7 @@ import { GITHUB_ISSUES_LINK } from "~/constants";
 import { dictResource, t } from "~/i18n";
 import { setupNPV } from "~/npv";
 import { setupFullscreen } from "~/fullscreen";
+import { setupPictureInPicture } from "~/picture-in-picture";
 
 App();
 
@@ -48,6 +49,12 @@ async function App() {
           setupFullscreen();
         },
         name: "cinema/fullscreen",
+      },
+      {
+        fn: async () => {
+          setupPictureInPicture();
+        },
+        name: "picture-in-picture",
       },
       {
         fn: () => preloadModules(["pinyin", "kuromoji", "kuroshiro", "cyrillic-romanization"]),

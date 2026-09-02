@@ -8,6 +8,7 @@ import type {
   WidgetState,
 } from "~/stores";
 import type { CacheSettings } from "~/stores/dev";
+import type { PictureInPictureState } from "~/stores/picture-in-picture";
 
 const customUrl = "https://picsum.photos/1920/1080";
 export const DEFAULT_BACKGROUND_STATE = {
@@ -82,6 +83,15 @@ export const DEFAULT_PAGE_STATE = {
   showCredits: true,
   widget: "show",
 } satisfies PageState;
+
+export const DEFAULT_PICTURE_IN_PICTURE_STATE = {
+  hideScrollbar: false,
+  hideStatus: true,
+  showControls: true,
+  showCredits: true,
+  widget: "show",
+  depthEffects: true,
+} satisfies PictureInPictureState;
 
 export const DEFAULT_FULLSCREEN_STATE = {
   floatingPosition: "bottom",
