@@ -1,7 +1,6 @@
 #sonner-root {
   position: absolute;
   z-index: 10000;
-  pointer-events: none;
 }
 
 #sonner-root [data-sonner-toaster] {

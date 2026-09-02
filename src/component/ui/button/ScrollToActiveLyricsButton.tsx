@@ -1,8 +1,9 @@
-import { useRenderer } from "~/context/LyricsRenderer";
-import { Button } from "~/component/ui/Button";
 import { AudioLines } from "lucide-solid";
+import { createEffect, createSignal, onCleanup } from "solid-js";
+
+import { Button } from "~/component/ui/Button";
+import { useRenderer } from "~/context/LyricsRenderer";
 import { t } from "~/i18n";
-import { createMemo, createSignal, onCleanup } from "solid-js";
 import debounce from "~/utils/debounce";
 type ScrollToActiveLyricsButtonProps = {
   isSmall?: boolean;
@@ -15,7 +16,7 @@ const ScrollToActiveLyricsButton = (props: ScrollToActiveLyricsButtonProps) => {
     setDebouncedVisible(visible);
   }, 200);
 
-  createMemo(() => {
+  createEffect(() => {
     updateVisibility(isActiveVisible());
   });
 

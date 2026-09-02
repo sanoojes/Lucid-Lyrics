@@ -1,4 +1,6 @@
 import { House, OctagonAlert, RefreshCw, SearchX } from "lucide-solid";
+import { Dynamic } from "solid-js/web";
+
 import { Button } from "~/component/ui/Button";
 import { t } from "~/i18n";
 
@@ -12,12 +14,15 @@ type ErrorPageProps = {
   onHome?: () => void;
 };
 function ErrorPage(props: ErrorPageProps) {
-  const Icon = props.icon === "404" ? SearchX : OctagonAlert;
   return (
     <div class="lucid-error-page">
       <div class="error-card">
         <div class="icon-wrapper">
-          <Icon size={48} strokeWidth={1.5} />
+          <Dynamic
+            component={props.icon === "404" ? SearchX : OctagonAlert}
+            size={48}
+            strokeWidth={1.5}
+          />
         </div>
         <h1 class="title">{props.title}</h1>
         <p class="message">{props.message}</p>

@@ -1,10 +1,10 @@
 type GithubProps = { size?: string | number };
-function Github({ size }: GithubProps) {
+function Github(props: GithubProps) {
   return (
     <svg
       role="img"
-      height={size ?? 16}
-      width={size ?? 16}
+      height={props.size ?? 16}
+      width={props.size ?? 16}
       fill="currentColor"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"

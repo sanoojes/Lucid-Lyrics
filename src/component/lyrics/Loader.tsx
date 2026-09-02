@@ -94,7 +94,7 @@ const LyricsLoader: Component = () => {
               <g transform={`translate(0, ${block.yOffset})`}>
                 {block.isInterlude ? (
                   <g class="interlude-squares">
-                    {interludeSquares.map((num) => (
+                    <For each={interludeSquares}>{(num) => (
                       <rect
                         x={num * (config.interludeSize + config.interludeGap)}
                         y="0"
@@ -102,7 +102,7 @@ const LyricsLoader: Component = () => {
                         height={config.interludeSize}
                         rx={config.radius}
                       />
-                    ))}
+                    )}</For>
                   </g>
                 ) : (
                   <g class="lyric-lines">

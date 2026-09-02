@@ -1,7 +1,8 @@
 import { useStore } from "@nanostores/solid";
-import { $current_track_image, $image_options } from "~/stores";
 import { Show, createEffect, createMemo, createSignal, onCleanup } from "solid-js";
+
 import { useLocalBlob } from "~/component/ui/background/hooks";
+import { $current_track_image, $image_options } from "~/stores";
 
 const ImageLayer = () => {
   const options = useStore($image_options);
@@ -57,8 +58,8 @@ const ImageLayer = () => {
     img.onload = () => {
       if (isCancelled) return;
 
-      const previous = currentUrl();
-      setPrevUrl(previous);
+      const staticPrevious = currentUrl();
+      setPrevUrl(staticPrevious);
       setCurrentUrl(targetUrl);
       setIsTransitioning(true);
 
@@ -67,8 +68,8 @@ const ImageLayer = () => {
           setPrevUrl(null);
           setIsTransitioning(false);
 
-          if (previous !== currentUrl()) {
-            revokeSafe(previous);
+          if (staticPrevious !== currentUrl()) {
+            revokeSafe(staticPrevious);
           }
         }
       }, 1200);

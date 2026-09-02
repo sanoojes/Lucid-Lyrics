@@ -1,6 +1,8 @@
 import "~/styles/component/lyrics-status.scss";
-import { Show } from "solid-js";
 import { CircleAlert, RefreshCw, SearchX, WifiOff } from "lucide-solid";
+import { Show } from "solid-js";
+import { Dynamic } from "solid-js/web";
+
 import { Button } from "~/component/ui/Button";
 import { t } from "~/i18n";
 
@@ -19,13 +21,11 @@ const ICONS = {
 };
 
 function LyricsStatus(props: StatusProps) {
-  const Icon = ICONS[props.type];
-
   return (
     <div class={`lyrics-status-container is-${props.type}`}>
       <div>
         <div aria-hidden="true">
-          <Icon size={48} strokeWidth={1.5} class="status-icon" />
+          <Dynamic component={ICONS[props.type]} size={48} strokeWidth={1.5} class="status-icon" />
         </div>
         <p class="status-message">{props.message}</p>
         <Show when={props.desc}>

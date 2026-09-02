@@ -1,3 +1,5 @@
+import Tempus from "@darkroom.engineering/tempus";
+import Lenis, { type LenisOptions, type ScrollCallback } from "lenis";
 import {
   type JSX,
   Show,
@@ -9,8 +11,6 @@ import {
   splitProps,
   useContext,
 } from "solid-js";
-import Tempus from "@darkroom.engineering/tempus";
-import Lenis, { type LenisOptions, type ScrollCallback } from "lenis";
 
 export type LenisContextValue = {
   readonly lenis: Lenis;
@@ -45,13 +45,13 @@ export function useLenis(callback?: ScrollCallback, priority = 0): () => Lenis {
 
   createEffect(() => {
     if (!callback) return;
-    const ctx = getContext();
+    const staticCtx = getContext();
 
-    ctx.addCallback(callback, priority);
-    callback(ctx.lenis);
+    staticCtx.addCallback(callback, priority);
+    callback(staticCtx.lenis);
 
     onCleanup(() => {
-      ctx.removeCallback(callback);
+      staticCtx.removeCallback(callback);
     });
   });
 
@@ -59,8 +59,11 @@ export function useLenis(callback?: ScrollCallback, priority = 0): () => Lenis {
 }
 
 export function useLenisContent(): () => HTMLDivElement | undefined {
-  const ctx = useContext(LenisContext) ?? rootLenisContext();
-  return () => ctx?.contentRef;
+  const localContext = useContext(LenisContext);
+  return () => {
+    const ctx = localContext ?? rootLenisContext();
+    return ctx?.contentRef;
+  };
 }
 
 export function SolidLenis(props: LenisProps) {

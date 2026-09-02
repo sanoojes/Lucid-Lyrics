@@ -1,7 +1,7 @@
-import { t } from "~/i18n";
-import { Tippy } from "~/component/ui/Tippy";
-import { showLinkAlert } from "~/lib/modal";
 import { CreditItem } from "~/component/lyrics/credits/CreditItem";
+import { Tippy } from "~/component/ui/Tippy";
+import { t } from "~/i18n";
+import { showLinkAlert } from "~/lib/modal";
 
 type AmllGithubCreditProps = {
   username: string;
@@ -10,9 +10,8 @@ type AmllGithubCreditProps = {
 export function AmllGithubCredit(props: AmllGithubCreditProps) {
   const handleClick = (e: Event) => {
     e.preventDefault();
-    showLinkAlert("github.com", () =>
-      window.open(`https://github.com/${props.username}`, "_blank", "noopener,noreferrer"),
-    );
+    const url = `https://github.com/${props.username}`;
+    showLinkAlert("github.com", () => window.open(url, "_blank", "noopener,noreferrer"));
   };
 
   return (

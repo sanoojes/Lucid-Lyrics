@@ -1,8 +1,9 @@
 import "~/styles/component/progress-bar.scss";
-import { $current_position, $player_data } from "~/stores";
 import { useStore } from "@nanostores/solid";
 import { createSignal, createEffect } from "solid-js";
+
 import { seekTo } from "~/lib/spotify/player";
+import { $current_position, $player_data } from "~/stores";
 
 const formatTime = (ms: number) => {
   const totalSeconds = Math.floor(ms / 1000);
@@ -26,7 +27,7 @@ const ProgressBar = () => {
   const [showRemaining, setShowRemaining] = createSignal(false);
   const [isSeeking, setIsSeeking] = createSignal(false);
 
-  let barRef: HTMLDivElement | undefined;
+  let barRef!: HTMLDivElement;
   let lastSeekTimestamp = 0;
 
   const duration = () => playerData()?.duration?.milliseconds ?? 0;
