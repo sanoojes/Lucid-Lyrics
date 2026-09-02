@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["@spicemod/creator/client", "solid-js", "./node_modules/gsap/types/index.d.ts"],
+    "types": ["@spicemod/creator/client", "solid-js"],
     "skipLibCheck": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
@@ -20,7 +20,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     // Paths
 
