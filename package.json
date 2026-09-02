@@ -67,6 +67,7 @@
     "armenian-transliteration": "workspace:*",
     "cyrillic-romanization": "^1.2.2",
     "esbuild": "^0.27.7",
+    "eslint-plugin-solid": "^0.17.0",
     "gothic-transliteration": "workspace:*",
     "greek-transliteration": "^2.0.0",
     "happy-dom": "^20.13.1",
