@@ -43,7 +43,13 @@ export function detectLanguage(text: string): SupportedLanguage | "unknown" {
   if (/[\u0c00-\u0c7f]/.test(text)) return "telugu";
   if (/[\u0d00-\u0d7f]/.test(text)) return "malayalam";
 
-  if (/[\u0400-\u04FF\u0500-\u052F\u2DE0-\u2DFF\uA640-\uA69F]{2,}/.test(text)) return "cyrillic";
+  if (
+    /[\u0411\u0412\u0413\u0414\u0416\u0417\u0418\u0419\u041b\u041f\u0423\u0424\u0426\u0427\u0428\u0429\u042a\u042b\u042d\u042e\u042f\u0431\u0432\u0433\u0434\u0436\u0437\u0438\u0439\u043b\u043f\u0443\u0444\u0446\u0447\u0448\u0449\u044a\u044b\u044d\u044e\u044f\u0500-\u052F\u2DE0-\u2DFF\uA640-\uA69F]/.test(
+      text,
+    ) ||
+    /[\u0400-\u04FF\u0500-\u052F\u2DE0-\u2DFF\uA640-\uA69F]{2,}/.test(text)
+  )
+    return "cyrillic";
   if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "greek";
   if (/[\u0530-\u058F]/.test(text)) return "armenian";
   if (/[\u10A0-\u10FF]/.test(text)) return "georgian";
