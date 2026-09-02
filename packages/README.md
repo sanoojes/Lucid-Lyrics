@@ -7,7 +7,7 @@ This directory contains third-party modules used by this project.
 | Module                | Version | npm                                                        |
 | --------------------- | ------- | ---------------------------------------------------------- |
 | pinyin                | 4.0.0   | [npm](https://www.npmjs.com/package/pinyin)                |
-| cyrillic-romanization | 1.1.8   | [npm](https://www.npmjs.com/package/cyrillic-romanization) |
+| cyrillic-romanization | 1.2.2   | [npm](https://www.npmjs.com/package/cyrillic-romanization) |
 | greek-transliteration | 2.0.0   | [npm](https://www.npmjs.com/package/greek-transliteration) |
 | kuroshiro             | 1.2.0   | [npm](https://www.npmjs.com/package/kuroshiro)             |
 
