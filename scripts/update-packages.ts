@@ -1,7 +1,7 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
-import { Buffer } from "node:buffer";
 import { $ } from "bun";
+import { Buffer } from "node:buffer";
+import { existsSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
 
 type ModuleMeta = {
   name: string;

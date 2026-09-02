@@ -1,13 +1,15 @@
 import { del, get, set, update } from "idb-keyval";
 import { compressToUTF16, decompressFromUTF16 } from "lz-string";
-import { createLogger } from "~/utils/logger";
-import type { APIResponse, FetchOptions, Lyrics, LyricsHandler } from "~/lib/api/types";
+
 import { processLyrics } from "~/language/processor";
 import { $providers } from "~/stores";
+import { $cache_settings } from "~/stores/dev";
 import { lyricsStore } from "~/stores/idb";
 import { setStorageStats } from "~/stores/storage";
-import { $cache_settings } from "~/stores/dev";
+import { createLogger } from "~/utils/logger";
+
 import type { LyricsProviders } from "~/constants";
+import type { APIResponse, FetchOptions, Lyrics, LyricsHandler } from "~/lib/api/types";
 
 const log = createLogger("api:main");
 const STATS_KEY = "__cache_stats__";
@@ -95,6 +97,7 @@ export class LyricsAPI {
 
       const cacheKey = this._getKey(providerId, options);
       log.debug(`trying_provider`, { options, providerId });
+      // oxlint-disable-next-line no-await-in-loop
       const response = await this._fetch(providerId, options, cacheKey);
 
       if (response.status === "success" || response.status === "parse_error") {

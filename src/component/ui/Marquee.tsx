@@ -20,7 +20,7 @@ function Marquee(props: MarqueeProps) {
 
   const restartAnimation = () => {
     wrapper.style.animation = "none";
-    wrapper.offsetHeight;
+    void wrapper.offsetHeight;
     wrapper.style.animation = "";
   };
 
