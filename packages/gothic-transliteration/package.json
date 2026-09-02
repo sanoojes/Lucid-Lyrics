@@ -17,9 +17,9 @@
   "dependencies": {},
   "devDependencies": {
     "@types/bun": "latest",
-    "rolldown": "^1.0.0-rc.10",
+    "rolldown": "^1.2.7",
     "unplugin-isolated-decl": "^0.15.7",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "typescript": "^5"
