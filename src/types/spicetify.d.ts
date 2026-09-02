@@ -846,7 +846,7 @@ declare namespace Spicetify {
    * Contains vast array of internal APIs.
    * Please explore in Devtool Console.
    */
-  const Platform: any;
+  const Platform: SpotifyPlatform;
   /**
    * Queue object contains list of queuing tracks,
    * history of played tracks and current track metadata.

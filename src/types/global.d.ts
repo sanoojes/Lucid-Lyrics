@@ -5,26 +5,26 @@ declare const __APP_VERSION__: string;
 declare const __IS_DEV__: boolean;
 declare const __LUCID_DEV_MODE__: boolean;
 
-type HistoryLocation = {
-  pathname: string;
-  search: string;
-  hash: string;
-  state: any;
-};
+// type HistoryLocation = {
+//   pathname: string;
+//   search: string;
+//   hash: string;
+//   state: any;
+// };
 
-type PlatformHistory = {
-  location: HistoryLocation;
-  entries: HistoryLocation[];
-  push: (location: string) => void;
-  listen: (cb: (location: HistoryLocation | undefined) => void) => void;
-};
+// type PlatformHistory = {
+//   location: HistoryLocation;
+//   entries: HistoryLocation[];
+//   push: (location: string) => void;
+//   listen: (cb: (location: HistoryLocation | undefined) => void) => void;
+// };
 
-declare namespace Spicetify {
-  interface Platform extends global.Spicetify.Platform {
-    History: PlatformHistory;
-    PlayerAPI: PlayerAPI;
-  }
-}
+// declare namespace Spicetify {
+//   interface Platform extends global.Spicetify.Platform {
+//     History: PlatformHistory;
+//     PlayerAPI: PlayerAPI;
+//   }
+// }
 
 type GlobalLucid = {
   setDevMode: (c: "on" | "off") => void;
