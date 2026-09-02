@@ -27,7 +27,7 @@ export type PictureInPictureState = {
 };
 
 export const $pip_state = persistentJSON<PictureInPictureState>(
-  getName("page-state"),
+  getName("picture-in-picture"),
   DEFAULT_PICTURE_IN_PICTURE_STATE,
 );
 export function resetPictureInPicture() {
@@ -54,6 +54,10 @@ export function setPIPShowControls(showControls: boolean) {
 
 export function setPIPHideStatus(hideStatus: boolean) {
   updatePictureInPicture((state) => ({ ...state, hideStatus }));
+}
+
+export function setPIPDepthEffects(depthEffects: boolean) {
+  updatePictureInPicture((state) => ({ ...state, depthEffects }));
 }
 
 export function togglePIPWidget() {

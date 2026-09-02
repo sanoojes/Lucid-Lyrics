@@ -1,7 +1,18 @@
 export type Dict = {
+  "pip.depthEffects": string;
+  "pip.depthEffectsDesc": string;
   "pip.disable": string;
   "pip.enable": string;
+  "pip.hideScrollbar": string;
+  "pip.hideScrollbarDesc": string;
+  "pip.hideStatus": string;
+  "pip.hideStatusDesc": string;
   "pip.loading": string;
+  "pip.showControls": string;
+  "pip.showControlsDesc": string;
+  "pip.showCredits": string;
+  "pip.showCreditsDesc": string;
+  "pip.title": string;
   "lyrics.status.missing": string;
   "lyrics.status.localSong": string;
   "lyrics.status.offline": string;
