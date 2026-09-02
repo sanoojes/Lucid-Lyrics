@@ -5,6 +5,7 @@ import {
   resetNPBState,
   resetNpvSettings,
   resetPageState,
+  resetPictureInPicture,
   resetProviders,
   resetWidget,
 } from "~/stores";
@@ -24,6 +25,7 @@ export async function resetAllConfig() {
   try {
     resetBackground();
     resetWidget();
+    resetPictureInPicture();
     resetNPBState();
     resetNpvSettings();
     resetPageState();

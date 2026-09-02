@@ -15,6 +15,7 @@ import BackgroundSettings from "~/component/settings/section/Background";
 import LyricsSettings from "~/component/settings/section/Lyrics";
 import PageSettings from "~/component/settings/section/Page";
 import FullscreenSettings from "~/component/settings/section/Fullscreen";
+import PictureInPictureSettings from "~/component/settings/section/PictureInPicture";
 import LanguageSettings from "~/component/settings/section/Language";
 import ResetSettings from "~/component/settings/section/Reset";
 import AdvancedSettings from "~/component/settings/section/Advanced";
@@ -88,6 +89,7 @@ export function SettingsModal() {
               <NowPlayingViewSettings />
               <PageSettings />
               <FullscreenSettings />
+              <PictureInPictureSettings />
               <LyricsSettings />
               <AdvancedSettings />
               <ResetSettings />
