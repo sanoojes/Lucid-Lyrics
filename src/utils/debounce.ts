@@ -1,6 +1,5 @@
 import { onCleanup, getOwner } from "solid-js";
 
-
 export type ScheduleCallback = <Args extends unknown[]>(
   callback: (...args: Args) => void,
   wait?: number,

@@ -5,12 +5,7 @@
     "preview": "https://glcdn.githack.com/sanoojes/lucid-lyrics/-/raw/main/assets/preview.png",
     "main": "https://lucid-lyrics.sanooj.uk/spice/lucid-lyrics.js",
     "readme": "https://glcdn.githack.com/sanoojes/lucid-lyrics/-/raw/main/README.md",
-    "tags": [
-      "lyrics",
-      "romanization",
-      "customization",
-      "lucid"
-    ],
+    "tags": ["lyrics", "romanization", "customization", "lucid"],
     "authors": [
       {
         "name": "Sachu",
