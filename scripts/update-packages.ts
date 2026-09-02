@@ -12,19 +12,14 @@ type ModuleMeta = {
 const JSDELIVR = "https://cdn.jsdelivr.net";
 
 const DOWNLOAD_MODULES: ModuleMeta[] = [
-  { name: "pinyin", url: `${JSDELIVR}/npm/pinyin@4.0.0/+esm`, version: "4.0.0" },
-  {
-    name: "cyrillic-romanization",
-    url: `${JSDELIVR}/npm/cyrillic-romanization@1.1.8/+esm`,
-    version: "1.1.8",
-  },
-  {
-    name: "greek-transliteration",
-    url: `${JSDELIVR}/npm/greek-transliteration@2.0.0/+esm`,
-    version: "2.0.0",
-  },
-  { name: "kuroshiro", url: `${JSDELIVR}/npm/kuroshiro@1.2.0/+esm`, version: "1.2.0" },
-];
+  { name: "pinyin", version: "4.0.0" },
+  { name: "cyrillic-romanization", version: "1.2.2" },
+  { name: "greek-transliteration", version: "2.0.0" },
+  { name: "kuroshiro", version: "1.2.0" },
+].map((mod) => ({
+  ...mod,
+  url: `${JSDELIVR}/npm/${mod.name}@${mod.version}/+esm`,
+}));
 
 const NPM_BASE_URL = "https://www.npmjs.com/package/";
 
@@ -49,12 +44,7 @@ async function downloadModule(name: string, url: string): Promise<void> {
   const sizeBytes = Buffer.byteLength(content, "utf8");
   const formattedSize = formatBytes(sizeBytes);
 
-  const packageDir = `packages`;
-  if (!existsSync(packageDir)) {
-    await mkdir(packageDir, { recursive: true });
-  }
-
-  const filePath = `${packageDir}/${name}.mjs`;
+  const filePath = `packages/${name}.mjs`;
   await writeFile(filePath, content);
 
   console.log(`\x1b[90m${formattedSize.padStart(10)}\x1b[0m \x1b[32mDone\x1b[0m`);
@@ -95,6 +85,12 @@ For inquiries regarding specific modules, please contact their respective mainta
 async function main() {
   console.log(`\x1b[34mFound ${DOWNLOAD_MODULES.length} modules to download...\x1b[0m`);
 
+  const packageDir = `packages`;
+  if (!existsSync(packageDir)) {
+    await mkdir(packageDir, { recursive: true });
+  }
+
+  // eslint-disable-next-line no-await-in-loop
   for (const mod of DOWNLOAD_MODULES) {
     await downloadModule(mod.name, mod.url);
   }
