@@ -43,3 +43,6 @@ interface Window {
   __lucid_lyrics_loaded?: boolean;
   LucidLyrics: GlobalLucid;
 }
+
+type Positions = "top" | "bottom" | "left" | "right";
+type DisplayState = "hidden" | "show";

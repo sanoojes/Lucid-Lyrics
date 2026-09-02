@@ -145,6 +145,11 @@ $floating-transition:
           transform: none;
         }
 
+        &__top-controls {
+          opacity: 0;
+          visibility: hidden;
+        }
+
         &--overlay {
           box-shadow: none;
         }
@@ -340,7 +345,6 @@ $floating-transition:
   justify-content: center;
 
   width: auto;
-  max-width: 70vw;
   padding: v.$space-md;
 
   background: v.$glass-bg;

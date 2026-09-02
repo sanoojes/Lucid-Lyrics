@@ -21,12 +21,12 @@ export interface TippyProps extends ComponentProps<"span"> {
 
 const ROOT_ID = "lucid-tippy-root";
 
-function getTippyRoot(): HTMLDivElement {
-  let root = document.getElementById(ROOT_ID) as HTMLDivElement;
+function getTippyRoot(doc: Document): HTMLDivElement {
+  let root = doc.getElementById(ROOT_ID) as HTMLDivElement;
   if (!root) {
-    root = document.createElement("div");
+    root = doc.createElement("div");
     root.id = ROOT_ID;
-    document.body.appendChild(root);
+    doc.body.appendChild(root);
   }
   return root;
 }
@@ -50,11 +50,14 @@ export function Tippy(props: TippyProps) {
   const updatePosition = () => {
     if (!triggerRef || !tooltipRef) return;
 
+    const targetDoc = triggerRef.ownerDocument;
+    const targetWindow = targetDoc.defaultView || window;
+
     const triggerRect = triggerRef.getBoundingClientRect();
     const tooltipRect = tooltipRef.getBoundingClientRect();
     const margin = local.offset ?? 8;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportWidth = targetWindow.innerWidth;
+    const viewportHeight = targetWindow.innerHeight;
 
     let placement = "top";
     let y = triggerRect.top - tooltipRect.height - margin;
@@ -75,17 +78,21 @@ export function Tippy(props: TippyProps) {
       x = viewportWidth - tooltipRect.width - margin;
     }
 
-    setCoords({ placement, x: x + window.scrollX, y: y + window.scrollY });
+    setCoords({ placement, x: x + targetWindow.scrollX, y: y + targetWindow.scrollY });
   };
 
   createEffect(() => {
-    if (visible()) {
+    if (visible() && triggerRef) {
+      const targetWindow = triggerRef.ownerDocument.defaultView || window;
+
       requestAnimationFrame(updatePosition);
-      window.addEventListener("scroll", updatePosition, { passive: true });
-      window.addEventListener("resize", updatePosition);
-    } else {
-      window.removeEventListener("scroll", updatePosition);
-      window.removeEventListener("resize", updatePosition);
+      targetWindow.addEventListener("scroll", updatePosition, { passive: true });
+      targetWindow.addEventListener("resize", updatePosition);
+
+      onCleanup(() => {
+        targetWindow.removeEventListener("scroll", updatePosition);
+        targetWindow.removeEventListener("resize", updatePosition);
+      });
     }
   });
 
@@ -102,8 +109,6 @@ export function Tippy(props: TippyProps) {
 
   onCleanup(() => {
     clearTimeout(timer);
-    window.removeEventListener("scroll", updatePosition);
-    window.removeEventListener("resize", updatePosition);
   });
 
   return (
@@ -117,7 +122,7 @@ export function Tippy(props: TippyProps) {
       {local.children}
 
       <Show when={visible() && local.title}>
-        <Portal mount={getTippyRoot()}>
+        <Portal mount={getTippyRoot(triggerRef?.ownerDocument ?? document)}>
           <div
             ref={tooltipRef}
             class="lucid-tippy"

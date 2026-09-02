@@ -4,12 +4,10 @@ import { DEFAULT_FULLSCREEN_STATE, DEFAULT_PAGE_STATE } from "~/constants";
 import { getName } from "~/stores/persist";
 import { persistentJSON } from "~/utils/nanostores";
 
-export type Positions = "top" | "bottom" | "left" | "right";
-
 export type RomanizePosition = "top" | "bottom" | "replace";
 
 export type PageState = {
-  widget: "hidden" | "show";
+  widget: DisplayState;
   romanize: boolean;
   romanize_position: RomanizePosition;
   showCredits: boolean;
@@ -20,7 +18,7 @@ export type PageState = {
 };
 
 export type FullscreenState = {
-  widget: "hidden" | "show";
+  widget: DisplayState;
   showCredits: boolean;
   hideScrollbar: boolean;
   showControls: boolean;

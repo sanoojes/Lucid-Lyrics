@@ -17,6 +17,7 @@ import { $lyrics_status, $page_mode, $page_state } from "~/stores";
 import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
 import { $installed_theme } from "~/stores/theme";
 import { LyricsRendererProvider } from "~/context/LyricsRenderer";
+import PIPToggleButton from "~/component/ui/button/PIPToggleButton";
 
 const LyricsPage = () => {
   const pageState = useStore($page_state);
@@ -68,6 +69,7 @@ const LyricsPage = () => {
             <RomanizeButton />
             <ScrollToActiveLyricsButton />
             <LocalTTMLButton />
+            <PIPToggleButton />
             <CinemaButton />
             <FullscreenButton />
           </div>

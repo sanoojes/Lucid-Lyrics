@@ -7,3 +7,4 @@ export * from "~/stores/page";
 export * from "~/context/LyricsRenderer";
 export * from "~/stores/lyrics";
 export * from "~/stores/storage";
+export * from "~/stores/picture-in-picture";

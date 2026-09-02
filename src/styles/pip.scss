@@ -1,0 +1,124 @@
+@use "./variables" as v;
+
+.pip-body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.pip-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  .lucid-contents {
+    will-change: transform;
+    transition: transform 0.35s v.$ease-out;
+
+    &.initial-pop {
+      transform: scale(0.86);
+    }
+
+    &.is-active {
+      transform: scale(0.98);
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 80;
+    border-radius: 0;
+    border: 1px solid transparent;
+    pointer-events: none;
+    transition:
+      inset 0.35s v.$ease-out,
+      border-radius 0.35s v.$ease-out,
+      border-color 0.2s v.$ease-fast,
+      box-shadow 0.35s v.$ease-out;
+  }
+
+  &.is-active {
+    &::before {
+      inset: v.$space-sm;
+      border-radius: v.$r-md;
+      border-color: v.$glass-bd;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .pip-topbar {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.pip-topbar {
+  -webkit-app-region: drag;
+  app-region: drag;
+  position: fixed;
+  inset: 0;
+  height: 24px;
+  width: 100%;
+  z-index: 99;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  padding: v.$space-md v.$space-md 0 0;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: opacity 0.2s v.$ease-fast;
+}
+
+.pip-close-btn {
+  --btn-size: 24px;
+  padding: v.$space-xs;
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.pip-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: v.$space-md;
+  background-color: v.$color-bg;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: v.$color;
+  transition: opacity 0.3s v.$ease-base;
+
+  &.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.pip-spinner {
+  width: v.$space-3xl;
+  height: v.$space-3xl;
+  border: 3px solid v.$glass-bd;
+  border-top-color: v.$color-accent;
+  border-radius: v.$r-full;
+  animation: pip-spin 1s linear infinite;
+}
+
+.pip-loading-text {
+  font-size: v.$fs-sm;
+  font-weight: v.$fw-medium;
+  color: v.$color-muted;
+  margin: 0;
+}
+
+@keyframes pip-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
