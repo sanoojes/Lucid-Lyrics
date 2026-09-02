@@ -1,4 +1,4 @@
-import type { Syllable, SyllableData, VocalPart } from "~/lib/api/types";
+import { useStore } from "@nanostores/solid";
 import {
   For,
   Show,
@@ -9,13 +9,15 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
-import { useLenis, useLenisContent } from "~/component/ui/Lenis";
-import { useStore } from "@nanostores/solid";
-import { $current_position, $romanize, $romanize_position, getBlurmap } from "~/stores";
-import { useRenderer } from "~/context/LyricsRenderer";
-import { SPACE_REGEX, splitGraphemes } from "~/lib/string";
-import { seekTo } from "~/lib/spotify/player";
+
 import { Interlude } from "~/component/lyrics/Interlude";
+import { useLenis, useLenisContent } from "~/component/ui/Lenis";
+import { useRenderer } from "~/context/LyricsRenderer";
+import { seekTo } from "~/lib/spotify/player";
+import { SPACE_REGEX, splitGraphemes } from "~/lib/string";
+import { $current_position, $romanize, $romanize_position, getBlurmap } from "~/stores";
+
+import type { Syllable, SyllableData, VocalPart } from "~/lib/api/types";
 
 export type SyllableLyricsProps = {
   lyrics: SyllableData;
@@ -122,7 +124,7 @@ function LeadRenderer(props: LeadRendererProps) {
       <For each={words()}>
         {(word, wordIdx) => {
           const wordSyllables = word.Syllables;
-          const isTrailing =
+          const isTrailing = () =>
             !wordSyllables[wordSyllables.length - 1].IsPartOfWord &&
             wordIdx() !== words().length - 1;
 
@@ -136,7 +138,7 @@ function LeadRenderer(props: LeadRendererProps) {
               classList={{
                 "has-romanized-bottom": showBottom() && hasRomanizedInWord(),
                 "has-romanized-top": showTop() && hasRomanizedInWord(),
-                "trailing-whitespace": isTrailing,
+                "trailing-whitespace": isTrailing(),
               }}
             >
               <For each={wordSyllables}>
@@ -158,16 +160,17 @@ function LeadRenderer(props: LeadRendererProps) {
                       <span class={`romanized-text at-${rProps.position}`}>
                         <For each={romanizedSplit()}>
                           {(char, charIdx) => {
-                            const charDuration =
-                              (syllable.EndTime * 1000 - syllable.StartTime * 1000) /
-                              romanizedSplit().length;
-                            const charStart = syllable.StartTime * 1000 + charIdx() * charDuration;
-                            const charEnd = charStart + charDuration;
-
                             const progress = createMemo(() => {
                               const status = props.lineStatus();
                               if (status === "past") return 100;
                               if (status === "upcoming") return 0;
+
+                              const charDuration =
+                                (syllable.EndTime * 1000 - syllable.StartTime * 1000) /
+                                romanizedSplit().length;
+                              const charStart =
+                                syllable.StartTime * 1000 + charIdx() * charDuration;
+                              const charEnd = charStart + charDuration;
 
                               const pos = props.getCurrentPos();
                               if (pos < charStart) return 0;

@@ -1,5 +1,3 @@
-import { lyricsResource, lyricsResourceAction } from "~/api/solid";
-import { t } from "~/i18n";
 import {
   type JSXElement,
   Match,
@@ -12,14 +10,16 @@ import {
   on,
 } from "solid-js";
 
-import LyricsLoader from "~/component/lyrics/Loader";
+import { lyricsResource, lyricsResourceAction } from "~/api/solid";
 import LineLyrics from "~/component/lyrics/line/LineLyrics";
-import StaticLyrics from "~/component/lyrics/static/StaticLyrics";
+import LyricsLoader from "~/component/lyrics/Loader";
+import LyricsCredits from "~/component/lyrics/LyricsCredits";
 import LyricsStatus from "~/component/lyrics/LyricsStatus";
+import StaticLyrics from "~/component/lyrics/static/StaticLyrics";
 import SyllableLyrics from "~/component/lyrics/syllable/SyllableLyrics";
 import SolidLenis from "~/component/ui/Lenis";
 import { useRenderer } from "~/context/LyricsRenderer";
-import LyricsCredits from "~/component/lyrics/LyricsCredits";
+import { t } from "~/i18n";
 
 type LyricsProps = {
   widgetHidden: boolean;
@@ -108,18 +108,22 @@ function Lyrics(props: LyricsProps) {
                 );
               }
 
+              let content: JSXElement;
+              switch (d.Type) {
+                case "Syllable":
+                  content = <SyllableLyrics lyrics={d} widgetHidden={props.widgetHidden} />;
+                  break;
+                case "Line":
+                  content = <LineLyrics lyrics={d} widgetHidden={props.widgetHidden} />;
+                  break;
+                case "Static":
+                  content = <StaticLyrics lyrics={d} />;
+                  break;
+              }
+
               return (
                 <LyricsSpacer>
-                  {(() => {
-                    switch (d.Type) {
-                      case "Syllable":
-                        return <SyllableLyrics lyrics={d} widgetHidden={props.widgetHidden} />;
-                      case "Line":
-                        return <LineLyrics lyrics={d} widgetHidden={props.widgetHidden} />;
-                      case "Static":
-                        return <StaticLyrics lyrics={d} />;
-                    }
-                  })()}
+                  {content}
                   <Show when={props.showCredits}>
                     <LyricsCredits lyrics={d} />
                   </Show>

@@ -1,12 +1,15 @@
+import { mergeProps } from "solid-js";
+
 type BrandProps = { size?: string | number };
 
-function Brand({ size = 16 }: BrandProps) {
+function Brand(_props: BrandProps) {
+  const props = mergeProps({ size: 16 }, _props);
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 32 32"
-      height={size}
-      width={size}
+      height={props.size}
+      width={props.size}
       fill="currentColor"
       class="lucide lucide-icon"
     >

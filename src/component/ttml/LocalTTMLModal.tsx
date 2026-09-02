@@ -1,10 +1,22 @@
 import "~/styles/modal/ttml-modal.scss";
-import { useDialog } from "~/lib/modal/component/Dialog";
-import { showAlert, showModal } from "~/lib/modal";
+import { useStore } from "@nanostores/solid";
 import { Check, Copy, Download, FileText, Music, Trash2, Upload, X } from "lucide-solid";
-import { Button } from "~/component/ui/Button";
 import { For, Show, createEffect, createMemo, createResource, createSignal } from "solid-js";
 import { createStore, reconcile } from "solid-js/store";
+
+import { lyricsResource, refetchLyrics } from "~/api/solid";
+import { SongInfo } from "~/component/ttml/SongInfo";
+import { TTMLItem } from "~/component/ttml/TTMLItem";
+import { Button } from "~/component/ui/Button";
+import SolidLenis from "~/component/ui/Lenis";
+import { Toggle } from "~/component/ui/Toggle";
+import { type LyricsProviders, getProviderName } from "~/constants";
+import { t } from "~/i18n";
+import { showAlert, showModal } from "~/lib/modal";
+import { useDialog } from "~/lib/modal/component/Dialog";
+import { toast } from "~/lib/sonner";
+import { build } from "~/lib/ttml/builder";
+import { $lyrics_status } from "~/stores";
 import {
   type LocalTTML,
   type SaveTTMLResult,
@@ -12,19 +24,8 @@ import {
   getAllLocalTTML,
   saveLocalTTML,
 } from "~/stores/idb/ttml";
-import { useStore } from "@nanostores/solid";
 import { $player_data } from "~/stores/player";
 import { $ttml_mode } from "~/stores/ttml";
-import { $lyrics_status } from "~/stores";
-import { t } from "~/i18n";
-import { type LyricsProviders, getProviderName } from "~/constants";
-import { toast } from "~/lib/sonner";
-import SolidLenis from "~/component/ui/Lenis";
-import { lyricsResource, refetchLyrics } from "~/api/solid";
-import { build } from "~/lib/ttml/builder";
-import { Toggle } from "~/component/ui/Toggle";
-import { SongInfo } from "~/component/ttml/SongInfo";
-import { TTMLItem } from "~/component/ttml/TTMLItem";
 
 const isValidTTMLFile = (file: File) =>
   file.name.endsWith(".ttml") || file.type === "application/ttml+xml" || file.type === "text/xml";
@@ -73,9 +74,8 @@ function LocalTTMLModal() {
   );
 
   const currentSongTTML = createMemo(() => {
-    const songId = currentSongId();
-    if (!songId) return null;
-    return ttmlList.find((f) => f.songId === songId);
+    if (!currentSongId()) return null;
+    return ttmlList.find((f) => f.songId === currentSongId());
   });
 
   const currentLyrics = createMemo(() => lyricsResource()?.data);
@@ -233,19 +233,21 @@ function LocalTTMLModal() {
   };
 
   const handleApplyTTML = (ttml: LocalTTML) => {
-    const songId = currentSongId();
-    if (!songId) return;
+    if (!currentSongId()) return;
 
     showAlert({
       icon: <Check size={24} />,
       onConfirm: async () => {
+        const currentId = currentSongId();
+        if (!currentId) return;
+
         copyToClipboard(ttml.rawTTML);
         const blob = new Blob([ttml.rawTTML], { type: "application/ttml+xml" });
         const file = new File([blob], `${ttml.songName}.ttml`, {
           type: "application/ttml+xml",
         });
         await saveLocalTTML(
-          songId,
+          currentId,
           currentSongName(),
           currentArtistNames(),
           currentAlbumName(),

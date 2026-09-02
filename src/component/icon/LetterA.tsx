@@ -1,12 +1,12 @@
 type LetterAProps = { size?: string | number };
 
-const LetterA = ({ size }: LetterAProps) => {
+const LetterA = (props: LetterAProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 750 900"
-      height={size ?? 24}
-      width={size ?? 24}
+      height={props.size ?? 24}
+      width={props.size ?? 24}
       fill="currentColor"
       aria-hidden="true"
       class="lucide lucide-icon"

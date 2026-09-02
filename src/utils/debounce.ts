@@ -1,5 +1,5 @@
-import { onCleanup } from "solid-js";
-import { getOwner } from "solid-js/web";
+import { onCleanup, getOwner } from "solid-js";
+
 
 export type ScheduleCallback = <Args extends unknown[]>(
   callback: (...args: Args) => void,

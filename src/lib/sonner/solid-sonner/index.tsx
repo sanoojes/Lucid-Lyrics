@@ -8,6 +8,7 @@
  */
 import "~/lib/sonner/solid-sonner/styles.scss";
 import type { JSX } from "solid-js";
+
 import {
   For,
   Show,
@@ -20,6 +21,7 @@ import {
   onMount,
 } from "solid-js";
 import { createStore, produce, reconcile } from "solid-js/store";
+
 import { CloseIcon, Loader, getAsset } from "~/lib/sonner/solid-sonner/assets";
 import { useIsDocumentHidden } from "~/lib/sonner/solid-sonner/primitives";
 import { ToastState, toast } from "~/lib/sonner/solid-sonner/state";
@@ -183,7 +185,7 @@ function Toast(props: ToastProps) {
   >(null);
   const [offsetBeforeRemove, setOffsetBeforeRemove] = createSignal(0);
   const [initialHeight, setInitialHeight] = createSignal(0);
-  let toastRef: HTMLLIElement | undefined;
+  let toastRef!: HTMLLIElement;
   let dragStartTime: Date | null = null;
   let closeTimerStartTimeRef = 0;
   let lastCloseTimerStartTimeRef = 0;
@@ -664,7 +666,7 @@ function Toaster(props: ToasterProps) {
   const [actualTheme, setActualTheme] = createSignal(initialTheme);
   const [lastFocusedElementRef, setLastFocusedElementRef] = createSignal<HTMLElement | null>(null);
   const [isFocusWithinRef, setIsFocusWithinRef] = createSignal(false);
-  let listRef: HTMLOListElement | undefined;
+  let listRef!: HTMLOListElement;
 
   const hotkeyLabel = () =>
     propsWithDefaults.hotkey.join("+").replace(/Key/g, "").replace(/Digit/g, "");

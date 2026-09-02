@@ -1,4 +1,5 @@
-import { type ComponentProps, splitProps } from "solid-js";
+import { type ComponentProps, splitProps, Show } from "solid-js";
+
 import "~/styles/component/button.scss";
 import { Tippy } from "~/component/ui/Tippy";
 
@@ -26,32 +27,37 @@ type ButtonProps = ComponentProps<"button"> & {
 };
 
 export function Button(props: ButtonProps) {
-  const [local, others] = splitProps(props, ["variant", "size", "shape", "class", "title", "hide"]);
-  if (local.hide !== undefined) return null;
+  const [local, others] = splitProps(props, [
+    "variant",
+    "size",
+    "shape",
+    "active",
+    "class",
+    "classList",
+    "title",
+    "hide",
+  ]);
 
-  const variant = () => local.variant ?? "default";
-  const size = () => local.size ?? "default";
-  const shape = () => local.shape ?? "default";
+  const buttonElement = (
+    <button
+      class="l-btn"
+      classList={{
+        [`l-btn--${local.variant ?? "default"}`]: true,
+        [`l-btn--${local.size ?? "default"}`]: true,
+        [`l-btn--${local.shape}`]: !!local.shape && local.shape !== "default",
+        "l-btn--active": !!local.active,
+        ...(local.class ? { [local.class]: true } : {}),
+        ...local.classList,
+      }}
+      {...others}
+    />
+  );
 
-  const classes = () =>
-    [
-      "l-btn",
-      `l-btn--${variant()}`,
-      `l-btn--${size()}`,
-      shape() !== "default" ? `l-btn--${shape()}` : "",
-      props.active ? `l-btn--active` : "",
-      local.class,
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-  if (local.title) {
-    return (
-      <Tippy title={local.title}>
-        <button class={classes()} {...others} />
-      </Tippy>
-    );
-  }
-
-  return <button class={classes()} {...others} />;
+  return (
+    <Show when={!local.hide}>
+      <Show when={local.title} fallback={buttonElement}>
+        {(title) => <Tippy title={title()}>{buttonElement}</Tippy>}
+      </Show>
+    </Show>
+  );
 }
