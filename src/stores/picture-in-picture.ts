@@ -17,6 +17,9 @@ export const $pip_window_state = atom<PipState>({
   window: null,
 });
 
+// TODO: add new VolumeControl themes
+export type VolumeControlState = DisplayState;
+
 export type PictureInPictureState = {
   widget: DisplayState;
   showCredits: boolean;
@@ -24,6 +27,7 @@ export type PictureInPictureState = {
   showControls: boolean;
   hideStatus: boolean;
   depthEffects: boolean;
+  volumeControl: VolumeControlState;
 };
 
 export const $pip_state = persistentJSON<PictureInPictureState>(
@@ -64,5 +68,12 @@ export function togglePIPWidget() {
   updatePictureInPicture((state) => ({
     ...state,
     widget: state.widget === "hidden" ? "show" : "hidden",
+  }));
+}
+
+export function togglePIPVolumeControl() {
+  updatePictureInPicture((state) => ({
+    ...state,
+    volumeControl: state.volumeControl === "hidden" ? "show" : "hidden",
   }));
 }

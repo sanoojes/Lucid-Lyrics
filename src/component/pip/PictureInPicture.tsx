@@ -16,7 +16,7 @@ import FullscreenButton from "~/component/ui/button/FullscreenButton";
 import TogglePIPWidgetButton from "~/component/ui/button/TogglePIPWidgetButton";
 import VolumeSlider from "~/component/ui/player/VolumeSlider";
 
-import { $pip_state, $lyrics_status, togglePIP } from "~/stores";
+import { $pip_state, $lyrics_status, togglePIP, $pip_window_state } from "~/stores";
 import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
 import { $installed_theme } from "~/stores/theme";
 import { LyricsRendererProvider } from "~/context/LyricsRenderer";
@@ -25,6 +25,7 @@ function PictureInPicture() {
   const [isLoading, setIsLoading] = createSignal(true);
   const [isInitialPop, setIsInitialPop] = createSignal(false);
 
+  const pipWindowState = useStore($pip_window_state);
   const pipState = useStore($pip_state);
   const installedTheme = useStore($installed_theme);
   const lyricsStatus = useStore($lyrics_status);
@@ -53,7 +54,7 @@ function PictureInPicture() {
     if (!isHovered()) {
       timeoutId = setTimeout(() => {
         setIsFloatingVisible(false);
-      }, 800);
+      }, 1000);
     }
   };
 
@@ -75,9 +76,15 @@ function PictureInPicture() {
       setIsLoading(false);
     }, 150);
 
+    const pipWindow = pipWindowState().window || document;
+
+    pipWindow.addEventListener("mousemove", resetTimeout);
+    pipWindow.addEventListener("touchstart", resetTimeout);
     resetTimeout();
 
     onCleanup(() => {
+      pipWindow.removeEventListener("mousemove", resetTimeout);
+      pipWindow.removeEventListener("touchstart", resetTimeout);
       clearTimeout(timer);
       clearTimeout(popTimerId);
       clearTimeout(timeoutId);
@@ -85,25 +92,13 @@ function PictureInPicture() {
   });
 
   return (
-    <main
-      id="lucid-page"
-      onMouseEnter={() => {
-        setIsHovered(true);
-        resetTimeout();
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        resetTimeout();
-      }}
-    >
+    <main id="lucid-page">
       <LyricsRendererProvider>
         <div
           class="pip-viewport"
           classList={{
             "is-active": pipState().depthEffects && isFloatingVisible(),
           }}
-          onMouseMove={resetTimeout}
-          onTouchStart={resetTimeout}
         >
           <div class="pip-topbar">
             <Button
@@ -122,13 +117,16 @@ function PictureInPicture() {
             class={`lucid-contents${themeClassname()}`}
             style={{ width: "100%" }}
             classList={{
+              "hide-cursor": !isFloatingVisible(),
               "hide-lyrics-status": hideStatus(),
               "hide-scrollbars": pipState().hideScrollbar,
               "is-active": pipState().depthEffects && isFloatingVisible(),
               "initial-pop": isInitialPop(),
             }}
           >
-            <VolumeSlider hidden={!isFloatingVisible()} />
+            <Show when={pipState().volumeControl !== "hidden"}>
+              <VolumeSlider hidden={!isFloatingVisible()} />
+            </Show>
             <div
               class="widget-area"
               classList={{
@@ -156,6 +154,14 @@ function PictureInPicture() {
             <div
               class={`floating-area on-bottom`}
               classList={{ "floating-area--hidden": !isFloatingVisible() }}
+              onMouseEnter={() => {
+                setIsHovered(true);
+                resetTimeout();
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                resetTimeout();
+              }}
             >
               <Show when={pipState().showControls}>
                 <Controls />

@@ -7,6 +7,7 @@ import {
   setPIPHideStatus,
   setPIPShowControls,
   setPIPShowCredits,
+  togglePIPVolumeControl,
 } from "~/stores/picture-in-picture";
 import { SettingsSection } from "~/component/settings/Section";
 import { SettingsRow } from "~/component/settings/Row";
@@ -35,6 +36,12 @@ function PictureInPictureSettings() {
       </SettingsRow>
       <SettingsRow label={t("pip.showControls")} description={t("pip.showControlsDesc")}>
         <Toggle checked={pipState().showControls} onChange={setPIPShowControls} />
+      </SettingsRow>
+      <SettingsRow label={t("pip.volumeControl")} description={t("pip.volumeControlDesc")}>
+        <Toggle
+          checked={pipState().volumeControl === "show"}
+          onChange={() => togglePIPVolumeControl()}
+        />
       </SettingsRow>
       <SettingsRow label={t("pip.depthEffects")} description={t("pip.depthEffectsDesc")}>
         <Toggle checked={pipState().depthEffects} onChange={setPIPDepthEffects} />

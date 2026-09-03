@@ -13,6 +13,7 @@ import {
   setFullscreenHideStatus,
   setFullscreenShowControls,
   setFullscreenShowCredits,
+  toggleFullscreenVolumeControl,
 } from "~/stores/page";
 
 function FullscreenSettings() {
@@ -46,6 +47,15 @@ function FullscreenSettings() {
         description={t("fullscreen.showControlsDesc")}
       >
         <Toggle checked={fullscreenState().showControls} onChange={setFullscreenShowControls} />
+      </SettingsRow>
+      <SettingsRow
+        label={t("fullscreen.volumeControl")}
+        description={t("fullscreen.volumeControlDesc")}
+      >
+        <Toggle
+          checked={fullscreenState().volumeControl === "show"}
+          onChange={() => toggleFullscreenVolumeControl()}
+        />
       </SettingsRow>
       <SettingsRow
         label={t("fullscreen.floatingPosition")}

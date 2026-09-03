@@ -24,6 +24,7 @@ export type FullscreenState = {
   showControls: boolean;
   floatingPosition: Positions;
   hideStatus: boolean;
+  volumeControl: DisplayState;
 };
 
 export type PageMode = "page" | "cinema" | "fullscreen";
@@ -118,5 +119,12 @@ export function toggleFullscreenWidget() {
   updateFullscreenState((state) => ({
     ...state,
     widget: state.widget === "hidden" ? "show" : "hidden",
+  }));
+}
+
+export function toggleFullscreenVolumeControl() {
+  updateFullscreenState((state) => ({
+    ...state,
+    volumeControl: state.volumeControl === "hidden" ? "show" : "hidden",
   }));
 }
