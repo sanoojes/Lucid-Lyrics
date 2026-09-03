@@ -157,6 +157,9 @@ export type Dict = {
   "settings.resetCompleteDesc": string;
   "settings.resetFailed": string;
   "settings.resetFailedDesc": string;
+  "settings.resetSection": string;
+  "settings.resetSectionConfirm": string;
+  "settings.resetSectionDesc": string;
   "settings.addProvider": string;
   "advanced.title": string;
   "advanced.devMode": string;

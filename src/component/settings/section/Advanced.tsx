@@ -7,6 +7,8 @@ import {
   $cache_settings,
   $developer_mode,
   $ttml_maker_mode,
+  resetDevMode,
+  resetTTMLMakerMode,
   setCacheTTL,
   setDevMode,
   setTTMLMakerMode,
@@ -23,6 +25,7 @@ import { logger } from "~/utils/logger";
 import { toast } from "~/lib/sonner";
 import { showAlert } from "~/lib/modal";
 import { resetLocalTTML } from "~/stores/idb/ttml";
+import { DEFAULT_CACHE_SETTINGS } from "~/constants";
 
 function AdvancedSettings() {
   const devMode = useStore($developer_mode);
@@ -79,8 +82,18 @@ function AdvancedSettings() {
     });
   };
 
+  const handleReset = () => {
+    resetDevMode();
+    resetTTMLMakerMode();
+    $cache_settings.set(DEFAULT_CACHE_SETTINGS);
+  };
+
   return (
-    <SettingsSection title={t("advanced.title")}>
+    <SettingsSection
+      title={t("advanced.title")}
+      onReset={handleReset}
+      resetLabel={t("advanced.title")}
+    >
       <SettingsRow label={t("advanced.devMode")} description={t("advanced.devModeDesc")}>
         <Toggle
           checked={devMode() === "on"}

@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/solid";
 import {
   $pip_state,
+  resetPictureInPicture,
   setPIPDepthEffects,
   setPIPHideScrollbar,
   setPIPHideStatus,
@@ -16,7 +17,11 @@ function PictureInPictureSettings() {
   const pipState = useStore($pip_state);
 
   return (
-    <SettingsSection title={t("pip.title")}>
+    <SettingsSection
+      title={t("pip.title")}
+      onReset={resetPictureInPicture}
+      resetLabel={t("pip.title")}
+    >
       <SettingsRow label={t("pip.showCredits")} description={t("pip.showCreditsDesc")}>
         <Toggle checked={pipState().showCredits} onChange={setPIPShowCredits} />
       </SettingsRow>

@@ -1,14 +1,18 @@
 import { Select } from "~/component/ui/Select";
 import { SettingsRow } from "~/component/settings/Row";
 import { SettingsSection } from "~/component/settings/Section";
-import { t, $locale, LANGUAGE_OPTIONS, type Locale, setLocale } from "~/i18n";
+import { t, $locale, LANGUAGE_OPTIONS, type Locale, setLocale, resetLocale } from "~/i18n";
 import { useStore } from "@nanostores/solid";
 
 function LanguageSettings() {
   const locale = useStore($locale);
 
   return (
-    <SettingsSection title={t("settings.language")}>
+    <SettingsSection
+      title={t("settings.language")}
+      onReset={resetLocale}
+      resetLabel={t("settings.language")}
+    >
       <SettingsRow label={t("settings.language")} description={t("settings.languageDesc")}>
         <Select
           value={locale()}

@@ -6,6 +6,8 @@ import {
   $custom_blurmap,
   $providers,
   type BlurmapMode,
+  resetBlurmap,
+  resetProviders,
   setBlurmapMode,
   setCustomBlurmap,
 } from "~/stores/lyrics";
@@ -14,7 +16,12 @@ import { SortableList } from "~/component/ui/SortableList";
 import { t } from "~/i18n";
 import { Select } from "~/component/ui/Select";
 import { Slider } from "~/component/ui/Slider";
-import { ALL_PROVIDERS, type LyricsProviders, getProviderName } from "~/constants";
+import {
+  ALL_PROVIDERS,
+  DEFAULT_PAGE_STATE,
+  type LyricsProviders,
+  getProviderName,
+} from "~/constants";
 import { $page_state, setRomanizePosition, type RomanizePosition } from "~/stores";
 
 const BLURMAP_OPTIONS: { label: string; value: BlurmapMode }[] = [
@@ -61,8 +68,14 @@ function LyricsSettings() {
     $providers.set([...providerList(), id as LyricsProviders]);
   };
 
+  const handleReset = () => {
+    resetBlurmap();
+    resetProviders();
+    setRomanizePosition(DEFAULT_PAGE_STATE.romanize_position);
+  };
+
   return (
-    <SettingsSection title={t("lyrics.title")}>
+    <SettingsSection title={t("lyrics.title")} onReset={handleReset} resetLabel={t("lyrics.title")}>
       <SettingsRow label={t("page.romanizePosition")} description={t("page.romanizePositionDesc")}>
         <Select
           value={pageState().romanize_position}

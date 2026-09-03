@@ -4,6 +4,7 @@ import { Slider } from "~/component/ui/Slider";
 import { SettingsRow } from "~/component/settings/Row";
 import {
   $npv_state,
+  resetNpvSettings,
   setAutoHideCardHeader,
   setCardHeightPercent,
   setCardMinHeight,
@@ -17,7 +18,7 @@ function NowPlayingViewSettings() {
   const npvSettings = useStore($npv_state);
 
   return (
-    <SettingsSection title={t("npv.title")}>
+    <SettingsSection title={t("npv.title")} onReset={resetNpvSettings} resetLabel={t("npv.title")}>
       <SettingsRow label={t("npv.hideBackground")} description={t("npv.hideBackgroundDesc")}>
         <Toggle checked={npvSettings().hideBackground} onChange={setHideBackground} />
       </SettingsRow>
