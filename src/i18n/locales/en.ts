@@ -49,6 +49,13 @@ export const dict: Dict = {
   "backup.importPaste": "Paste from Clipboard",
   "backup.importPasteSuccess": "Pasted from clipboard",
   "backup.importSuccess": "Settings Imported",
+  "backup.migrate": "Migrate",
+  "backup.migrateVersionDesc":
+    "This config is from an older version. Missing settings will be merged from your current config.",
+  "backup.migrateVersionTitle": "Import older config?",
+  "backup.migratedMissingDesc":
+    "Migrated automatically — some newer settings were missing and filled from your current config.",
+  "backup.migratedSuccess": "Config Migrated",
   "backup.title": "Backup",
   "bg.albumArt": "Album Art",
   "bg.backward": "Backward",
@@ -127,7 +134,9 @@ export const dict: Dict = {
   "common.returnHome": "Return Home",
   "common.tryAgain": "Try Again",
   "configImport.empty": "The config is empty - paste or open a config file first",
+  "configImport.invalid": "Invalid config - cannot be imported",
   "configImport.jsonSyntaxError": "Invalid JSON - check for missing commas or brackets",
+  "configImport.migratable": "Migratable - missing settings will be filled from your current config",
   "configImport.valid": "Valid config - ready to import",
   "fullscreen.enter": "Enter fullscreen",
   "fullscreen.floatingPosition": "Floating Control Position",

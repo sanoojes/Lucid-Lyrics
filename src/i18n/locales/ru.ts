@@ -49,6 +49,13 @@ export const dict: Dict = {
   "backup.importPaste": "Вставить из буфера обмена",
   "backup.importPasteSuccess": "Вставлено из буфера обмена",
   "backup.importSuccess": "Настройки импортированы",
+  "backup.migrate": "Мигрировать",
+  "backup.migrateVersionDesc":
+    "Эта конфигурация из более старой версии. Отсутствующие настройки будут взяты из вашей текущей конфигурации.",
+  "backup.migrateVersionTitle": "Импортировать более старую конфигурацию?",
+  "backup.migratedMissingDesc":
+    "Мигрировано автоматически — некоторые новые настройки отсутствовали и были взяты из текущей конфигурации.",
+  "backup.migratedSuccess": "Конфигурация мигрирована",
   "backup.title": "Резервное копирование",
   "bg.albumArt": "Обложка альбома",
   "bg.backward": "Назад",
@@ -127,7 +134,9 @@ export const dict: Dict = {
   "common.returnHome": "Вернуться на главную",
   "common.tryAgain": "Попробовать снова",
   "configImport.empty": "Конфигурация пуста - сначала вставьте её или откройте файл",
+  "configImport.invalid": "Неверная конфигурация - невозможно импортировать",
   "configImport.jsonSyntaxError": "Неверный JSON - проверьте пропущенные запятые или скобки",
+  "configImport.migratable": "Можно мигрировать - недостающие настройки будут взяты из текущей конфигурации",
   "configImport.valid": "Конфигурация валидна - готова к импорту",
   "fullscreen.enter": "Полноэкранные тексты",
   "fullscreen.floatingPosition": "Позиция Плавающего Управления",

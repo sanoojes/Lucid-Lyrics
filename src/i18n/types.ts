@@ -201,6 +201,11 @@ export type Dict = {
   "backup.importPaste": string;
   "backup.importPasteSuccess": string;
   "backup.importSuccess": string;
+  "backup.migrate": string;
+  "backup.migrateVersionDesc": string;
+  "backup.migrateVersionTitle": string;
+  "backup.migratedMissingDesc": string;
+  "backup.migratedSuccess": string;
   "advanced.clearCacheSuccess": string;
   "advanced.clearCacheError": string;
   "advanced.clearCacheConfirm": string;
@@ -314,7 +319,9 @@ export type Dict = {
   "lyricsPage.hideWidget": string;
   "cinema.enter": string;
   "configImport.empty": string;
+  "configImport.invalid": string;
   "configImport.jsonSyntaxError": string;
+  "configImport.migratable": string;
   "configImport.valid": string;
   "fullscreen.enter": string;
   "ttml.upload": string;
