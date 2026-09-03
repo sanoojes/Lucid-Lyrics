@@ -19,6 +19,7 @@ import PictureInPictureSettings from "~/component/settings/section/PictureInPict
 import LanguageSettings from "~/component/settings/section/Language";
 import ResetSettings from "~/component/settings/section/Reset";
 import AdvancedSettings from "~/component/settings/section/Advanced";
+import BackupSettings from "~/component/settings/section/Backup";
 import MainList from "~/component/settings/MainList";
 import SolidLenis from "~/component/ui/Lenis";
 import { APP_NAME, APP_VERSION } from "~/constants";
@@ -92,6 +93,7 @@ export function SettingsModal() {
               <PictureInPictureSettings />
               <LyricsSettings />
               <AdvancedSettings />
+              <BackupSettings />
               <ResetSettings />
             </MainList>
             <Show when={searchQuery().trim() === ""}>

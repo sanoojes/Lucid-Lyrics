@@ -125,7 +125,14 @@ export const PictureInPictureSchema = object({
   depthEffects: boolean(),
 });
 
-export const BlurmapModeSchema = picklist(["default", "minimal", "smooth", "heavy", "none", "custom"]);
+export const BlurmapModeSchema = picklist([
+  "default",
+  "minimal",
+  "smooth",
+  "heavy",
+  "none",
+  "custom",
+]);
 export const CustomBlurmapSchema = array(number());
 export const ProvidersSchema = array(picklist(["user", "spicy", "amll", "lrclib", "spotify"]));
 
