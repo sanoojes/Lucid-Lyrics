@@ -7,8 +7,12 @@
   height: 100%;
 
   .lyrics-area {
-    --top-pad: max(64px, 8vh);
-    // --bottom-pad: max(64px, 8vh);
+    --bottom-pad: 42cqh;
+
+    &.widget-hidden {
+      --top-pad: max(64px, 8vh);
+      --bottom-pad: 62cqh;
+    }
   }
 }
 
