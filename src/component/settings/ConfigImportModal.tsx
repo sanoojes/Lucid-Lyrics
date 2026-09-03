@@ -46,10 +46,10 @@ function ConfigImportModal() {
       if (text) {
         setJson(text);
         dismissError();
-        toast.success(t("advanced.importPasteSuccess"));
+        toast.success(t("backup.importPasteSuccess"));
       }
     } catch {
-      toast.error(t("advanced.copyFailed"));
+      toast.error(t("backup.copyFailed"));
     }
   };
 
@@ -73,7 +73,7 @@ function ConfigImportModal() {
     if (state.state !== "valid") {
       setShowErrors(true);
       restartErrorAnimation();
-      toast.error(t("advanced.importFailed"), {
+      toast.error(t("backup.importFailed"), {
         id: CONFIG_IMPORT_ERROR_TOAST,
         description: state.state === "empty" ? t("configImport.empty") : state.message,
       });
@@ -84,11 +84,11 @@ function ConfigImportModal() {
 
     const result = importConfig(json());
     if (result.success) {
-      toast.success(t("advanced.importSuccess"));
+      toast.success(t("backup.importSuccess"));
       close();
     } else {
-      toast.error(t("advanced.importFailed"), {
-        description: t("advanced.importFailedDesc"),
+      toast.error(t("backup.importFailed"), {
+        description: t("backup.importFailedDesc"),
       });
     }
   };
@@ -114,7 +114,7 @@ function ConfigImportModal() {
   return (
     <div class="settings-modal l-config-import">
       <header>
-        <h2 class="title">{t("advanced.importConfig")}</h2>
+        <h2 class="title">{t("backup.importConfig")}</h2>
         <Button onClick={close} variant="ghost" size="icon" shape="rounded">
           <X size={18} />
         </Button>
@@ -122,15 +122,15 @@ function ConfigImportModal() {
 
       <div class="content">
         <div class="l-config-import__actions-wrapper">
-          <p class="l-config-import__desc">{t("advanced.importEditDesc")}</p>
+          <p class="l-config-import__desc">{t("backup.importEditDesc")}</p>
           <div class="l-config-import__actions">
             <Button variant="outline" size="sm" onClick={handlePaste}>
               <ClipboardPaste size={14} />
-              {t("advanced.importPaste")}
+              {t("backup.importPaste")}
             </Button>
             <Button variant="outline" size="sm" onClick={() => fileInputRef?.click()}>
               <FileBraces size={14} />
-              {t("advanced.importOpenFile")}
+              {t("backup.importOpenFile")}
             </Button>
             <input
               ref={fileInputRef}
@@ -159,7 +159,7 @@ function ConfigImportModal() {
               dismissError();
             }}
             onKeyDown={handleKeyDown}
-            placeholder={t("advanced.importEditPlaceholder")}
+            placeholder={t("backup.importEditPlaceholder")}
             spellcheck={false}
           />
           <Show when={validation().state !== "empty"}>
@@ -192,7 +192,7 @@ function ConfigImportModal() {
           </Button>
           <Button shape="rounded" variant="glass" onClick={handleImport}>
             <Import size={16} />
-            {t("advanced.importConfig")}
+            {t("backup.importConfig")}
           </Button>
         </footer>
       </div>
