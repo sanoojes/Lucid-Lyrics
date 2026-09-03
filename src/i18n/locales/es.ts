@@ -260,6 +260,10 @@ export const dict: Dict = {
     "Esto restaurará todos los ajustes a sus valores predeterminados y eliminará tus letras locales e imágenes.",
   "settings.resetFailed": "Restablecimiento fallido",
   "settings.resetFailedDesc": "Ocurrió un error al restablecer",
+  "settings.resetSection": "Restablecer sección {{section}}",
+  "settings.resetSectionConfirm": "¿Restablecer los ajustes de {{section}}?",
+  "settings.resetSectionDesc":
+    "Esto restaurará los ajustes de esta sección a sus valores predeterminados.",
   "settings.resetting": "Restableciendo...",
   "settings.resettingDesc": "Borrando caché y restableciendo ajustes",
   "settings.searchPlaceholder": "Buscar ajustes...",

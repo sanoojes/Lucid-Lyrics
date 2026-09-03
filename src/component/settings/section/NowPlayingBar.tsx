@@ -1,7 +1,12 @@
 import { useStore } from "@nanostores/solid";
 import { Toggle } from "~/component/ui/Toggle";
 import { SettingsRow } from "~/component/settings/Row";
-import { $npb_state, setHideFullscreenBtn, setHideSpotifyFullscreenBtn } from "~/stores";
+import {
+  $npb_state,
+  resetNPBState,
+  setHideFullscreenBtn,
+  setHideSpotifyFullscreenBtn,
+} from "~/stores";
 import { SettingsSection } from "~/component/settings/Section";
 import { t } from "~/i18n";
 
@@ -9,7 +14,11 @@ function NowPlayingBarSettings() {
   const nowPlayingBarSettings = useStore($npb_state);
 
   return (
-    <SettingsSection title={t("nowPlayingBar.title")}>
+    <SettingsSection
+      title={t("nowPlayingBar.title")}
+      onReset={resetNPBState}
+      resetLabel={t("nowPlayingBar.title")}
+    >
       <SettingsRow
         label={t("nowPlayingBar.hideSpotifyFullscreen")}
         description={t("nowPlayingBar.hideSpotifyFullscreenDesc")}

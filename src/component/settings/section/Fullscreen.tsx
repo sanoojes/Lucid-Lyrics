@@ -7,7 +7,7 @@ import { Toggle } from "~/component/ui/Toggle";
 import { t } from "~/i18n";
 import {
   $fullscreen_state,
-  type Positions,
+  resetFullscreenState,
   setFullscreenFloatingPosition,
   setFullscreenHideScrollbar,
   setFullscreenHideStatus,
@@ -19,7 +19,11 @@ function FullscreenSettings() {
   const fullscreenState = useStore($fullscreen_state);
 
   return (
-    <SettingsSection title={t("fullscreen.title")}>
+    <SettingsSection
+      title={t("fullscreen.title")}
+      onReset={resetFullscreenState}
+      resetLabel={t("fullscreen.title")}
+    >
       <SettingsRow
         label={t("fullscreen.showCredits")}
         description={t("fullscreen.showCreditsDesc")}

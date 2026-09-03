@@ -4,6 +4,7 @@ import { Select } from "~/component/ui/Select";
 import { SettingsRow } from "~/component/settings/Row";
 import {
   $widget,
+  resetWidget,
   setCenterText,
   setHideAlbum,
   setHideArtist,
@@ -26,7 +27,7 @@ function WidgetSettings() {
   ];
 
   return (
-    <SettingsSection title={t("widget.title")}>
+    <SettingsSection title={t("widget.title")} onReset={resetWidget} resetLabel={t("widget.title")}>
       <SettingsRow label={t("widget.variant")} description={t("widget.chooseStyle")}>
         <Select
           value={widget().variant}

@@ -12,6 +12,7 @@ import {
   $background,
   $bg_mode,
   $kawarp_options,
+  resetBackground,
   updateAnimatedFilter,
   updateAnimatedOptions,
   updateBackground,
@@ -77,7 +78,7 @@ function BackgroundSettings() {
   const kawarpOptions = useStore($kawarp_options);
 
   return (
-    <SettingsSection title={t("bg.title")}>
+    <SettingsSection title={t("bg.title")} onReset={resetBackground} resetLabel={t("bg.title")}>
       <SettingsRow label={t("bg.mode")}>
         <Select
           value={mode()}
