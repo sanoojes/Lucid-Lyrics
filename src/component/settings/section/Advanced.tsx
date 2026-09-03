@@ -175,13 +175,13 @@ function AdvancedSettings() {
       </SettingsRow>
       <SettingsRow label={t("advanced.exportConfig")} description={t("advanced.exportConfigDesc")}>
         <div class="adv-settings__cache-row">
-          <Button variant="outline" size="sm" onClick={handleExportConfirm}>
-            <Download size={16} />
-            {t("advanced.exportConfig")}
-          </Button>
           <Button variant="outline" size="sm" onClick={handleCopy}>
             <Copy size={16} />
             {t("advanced.copyConfig")}
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleExportConfirm}>
+            <Download size={16} />
+            {t("advanced.exportConfig")}
           </Button>
         </div>
       </SettingsRow>
