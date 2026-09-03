@@ -10,7 +10,9 @@ function LanguageSettings() {
   return (
     <SettingsSection
       title={t("settings.language")}
-      onReset={resetLocale}
+      onReset={() => {
+        resetLocale();
+      }}
       resetLabel={t("settings.language")}
     >
       <SettingsRow label={t("settings.language")} description={t("settings.languageDesc")}>

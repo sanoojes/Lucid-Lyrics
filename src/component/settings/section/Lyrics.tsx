@@ -75,7 +75,13 @@ function LyricsSettings() {
   };
 
   return (
-    <SettingsSection title={t("lyrics.title")} onReset={handleReset} resetLabel={t("lyrics.title")}>
+    <SettingsSection
+      title={t("lyrics.title")}
+      onReset={() => {
+        handleReset();
+      }}
+      resetLabel={t("lyrics.title")}
+    >
       <SettingsRow label={t("page.romanizePosition")} description={t("page.romanizePositionDesc")}>
         <Select
           value={pageState().romanize_position}
