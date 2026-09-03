@@ -55,6 +55,7 @@ export const FullscreenSchema = object({
   showControls: boolean(),
   floatingPosition: PositionsSchema,
   hideStatus: boolean(),
+  volumeControl: DisplayStateSchema,
 });
 
 export const CssFilterSchema = object({
@@ -123,6 +124,7 @@ export const PictureInPictureSchema = object({
   showControls: boolean(),
   hideStatus: boolean(),
   depthEffects: boolean(),
+  volumeControl: DisplayStateSchema,
 });
 
 export const BlurmapModeSchema = picklist([

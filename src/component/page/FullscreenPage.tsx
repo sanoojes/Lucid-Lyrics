@@ -75,7 +75,10 @@ function FullscreenPage() {
           "hide-scrollbars": pageState().hideScrollbar,
         }}
       >
-        <VolumeSlider hidden={!isFloatingVisible()} />
+        <Show when={pageState().volumeControl !== "hidden"}>
+          {" "}
+          <VolumeSlider hidden={!isFloatingVisible()} />
+        </Show>
         <div
           class="widget-area"
           classList={{

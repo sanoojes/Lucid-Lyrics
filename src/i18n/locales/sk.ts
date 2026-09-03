@@ -143,6 +143,8 @@ export const dict: Dict = {
   "fullscreen.showCreditsDesc":
     "Zobraziť informácie o interpretoch, skladateľoch a poskytovateľoch",
   "fullscreen.title": "Celá obrazovka",
+  "fullscreen.volumeControl": "Ovládanie hlasitosti",
+  "fullscreen.volumeControlDesc": "Zobraziť ovládanie hlasitosti v plávajúcej oblasti",
   "fullscreenPage.exitCinema": "Vysúri z kinorežimu",
   "fullscreenPage.exitFull": "Vysúri z celej obrazovky",
   "fullscreenPage.hideWidget": "Skryť widget",
@@ -240,6 +242,8 @@ export const dict: Dict = {
   "pip.showCredits": "Zobraziť kredity",
   "pip.showCreditsDesc": "Zobraziť informácie o interpretoch, skladateľoch a poskytovateľoch",
   "pip.title": "Obraz-v-obraze",
+  "pip.volumeControl": "Ovládanie hlasitosti",
+  "pip.volumeControlDesc": "Zobraziť ovládanie hlasitosti v okne obraz-v-obraze",
   "player.addButtons": "Pridanie tlačidiel do prehrávača zlyhalo",
   "player.buttonsError": "Chyba tlačidiel prehrávača",
   "player.pause": "Pozastaviť",

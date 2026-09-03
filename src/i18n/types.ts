@@ -13,6 +13,8 @@ export type Dict = {
   "pip.showCredits": string;
   "pip.showCreditsDesc": string;
   "pip.title": string;
+  "pip.volumeControl": string;
+  "pip.volumeControlDesc": string;
   "lyrics.status.missing": string;
   "lyrics.status.localSong": string;
   "lyrics.status.offline": string;
@@ -295,6 +297,8 @@ export type Dict = {
   "page.romanizePositionDesc": string;
   "position.replace": string;
   "fullscreen.title": string;
+  "fullscreen.volumeControl": string;
+  "fullscreen.volumeControlDesc": string;
   "fullscreen.showCredits": string;
   "fullscreen.showCreditsDesc": string;
   "fullscreen.hideScrollbar": string;

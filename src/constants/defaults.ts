@@ -91,6 +91,7 @@ export const DEFAULT_PICTURE_IN_PICTURE_STATE = {
   showCredits: true,
   widget: "show",
   depthEffects: true,
+  volumeControl: "show",
 } satisfies PictureInPictureState;
 
 export const DEFAULT_FULLSCREEN_STATE = {
@@ -100,6 +101,7 @@ export const DEFAULT_FULLSCREEN_STATE = {
   showControls: true,
   showCredits: true,
   widget: "show",
+  volumeControl: "show",
 } satisfies FullscreenState;
 
 export const DEFAULT_WIDGET_STATE = {
