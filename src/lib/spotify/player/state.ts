@@ -63,3 +63,19 @@ export function setLiked(like: boolean) {
 export function toggleLiked() {
   Spicetify.Player.toggleHeart();
 }
+
+export function getVolume(): number {
+  return Spicetify?.Player?.getVolume?.() ?? 1;
+}
+
+export function setVolume(level: number) {
+  Spicetify?.Player?.setVolume?.(Math.max(0, Math.min(1, level)));
+}
+
+export function getMute(): boolean {
+  return Spicetify?.Player?.getMute?.() ?? false;
+}
+
+export function setMute(state: boolean) {
+  Spicetify?.Player?.setMute?.(state);
+}

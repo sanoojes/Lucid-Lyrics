@@ -326,4 +326,6 @@ export type Dict = {
   "alerts.externalLink.title": string;
   "alerts.externalLink.description": string;
   "alerts.externalLink.open": string;
+  "player.volumeMute": string;
+  "player.volumeUnmute": string;
 };

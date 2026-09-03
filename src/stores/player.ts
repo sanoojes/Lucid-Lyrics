@@ -2,9 +2,11 @@ import { atom, computed, onMount, task } from "nanostores";
 import {
   type RepeatState,
   getLiked,
+  getMute,
   getProgress,
   getRepeat,
   getShuffle,
+  getVolume,
   requestPositionSync,
 } from "~/lib/spotify/player";
 import Tempus from "@darkroom.engineering/tempus";
@@ -136,3 +138,41 @@ export const $shuffle_state = computed($player_states, (raw) => {
 });
 
 export const $liked_state = computed($player_states, (e) => e.liked);
+
+export interface VolumeData {
+  volume: number;
+  muted: boolean;
+}
+
+export const $volume_data = atom<VolumeData>({
+  volume: getVolume(),
+  muted: getMute(),
+});
+
+onMount($volume_data, () => {
+  let _events: any;
+
+  const handleVolumeUpdate = (meta: { data: { volume: number; isMuted?: boolean } }) => {
+    if (meta?.data) {
+      const current = $volume_data.get();
+      const newVolume = typeof meta.data.volume === "number" ? meta.data.volume : current.volume;
+      const newMuted = typeof meta.data.isMuted === "boolean" ? meta.data.isMuted : getMute();
+
+      $volume_data.set({
+        volume: newVolume,
+        muted: newMuted,
+      });
+    }
+  };
+
+  const setup = async () => {
+    _events = await wait(() => Spicetify?.Platform?.PlaybackAPI?._events);
+    _events?.addListener("volume", handleVolumeUpdate);
+  };
+
+  setup();
+
+  return () => {
+    _events?.removeListener("volume", handleVolumeUpdate);
+  };
+});
