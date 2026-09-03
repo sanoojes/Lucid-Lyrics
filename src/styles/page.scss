@@ -25,6 +25,8 @@ $floating-transition:
 }
 
 .lucid-contents {
+  $widget-height: max(14cqh, 9rem);
+
   --player-widget-width: min(36cqw, 64cqh);
   display: flex;
   align-items: center;
@@ -126,6 +128,12 @@ $floating-transition:
         filter: blur(16px);
       }
 
+      // #lucid-pip-main & {
+      //   &__image-wrapper {
+      //     display: none;
+      //   }
+      // }
+
       .player-widget {
         display: flex;
         flex-direction: row;
@@ -133,7 +141,7 @@ $floating-transition:
         width: calc(100cqw - (v.$space-lg * 2));
         margin: 0 auto;
         max-width: 30rem;
-        height: max(14cqh, 9rem);
+        height: $widget-height;
         max-height: 10rem;
         padding: v.$space-lg;
         gap: v.$space-lg;
@@ -225,7 +233,7 @@ $floating-transition:
 
     .lyrics-area {
       margin-left: 0;
-      margin-top: calc(max(14cqh, 9rem) + (v.$space-lg * 1.7));
+      margin-top: calc($widget-height + (v.$space-lg * 1.7));
 
       &.widget-hidden {
         margin-top: 0;
