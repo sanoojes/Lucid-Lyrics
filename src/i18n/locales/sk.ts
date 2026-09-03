@@ -253,6 +253,8 @@ export const dict: Dict = {
   "player.shuffleOff": "Náhodné prehrávanie vypnuté",
   "player.shuffleOn": "Náhodné prehrávanie zapnuté",
   "player.smartShuffle": "Inteligentné náhodné prehrávanie",
+  "player.volumeMute": "Stlmiť",
+  "player.volumeUnmute": "Zrušiť stlmenie",
   "position.bottom": "Dole",
   "position.left": "Vľavo",
   "position.replace": "Nahradiť",

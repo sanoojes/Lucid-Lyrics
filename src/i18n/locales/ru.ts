@@ -251,6 +251,8 @@ export const dict: Dict = {
   "player.shuffleOff": "Перемешивание выкл",
   "player.shuffleOn": "Перемешивание вкл",
   "player.smartShuffle": "Умное перемешивание",
+  "player.volumeMute": "Выключить звук",
+  "player.volumeUnmute": "Включить звук",
   "position.bottom": "Снизу",
   "position.left": "Слева",
   "position.replace": "Заменить",

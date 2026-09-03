@@ -15,6 +15,7 @@ import RomanizeButton from "~/component/ui/button/RomanizeButton";
 import LocalTTMLButton from "~/component/ui/button/LocalTTMLButton";
 import FullscreenButton from "~/component/ui/button/FullscreenButton";
 import ToggleFullscreenWidgetButton from "~/component/ui/button/ToggleFullscreenWidgetButton";
+import VolumeSlider from "~/component/ui/player/VolumeSlider";
 
 import { $fullscreen_state, $lyrics_status, $page_mode, setPageMode } from "~/stores";
 import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
@@ -74,6 +75,7 @@ function FullscreenPage() {
           "hide-scrollbars": pageState().hideScrollbar,
         }}
       >
+        <VolumeSlider hidden={!isFloatingVisible()} />
         <div
           class="widget-area"
           classList={{
@@ -137,6 +139,7 @@ function FullscreenPage() {
             <LocalTTMLButton />
             <CinemaButton />
             <FullscreenButton />
+
             <Button variant="ghost" size="icon" onClick={handleClose}>
               <X />
             </Button>

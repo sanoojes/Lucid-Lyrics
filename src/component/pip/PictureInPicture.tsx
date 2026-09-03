@@ -14,6 +14,7 @@ import CinemaButton from "~/component/ui/button/CinemaButton";
 import RomanizeButton from "~/component/ui/button/RomanizeButton";
 import FullscreenButton from "~/component/ui/button/FullscreenButton";
 import TogglePIPWidgetButton from "~/component/ui/button/TogglePIPWidgetButton";
+import VolumeSlider from "~/component/ui/player/VolumeSlider";
 
 import { $pip_state, $lyrics_status, togglePIP } from "~/stores";
 import ScrollToActiveLyricsButton from "~/component/ui/button/ScrollToActiveLyricsButton";
@@ -127,6 +128,7 @@ function PictureInPicture() {
               "initial-pop": isInitialPop(),
             }}
           >
+            <VolumeSlider hidden={!isFloatingVisible()} />
             <div
               class="widget-area"
               classList={{
