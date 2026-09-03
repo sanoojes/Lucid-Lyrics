@@ -23,8 +23,10 @@
   overflow: hidden;
 
   .lucid-contents {
-    will-change: transform;
+    transform: translateZ(0);
     transition: transform 0.35s v.$ease-out;
+
+    backface-visibility: hidden;
 
     &.initial-pop {
       transform: scale(0.86);

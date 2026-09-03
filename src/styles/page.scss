@@ -36,6 +36,7 @@ $floating-transition:
   max-height: 100cqh;
   gap: 0;
   border-radius: inherit;
+  -webkit-font-smoothing: antialiased;
   transition: $primary-transition;
 
   &.hide-cursor {
