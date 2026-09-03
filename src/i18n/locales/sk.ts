@@ -50,6 +50,13 @@ export const dict: Dict = {
   "backup.importPaste": "Vložiť zo schránky",
   "backup.importPasteSuccess": "Vložené zo schránky",
   "backup.importSuccess": "Nastavenia importované",
+  "backup.migrate": "Migrovať",
+  "backup.migrateVersionDesc":
+    "Táto konfigurácia je zo staršej verzie. Chýbajúce nastavenia sa zlúčia z vašej aktuálnej konfigurácie.",
+  "backup.migrateVersionTitle": "Importovať staršiu konfiguráciu?",
+  "backup.migratedMissingDesc":
+    "Automaticky migrované — niektoré novšie nastavenia chýbali a boli doplnené z vašej aktuálnej konfigurácie.",
+  "backup.migratedSuccess": "Konfigurácia migrovaná",
   "backup.title": "Zálohovanie",
   "bg.albumArt": "Obal albumu",
   "bg.backward": "Dozadu",
@@ -128,7 +135,9 @@ export const dict: Dict = {
   "common.returnHome": "Domov",
   "common.tryAgain": "Skúste to znova",
   "configImport.empty": "Konfigurácia je prázdna - najprv vložte alebo otvorte súbor konfigurácie",
+  "configImport.invalid": "Neplatná konfigurácia - nedá sa importovať",
   "configImport.jsonSyntaxError": "Neplatný JSON - skontrolujte chýbajúce čiarky alebo zátvorky",
+  "configImport.migratable": "Dá sa migrovať - chýbajúce nastavenia sa doplnia z vašej aktuálnej konfigurácie",
   "configImport.valid": "Platná konfigurácia - pripravená na import",
   "fullscreen.enter": "Celá obrazovka",
   "fullscreen.floatingPosition": "Poloha plávajúcich ovládacích prvkov",

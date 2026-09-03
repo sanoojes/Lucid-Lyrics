@@ -50,6 +50,13 @@ export const dict: Dict = {
   "backup.importPaste": "Pegar desde el Portapapeles",
   "backup.importPasteSuccess": "Pegado desde el portapapeles",
   "backup.importSuccess": "Configuración Importada",
+  "backup.migrate": "Migrar",
+  "backup.migrateVersionDesc":
+    "Esta configuración es de una versión anterior. Los ajustes que faltan se fusionarán con tu configuración actual.",
+  "backup.migrateVersionTitle": "¿Importar configuración anterior?",
+  "backup.migratedMissingDesc":
+    "Migrada automáticamente — faltaban algunos ajustes más nuevos y se rellenaron con tu configuración actual.",
+  "backup.migratedSuccess": "Configuración Migrada",
   "backup.title": "Copia de Seguridad",
   "bg.albumArt": "Portada del Álbum",
   "bg.backward": "Atrás",
@@ -129,7 +136,9 @@ export const dict: Dict = {
   "common.tryAgain": "Intentar de nuevo",
   "configImport.empty":
     "La configuración está vacía - pega o abre un archivo de configuración primero",
+  "configImport.invalid": "Configuración no válida - no se puede importar",
   "configImport.jsonSyntaxError": "JSON no válido - revise las comas o corchetes faltantes",
+  "configImport.migratable": "Migrable - los ajustes faltantes se rellenarán con tu configuración actual",
   "configImport.valid": "Configuración válida - lista para importar",
   "fullscreen.enter": "Pantalla completa",
   "fullscreen.floatingPosition": "Posición del Control Flotante",

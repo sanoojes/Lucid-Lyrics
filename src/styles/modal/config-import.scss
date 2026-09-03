@@ -72,6 +72,15 @@
       }
     }
 
+    &--migratable {
+      border-color: #eab308;
+
+      &:focus {
+        border-color: #eab308;
+        box-shadow: 0 0 0 2px rgba(#eab308, 0.2);
+      }
+    }
+
     &--error {
       border-color: rgba(#ef4444, 0.2);
 
@@ -89,7 +98,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
     opacity: 0.7;
     transition:
       color 0.2s ease,
@@ -97,6 +105,10 @@
 
     &--valid {
       color: #22c55e;
+    }
+
+    &--migratable {
+      color: #eab308;
     }
 
     &--error {

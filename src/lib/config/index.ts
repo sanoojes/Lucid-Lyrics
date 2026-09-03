@@ -1,5 +1,6 @@
-import { safeParse } from "valibot";
-import { ConfigFileSchema, type Config } from "~/lib/config/schemas";
+import { safeParse, type BaseIssue } from "valibot";
+import { ConfigFileSchema, ConfigSchema, type Config } from "~/lib/config/schemas";
+import deepmerge from "~/utils/deepmerge";
 import { APP_NAME, APP_VERSION } from "~/constants/versions";
 import { $widget } from "~/stores/widget";
 import { $npb_state } from "~/stores/npb";
@@ -11,7 +12,6 @@ import { $blurmap_mode, $custom_blurmap, $providers } from "~/stores/lyrics";
 import { $cache_settings, $developer_mode, $ttml_maker_mode } from "~/stores/dev";
 import { $ttml_mode } from "~/stores/ttml";
 import { $locale } from "~/i18n";
-import { logger } from "~/utils/logger";
 
 function readConfig(): Config {
   return {
@@ -33,7 +33,7 @@ function readConfig(): Config {
   };
 }
 
-function applyConfig(config: Config) {
+export function applyConfig(config: Config) {
   $widget.set(config.widget);
   $npb_state.set(config.npb);
   $npv_state.set(config.npvSettings);
@@ -81,55 +81,82 @@ export function exportConfig(): string {
   return filename;
 }
 
-export function validateConfig(fileContent: string) {
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(fileContent);
-  } catch {
-    return { success: false, type: "invalid_json" } as const;
+function compareVersions(a: string, b: string): number {
+  const pa = a.split(".").map(Number);
+  const pb = b.split(".").map(Number);
+  const len = Math.max(pa.length, pb.length);
+  for (let i = 0; i < len; i++) {
+    const na = pa[i] ?? 0;
+    const nb = pb[i] ?? 0;
+    if (na !== nb) return na < nb ? -1 : 1;
   }
+  return 0;
+}
 
-  const result = safeParse(ConfigFileSchema, parsed);
+export type ConfigImportResult =
+  | {
+      success: true;
+      needsVersionConfirmation: boolean;
+      migratedMissing: boolean;
+      config: Config;
+    }
+  | { success: false; error: string };
 
-  if (!result.success) {
-    const issues = result.issues.map((issue) => {
+function formatIssues(issues: readonly BaseIssue<unknown>[]): string {
+  return issues
+    .map((issue) => {
       const path = issue.path
         ? issue.path
             .map((p) => (typeof p.key === "number" ? `[${p.key}]` : p.key))
             .join(".")
             .replace(/\.\[/g, "[")
         : "root";
-
       return `${path}: ${issue.message}`;
-    });
-
-    return { success: false, type: "schema_error", issues } as const;
-  }
-
-  return { success: true, data: result.output } as const;
+    })
+    .join("\n");
 }
 
-export function importConfig(fileContent: string): {
-  success: boolean;
-  error?: string;
-} {
-  const validation = validateConfig(fileContent);
-
-  if (!validation.success) {
-    const errorMsg =
-      validation.type === "schema_error"
-        ? validation.issues.join("\n")
-        : "Failed to parse JSON file.";
-
-    logger.error(`Config import validation failed:\n${errorMsg}`);
-    return { error: errorMsg, success: false };
-  }
-
+export function prepareImport(fileContent: string): ConfigImportResult {
+  let parsed: Record<string, unknown>;
   try {
-    applyConfig(validation.data.config);
-    return { success: true };
-  } catch (error) {
-    logger.error("Failed to apply imported config:", error);
-    return { error: "Failed to apply configuration.", success: false };
+    parsed = JSON.parse(fileContent);
+  } catch {
+    return { success: false, error: "Failed to parse JSON file." };
   }
+
+  if (!parsed || typeof parsed !== "object") {
+    return { success: false, error: "Invalid config file." };
+  }
+
+  const fileVersion = typeof parsed.version === "string" ? parsed.version : "";
+  const versionTooOld = fileVersion !== "" && compareVersions(fileVersion, APP_VERSION) < 0;
+
+  const asIs = safeParse(ConfigFileSchema, parsed);
+
+  if (asIs.success) {
+    return {
+      success: true,
+      config: asIs.output.config,
+      needsVersionConfirmation: versionTooOld,
+      migratedMissing: false,
+    };
+  }
+
+  const rawConfig =
+    typeof parsed.config === "object" && parsed.config !== null && !Array.isArray(parsed.config)
+      ? parsed.config
+      : {};
+  const merged = deepmerge(readConfig(), rawConfig);
+  const validated = safeParse(ConfigSchema, merged);
+
+  if (!validated.success) {
+    return { success: false, error: formatIssues(validated.issues) };
+  }
+
+  return {
+    success: true,
+    config: validated.output,
+    needsVersionConfirmation: versionTooOld,
+    migratedMissing: true,
+  };
 }

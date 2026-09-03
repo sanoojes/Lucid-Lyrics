@@ -1,12 +1,22 @@
 import "~/styles/modal/config-import.scss";
 import { useDialog } from "~/lib/modal/component/Dialog";
-import { showModal } from "~/lib/modal";
+import { showModal, showAlert } from "~/lib/modal";
 import { Button } from "~/component/ui/Button";
-import { ClipboardPaste, Import, X, FileBraces, CircleAlert, CircleCheck } from "lucide-solid";
+import {
+  ClipboardPaste,
+  Import,
+  X,
+  FileBraces,
+  CircleAlert,
+  CircleCheck,
+  WandSparkles,
+} from "lucide-solid";
 import { createSignal, createMemo, onMount, Show } from "solid-js";
-import { importConfig, getConfigFileString, validateConfig } from "~/lib/config";
+import { applyConfig, getConfigFileString, prepareImport } from "~/lib/config";
+import type { Config } from "~/lib/config/schemas";
 import { t } from "~/i18n";
 import { toast } from "~/lib/sonner";
+import { Tippy } from "~/component/ui/Tippy";
 
 function ConfigImportModal() {
   const { close } = useDialog();
@@ -19,24 +29,36 @@ function ConfigImportModal() {
 
   const validation = createMemo(() => {
     const val = json().trim();
-    if (!val) return { state: "empty" as const, message: "" };
+    if (!val) return { state: "empty" as const };
 
-    const result = validateConfig(val);
+    const prepared = prepareImport(val);
 
-    if (result.success) {
-      return { state: "valid" as const, message: "" };
+    if (prepared.success) {
+      if (prepared.needsVersionConfirmation || prepared.migratedMissing) {
+        return { state: "migratable" as const, title: t("configImport.migratable") };
+      }
+      return { state: "valid" as const, title: t("configImport.valid") };
     }
 
-    if (result.type === "invalid_json") {
+    let isJson: boolean;
+    try {
+      JSON.parse(val);
+      isJson = true;
+    } catch {
+      isJson = false;
+    }
+
+    if (!isJson) {
       return {
         state: "invalid_json" as const,
-        message: t("configImport.jsonSyntaxError"),
+        title: t("configImport.jsonSyntaxError"),
       };
     }
 
     return {
       state: "schema_error" as const,
-      message: result.issues.slice(0, 2).join("; "),
+      message: prepared.error,
+      title: t("configImport.invalid"),
     };
   });
 
@@ -70,27 +92,58 @@ function ConfigImportModal() {
 
   const handleImport = () => {
     const state = validation();
-    if (state.state !== "valid") {
+    if (state.state === "invalid_json") {
       setShowErrors(true);
       restartErrorAnimation();
       toast.error(t("backup.importFailed"), {
         id: CONFIG_IMPORT_ERROR_TOAST,
-        description: state.state === "empty" ? t("configImport.empty") : state.message,
+        description: t("configImport.jsonSyntaxError"),
       });
       return;
     }
 
     toast.dismiss(CONFIG_IMPORT_ERROR_TOAST);
 
-    const result = importConfig(json());
-    if (result.success) {
-      toast.success(t("backup.importSuccess"));
-      close();
-    } else {
+    const initialResult = prepareImport(json());
+
+    if (!initialResult.success) {
+      setShowErrors(true);
+      restartErrorAnimation();
       toast.error(t("backup.importFailed"), {
-        description: t("backup.importFailedDesc"),
+        id: CONFIG_IMPORT_ERROR_TOAST,
+        description: initialResult.error || t("backup.importFailedDesc"),
       });
+      return;
     }
+
+    const finish = (config: Config, migrated: boolean) => {
+      try {
+        applyConfig(config);
+        if (migrated) {
+          toast.success(t("backup.migratedSuccess"), {
+            description: t("backup.migratedMissingDesc"),
+          });
+        } else {
+          toast.success(t("backup.importSuccess"));
+        }
+        close();
+      } catch {
+        toast.error(t("backup.importFailed"));
+      }
+    };
+
+    if (initialResult.needsVersionConfirmation) {
+      showAlert({
+        title: t("backup.migrateVersionTitle"),
+        description: t("backup.migrateVersionDesc"),
+        confirmLabel: t("backup.migrate"),
+        variant: "warning",
+        onConfirm: () => finish(initialResult.config, true),
+      });
+      return;
+    }
+
+    finish(initialResult.config, initialResult.migratedMissing);
   };
 
   const restartErrorAnimation = () => {
@@ -150,6 +203,7 @@ function ConfigImportModal() {
             class="l-config-import__textarea"
             classList={{
               "l-config-import__textarea--valid": validation().state === "valid",
+              "l-config-import__textarea--migratable": validation().state === "migratable",
               "l-config-import__textarea--error":
                 validation().state === "invalid_json" || validation().state === "schema_error",
             }}
@@ -167,18 +221,35 @@ function ConfigImportModal() {
               class="l-config-import__status"
               classList={{
                 "l-config-import__status--valid": validation().state === "valid",
-                "l-config-import__status--error": validation().state !== "valid",
+                "l-config-import__status--migratable": validation().state === "migratable",
+                "l-config-import__status--error":
+                  validation().state === "invalid_json" || validation().state === "schema_error",
               }}
             >
-              <Show when={validation().state === "valid"} fallback={<CircleAlert size={14} />}>
-                <CircleCheck size={14} />
-              </Show>
+              <Tippy title={validation().title}>
+                <Show
+                  when={validation().state === "valid"}
+                  fallback={
+                    <Show
+                      when={validation().state === "migratable"}
+                      fallback={<CircleAlert size={14} />}
+                    >
+                      <WandSparkles size={14} />
+                    </Show>
+                  }
+                >
+                  <CircleCheck size={14} />
+                </Show>
+              </Tippy>
             </span>
           </Show>
         </div>
 
         <Show
-          when={showErrors() && validation().state !== "empty" && validation().state !== "valid"}
+          when={
+            showErrors() &&
+            (validation().state === "invalid_json" || validation().state === "schema_error")
+          }
         >
           <div ref={errorRef} class="l-config-import__error">
             <CircleAlert size={14} />
