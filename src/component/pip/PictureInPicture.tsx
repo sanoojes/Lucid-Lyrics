@@ -43,15 +43,19 @@ function PictureInPicture() {
   };
 
   const [isFloatingVisible, setIsFloatingVisible] = createSignal(true);
-  const [isHovered, setIsHovered] = createSignal(false);
+  const [isFloatingHovered, setIsFloatingHovered] = createSignal(false);
+  const [isVolumeHovered, setIsVolumeHovered] = createSignal(false);
+
   let timeoutId: number | undefined;
   let popTimerId: number | undefined;
+
+  const isInteractiveHovered = () => isFloatingHovered() || isVolumeHovered();
 
   const resetTimeout = () => {
     setIsFloatingVisible(true);
     clearTimeout(timeoutId);
 
-    if (!isHovered()) {
+    if (!isInteractiveHovered()) {
       timeoutId = setTimeout(() => {
         setIsFloatingVisible(false);
       }, 1000);
@@ -125,7 +129,18 @@ function PictureInPicture() {
             }}
           >
             <Show when={pipState().volumeControl !== "hidden"}>
-              <VolumeSlider hidden={!isFloatingVisible()} />
+              <div
+                onMouseEnter={() => {
+                  setIsVolumeHovered(true);
+                  resetTimeout();
+                }}
+                onMouseLeave={() => {
+                  setIsVolumeHovered(false);
+                  resetTimeout();
+                }}
+              >
+                <VolumeSlider hidden={!isFloatingVisible()} />
+              </div>
             </Show>
             <div
               class="widget-area"
@@ -155,11 +170,11 @@ function PictureInPicture() {
               class={`floating-area on-bottom`}
               classList={{ "floating-area--hidden": !isFloatingVisible() }}
               onMouseEnter={() => {
-                setIsHovered(true);
+                setIsFloatingHovered(true);
                 resetTimeout();
               }}
               onMouseLeave={() => {
-                setIsHovered(false);
+                setIsFloatingHovered(false);
                 resetTimeout();
               }}
             >
