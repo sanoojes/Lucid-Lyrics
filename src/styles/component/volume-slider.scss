@@ -1,31 +1,17 @@
 @use "../variables" as v;
 
-.volume-slider {
+$backdrop: blur(12px) brightness(0.9) saturate(1.2);
+
+.volume-slider-wrapper {
   position: fixed;
-  text-align: center;
-  background-color: transparent;
-  color: var(--primary-color, v.$color);
-  float: left;
   top: 50%;
   left: v.$space-2xl;
+  z-index: 50;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  z-index: 50;
-  height: 250px;
-  max-height: min(35vh, 15rem);
-
-  padding: v.$space-md v.$space-xs;
-
-  background: v.$glass-bg;
-  border: 1px solid v.$glass-bd;
-  border-radius: 100px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(12px) brightness(0.9);
-
+  gap: v.$space-xs;
   transform: translateY(-50%);
-
   transition: transform 0.6s var(--transition-function, v.$ease-out);
 
   &--hidden {
@@ -33,88 +19,82 @@
     pointer-events: none;
   }
 
+  .l-btn {
+    --icon-padding: #{v.$space-base};
+    backdrop-filter: $backdrop;
+  }
+}
+
+.volume-slider {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 50px;
+  height: 200px;
+  padding: v.$space-sm;
+
+  background: v.$glass-bg;
+  border: 1px solid v.$glass-bd;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: $backdrop;
+  overflow: hidden;
+  touch-action: none;
+  cursor: pointer;
+
+  transition: transform 0.2s ease-out;
+
   &--dragging {
-    transform: translateY(-50%) translateX(0) scale(1);
-  }
-
-  &__label {
-    width: 50px;
-    font: v.$font;
-    font-size: v.$fs-md;
-    font-weight: v.$fw-bold;
-  }
-
-  &__bar {
-    margin: v.$space-base 0;
-    border-radius: v.$r-xs;
-    background-color: rgba(var(--main-color, 255, 255, 255), 0.35);
-    width: v.$space-sm 0 v.$space-xs 0;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-
-    &--dragging,
-    &:hover {
-      .volume-slider__fill {
-        background-color: var(--theme-main-color, rgba(v.$color, 1));
-        filter: saturate(1.5) contrast(1.5);
-        transition: none;
-      }
-
-      .volume-slider__thumb {
-        display: block;
-      }
-    }
+    transform: scale(1.02);
   }
 
   &__fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    border-radius: v.$r-xs;
-    background-color: var(--primary-color, rgba(v.$color, 0.7));
+    background-color: var(--primary-color, rgba(v.$color, 0.35));
+    border-radius: inherit;
     pointer-events: none;
-    transition: height 0.1s var(--transition-function, v.$ease-out);
+    transition: height 0.08s ease-out;
+    z-index: 0;
+  }
+
+  &__label {
     position: relative;
+    z-index: 1;
+    font: v.$font;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: var(--primary-color, v.$color);
+    pointer-events: none;
+    user-select: none;
+    margin-top: v.$space-xs;
   }
 
-  &__thumb {
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: var(--primary-color, v.$color);
+  &__indicator {
     position: relative;
-    left: -2px;
-    top: -5px;
-    display: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    user-select: none;
+    width: 36px;
+    height: 36px;
+    opacity: 0.4;
+    color: #fff;
+  }
+
+  &.unavailable {
     pointer-events: none;
 
-    &--visible {
-      display: block;
+    .volume-slider__fill {
+      height: 100% !important;
+      background-color: var(--tertiary-color, v.$color-muted);
     }
-
-    &--dragging {
-      transform: scale(1.1);
-    }
-  }
-
-  &__icon {
-    --btn-radius: 2rem;
-    --btn-size: 36px;
-    --icon-padding: #{v.$space-base};
-
-    svg {
-      $fill-color: var(--primary-color, rgba(v.$color, 0.7));
-      fill: $fill-color !important;
-      stroke: $fill-color !important;
-    }
-  }
-
-  &.unavailable &__bar {
-    pointer-events: none;
-  }
-
-  &.unavailable &__fill {
-    height: 100%;
-    background-color: var(--tertiary-color, v.$color-muted);
   }
 }
