@@ -18,7 +18,13 @@ function NowPlayingViewSettings() {
   const npvSettings = useStore($npv_state);
 
   return (
-    <SettingsSection title={t("npv.title")} onReset={resetNpvSettings} resetLabel={t("npv.title")}>
+    <SettingsSection
+      title={t("npv.title")}
+      onReset={() => {
+        resetNpvSettings();
+      }}
+      resetLabel={t("npv.title")}
+    >
       <SettingsRow label={t("npv.hideBackground")} description={t("npv.hideBackgroundDesc")}>
         <Toggle checked={npvSettings().hideBackground} onChange={setHideBackground} />
       </SettingsRow>

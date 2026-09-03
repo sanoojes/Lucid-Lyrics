@@ -18,7 +18,13 @@ function PageSettings() {
   const pageState = useStore($page_state);
 
   return (
-    <SettingsSection title={t("page.title")} onReset={resetPageState} resetLabel={t("page.title")}>
+    <SettingsSection
+      title={t("page.title")}
+      onReset={() => {
+        resetPageState();
+      }}
+      resetLabel={t("page.title")}
+    >
       <SettingsRow label={t("page.showCredits")} description={t("page.showCreditsDesc")}>
         <Toggle checked={pageState().showCredits} onChange={setShowCredits} />
       </SettingsRow>

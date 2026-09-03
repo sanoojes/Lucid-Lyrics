@@ -7,6 +7,10 @@
   max-height: 85vh;
   border-radius: v.$r-lg;
 
+  .content {
+    scrollbar-width: thin;
+  }
+
   header {
     display: flex;
     justify-content: space-between;

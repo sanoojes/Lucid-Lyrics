@@ -19,13 +19,15 @@ import { t } from "~/i18n";
 import { Button } from "~/component/ui/Button";
 import API from "~/api";
 import { lyricsResourceAction } from "~/api/solid";
-import { RotateCcw } from "lucide-solid";
+import { RotateCcw, Download, Upload, Copy } from "lucide-solid";
 import { Show } from "solid-js";
 import { logger } from "~/utils/logger";
 import { toast } from "~/lib/sonner";
 import { showAlert } from "~/lib/modal";
 import { resetLocalTTML } from "~/stores/idb/ttml";
 import { DEFAULT_CACHE_SETTINGS } from "~/constants";
+import { exportConfig, getConfigFileString } from "~/lib/config";
+import { showConfigImportModal } from "~/component/settings/ConfigImportModal";
 
 function AdvancedSettings() {
   const devMode = useStore($developer_mode);
@@ -88,10 +90,41 @@ function AdvancedSettings() {
     $cache_settings.set(DEFAULT_CACHE_SETTINGS);
   };
 
+  const handleExport = () => {
+    try {
+      const filename = exportConfig();
+      toast.success(t("advanced.exportSuccess"), {
+        description: t("advanced.exportPath", { filename }),
+      });
+    } catch (error) {
+      logger.error("Failed to export config: ", error);
+      toast.error(t("advanced.importFailed"));
+    }
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(getConfigFileString());
+      toast.success(t("advanced.copySuccess"));
+    } catch (error) {
+      logger.error("Failed to copy config: ", error);
+      toast.error(t("advanced.copyFailed"));
+    }
+  };
+
+  const handleExportConfirm = () => {
+    showAlert({
+      confirmLabel: t("common.confirm"),
+      description: t("advanced.exportConfigDesc"),
+      onConfirm: () => handleExport(),
+      title: t("advanced.exportConfig"),
+    });
+  };
+
   return (
     <SettingsSection
       title={t("advanced.title")}
-      onReset={handleReset}
+      onReset={() => handleReset()}
       resetLabel={t("advanced.title")}
     >
       <SettingsRow label={t("advanced.devMode")} description={t("advanced.devModeDesc")}>
@@ -139,6 +172,26 @@ function AdvancedSettings() {
           step={1}
           suffix="d"
         />
+      </SettingsRow>
+      <SettingsRow label={t("advanced.exportConfig")} description={t("advanced.exportConfigDesc")}>
+        <div class="adv-settings__cache-row">
+          <Button variant="outline" size="sm" onClick={handleExportConfirm}>
+            <Download size={16} />
+            {t("advanced.exportConfig")}
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleCopy}>
+            <Copy size={16} />
+            {t("advanced.copyConfig")}
+          </Button>
+        </div>
+      </SettingsRow>
+      <SettingsRow label={t("advanced.importConfig")} description={t("advanced.importConfigDesc")}>
+        <div class="adv-settings__cache-row">
+          <Button variant="outline" size="sm" onClick={showConfigImportModal}>
+            <Upload size={16} />
+            {t("advanced.importConfig")}
+          </Button>
+        </div>
       </SettingsRow>
       <Show when={devMode() === "on"}>
         <SettingsRow

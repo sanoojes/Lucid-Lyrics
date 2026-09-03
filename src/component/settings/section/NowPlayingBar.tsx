@@ -16,7 +16,9 @@ function NowPlayingBarSettings() {
   return (
     <SettingsSection
       title={t("nowPlayingBar.title")}
-      onReset={resetNPBState}
+      onReset={() => {
+        resetNPBState();
+      }}
       resetLabel={t("nowPlayingBar.title")}
     >
       <SettingsRow

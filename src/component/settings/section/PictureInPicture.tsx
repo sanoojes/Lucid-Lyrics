@@ -19,7 +19,9 @@ function PictureInPictureSettings() {
   return (
     <SettingsSection
       title={t("pip.title")}
-      onReset={resetPictureInPicture}
+      onReset={() => {
+        resetPictureInPicture();
+      }}
       resetLabel={t("pip.title")}
     >
       <SettingsRow label={t("pip.showCredits")} description={t("pip.showCreditsDesc")}>

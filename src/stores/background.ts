@@ -136,7 +136,7 @@ export type BackgroundState = {
         slideshow: boolean;
         shuffle: boolean;
         direction: "next" | "prev";
-        selectedId: string | undefined;
+        selectedId?: string;
       };
     };
     animated: {

@@ -21,7 +21,9 @@ function FullscreenSettings() {
   return (
     <SettingsSection
       title={t("fullscreen.title")}
-      onReset={resetFullscreenState}
+      onReset={() => {
+        resetFullscreenState();
+      }}
       resetLabel={t("fullscreen.title")}
     >
       <SettingsRow

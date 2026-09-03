@@ -27,7 +27,13 @@ function WidgetSettings() {
   ];
 
   return (
-    <SettingsSection title={t("widget.title")} onReset={resetWidget} resetLabel={t("widget.title")}>
+    <SettingsSection
+      title={t("widget.title")}
+      onReset={() => {
+        resetWidget();
+      }}
+      resetLabel={t("widget.title")}
+    >
       <SettingsRow label={t("widget.variant")} description={t("widget.chooseStyle")}>
         <Select
           value={widget().variant}
