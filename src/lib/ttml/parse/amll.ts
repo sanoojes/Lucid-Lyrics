@@ -26,7 +26,7 @@ export function parseAmllSyllableLine(
   agents: Map<string, string>,
   divAgentId?: string,
   timeOffset = 0,
-): SyllableContent {
+): SyllableContent | null {
   const pBegin = parseTime(p.begin) - timeOffset;
   const pEnd = parseTime(p.end) - timeOffset;
   const spans = toArray(p.span);
@@ -134,6 +134,21 @@ export function parseAmllSyllableLine(
   leadSyllables.reverse();
   backgroundVocalParts.reverse();
 
+  if (leadSyllables.length === 0 && backgroundVocalParts.length === 0) {
+    const rawText = (p["#text"] || "").trim();
+    if (rawText) {
+      leadSyllables.push({
+        EmptyBeat: p["amll:empty-beat"] ? parseInt(p["amll:empty-beat"], 10) : undefined,
+        EndTime: pEnd,
+        IsPartOfWord: false,
+        StartTime: pBegin,
+        Text: rawText,
+      });
+    } else {
+      return null;
+    }
+  }
+
   return {
     Background: backgroundVocalParts.length > 0 ? backgroundVocalParts : undefined,
     Lead: {
@@ -162,9 +177,10 @@ export function parseAmll(ttml: TTMLRoot, timing: string): Lyrics {
   if (timing === "None") {
     const lines: StaticLine[] = [];
     divs.forEach((div) =>
-      toArray(div?.p).forEach((p) =>
-        lines.push({ Text: typeof p === "string" ? p : p["#text"] || "" }),
-      ),
+      toArray(div?.p).forEach((p) => {
+        const rawText = (typeof p === "string" ? p : p["#text"] || "").trim();
+        if (rawText) lines.push({ Text: rawText });
+      }),
     );
     return {
       Amll: amllDataFinal,
@@ -182,6 +198,9 @@ export function parseAmll(ttml: TTMLRoot, timing: string): Lyrics {
     let endTime = 0;
     divs.forEach((div) => {
       toArray(div?.p).forEach((p) => {
+        const rawText = (p["#text"] || "").trim();
+        if (!rawText) return; // Skip empty instrumental/break lines
+
         const pBegin = parseTime(p.begin) - timeOffset;
         const pEnd = parseTime(p.end) - timeOffset;
         if (content.length === 0) startTime = pBegin;
@@ -212,9 +231,12 @@ export function parseAmll(ttml: TTMLRoot, timing: string): Lyrics {
   let endTime = 0;
   divs.forEach((div) => {
     toArray(div?.p).forEach((p) => {
-      if (content.length === 0) startTime = parseTime(p.begin) - timeOffset;
-      endTime = parseTime(p.end) - timeOffset;
-      content.push(parseAmllSyllableLine(p, agents, div?.["ttm:agent"], timeOffset));
+      const parsedLine = parseAmllSyllableLine(p, agents, div?.["ttm:agent"], timeOffset);
+      if (parsedLine) {
+        if (content.length === 0) startTime = parseTime(p.begin) - timeOffset;
+        endTime = parseTime(p.end) - timeOffset;
+        content.push(parsedLine);
+      }
     });
   });
   return {

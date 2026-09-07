@@ -22,6 +22,7 @@ export interface TTMLP {
   "#text"?: string;
   "itunes:key"?: string;
   "ttm:agent"?: string;
+  "amll:empty-beat"?: string;
   span?: TTMLSpan | TTMLSpan[];
 }
 
