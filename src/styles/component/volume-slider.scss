@@ -14,7 +14,7 @@ $backdrop: blur(12px) brightness(0.9) saturate(1.2);
   transform: translateY(-50%);
   transition: transform 0.6s var(--transition-function, v.$ease-out);
 
-  &--hidden {
+  &--hidden:not(:hover) {
     transform: translateY(-50%) translateX(-100px) scale(0.1);
     pointer-events: none;
   }

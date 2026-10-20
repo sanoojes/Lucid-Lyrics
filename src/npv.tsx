@@ -17,7 +17,7 @@ const SELECTORS = {
   BG_CONTAINER:
     ".Root__right-sidebar .oXO9_yYs6JyOwkBn8E4a, #Desktop_PanelContainer_Id, .Root__right-sidebar aside.NowPlayingView, .Root__right-sidebar aside",
   CARD_PARENT:
-    '#Desktop_PanelContainer_Id div[data-testid="NPV_Panel_OpenDiv"], .Root__right-sidebar div[data-testid="NPV_Panel_OpenDiv"]',
+    '.Root__right-sidebar .Nk8tYOVtamHLZy1x_8ec, #Desktop_PanelContainer_Id .Nk8tYOVtamHLZy1x_8ec, #Desktop_PanelContainer_Id div[data-testid="NPV_Panel_OpenDiv"], .Root__right-sidebar div[data-testid="NPV_Panel_OpenDiv"]',
   INERT_SENSORS: ".pP41asBpzic1bRlrsDcs[inert], .OwsIyGIUSADBO6hvtdEE.bVJH37qfz55VdpglJjHJ",
   SIDEBAR: ".Root__right-sidebar",
 };

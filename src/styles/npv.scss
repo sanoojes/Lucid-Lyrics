@@ -7,7 +7,9 @@
 }
 
 .Root__right-sidebar,
-#Desktop_PanelContainer_Id {
+#Desktop_PanelContainer_Id,
+#Desktop_PanelContainer_Id [data-npv-root="true"],
+.Root__right-sidebar [data-npv-root="true"] {
   background-color: transparent !important;
 
   &::before {
@@ -24,9 +26,14 @@
       content: none;
     }
   }
+  .zboE1ICtt8SJrJQEVHTf {
+    display: none;
+    visibility: hidden;
+  }
   .main-nowPlayingView-nowPlayingWidget {
     order: 1;
   }
+  .Jok4srqTEJ8MiJb08Nz1,
   [data-testid="skeleton-section"],
   .main-nowPlayingView-section {
     order: 3;
@@ -152,6 +159,8 @@
 .use-lucid-lyrics-npv {
   .Root__right-sidebar {
     .YEXWOdiHjsEepA97mhza,
+    .Jok4srqTEJ8MiJb08Nz1,
+    .lOBfhsNkUA68XYyAKjCA,
     .RDlmt3TnmiGDFq273xIf,
     .Q4LnnBmyoXc5ojyZzR5V,
     .artist-artistOnTour-date,
@@ -163,6 +172,13 @@
 
       & > button {
         background-color: transparent !important;
+      }
+    }
+
+    .u8BYSyhiQMmApDt6zmrk {
+      animation-name: npv-scroll-header !important;
+      button {
+        --text-subdued: rgba(var(--spice-rgb-text), 0.8);
       }
     }
 
@@ -178,6 +194,13 @@
       &:hover::after {
         background-color: rgba(255, 255, 255, 0.15) !important;
       }
+    }
+
+    button,
+    a,
+    section,
+    .main-nowPlayingView-section {
+      --text-subdued: rgba(var(--spice-rgb-text), 0.76);
     }
 
     .main-nowPlayingView-section {
@@ -208,6 +231,8 @@
     }
 
     .jHqD4CkJSTwpZihD,
+    .aJp25Hy7qykJLES3mRWi,
+    .aN6RjOsDo5DSOGDMRF2G,
     .main-nowPlayingView-aboutArtistV2Button,
     .CvxzmyND_aGd2RR8ZoSr,
     .ONPKU0_LuCIj71gm,
@@ -259,4 +284,18 @@
   syntax: "<percentage>";
   inherits: false;
   initial-value: 10%;
+}
+
+@keyframes npv-scroll-header {
+  0% {
+    box-shadow: none;
+    background-color: #0000;
+    backdrop-filter: none;
+  }
+
+  to {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(16px) brightness(60%) saturate(1.5);
+  }
 }

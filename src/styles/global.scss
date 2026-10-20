@@ -1,5 +1,12 @@
 @use "variables" as v;
 
+.main-genericButton-button {
+  &.l-player-btn {
+    background: none;
+    border: none;
+  }
+}
+
 .l-player-btn {
   &,
   &__wrapper {

@@ -36,3 +36,4 @@ yarn-error.log*
 
 # Generated JSDelivr Links
 jsdelivr.txt
+*.json

@@ -67,6 +67,7 @@ async function executeFetch(baseUrl: string, queries: SpicyQuery[], auth: string
     headers: {
       "Content-Type": "application/json",
       "SpicyLyrics-Version": version,
+      "X-Mode": "2",
       ...(auth && { "SpicyLyrics-WebAuth": auth }),
     },
     method: "POST",

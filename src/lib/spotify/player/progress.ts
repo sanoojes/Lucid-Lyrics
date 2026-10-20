@@ -4,84 +4,97 @@ interface SyncedPosition {
 }
 
 const DRIFT_TOLERANCE = 650;
+const SYNC_TIMINGS = [50, 100, 150, 750];
 
 let syncedPosition: SyncedPosition | null = null;
-const syncTimings = [0.05, 0.1, 0.15, 0.75];
-let canSyncNonLocal = 0;
-let syncTimer: number | null = null;
+let syncTimer: any = null;
+let burstIndex = 0;
+
+let currentTrack: string | null = null;
+let lastLocalPos: number | null = null;
+let lastLocalTime = 0;
 
 export function requestPositionSync() {
   if (syncTimer) clearTimeout(syncTimer);
 
+  const getUri = () =>
+    Spicetify.Player.data?.item?.uri ?? Spicetify.Platform?.PlayerAPI?._state?.item?.uri ?? null;
+  const setSync = (pos: number) => {
+    syncedPosition = { position: pos, startedAt: performance.now() };
+  };
+
   const handleSongChange = () => {
-    syncedPosition = {
-      position: 0,
-      startedAt: performance.now(),
-    };
+    currentTrack = getUri();
+    burstIndex = 0;
+    lastLocalPos = null;
+    lastLocalTime = performance.now();
+    setSync(0);
+  };
+
+  const handlePlayPause = () => {
+    const state = Spicetify.Platform?.PlayerAPI?._state;
+    setSync(state?.positionAsOfTimestamp ?? Spicetify.Player.getProgress() ?? 0);
   };
 
   Spicetify.Player.addEventListener("songchange", handleSongChange);
+  Spicetify.Player.addEventListener("onplaypause", handlePlayPause);
 
-  const performSync = () => {
+  currentTrack = getUri();
+
+  const performSync = async () => {
+    const Platform = Spicetify.Platform;
+    const isLocal = Boolean(Platform?.PlaybackAPI?._isLocal);
+    const isPlaying = Spicetify.Player.isPlaying();
+    const trackAtStart = currentTrack;
+
     try {
-      const Platform = Spicetify.Platform;
-      const isLocal = Platform.PlaybackAPI._isLocal;
+      let pos: number;
 
-      const sync: Promise<SyncedPosition> = isLocal
-        ? Platform.PlayerAPI._contextPlayer
-            .getPositionState({})
-            .then(({ position }: { position: number }) => ({
-              position: Number(position),
-              startedAt: performance.now(),
-            }))
-        : (canSyncNonLocal > 0
-            ? Platform.PlayerAPI._contextPlayer.resume({})
-            : Promise.resolve()
-          ).then(() => {
-            canSyncNonLocal = Math.max(0, canSyncNonLocal - 1);
-            return {
-              position:
-                Platform.PlayerAPI._state.positionAsOfTimestamp +
-                (Date.now() - Platform.PlayerAPI._state.timestamp),
-              startedAt: performance.now(),
-            };
-          });
+      if (isLocal) {
+        const { position } = await Platform.PlayerAPI._contextPlayer.getPositionState({});
+        const sampled = Number(position);
+        const now = performance.now();
 
-      sync.then((pos) => {
-        const predicted = getProgress();
-        const drift = Math.abs(pos.position - predicted);
-
-        if (!syncedPosition || drift > DRIFT_TOLERANCE) {
-          syncedPosition = pos;
-        } else {
-          syncedPosition = {
-            position: predicted,
-            startedAt: performance.now(),
-          };
+        if (sampled !== lastLocalPos) {
+          lastLocalPos = sampled;
+          lastLocalTime = now;
         }
 
-        const delay = isLocal
-          ? 0.5
-          : canSyncNonLocal === 0
-            ? 0.5
-            : syncTimings[syncTimings.length - canSyncNonLocal];
+        if (isPlaying && lastLocalPos !== null && now - lastLocalTime > 500) {
+          const state = Platform.PlayerAPI._state;
+          pos = state.positionAsOfTimestamp + (Date.now() - state.timestamp);
+        } else {
+          pos = sampled;
+        }
+      } else {
+        if (burstIndex < SYNC_TIMINGS.length) {
+          await Platform.PlayerAPI._contextPlayer.resume({}).catch(() => {});
+        }
+        const state = Platform.PlayerAPI._state;
+        pos = isPlaying
+          ? state.positionAsOfTimestamp + (Date.now() - state.timestamp)
+          : state.positionAsOfTimestamp;
+      }
 
-        syncTimer = setTimeout(performSync, delay * 1000);
-      });
-    } catch {
-      syncTimer = setTimeout(performSync, 1000);
-    }
+      if (trackAtStart === currentTrack) {
+        if (!isPlaying || !syncedPosition || Math.abs(pos - getProgress()) > DRIFT_TOLERANCE) {
+          setSync(pos);
+        }
+      }
+    } catch {}
+
+    const delay = isLocal ? 250 : (SYNC_TIMINGS[burstIndex++] ?? 500);
+    syncTimer = setTimeout(performSync, delay);
   };
 
   performSync();
 
   return () => {
-    if (syncTimer) {
-      clearTimeout(syncTimer);
-      syncTimer = null;
-    }
+    if (syncTimer) clearTimeout(syncTimer);
+    syncTimer = null;
     syncedPosition = null;
     Spicetify.Player.removeEventListener("songchange", handleSongChange);
+    Spicetify.Player.removeEventListener("onplaypause", handlePlayPause);
   };
 }
 
@@ -90,7 +103,9 @@ export function getProgress(): number {
     if (!syncedPosition) return Spicetify.Player?.getProgress?.() || 0;
 
     if (!Spicetify.Player.isPlaying()) {
-      return Spicetify.Platform.PlayerAPI._state.positionAsOfTimestamp || 0;
+      return (
+        Spicetify.Platform?.PlayerAPI?._state?.positionAsOfTimestamp ?? syncedPosition.position
+      );
     }
 
     return Math.round(syncedPosition.position + (performance.now() - syncedPosition.startedAt));
